@@ -1,0 +1,6 @@
+Package zendframework/zend-eventmanager is abandoned, you should avoid using it. Use laminas/laminas-eventmanager instead.
+Package zendframework/zend-code is abandoned, you should avoid using it. Use laminas/laminas-code instead.
+Package doctrine/reflection is abandoned, you should avoid using it. Use roave/better-reflection instead.
+Package twig/extensions is abandoned, you should avoid using it. No replacement was suggested.
+Package zendframework/zend-code is abandoned, you should avoid using it. Use laminas/laminas-code instead.
+Package zendframework/zend-eventmanager is abandoned, you should avoid using it. Use laminas/laminas-eventmanager instead.

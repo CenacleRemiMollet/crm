@@ -1,11 +1,3 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
-
-before:
-    path: /{_locale}
-    controller: App\Controller\HomeController::viewHome
-    defaults:   {_locale: fr}
-    requirements:
-        _locale: en|fr
-

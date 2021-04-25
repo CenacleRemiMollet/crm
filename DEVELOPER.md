@@ -47,7 +47,7 @@ git config core.fileMode false
 In a new folder (ex: c:\projects), with a bash or cmd, retreive the project :
 
 ```
-git clone https://github.com/f-agu/crm.git
+git clone https://github.com/CenacleRemiMollet/crm.git
 ```
 
 Download all libraries :
@@ -66,6 +66,9 @@ DATABASE_URL=mysql://root:@127.0.0.1:3306/my_db
 
 MAILER_URL=smtp://your-smtp-host:25?encryption=tls&auth_mode=login&username=&password=
 ```
+
+Replace `my_db` by your database name and `your-smtp-host` by the SMTP domain name.
+
 
 ### Configure Wamp
 
