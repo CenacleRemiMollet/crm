@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use OpenApi\Annotations as OA;
 
 // see https://github.com/zircote/swagger-php/blob/master/Examples/swagger-spec/petstore-with-external-docs/controllers/PetWithDocsController.php
+// see http://localhost/swagger/swagger-config.json
 
 
 /**
