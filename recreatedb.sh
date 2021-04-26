@@ -15,7 +15,7 @@ dbpassword=`cut -d: -f2 <<< $dbcredentials`
 
 function runSql() {
   echo ''
-  echo Running SQL scripts %1
+  echo Running SQL scripts $1
   echo ''
 	mysql --user=$dbuser --password=$dbpassword -D $dbname < doc/sql/$1
 }

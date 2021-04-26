@@ -28,7 +28,7 @@ class CityController extends AbstractController
 	 * @Route("/api/city", name="api_city", methods={"GET"})
 	 * @OA\Parameter(
 	 *    @OA\Schema(type="string"),
-	 *    in="path",
+	 *    in="query",
 	 *    allowReserved=true,
 	 *    name="q",
 	 *    parameter="q"
@@ -45,6 +45,12 @@ class CityController extends AbstractController
 	public function searchCity(Request $request)
 	{
 		$query = $request->query->get('q');
+		$query = trim($query);
+		if(mb_strlen($query) < 3) {
+			return new Response('{}', 200, array(
+				'Content-Type' => 'application/hal+json'
+			));
+		}
 		
 		$cities = $this->getDoctrine()->getManager()
 			->getRepository(City::class)
