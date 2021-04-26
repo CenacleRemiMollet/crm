@@ -1,0 +1,313 @@
+*{
+    margin: 0 auto;
+    padding: 0;
+}
+
+
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3, .btn{
+    font-family: 'Josefin Sans', sans-serif;
+    text-transform: uppercase;
+}
+
+p{
+    font-size: 1em;
+}
+
+
+
+/*.decoration{
+    position: absolute;
+    background-color:#CE2A37;
+    width : 100px;
+    height: 1000px;
+    opacity: 70%;
+}*/
+
+header{
+    position: relative;
+}
+
+header h1{
+    padding: 4rem 0rem;
+    font-size: 3em;
+}
+
+header .banniere{
+    width: 100%;
+}
+
+header img{
+    width: 100%;
+}
+
+.first p{
+    margin : 0 auto;
+    padding : 0;
+}
+
+.first .definition{
+    border: solid #CE2A37 5px;
+    border-radius: 0 80px 0 80px;
+    padding: 1.5rem 3rem;
+    margin : 2rem 1rem 3rem 1rem;
+}
+
+.first .methods{
+    padding: 0 1rem;
+}
+
+.first .methods .content{
+    border-left : solid #515151 5px;
+    padding: 0rem 1.5rem;
+    margin : 2rem 1rem 3rem 1rem;
+}
+
+.second{
+    margin-top : 3rem;
+}
+
+.second img{
+    width : 50%;
+}
+
+.second .technics{
+    border-left : solid #CE2A37 5px;
+    padding: 0rem 1.5rem;
+    margin-top : 2.5rem
+}
+
+.second .content{
+    margin: 0 1rem;
+}
+
+.third{
+    margin-top : 5rem;
+    padding: 0;
+    height: 25%;
+}
+
+.third .image2{
+    padding: 0;
+}
+
+
+.third .image2 img{
+    width: 100%;
+}
+
+.third .utility{
+    color: #fff;
+    background-color: #515151;
+    display: flex;
+    align-items: center;
+}
+
+.third .utility h2,
+.third .utility p{
+    margin: 0;
+}
+
+.third .content{
+    padding: 1rem 2rem;
+}
+
+.cta{
+    margin: 5rem 0;
+}
+
+.cta h3{
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.cta .buttons{
+    display: flex;
+    justify-content: center;
+}
+
+.cta .btn{
+    background-color: #CE2A37;
+    color: #fff;
+    font-size: 1.5em;
+    margin: 0 1em;
+    height: 3rem;
+    line-height: 1.1em;
+    border-radius: 30px;
+    padding : 0.5em 1em;
+}
+
+.cta .sinkido{
+    line-height: 0.6em;
+    padding-top: 0.5em;
+}
+
+.cta span {
+    font-size: 0.5em;
+}
+
+
+
+/* CSS for tablet */
+
+@media screen and (min-width: 577px) and (max-width: 991px) {
+    
+    .second{
+        margin: 0 auto;
+    }
+    
+    .second img{
+        width: 60%;
+    }
+    
+    .third {
+        margin-top: 3rem;
+        display: flex;
+        flex-direction: column;
+        max-height: 800px;
+    }
+
+    .third .image2{
+        padding: 0;
+        height: 400px;
+        width: 100%;
+    }
+
+    .third .image2 img{
+        height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .third .utility{
+        padding: 0;
+    }
+
+    .third .utility .content{
+        padding : 2rem;
+    }
+
+    .cta h3{
+        margin: 0 2rem;
+    }
+
+    .cta .buttons{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .cta .btn{
+        width: 250px;
+        margin: 0.5rem 0;
+    }
+
+}
+
+/* CSS for mobile */
+
+@media screen and (max-width: 576px) {
+    
+    header h1{
+        padding: 1.5rem 0rem;
+        margin: 0 auto;
+        font-size: 2em;
+        text-align: center;
+    }
+
+    header .banniere{
+        height: 300px;
+    }
+
+    header .banniere img{
+        max-width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: -150px 0;
+    }
+
+    .first h2,
+    .second h2,
+    .third h2 {
+        font-size : 1.2em;
+    }
+
+    .first p,
+    .second p,
+    .third p {
+        font-size : 0.8em;
+    }
+
+    .first .definition{
+        padding: 1rem 2rem;
+        margin: 1rem 1rem;
+    }
+
+    .second{
+        margin: 0 auto;
+    }
+
+    .second img{
+        width: 100%;
+    }
+
+    .third{
+        margin: 2rem 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .third .image2{
+        padding: 0;
+    }
+
+    .third .utility{
+        padding: 1rem 2rem;
+    }
+
+    .third .content{
+        padding: 1rem 0;
+    }
+
+    .cta{
+        margin: 2rem 0;
+    }
+
+    .cta h3{
+        margin: 0 1rem;
+        font-size: 1.3em;
+    }
+
+    .cta .buttons{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .cta .btn{
+        margin-bottom: 1rem;
+        width: 210px;
+        height: 45px;
+        margin: 0.5rem 0;
+        font-size: 1.2em;
+    }
+
+    .cta .taekwondo{
+        line-height: 1.2em;
+    }
+
+    .cta .hapkido{
+        line-height: 1.2em;
+    }
+
+    .cta span {
+        font-size: 0.6em;
+    }
+    
+    
+}
