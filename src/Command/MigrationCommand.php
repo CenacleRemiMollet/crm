@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Exception;
 use App\Entity\ClubLocation;
 use App\Entity\ClubLesson;
 
@@ -180,16 +181,20 @@ class MigrationCommand extends Command
 	{
 		$this->deleteHoursForAClub($club);
 		foreach ($data as $line) {
-			$lesson = new ClubLesson();
-			$lesson->setClub($club);
-			$lesson->setClubLocation($locations[$line["location"]]);
-			$lesson->setDiscipline($line["discipline"]);
-			$lesson->setPoint(1);
-			$lesson->setAgeLevel($line["age_level"]);
-			$lesson->setDayOfWeek($line["day_of_week"]);
-			$lesson->setStartTime(new \DateTime($line["start_time"]));
-			$lesson->setEndTime(new \DateTime($line["end_time"]));
-			$this->doctrine->getManager()->persist($lesson);
+			try {
+				$lesson = new ClubLesson();
+				$lesson->setClub($club);
+				$lesson->setClubLocation($locations[$line["location"]]);
+				$lesson->setDiscipline($line["discipline"]);
+				$lesson->setPoint(1);
+				$lesson->setAgeLevel($line["age_level"]);
+				$lesson->setDayOfWeek($line["day_of_week"]);
+				$lesson->setStartTime(new \DateTime($line["start_time"]));
+				$lesson->setEndTime(new \DateTime($line["end_time"]));
+				$this->doctrine->getManager()->persist($lesson);
+			} catch(Exception $e) {
+				throw new \Exception("Failed to save the club ".$club->getName()." with line (".implode($line, ",").")", 0, $e);
+			}
 		}
 		$this->doctrine->getManager()->flush();
 	}

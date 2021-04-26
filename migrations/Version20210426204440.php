@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210425183201 extends AbstractMigration
+final class Version20210426204440 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -29,6 +29,7 @@ final class Version20210425183201 extends AbstractMigration
         $this->addSql('CREATE TABLE club (id INT AUTO_INCREMENT NOT NULL, uuid VARCHAR(64) NOT NULL, name VARCHAR(255) NOT NULL, logo VARCHAR(255) NOT NULL, website_url VARCHAR(512) DEFAULT NULL, facebook_url VARCHAR(512) DEFAULT NULL, mailing_list VARCHAR(512) DEFAULT NULL, active TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_B8EE3872D17F50A6 (uuid), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user_club_subscribe (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, club_id INT NOT NULL, roles JSON NOT NULL, subscribe_date DATE DEFAULT NULL, unsubscribe_date DATE DEFAULT NULL, INDEX IDX_AC352081A76ED395 (user_id), INDEX IDX_AC35208161190A32 (club_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE club_lesson (id INT AUTO_INCREMENT NOT NULL, club_location_id INT NOT NULL, club_id INT NOT NULL, uuid VARCHAR(16) NOT NULL, point INT NOT NULL, discipline VARCHAR(255) NOT NULL, age_level VARCHAR(512) DEFAULT NULL, day_of_week VARCHAR(20) NOT NULL, start_time TIME NOT NULL, end_time TIME NOT NULL, INDEX IDX_DDBBC879D8BF7905 (club_location_id), INDEX IDX_DDBBC87961190A32 (club_id), UNIQUE INDEX UNIQ_DDBBC879D17F50A6 (uuid), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE city (id INT AUTO_INCREMENT NOT NULL, county_number INT NOT NULL, city_name VARCHAR(255) NOT NULL, zip_code VARCHAR(10) NOT NULL, latitude DOUBLE PRECISION NOT NULL, longitude DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE account (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, login VARCHAR(255) NOT NULL, password VARCHAR(1024) NOT NULL, roles JSON NOT NULL, has_access TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_7D3656A4AA08CB10 (login), INDEX IDX_7D3656A4A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE account_session_history (id INT AUTO_INCREMENT NOT NULL, account_id INT NOT NULL, ip VARCHAR(48) NOT NULL, user_agent VARCHAR(400) NOT NULL, start_datetime DATETIME NOT NULL, INDEX IDX_D5E5ECCB9B6B5FBA (account_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE account_password_request (id INT AUTO_INCREMENT NOT NULL, account_id INT NOT NULL, uuid VARCHAR(40) NOT NULL, create_date DATETIME NOT NULL, INDEX IDX_75FE62449B6B5FBA (account_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -60,6 +61,7 @@ final class Version20210425183201 extends AbstractMigration
         $this->addSql('DROP TABLE account');
         $this->addSql('DROP TABLE account_password_request');
         $this->addSql('DROP TABLE account_session_history');
+        $this->addSql('DROP TABLE city');
         $this->addSql('DROP TABLE club');
         $this->addSql('DROP TABLE club_lesson');
         $this->addSql('DROP TABLE club_location');
