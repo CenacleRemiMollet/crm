@@ -3,14 +3,30 @@
 php bin/console doctrine:database:drop --force
 php bin/console doctrine:database:create
 
-rm src/Migrations/Version2019*.*
-rm src/Migrations/Version202*.*
-rm src/Migrations/Version203*.*
+rm migrations/Version2019*.*
+rm migrations/Version202*.*
+rm migrations/Version203*.*
+
+dbname=`grep -v '^ *#' .env.local | grep DATABASE_URL | grep '[^ ] *=' | sed 's:.*/::'`
+dbcredentials=`sed 's/.*mysql:\/\/\(.*\)@.*/\1/' <<< $dbname`
+dbuser=`cut -d: -f1 <<< $dbcredentials`
+dbpassword=`cut -d: -f2 <<< $dbcredentials`
+
+function runSql() {
+  echo ''
+  echo Running SQL scripts %~1
+  echo ''
+	mysql --user=$dbuser --password=$dbpassword -D $dbname < doc/sql/$1
+}
+
+runSql function_unaccent.sql
 
 php bin/console make:migration
 php bin/console doctrine:migrations:migrate --no-interaction
 php bin/console doctrine:fixtures:load --no-interaction --group=MenuItemFixtures
 php bin/console cache:clear
+
+runSql cities.sql
 
 echo ''
 echo 'To add fake values :'
