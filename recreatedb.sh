@@ -7,8 +7,9 @@ rm migrations/Version2019*.*
 rm migrations/Version202*.*
 rm migrations/Version203*.*
 
-dbname=`grep -v '^ *#' .env.local | grep DATABASE_URL | grep '[^ ] *=' | sed 's:.*/::'`
-dbcredentials=`sed 's/.*mysql:\/\/\(.*\)@.*/\1/' <<< $dbname`
+dburl=`grep -v '^ *#' .env.local | grep DATABASE_URL | grep '[^ ] *=' | sed 's:.*=::'`
+dbname=`sed 's:.*/::' <<< $dburl`
+dbcredentials=`sed 's/.*mysql:\/\/\(.*\)@.*/\1/' <<< $dburl`
 dbuser=`cut -d: -f1 <<< $dbcredentials`
 dbpassword=`cut -d: -f2 <<< $dbcredentials`
 
