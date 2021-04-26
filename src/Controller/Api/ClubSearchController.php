@@ -28,8 +28,19 @@ class ClubSearchController extends AbstractController
 	 *     path="/api/clubsearch/zc/{zipcode}",
 	 *     summary="Search all clubs around a zipcode with a distance in kilometers",
 	 *     @OA\Parameter(
-     *         description="Distance in kilometers",
+     *         description="Zip code",
      *         in="path",
+     *         name="zipcode",
+     *         required=true,
+     *         @OA\Schema(
+     *             format="string",
+     *             type="string",
+     *             pattern="[0-_]{4,7}"
+     *         )
+     *     ),
+	 *     @OA\Parameter(
+     *         description="Distance in kilometers",
+     *         in="query",
      *         name="d",
      *         required=false,
      *         @OA\Schema(
