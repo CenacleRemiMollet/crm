@@ -6,6 +6,7 @@ use App\Entity\Club;
 use App\Entity\ClubLocation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 /**
  * @method Club|null find($id, $lockMode = null, $lockVersion = null)
@@ -32,7 +33,22 @@ class ClubRepository extends ServiceEntityRepository
 					->findByClubs($clubs);
 	}
 
-
+	public function findByClubLocationIds($clubLocationIds)
+	{
+		$sql = "SELECT c.*"
+			." FROM club c JOIN (SELECT c.*"
+			."        FROM club c"
+			."          JOIN club_lesson cles ON c.id = cles.club_id"
+			."         WHERE cles.club_location_id IN (:clocids)"
+			."         GROUP BY c.id) cs ON c.id = cs.id";
+		$rsm = new ResultSetMappingBuilder($this->getEntityManager());
+		$rsm->addRootEntityFromClassMetadata('App\Entity\Club', 'c');
+		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+		$query->setParameter('clocids', $clubLocationIds);
+		return $query->getResult();
+	}
+	
+	
 	/*public function findAllActiveGroupedWithCitiesOLD() //: ?ClubDTO
 	{
 		$sql = "SELECT id, name, group_concat(city SEPARATOR  ', ') AS cities"

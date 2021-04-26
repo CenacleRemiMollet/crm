@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cbb329d5fbb17336c0d534f06e3d427e",
+    "content-hash": "42d0134251a7e04774803e04d4bf3f33",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -6853,6 +6853,9 @@
                 "debug",
                 "dump"
             ],
+            "support": {
+                "source": "https://github.com/symfony/var-dumper/tree/4.3"
+            },
             "time": "2020-01-25T12:32:28+00:00"
         },
         {

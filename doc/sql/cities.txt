@@ -15,4 +15,42 @@ SELECT id, city_name, (
  
  
 
-SELECT * FROM club_location cl JOIN city c ON cl.zipcode = c.zip_code
+SELECT *
+ FROM club_location cl
+  JOIN city c ON cl.zipcode = c.zip_code
+  ;
+
+SELECT * FROM (SELECT * FROM city WHERE zip_code = '94500' LIMIT 1) t;
+
+SELECT clist.id, clist.city_name, (6371 * acos( cos(radians(cref.latitude)) * cos(radians(clist.latitude)) * cos(radians(clist.longitude) - radians(cref.longitude)) + sin(radians(cref.latitude)) * sin(radians(clist.latitude)))) AS distance
+ FROM city clist, (SELECT * FROM city WHERE zip_code = '94500' LIMIT 1) cref
+ HAVING distance < 5
+ ORDER BY distance;
+ 
+ 
+ 
+ 
+ 
+
+SELECT cl.*
+ FROM club_location cl
+  JOIN (
+   SELECT clist.zip_code,
+          (6371 * acos( cos(radians(cref.latitude)) * cos(radians(clist.latitude)) * cos(radians(clist.longitude) - radians(cref.longitude)) + sin(radians(cref.latitude)) * sin(radians(clist.latitude)))) AS distance
+    FROM city clist, (SELECT * FROM city WHERE zip_code = '94500' LIMIT 1) cref
+    HAVING distance < 5
+  ) c ON cl.zipcode = c.zip_code
+  ;
+
+
+
+
+SELECT clist.id,
+       clist.city_name,
+       clist.zipcode,
+       (6371 * acos( cos(radians(cref.latitude)) * cos(radians(clist.latitude)) * cos(radians(clist.longitude) - radians(cref.longitude)) + sin(radians(cref.latitude)) * sin(radians(clist.latitude)))) AS distance
+ FROM city clist, (SELECT * FROM city WHERE zip_code = '94500' LIMIT 1) cref
+ HAVING distance < 5
+ ORDER BY distance;
+ 
+ 

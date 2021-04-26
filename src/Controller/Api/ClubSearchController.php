@@ -16,33 +16,57 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Entity\ClubLesson;
 use App\Model\ClubLessonView;
+use App\Model\ClubLocationView;
 
 
 class ClubSearchController extends AbstractController
 {
 
 	/**
-	 * @Route("/api/club-around/{zipcode}", name="api_club_around-zipcode", methods={"GET"})
+	 * @Route("/api/clubsearch/zc/{zipcode}", name="api_club_search-zipcode", methods={"GET"})
 	 * @OA\Get(
-	 *     path="/api/club-around/{zipcode}",
+	 *     path="/api/clubsearch/zc/{zipcode}",
 	 *     summary="Search all clubs around a zipcode with a distance in kilometers",
 	 *     @OA\Parameter(
      *         description="Distance in kilometers",
      *         in="path",
      *         name="d",
-     *         required=true,
+     *         required=false,
      *         @OA\Schema(
-     *             type="integer"
+     *             type="integer",
+     *             default=5
      *         )
      *     ),
 	 *     @OA\Response(response="200", description="Successful")
 	 * )
 	 */
-	public function searhcAroundWithdistance(Request $request, $zipcode)
+	public function searchAroundWithdistance(Request $request, $zipcode)
 	{
-		$query = $request->query->get('distance');
+		$distance = $request->query->get('distance', 5);
 
-		$json = "{}";
+		$clubLocations = $this->getDoctrine()->getManager()
+		->getRepository(ClubLocation::class)
+		->findByZipcodeAndDistance($zipcode, $distance);
+		
+		$clubLocationByIds = array();
+		$clubLocationIds = array();
+		foreach ($clubLocations as &$clubLocation) {
+			$clubLocationByIds[$clubLocation->getId()] = new ClubLocationView($clubLocation);
+			array_push($clubLocationIds, $clubLocation->getId());
+		}
+		
+		$clubs = $clubLocations = $this->getDoctrine()->getManager()
+		->getRepository(Club::class)
+		->findByClubLocationIds($clubLocationIds);
+		
+		$clubViews = $this->getDoctrine()->getManager()
+		->getRepository(ClubLocation::class)
+		->findByClubs($clubs);
+		
+		
+		$output = array('clubs' => $clubViews);
+		$hateoas = HateoasBuilder::create()->build();
+		$json = json_decode($hateoas->serialize($output, 'json'));
 
 		return new Response(json_encode($json), 200, array(
 			'Content-Type' => 'application/hal+json'

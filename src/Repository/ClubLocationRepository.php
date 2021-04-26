@@ -53,6 +53,24 @@ class ClubLocationRepository extends ServiceEntityRepository
 		return $query->getResult();
 	}
 
+	public function findByZipcodeAndDistance($zipcode, $distance) {
+		$sql = "SELECT cl.*"
+				." FROM club_location cl"
+				."  JOIN ("
+				."   SELECT clist.zip_code,"
+				."          (6371 * acos( cos(radians(cref.latitude)) * cos(radians(clist.latitude)) * cos(radians(clist.longitude) - radians(cref.longitude)) + sin(radians(cref.latitude)) * sin(radians(clist.latitude)))) AS distance"
+				."    FROM city clist, (SELECT * FROM city WHERE zip_code = :zipcode LIMIT 1) cref"
+				."    HAVING distance < :distance"
+				."  ) c ON cl.zipcode = c.zip_code";
+		$rsm = new ResultSetMappingBuilder($this->getEntityManager());
+		$rsm->addRootEntityFromClassMetadata('App\Entity\ClubLocation', 'l');
+		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+		$query->setParameter('zipcode', $zipcode);
+		$query->setParameter('distance', $distance);
+		return $query->getResult();
+	}
+	
+	
 	public function findByClubs($clubs) {
 		$clubByIds = array();
 		$clubIds = array();
