@@ -14,10 +14,7 @@ discipline:
 	Taekwondo
 	Taekwonkido
 age_level: 	
-	baby : 4-5 ans, blanches à pourpre
-	child-6 : 6-9 ans
-	child-10 : 10-12 ans, pourpres et plus ; 7-12 ans
-	13 : 13 ans et plus, tous niveaux
-	13-blue : 13 ans et plus, ceinture bleue minimum
-	black-belt : ceinture noire
+	baby
+	child
+	adult
 location: <id_in_locations.csv>

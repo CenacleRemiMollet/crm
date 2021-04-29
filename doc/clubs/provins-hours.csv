@@ -1,0 +1,10 @@
+day_of_week,start_time,end_time,discipline,age_level,location
+monday,19:30,20:30,Taekwondo,child,provins_0
+monday,20:30,21:30,Taekwondo,child,provins_0
+tuesday,18:30,19:30,Taekwondo,child,provins_1
+tuesday,19:30,20:30,Taekwondo,adult,provins_1
+thursday,18:30,19:30,Taekwondo,child,provins_0
+thursday,19:30,20:30,Taekwondo,child,provins_0
+saturday,14:00,15:00,Taekwondo,baby,provins_0
+saturday,15:00,16:00,Taekwondo,child,provins_0
+saturday,16:00,17:00,Taekwondo,adult,provins_0
