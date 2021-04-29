@@ -1,0 +1,152 @@
+footer{
+    background-color: #515151;
+    color: #fff;
+    height: fit-content;
+    padding: 2rem;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+}
+
+li{
+    color: #fff;
+}
+
+h6{
+    font-family: 'Josefin Sans', sans-serif;
+    text-transform: uppercase;
+}
+
+footer a i{
+    color: #fff;
+    height: 100px;
+}
+
+footer a:link {
+    text-decoration: none;
+    color: #fff;
+}
+
+.social a i{
+    font-size: 2.5rem;
+    height: fit-content;
+    margin-bottom: 15px;
+}
+
+.contact i{
+    margin-right: 15px;
+    margin-top: 10px;
+    font-size: 25px;
+    height: fit-content;
+}
+
+.contact p{
+    margin: 0;
+}
+
+@media screen and (min-width: 1200px){
+    .social a i{
+        margin-right: 20px;
+    }
+
+    .link::after {
+        content: '';
+        display: block;
+        width: 0;
+        height: 2px;
+        background: #CE2A37;
+        transition: width .3s;
+    }
+    
+    .link:hover::after{
+        width: 100%;
+        transition: width .3s;
+    }
+
+    ul{
+        display: flex;
+        flex-direction: column;
+    }
+
+    li{
+        display: inline-block;
+    }
+
+    i{
+        transition: .12s;
+    }
+
+    i:hover {
+        transform: translate(0, -5px);
+        color:#CE2A37;
+    }
+    
+}
+
+@media screen and (max-width: 1199px){
+    .social h6{
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 1000px){
+    
+    footer{
+        padding: 2rem 1rem;
+    }
+    
+    footer p{
+        font-size: 0.8em;
+    }
+
+    footer li{
+        font-size: 0.8em;
+    }
+
+    footer .data{
+        font-size: 0.8em;
+    }
+}
+
+@media screen and (max-width: 575px){
+    footer{
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .contact{
+        margin-bottom: 2rem;
+    }
+
+    .plan ul{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .plan ul li{
+        padding: 0.5em 0.5em;
+    }
+
+    .courses ul{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .courses ul li{
+        padding: 0.5em 0.5em;
+    }
+
+    .social .icons{
+        justify-content: center;
+    }
+
+    .social .icons i{
+        padding: 0 1rem;
+    }
+
+
+}
