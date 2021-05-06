@@ -16,37 +16,73 @@
 
     <body>
 
-         <!--futur menu-->
-        <nav id="navbar"></nav>
+         <!--menu-->
+         <nav>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
 
-            <header>
-                <div class="title row">
-                    <h1>Taekwonkido</h1>
-                </div>
-                <div class="banniere">
-                    <img src="img/bannieretkkd.jpg" alt="bannière taekwonkido combat">
-                </div>
+            <div class="logo">
+                <a href="#"><img src="img/logo-taekwonkido.png" alt="logo du logo-taekwonkido"></a>
+            </div>
 
-                <!--red graphic element-->
-                <div class="decoration"></div>
-                
-            </header>
+            <ul class="nav-links">
+                <li class="link"><a href="#"><img src="img/icon_master.png" class="icon"> le maître</a></li>
 
-            <section class="first">
-                <div class="d-flex justify-content-center">
-                        <div class="col-md-11 col-lg-7 col-xl-5 definition">
-                                <h2>qu'est-ce que le<br> taekwonkido ?</h2>
-                                <p>Le Taekwonkido® est une méthode éducative, fondée par Me Rémi Mollet et le Dr. Jean-Laurent Taddeï, synthétisant les techniques de Karaté, Taekwondo, de Hapkido, de Gumdo (sabre), d’arts martiaux coréens et surtout de Khido, méthode supérieure instaurée par Me Michel Morlon, créée en 1984. </p>
-                        </div>
+                <div class="dropdown-1">
+                    <button><li class="link"><img src="img/belt.png" class="icon">les disciplines</li></button>
+                    <div class="content">
+                        <a href="#"><li class="link"> Taekwonkido</li></a>
+                        <a href="#"><li class="link"> Taekwondo</li></a>
+                        <a href="#"><li class="link"> Hapkido</li></a>
+                        <a href="#"><li class="link"> Sinkido<br>Self-Défense Système</li></a>
                     </div>
-
-                <div class="row methods offset-lg-1 offset-xl-2">
-                        <div class="col-xs-12 col-md-11 col-lg-7 col-xl-7 content">
-                        <h2>les méthodes</h2>
-                        <p>Selon un programme technique repensé afin d’être accessible à tous, du plus jeune au vétéran, de la femme à l’homme, axé sur l’autodéfense et sur une pratique traditionnelle, le Taekwonkido® est avant tout une méthode d’éducation permettant de former l’individu afin de le responsabiliser, de l’aider à surmonter les embûches et tracas du quotidien et de l’aider à s’intégrer dans la société. Basé sur le développement du goût de l’effort et l’aptitude à dépasser ses limites, il doit valoriser le pratiquant et l’aider à être mieux dans sa peau, tout en sachant respecter autrui et accepter l’autorité.</p>
-                        </div>
                 </div>
-            </section> 
+
+                <li class="link"><a href="#"><img src="img/pin.png" class="icon">liste des clubs</a></li>
+                <li class="link"><a href="#"><img src="img/gallery.png" class="icon">galerie</a></li>
+                <li class="link"><a href="#"><img src="img/question.png" class="icon">contact</a></li>
+
+                <div class="dropdown-2">
+                    <button><li class="link"><img src="img/profile.png" class="icon">connexion / inscription</li></button>
+                    <div class="content">
+                        <a href="#"><li class="link">Se connecter</li></a>
+                        <a href="#"><li class="link">Créer un compte</li></a>
+                    </div>
+                </div>
+            </ul>
+        </nav>
+
+        <header>
+            <div class="title row">
+                <h1>Taekwonkido</h1>
+            </div>
+            <div class="banniere">
+                <img src="img/bannieretkkd.jpg" alt="bannière taekwonkido combat">
+            </div>
+
+            <!--red graphic element-->
+            <div class="decoration"></div>
+            
+        </header>
+
+        <section class="first">
+            <div class="d-flex justify-content-center">
+                    <div class="col-md-11 col-lg-7 col-xl-5 definition">
+                            <h2>qu'est-ce que le<br> taekwonkido ?</h2>
+                            <p>Le Taekwonkido® est une méthode éducative, fondée par Me Rémi Mollet et le Dr. Jean-Laurent Taddeï, synthétisant les techniques de Karaté, Taekwondo, de Hapkido, de Gumdo (sabre), d’arts martiaux coréens et surtout de Khido, méthode supérieure instaurée par Me Michel Morlon, créée en 1984. </p>
+                    </div>
+                </div>
+
+            <div class="row methods offset-lg-1 offset-xl-2">
+                    <div class="col-xs-12 col-md-11 col-lg-7 col-xl-7 content">
+                    <h2>les méthodes</h2>
+                    <p>Selon un programme technique repensé afin d’être accessible à tous, du plus jeune au vétéran, de la femme à l’homme, axé sur l’autodéfense et sur une pratique traditionnelle, le Taekwonkido® est avant tout une méthode d’éducation permettant de former l’individu afin de le responsabiliser, de l’aider à surmonter les embûches et tracas du quotidien et de l’aider à s’intégrer dans la société. Basé sur le développement du goût de l’effort et l’aptitude à dépasser ses limites, il doit valoriser le pratiquant et l’aider à être mieux dans sa peau, tout en sachant respecter autrui et accepter l’autorité.</p>
+                    </div>
+            </div>
+        </section> 
         
 
        <section class="second">
@@ -74,19 +110,20 @@
          </section>
 
          
-<section class="cta">
-    <h3>découvrir nos autres disciplines</h3>
-    <div class="buttons">
-        <button class="btn taekwondo">taekwondo</button>
-        <button class="btn hapkido">hapkido</button>
-        <button class="btn sinkido">sinkido <br> <span>self-défense système</span></button>
-    </div>
-</section>
+        <section class="cta">
+            <h3>découvrir nos autres disciplines</h3>
+            <div class="buttons">
+                <button class="btn taekwondo">taekwondo</button>
+                <button class="btn hapkido">hapkido</button>
+                <button class="btn sinkido">sinkido <br> <span>self-défense système</span></button>
+            </div>
+        </section>
 
 
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+        <script src="app.js"></script>
     
     </body>
 
