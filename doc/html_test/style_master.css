@@ -13,6 +13,26 @@ p{
     font-size: 1em;
 }
 
+.top-button{
+    height: 50px;
+    width: 50px;
+    background: #515151;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    cursor: pointer;
+    z-index: 300;
+}
+
+.top-button i{
+    color: #fff;
+    font-size: 1.5em;
+}
+
 .title{
     margin: 0;
     padding: 5rem 0 3rem 0;

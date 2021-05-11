@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Taekwonkido</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="menu.css">
+        <link rel="stylesheet" href="style_footer.css">
 
          <!--fonts téléchargées-->
         <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -32,7 +34,7 @@
                 <li class="link"><a href="#"><img src="img/icon_master.png" class="icon"> le maître</a></li>
 
                 <div class="dropdown-1">
-                    <button><li class="link"><img src="img/belt.png" class="icon">les disciplines</li></button>
+                    <button><li class="link"><img src="img/belt.png" class="icon">les disciplines<i class="fas fa-angle-down"></i></li></button>
                     <div class="content">
                         <a href="#"><li class="link"> Taekwonkido</li></a>
                         <a href="#"><li class="link"> Taekwondo</li></a>
@@ -42,11 +44,9 @@
                 </div>
 
                 <li class="link"><a href="#"><img src="img/pin.png" class="icon">liste des clubs</a></li>
-                <li class="link"><a href="#"><img src="img/gallery.png" class="icon">galerie</a></li>
-                <li class="link"><a href="#"><img src="img/question.png" class="icon">contact</a></li>
 
                 <div class="dropdown-2">
-                    <button><li class="link"><img src="img/profile.png" class="icon">connexion / inscription</li></button>
+                    <button><li class="link"><img src="img/profile.png" class="icon">connexion<i class="fas fa-angle-down"></i></li></button>
                     <div class="content">
                         <a href="#"><li class="link">Se connecter</li></a>
                         <a href="#"><li class="link">Créer un compte</li></a>
@@ -54,11 +54,20 @@
                 </div>
             </ul>
         </nav>
+        <!-- fin du menu -->
 
-        <header>
-            <div class="title row">
-                <h1>Taekwonkido</h1>
+        <!-- Button top -->
+        <div class="top-button">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+
+        <section class="top">
+            <div class="title">
+                <h1>Taekwonkido
+                    <!--<div class="decoration"></div> --> 
+                </h1>
             </div>
+            
             <div class="banniere">
                 <img src="img/bannieretkkd.jpg" alt="bannière taekwonkido combat">
             </div>
@@ -66,7 +75,7 @@
             <!--red graphic element-->
             <div class="decoration"></div>
             
-        </header>
+        </section>
 
         <section class="first">
             <div class="d-flex justify-content-center">
@@ -90,7 +99,7 @@
                 <img src="img/2.jpg" alt="le maître rémi mollet fait une démonstration d'une prise">
             </div>
             <div class="content">
-                <div class="col-md-8 col-lg-7 col-xl-6 technics">
+                <div class="col-md-12 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 technics">
                     <h2>les techniques</h2> 
                     <p>Techniquement, le Taekwonkido® présente beaucoup de coups de pied sautés, retournés, mais aussi des mouvements de bras. Un tapis (style tatami) est bien souvent nécessaire pour les chutes lors des techniques d’autodéfense. Le recours à des protections lors des assauts et surtout à des cibles en mousse permet une pratique respectant l’intégrité physique et la santé du pratiquant, et surtout constitue un bon défouloir dont le dynamisme séduit les plus jeunes. Afin de faciliter l’apprentissage, certaines formes trop souvent rébarbatives sont devenues optionnelles, des ateliers ont été simplifiés ou remplacés par des techniques d’autodéfense plus accessibles. A partir d’un certain niveau, le travail des armes et notamment du sabre coréen (Gumdo) est abordé.</p>
                 </div>
@@ -119,12 +128,58 @@
             </div>
         </section>
 
+        <!-- FOOTER -->
 
+        <footer class="d-flex m-0">
+            <div class="contact col-xl-4 col-lg-4 col-md-4">
+                <h6>nous contacter</h6>
+                <p>Cénacle Rémi Mollet <br>Ecole Henri Cahn, Boulevard Galliéni <br>94360 Bry-sur-Marne <br> <br><a href="tel:+33695904408"> <i class="fas fa-phone-alt"></i>06 95 90 44 08</a> <br> 
+                <a href="mailto:remi.mollet@cenaclerm.fr"><i class="fas fa-envelope"></i>remi.mollet@cenaclerm.fr</a></p>
+                
+            </div>
+
+            <div class="plan col-xl-3 col-lg-3">
+                <h6>plan du site</h6>
+                <ul>
+                    <a href="#"><li class="link">Le cénacle</li></a> 
+                    <a href="#"><li class="link">Le maître</li></a> 
+                    <a href="#"><li class="link">Les disciplines</li></a>
+                    <a href="#"><li class="link">Liste des clubs</li></a> 
+                    <a href="#"><li class="link">Connexion</li></a> 
+                    <a href="#"><li class="link">Politique de confidentialité</li></a>
+                </ul>
+            </div>
+
+            <div class="courses col-xl-3 col-lg-3">
+                <h6>nos disciplines</h6>
+                <ul>
+                    <a href="#"><li class="link">Taekwonkido</li></a>
+                    <a href="#"><li class="link">Taekwondo</li></a>
+                    <a href="#"><li class="link">Hapkido</li></a>
+                    <a href="#"> <li class="link">Sinkido Self-Défense Système</li></a>
+                </ul>
+            </div>
+
+            <div class="social col-xl-2 col-lg-2">
+                <h6>nous suivre</h6>
+                <div class="icons d-flex flex-xl-row flex-lg-column flex-md-column align-items-center">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+        </footer>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/297127ae03.js" crossorigin="anonymous"></script>
+
+        <!-- JS for menu & scroll -->
         <script src="app.js"></script>
-    
+        <script src="topbutton.js"></script>
+
+
     </body>
 
 </html>

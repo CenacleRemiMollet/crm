@@ -1,8 +1,29 @@
 *{
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    list-style: none;
 }
 
+.top-button{
+    height: 50px;
+    width: 50px;
+    background: #515151;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    cursor: pointer;
+    z-index: 300;
+}
+
+.top-button i{
+    color: #fff;
+    font-size: 1.5em;
+}
 
 body{
     font-family: 'Montserrat', sans-serif;
@@ -17,30 +38,35 @@ p{
     font-size: 1em;
 }
 
+nav{
+    z-index: 200;
+}
 
+section{
+    z-index: 100;
+}
 
 /*.decoration{
     position: absolute;
+    top: 0;
     background-color:#CE2A37;
     width : 100px;
     height: 1000px;
     opacity: 70%;
 }*/
 
-header{
+.top h1{
+    padding: 4rem 0rem;
+    font-size: 3em;
+    text-align: center;
     position: relative;
 }
 
-header h1{
-    padding: 4rem 0rem;
-    font-size: 3em;
-}
-
-header .banniere{
+.top .banniere{
     width: 100%;
 }
 
-header img{
+.top img{
     width: 100%;
 }
 
@@ -212,18 +238,18 @@ header img{
 
 @media screen and (max-width: 576px) {
     
-    header h1{
+    .top h1{
         padding: 1.5rem 0rem;
         margin: 0 auto;
         font-size: 2em;
         text-align: center;
     }
 
-    header .banniere{
+    .top .banniere{
         height: 300px;
     }
 
-    header .banniere img{
+    .top .banniere img{
         max-width: 100%;
         height: 100%;
         object-fit: cover;

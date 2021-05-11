@@ -5,16 +5,21 @@ footer{
     padding: 2rem;
 }
 
-ul{
+footer ul{
     list-style: none;
     padding: 0;
+    align-items: flex-start;
 }
 
-li{
+footer ul a{
+    margin: 0;
+}
+
+footer li{
     color: #fff;
 }
 
-h6{
+footer h6{
     font-family: 'Josefin Sans', sans-serif;
     text-transform: uppercase;
 }
@@ -22,6 +27,7 @@ h6{
 footer a i{
     color: #fff;
     height: 100px;
+    margin-left: 0;
 }
 
 footer a:link {
@@ -29,29 +35,33 @@ footer a:link {
     color: #fff;
 }
 
-.social a i{
+footer .social a i{
     font-size: 2.5rem;
     height: fit-content;
     margin-bottom: 15px;
 }
 
-.contact i{
+footer .contact i{
     margin-right: 15px;
     margin-top: 10px;
     font-size: 25px;
     height: fit-content;
 }
 
-.contact p{
+footer .contact p{
+    margin: 0;
+}
+
+footer .social .icons a{
     margin: 0;
 }
 
 @media screen and (min-width: 1200px){
-    .social a i{
+    footer .social a i{
         margin-right: 20px;
     }
 
-    .link::after {
+    footer .link::after {
         content: '';
         display: block;
         width: 0;
@@ -60,34 +70,42 @@ footer a:link {
         transition: width .3s;
     }
     
-    .link:hover::after{
+    footer .link:hover::after{
         width: 100%;
         transition: width .3s;
     }
 
-    ul{
+    footer ul{
         display: flex;
         flex-direction: column;
     }
 
-    li{
+    footer li{
         display: inline-block;
     }
 
-    i{
+    footer i{
         transition: .12s;
     }
 
-    i:hover {
+    footer i:hover {
         transform: translate(0, -5px);
         color:#CE2A37;
     }
     
 }
 
-@media screen and (max-width: 1199px){
-    .social h6{
+@media screen and (min-width: 701px) and (max-width: 1199px){
+    footer ul{
+        flex-direction: column;
+    }
+    
+    footer .social h6{
         text-align: center;
+    }
+
+    footer .social .icons{
+        flex-direction: column;
     }
 }
 
@@ -108,43 +126,67 @@ footer a:link {
     footer .data{
         font-size: 0.8em;
     }
+
+    footer .social .icons i{
+        margin: 0 0 10px 0;
+    }
+
+    footer .social .icons a{
+        justify-content: center;
+    }
 }
 
-@media screen and (max-width: 575px){
+@media screen and (max-width: 700px){
+
     footer{
         flex-direction: column;
         text-align: center;
+        width: 100%;
     }
 
-    .contact{
+    footer .contact{
         margin-bottom: 2rem;
+        width: 100%;
     }
 
-    .plan ul{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-    }
-
-    .plan ul li{
-        padding: 0.5em 0.5em;
-    }
-
-    .courses ul{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-    }
-
-    .courses ul li{
-        padding: 0.5em 0.5em;
-    }
-
-    .social .icons{
+    footer .contact a{
         justify-content: center;
     }
 
-    .social .icons i{
+    footer .plan{
+        width: 100%;
+        padding-bottom: 20px;
+    }
+
+    footer .plan ul{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    footer .plan ul li{
+        padding: 0.5em 0.5em;
+    }
+
+    footer .courses{
+        padding-bottom: 20px;
+    }
+
+    footer .courses ul{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    footer .courses ul li{
+        padding: 0.5em 0.5em;
+    }
+
+    footer .social .icons{
+        justify-content: center;
+    }
+
+    footer .social .icons i{
         padding: 0 1rem;
     }
 
