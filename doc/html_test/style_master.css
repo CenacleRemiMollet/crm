@@ -587,5 +587,18 @@ p{
         padding: 2rem 1rem;
     }
 
+    .top-button{
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        right: 20px;
+        bottom: 20px;
+    }
+    
+    .top-button i{
+        font-size: 1em;
+    }
+        
+
 }
 

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cénacle Rémi Mollet</title>
+        <link rel="stylesheet" href="home.css">
+        <link rel="stylesheet" href="menu.css">
+        <link rel="stylesheet" href="style_footer.css">
+
+         <!--fonts téléchargées-->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&display=swap" rel="stylesheet">
+        <!-- bootstrap css -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    </head>
+
+    <body>
+        <!--menu-->
+        <nav>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+
+            <div class="logo">
+                <a href="#"><img src="img/logo-taekwonkido.png" alt="logo du logo-taekwonkido"></a>
+            </div>
+
+            <ul class="nav-links">
+
+                <div class="dropdown-2">
+                    <button><li class="link"><a href="#"><img src="img/icon_master.png" class="icon">le cénacle<i class="fas fa-angle-down"></i></a></li></button>
+                    <div class="content">
+                        <a href="#"><li class="link">Présentation</li></a>
+                        <a href="#"><li class="link">Direction technique</li></a>
+                    </div>
+                </div>
+
+                <div class="dropdown-1">
+                    <button><li class="link"><img src="img/belt.png" class="icon">les disciplines<i class="fas fa-angle-down"></i></li></button>
+                    <div class="content">
+                        <a href="#"><li class="link"> Taekwonkido</li></a>
+                        <a href="#"><li class="link"> Taekwondo</li></a>
+                        <a href="#"><li class="link"> Hapkido</li></a>
+                        <a href="#"><li class="link"> Sinkido<br>Self-Défense Système</li></a>
+                    </div>
+                </div>
+
+                <li class="link"><a href="#"><img src="img/pin.png" class="icon">liste des clubs</a></li>
+
+                <li class="link"><a href="#"><img src="img/profile.png" class="icon">connexion</a></li></button>
+            </ul>
+
+            <div class="search-box">
+                <input class="search-txt" type="text" name="" placeholder="chercher un club, un cours...">
+                <a class="search-btn" href="#">
+                    <i class="fas fa-search"></i>
+                </a>
+            </div>
+        </nav>
+        <!-- fin du menu -->
+
+        <!-- Button top -->
+        <div class="top-button">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+
+        <!-- Bannière centrale -->
+
+        <section class="banner">
+
+           <div class="title">
+               <div class="logo">
+                    <img src="img/logo.jpg" alt="logo taekwonkido">
+                </div>
+                <div class="name">
+                    <h1>cénacle rémi mollet<br>
+                    <span>arts martiaux</span></h1>
+                </div>
+           </div>
+
+           <!-- boutons animés -->
+
+           <div class="drop">
+                    <button class="bloc-button">
+                            <i class="fas fa-map-marker-alt"></i>
+                    </button>
+                    <div class="bloc-text">
+                            Ecole Henri Cahn, Boulevard Galliéni<br>
+                            94360 Bry-sur-Marne
+                    </div>
+           </div>
+
+           <div class="drop2">
+                    <button class="bloc-button">
+                        <i class="fas fa-phone-alt" aria-hidden="true"></i>
+                    </button>
+                    <div class="bloc-text">
+                        06 95 90 44 08
+                    </div>
+           </div>
+
+           <div class="drop3">
+                <button class="bloc-button">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                </button>
+                <div class="bloc-text">
+                    remi.mollet@cenaclerm.fr
+                </div>
+            </div>
+
+            <div class="drop4">
+                <button class="bloc-button">
+                    <i class="fas fa-gift"></i>
+                </button>
+                <div class="bloc-text">
+                    Un cours d'essai gratuit !
+                </div>
+            </div>
+
+            <!-- Boutons disciplines -->
+
+           <div class="buttons">
+               <div class="btn"><a href="#">taekwondo</a></div>
+               <div class="btn"><a href="#">taekwonkido</a></div>
+               <div class="btn"><a href="#">hapkido</a></div>
+               <div class="btn sinkido"><a href="#"><span class="first">sinkido</span><br><span class="second">self-défense système</span></a></div>
+           </div>
+
+           <!-- Barre de recherche club -->
+
+           <div class="search-club">
+               <div class="first-line">
+                    <h4>rechercher un club</h4>
+                </div>
+
+                <div class="second-line">
+
+                    <!-- switch language button -->
+
+                    <div class="language">
+                        <label class="toggle">
+                            <input type="checkbox">
+                            <span class="toggle-switch"></span>
+                            <div class="fr">
+                            </div>
+                            <div class="en"></div>
+                        </label>
+                    </div> 
+
+                    <!-- search country / city -->
+
+                    <label for="country"></label>
+                    <select name="pays" id="pays">
+                        <option label="France Métropolitaine" value="France"></option>
+                        <option label="Guyane" value="guyane"></option>
+                        <option label="Suisse" value="suisse"></option>
+                        <option label="Hollande" value="hollande"></option>
+                        <option label="Canada" value="Canada"></option>
+                    </select>
+
+                    <label for="ville"></label>
+                    <input type="text" name="ville" id="ville" placeholder="Renseigner une ville">
+
+                    <!-- rayon city -->
+
+                    <p>Rayon</p>
+
+                    <div class="rayon">
+                        <input type="range" min="1" max="25" step="1" value="1" id="slider">
+                        <div id="selector">
+                            <div id="selectValue"></div>
+                        </div>
+                    </div>
+
+                    <div class="btn"><a href="#">rechercher</a></div>
+                </div>
+           </div>
+           
+        </section>
+
+        <!-- Présentation cénacle -->
+
+        <main>
+
+            <h1>le cénacle</h1>
+
+            <section class="ecole">
+
+                <div class="left">
+                    <img src="img/home/accueil_1.jpg" alt="le maître rémi mollet donne un coup de poing retourné à son élève">
+                </div>
+
+                <div class="text">
+                    <h2>notre école</h2>
+                    <p>Le Cénacle Rémi Mollet est une <span>école d'Arts Martiaux</span> Français, Coréens et asiatiques. On y enseigne principalement le Taekwonkido, Taekwondo, mais aussi le Hapkido et le Gumdo. Le Cénacle est composé d'une trentaine de clubs (dojang) répartis dans toute la France. Il y a même un club aux Pays-Bas et des sympathisants en Suisse, en Angleterre, etc.</p>
+                </div>
+            </section>
+
+            <section class="clubs">
+                <div class="text">
+                    <h2>nos clubs</h2>
+                    <p>La particularité du Cénacle est l'organisation d'<span>activités communes</span> à tous les clubs. Cela génère une <span>dynamique de groupe</span> tout à fait exceptionnelle. Cette dynamique favorise la création de liens entre les élèves des différents clubs. Par exemple, il est possible pour un élève de s'entraîner dans tous les clubs de son choix, sous certaines conditions. Il peut tout à fait assister aux cours dispensés par le Maître Rémi Mollet sans supplément de cotisation.
+                    </p>
+                </div>
+
+                <div class="right">
+                    <img src="img/home/accueil_2.jpg" alt="le maître montre une technique de défense">
+                </div>
+            </section>
+
+            <section class="competitions">
+
+                <div class="left">
+                    <img src="img/home/accueil_3.jpg" alt="deux élèves s'affrontent en compétition combat">
+                </div>
+
+                <div class="text">
+                    <h2>les compétitions</h2>
+                    <p>Le Cénacle organise des <span>compétitions</span> combat et technique, des <span>stages</span> combat, technique, poomse. Le Cénacle organise aussi ses propres passages de grades et invite de nombreux Maîtres (Coréens le plus souvent). Notons par exemple la venue du Grand Maître Park Hae-Man à diverses reprises. De plus certains élèves du Cénacle sont déjà partis plusieurs fois en Corée, pour participer à une compétition internationale. Ils ont même ramené quelques médailles.
+                    </p>
+                </div>
+            </section>
+
+            <section class="enseignement">
+                <div class="content">
+                    <h2>notre enseignement</h2>
+                    <img src="img/home/accueil_4_pix.jpg" alt="les élèves d'un club et le maître rémi mollet">
+                    <p>Le Cénacle est sous la direction de <span>Maître Rémi Mollet</span>. Maître Rémi Mollet désire enseigner un Taekwondo Coréen, c'est-à-dire qu'il est le plus fidèle possible au Taekwondo enseigné en Corée. Pour ce faire, il part fréquemment en Corée afin de prendre connaissance des <span>dernières évolutions</span> du Taekwondo. En effet, le Taekwondo est un art martial vivant et de fait est amené à changer fréquemment. Le Taekwondo pratiqué au sein du Cénacle est conforme aux normes du <span>Kukkiwon</span> (maison mère du Taekwondo).
+                    </p>
+                </div>
+            </section>
+
+            <section class="methode">
+                <div class="left">
+                    <h2>notre méthode</h2>
+                    <img src="img/home/accueil_5_2.jpg" alt="deux élèves s'entrainent">
+                    <p>Après de très nombreuses années de pratique et d'enseignement, Maître Mollet et le docteur Taddeï ont décidé d'orienter leur pratique vers une méthode plus réaliste, axée sur <span>le combat réel et l'autodéfense</span>, synthétisant divers arts et notamment le Khido, discipline fondée par Maître Michel Morlon, créée en 1984. Le Taekwonkido est une <span>méthode pratique et réfléchie</span>, cherchant à produire le maximum de forces à partir de principes physiques et médicaux. Il est fondé sur l'utilisation naturelle du corps, avec des formes techniques allégées.</p>
+                </div>
+
+                <div class="right">
+                    <img src="img/home/accueil_5_1-2.jpg" alt="deux élèves s'affrontent en combat">
+                </div>
+            </section>
+
+
+            <section class="cours-ages">
+                <div class="title">
+                    <h2>des cours accessibles à tous les âges</h2>
+                    <p>Les cours prodigués au Cénacle conviennent à toutes les catégories d'élèves, des plus jeunes aux moins jeunes en passant par les férus de compétitions.</p>
+                </div>
+
+                <div class="categories">
+
+                    <div id="age-baby" class="case">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#baby">
+                            <h3>baby</h3>
+                            <img src="img/home/accueil_6_1.jpg">
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="baby" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <img src="img/icons/baby-boy.svg">
+                                        <h5>baby</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <p>Certains clubs dispensent des cours de Baby-Taekwondo pour les 4-6 ans. Ces cours, adaptés aux plus jeunes enfants leur permet d'apprendre les bases du Taekwondo. Les enfants apprennent les valeurs du Taekwondo (respect, discipline) mais acquièrent aussi les bases techniques. Des passages de grades avec des "ceintures" spécialement conçues pour eux permettent de valider leurs connaissances.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="age-kid" class="case">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#kid">
+                            <h3>enfant</h3>
+                            <img src="img/home/accueil_6_2.jpg">
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="kid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <img src="img/icons/children.svg">
+                                        <h5>enfant</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <p>A partir de 6 ans, et jusqu'à 12 ans, les cours accentuent plus le côté dynamique du Taekwondo. Les enfants continuent leur apprentissage de manière ludique et approfondissent leurs connaissances.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="age-adult" class="case">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adult">
+                            <h3>adulte</h3>
+                            <img src="img/home/accueil_6_3.jpg">
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="adult" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <img src="img/icons/adults.svg">
+                                        <h5>adulte</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <p>A partir de 13 ans, on rentre dans le cours adulte. La particularité du Cénacle est que nous n'avons pas de spécialité. En effet, le professeur enseigne TOUS les aspects du Taekwondo (techniques de base, combat conventionnel, poomse, casse, self défense, ...). Rien n'est négligé. Les élèves seront donc polyvalents. Cependant, en fonction des préférences de l'élèves, différents cours supplémentaires peuvent être proposés. On a par exemple des cours spécifiques compétition (combat/technique).</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="age-senior" class="case">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#senior">
+                            <h3>senior</h3>
+                            <img src="img/home/accueil_6_4.jpg">
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="senior" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <img src="img/icons/couple.svg">
+                                        <h5 class="modal-title" id="exampleModalLabel">senior</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <p>Enfin, à partir d'un certain âge, les élèves sont moins attirés par le côté compétition que par l'aspect purement self défense. Il existe donc dans certains clubs un cours "vétéran". Là, l'accent sera plutôt mis sur l'aspect self défense et maintien en bonne santé.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </section>
+
+            <!-- <section class="partenaires">
+                <h2>nos partenaires</h2>
+
+                
+            </section> -->
+
+            <section class="join">
+                <div class="left">
+                    <img src="img/home/accueil_7.jpg" alt="deux raquettes de frappe">
+                </div>
+
+                <div class="right">
+                    <h2>rejoignez-nous !</h2>
+                    <p>Il faut savoir que Maître Rémi Mollet insiste énormément sur le côté traditionnel de l'Art Martial. Nous enseignons non seulement les techniques de Taekwondo, mais aussi toutes les valeurs qui s'y rapportent. En effet, ne dit-on pas que l'Art Martial est un <span>art de vivre</span>.</p>
+                    <div class="btn"><a href="#">créer un compte</a></div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+
+        <footer class="d-flex m-0">
+            <div class="contact col-xl-4 col-lg-4 col-md-4">
+                <h6>nous contacter</h6>
+                <p>Cénacle Rémi Mollet <br>Ecole Henri Cahn, Boulevard Galliéni <br>94360 Bry-sur-Marne <br> <br><a href="tel:+33695904408"> <i class="fas fa-phone-alt"></i>06 95 90 44 08</a> <br> 
+                <a href="mailto:remi.mollet@cenaclerm.fr"><i class="fas fa-envelope"></i>remi.mollet@cenaclerm.fr</a></p>
+                
+            </div>
+
+            <div class="plan col-xl-3 col-lg-3">
+                <h6>plan du site</h6>
+                <ul>
+                    <a href="#"><li class="link">Le cénacle</li></a> 
+                    <a href="#"><li class="link">Le maître</li></a> 
+                    <a href="#"><li class="link">Les disciplines</li></a>
+                    <a href="#"><li class="link">Liste des clubs</li></a> 
+                    <a href="#"><li class="link">Connexion</li></a> 
+                    <a href="#"><li class="link">Politique de confidentialité</li></a>
+                </ul>
+            </div>
+
+            <div class="courses col-xl-3 col-lg-3">
+                <h6>nos disciplines</h6>
+                <ul>
+                    <a href="#"><li class="link">Taekwonkido</li></a>
+                    <a href="#"><li class="link">Taekwondo</li></a>
+                    <a href="#"><li class="link">Hapkido</li></a>
+                    <a href="#"> <li class="link">Sinkido Self-Défense Système</li></a>
+                </ul>
+            </div>
+
+            <div class="social col-xl-2 col-lg-2">
+                <h6>nous suivre</h6>
+                <div class="icons d-flex flex-xl-row flex-lg-column flex-md-column align-items-center">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+        </footer>
+
+        <!-- JS Bootstrap-->
+            
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+        <!-- JS rayon km -->
+
+        <script>
+            var slider = document.getElementById("slider");
+            var selector = document.getElementById("selector");
+            var selectValue = document.getElementById("selectValue");
+
+            selectValue.innerHTML = slider.value;
+
+            slider.oninput = function(){
+                selectValue.innerHTML = slider.value;
+                selector.style.left = this.value + "km";
+            }
+        </script>
+
+        <!--Link for icons-->
+        <script src="https://kit.fontawesome.com/297127ae03.js" crossorigin="anonymous"></script>
+
+        <!-- JS for menu & scroll -->
+        <script src="app.js"></script>
+        <script src="topbutton.js"></script>
+    </body>
+</html>

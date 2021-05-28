@@ -5,10 +5,11 @@
 
 nav{
     width: 100%;
+    width: 100%;
     display: flex !important;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    height: 15vh;
+    height: 10vh;
     background-color:#D1D1D1;
     font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
@@ -76,7 +77,8 @@ nav .dropdown-2 button li{
 }
 
 nav .logo{
-    width: 75px;
+    width: 70px;
+    transform: translateX(50px);
 }
 
 nav .logo img{
@@ -107,6 +109,55 @@ nav .burger div{
     transition: all 0.3s ease;
 }
 
+/* search bar */
+
+.search-box {
+    right: 0;
+    background: #fff;
+    height: 30px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+
+.search-box .search-txt {
+    border: none;
+    outline: none;
+    height: 20px;
+    width: 0px;
+    font-size: 0.7em;
+    transition: 0.4s;
+    padding: 0;
+    transform: translateX(10px);
+}
+
+.search-box:hover > .search-txt {
+    width: 200px;
+}
+
+.search-box .search-btn {
+    background: #CE2A37;
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    z-index: 200;
+}
+
+.search-box .search-btn {
+    text-decoration: none;
+}
+
+.search-box .search-btn i {
+    color: #fff;
+    margin: 0;
+}
+
 @media screen and (max-width:1200px){
     nav{
         font-size: 13px;
@@ -135,10 +186,10 @@ nav .burger div{
     nav .content-active{
         position: absolute;
         background-color: #D1D1D1;
-        top: 9vh;
+        top: 6vh;
         width: 15vw;
         padding: 10px 10px;
-        box-shadow: -3px 5px 5px #5a5a5a;
+        box-shadow: 0px 9px 15px #202020;
     }
 
     nav .content-active li{
@@ -162,8 +213,8 @@ nav .burger div{
     nav .nav-links{
         position: absolute;
         left: 0px;
-        height: 85vh;
-        top: 15vh;
+        height: 90vh;
+        top: 10vh;
         background-color:#D1D1D1;
         box-shadow: 5px 8px 15px #575757;
         display: flex;
@@ -177,7 +228,6 @@ nav .burger div{
         z-index: 200;
     }
 
-
     nav .burger{
         display: block;
         cursor: pointer;
@@ -186,6 +236,11 @@ nav .burger div{
 
     nav .logo{
         margin: 0;
+        width: 50px;
+    }
+    
+    nav .logo img{
+        width: 100%;
     }
 
     nav .icon{
@@ -246,6 +301,7 @@ nav .content-active{
     flex-direction: column;
     visibility: visible;
     z-index: 200;
+    border-radius: 0 0 5px 5px;
 }
 
 nav .content-active a{

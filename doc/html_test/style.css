@@ -83,7 +83,7 @@ section{
 }
 
 .first .methods{
-    padding: 0 1rem;
+    width: 100%;
 }
 
 .first .methods .content{
@@ -334,6 +334,17 @@ section{
     .cta span {
         font-size: 0.6em;
     }
+
+    .top-button{
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        right: 20px;
+        bottom: 20px;
+    }
     
+    .top-button i{
+        font-size: 1em;
+    }
     
 }

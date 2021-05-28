@@ -1,0 +1,747 @@
+body{
+    font-family: 'Montserrat', sans-serif;
+    margin: 0 auto;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6, .btn{
+    font-family: 'Josefin Sans', sans-serif;
+    text-transform: uppercase;
+}
+
+.btn a {
+    transform: translateY(2px);
+}
+
+p{
+    font-size: 1em;
+}
+
+/* Button scroll to top */
+
+.top-button{
+    height: 50px;
+    width: 50px;
+    background: #515151;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    cursor: pointer;
+    z-index: 300;
+}
+
+.top-button i{
+    color: #fff;
+    font-size: 1.5em;
+}
+
+/* home banner */
+
+.banner{
+    height: 90vh;
+    background-color: #515151;
+    background-image: url("img/home/banniere_accueil.png");
+    background-repeat: no-repeat;
+    background-position: top 10% left 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* title banner */
+
+.banner .title{
+    width: 50%;
+    height: 40%;
+    background: rgba( 255, 255, 255, 0.45 );
+    backdrop-filter: blur( 4.0px );
+    -webkit-backdrop-filter: blur( 4.0px );
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+}
+
+.banner .title .logo {
+    width: 25%;
+}
+
+.banner .title .logo img {
+    width: 100%;
+}
+
+.banner .title .name {
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+}
+
+.banner .title .name h1 {
+    font-size: 2.2em;
+    margin-bottom: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.banner .title .name span {
+    font-size: 1.5em;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* courses buttons */
+
+.banner .buttons{
+    height: 100px;
+    width: 70%;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.banner .buttons .btn {
+    position: relative;
+    height: 50px;
+    width: 220px;
+    padding: 5px 15px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #CE2A37;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 3px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    z-index: 1;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+.banner .buttons .btn:hover {
+    letter-spacing: 3px;
+}
+
+.banner .buttons .sinkido:hover {
+    letter-spacing: 1px;
+}
+
+.banner .buttons .btn a,
+.banner .btn a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.banner .buttons .btn .second {
+    font-size: 0.7em;
+}
+
+.banner .buttons .sinkido a{
+    line-height: 0.9em;
+}
+
+/* search bar club */ 
+
+.banner .search-club {
+    height: 15vh;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: #D1D1D1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner .search-club .first-line h4 {
+    font-size: 1em;
+    transform: translateY(-5px);
+}
+
+.banner .search-club .second-line{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.banner .search-club .second-line #pays {
+    width: 300px;
+    height: 30px;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    border-right: solid #D1D1D1;
+    outline: none;
+    border-radius: 20px 0 0 20px;
+    padding: 5px 20px 5px 20px;
+    box-shadow: 0 5px 10px #aaaaaa;
+    font-size: 0.8em;
+} 
+
+.banner .search-club .second-line #pays:hover{
+    cursor: pointer;
+}
+
+.banner #pays option:hover{
+    background-color: #CE2A37;
+}
+
+.banner .search-club .second-line #ville {
+    width: 300px;
+    height: 30px;
+    border : none;
+    outline: none;
+    border-radius: 0 20px 20px 0;
+    padding: 5px 20px 5px 20px;
+    margin-right: 50px;
+    box-shadow: 5px 5px 10px #aaaaaa;
+    font-style: italic;
+    font-size: 0.8em;
+}
+
+.banner .search-club .second-line p{
+    font-size: 0.8em;
+    margin: 0 10px 0 0;
+    padding-top: 5px;
+}
+
+.banner .search-club .second-line #slider {
+    width: 150px;
+    height: 5px;
+    -webkit-appearance: none;
+    background: #707070;
+    border-radius: 10px;
+    outline: none;
+    box-shadow: 5px 5px 10px #aaaaaa;
+}
+
+#slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #CE2A37;
+}
+
+.banner #selectValue{
+    position: absolute;
+    bottom: 55px;
+    font-size: .8em;
+}
+
+.banner #selectValue::after{
+    content: 'km';
+    left: 18px;
+    position: absolute;
+}
+
+.banner .search-club .second-line #slider:hover {
+    cursor: pointer;
+}
+
+.banner .search-club .second-line .btn{
+    height: 30px;
+    font-size: 0.7em;
+    color: #fff;
+    width: 130px;
+    padding: 5px 15px;
+    text-align: center;
+    background-color: #CE2A37;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 3px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    transition: 0.2s;
+    margin: 0 50px 0 50px;
+}
+
+.banner .search-club .second-line .btn:hover{
+    transform: translateY(3px);
+}
+
+/* animation on hover buttons */
+
+.banner .drop,
+.banner .drop2,
+.banner .drop3,
+.banner .drop4 {
+    position: absolute;
+    clip-path: circle(50%);
+    transition: 0.3s ease-in-out;
+}
+
+.banner .drop {
+    top: 12vh;
+    left: 10px;
+}
+
+.banner .drop2 {
+    top: 19vh;
+    left: 10px;
+}
+
+.banner .drop3 {
+    top: 26vh;
+    left: 10px;
+}
+
+.banner .drop4 {
+    top: 33vh;
+    left: 10px;
+}
+
+.banner .drop .bloc-text {
+    width: 310px;
+}
+
+.banner .drop2 .bloc-text {
+    width: 180px;
+}
+
+.banner .drop3 .bloc-text {
+    width: 240px;
+}
+
+.banner .drop4 .bloc-text {
+    width: 240px;
+}
+
+.banner .drop:hover,
+.banner .drop2:hover,
+.banner .drop3:hover,
+.banner .drop4:hover {
+    clip-path: circle(310px);
+}
+
+.banner .drop .bloc-button,
+.banner .drop2 .bloc-button,
+.banner .drop3 .bloc-button,
+.banner .drop4 .bloc-button {
+    position: relative;
+    color: #fff;
+    font-size: 22px;
+    background-color: #CE2A37;
+    width: 40px;
+    height: 40px;
+    border: solid 2px #fff;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.banner .drop .bloc-text,
+.banner .drop2 .bloc-text,
+.banner .drop3 .bloc-text,
+.banner .drop4 .bloc-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-size: 0.8em;
+    color: black;
+    border-radius: 50px;
+    font-weight: 500;
+    line-height: 20px;
+    background-color: #fff;
+    padding-left: 50px;
+    margin: 0;
+    z-index: 100;
+}
+
+/* switch button language */
+
+.banner .language input {
+    display: none;
+}
+
+.banner .toggle {
+    width: 70px;
+    height: 30px;
+    background: #fff;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+    border-radius: 35px;
+    position: relative;
+    cursor: pointer;
+    transform: translateX(-170px);
+}
+
+.banner .toggle-switch:before {
+    content: url('img/france.png');
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    bottom: 3px;
+    left: 3px;
+    transition: 0.2s ease-in-out;
+}
+
+.banner .toggle-switch:after {
+    content: url('img/united-kingdom.png');
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    bottom: 3px;
+    left: 3px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    transform: scale(0);
+} 
+
+input[type=checkbox]:checked + .toggle-switch:before {
+    left: 55px;
+    transform: scale(0);
+}
+
+input[type=checkbox]:checked + .toggle-switch:after {
+    left: 42px;
+    transform: scale(1);
+}
+
+/* présentation cénacle */
+
+main p {
+    font-size: 1em;
+}
+
+main h1 {
+    font-size: 3em;
+    font-weight: 700;
+    text-align: center;
+    margin: 15vh 0;
+}
+
+main .ecole {
+    display: flex;
+    width: 100%;
+    margin-bottom: 100px;
+}
+
+main .ecole .left {
+    width: 50%;
+}
+
+main .ecole .left img {
+    width: 100%;
+}
+
+main .ecole .text {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 100px 0 20px;
+}
+
+main .clubs {
+    width: 100%;
+    height: 90vh;
+    background-image: url(img/home/fond_accueil_2.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    display: flex;
+}
+
+main .clubs .text {
+    width: 50%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 50px 0 100px;
+}
+
+main .clubs .right {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main .clubs .right img {
+    width: 70%;
+}
+
+main .competitions {
+    width: 100%;
+    display: flex;
+    background-color: #CE2A37;
+}
+
+main .competitions .left {
+    width: 50%;
+}
+
+main .competitions .left img {
+    width: 100%;
+}
+
+main .competitions .text {
+    width: 50%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 50px;
+}
+
+main .enseignement {
+    width: 100%;
+    background-image: url(img/home/accueil_4_fond.jpg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: right;
+    margin-bottom: 30vh;
+}
+
+main .enseignement .content {
+   width: 45vw;
+   transform: translateX(40%);
+   padding-top: 100px;
+}
+
+main .enseignement .content p {
+    padding-top: 20px;
+ }
+
+main .enseignement .content img {
+    width: 100%;
+}
+
+main .methode {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30vh;
+}
+
+
+main .methode .left {
+    width: 50%;
+    padding-left: 20vh;
+}
+
+main .methode img {
+    width: 80%;
+}
+
+main .methode p {
+    width: 32vw;
+    padding-top: 20px;
+}
+
+main .methode .right {
+    width: 50%;
+}
+
+main .methode .right img {
+    width: 85%;
+}
+
+main .cours-ages {
+    width: 100%;
+    margin-bottom: 30vh;
+    position: relative;
+}
+
+main .cours-ages .title {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+main .cours-ages .title p {
+    width: 50vw;
+    transform: translateX(50%);
+}
+
+/* paramètres case âge */
+
+main .cours-ages .categories {
+    width: 100%;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+main .cours-ages .categories .case {
+    width: 25%;
+}
+
+main .cours-ages .categories .case .btn-primary {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: #CE2A37;
+    border-radius: 0;
+    border-color: #515151;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+}
+
+main .cours-ages .categories .case .btn-primary:focus {
+    box-shadow: 0 0 0 4px #2020208e;
+}
+
+main .cours-ages .categories .case .btn-primary img {
+    width: 100%;
+    position: relative;
+    z-index: 100;
+    opacity: 70%;
+    transition: 0.5s;
+}
+
+main .cours-ages .categories .case .btn-primary h3 {
+    position: absolute;
+    z-index: 200;
+    margin: 0;
+    font-size: 4em;
+    transition: 0.5s;
+}
+
+/* animation hover case */
+
+main .cours-ages .categories .case .btn-primary:hover {
+    background: none;
+    transition: 0.5s ease-in-out;
+}
+
+main .cours-ages .categories .case .btn-primary:hover>img {
+    opacity: 100%;
+    
+}
+
+main .cours-ages .categories .case .btn-primary:hover>h3 {
+    transform: translateY(80px);
+}
+
+/* paramètres fenêtre modale */
+
+main .cours-ages .modal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0;
+    border: none;
+    transform: translateY(25px);
+}
+
+main .cours-ages .modal-header button {
+    transform: translateY(-170px);
+    font-size: 2.5em;
+}
+
+main .cours-ages .modal-header img {
+    width: 80px;
+    margin-bottom: 20px;
+}
+
+main .cours-ages .modal-body {
+    padding-top: 0;
+    border: none;
+}
+
+main .cours-ages #age-baby .modal {
+    top: 15vh;
+}
+
+main .cours-ages #age-kid .modal {
+    top: 20vh;
+}
+
+main .cours-ages #age-adult .modal {
+    top: 10vh;
+}
+
+main .cours-ages #age-senior .modal {
+    top: 15vh;
+}
+
+/* end modal */
+
+main .join {
+    width: 100%;
+    display: flex;
+}
+
+main .join .left {
+    width: 35%;
+}
+
+main .join .left img {
+    width: 100%;
+    transform: translateX(-30px);
+}
+
+main .join .right {
+    width: 65%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 100px;
+}
+
+main .join .right .btn a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main .join .right .btn {
+    height: 50px;
+    width: 230px;
+    padding: 5px 15px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #CE2A37;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 3px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    transition: 0.5s;
+}
+
+main .join .right .btn:hover {
+    letter-spacing: 1px;
+} 
+
+main span {
+    font-style: italic;
+    font-weight: 700;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
