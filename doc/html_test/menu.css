@@ -17,6 +17,7 @@ nav{
     font-weight: 600;
     padding: 0;
     z-index: 200;
+    position: relative;
 }
 
 nav .icon{
@@ -78,7 +79,6 @@ nav .dropdown-2 button li{
 
 nav .logo{
     width: 70px;
-    transform: translateX(50px);
 }
 
 nav .logo img{
@@ -87,8 +87,9 @@ nav .logo img{
 
 nav .nav-links{
     display: flex;
-    width: 80%;
+    width: 70%;
     justify-content: space-evenly;
+    margin-right: 100px;
 }
 
 nav .nav-links a{
@@ -118,7 +119,8 @@ nav .burger div{
     border-radius: 40px;
     display: flex;
     align-items: center;
-    margin-right: 50px;
+    margin-right: 20px;
+    position: absolute;
 }
 
 .search-box .search-txt {
@@ -207,7 +209,7 @@ nav .burger div{
     nav{
         justify-content: space-between;
         padding: 5px 20px;
-        z-index: 200;
+        z-index: 700;
     }
     
     nav .nav-links{
@@ -224,8 +226,8 @@ nav .burger div{
         width: 85%;
         border-radius: 0px 20px 20px 0;
         transform: translateX(-110%);
-        transition: transform 0.5s ease-in-out;
-        z-index: 200;
+        transition: transform 0.2s ease-in-out;
+        z-index: 700;
     }
 
     nav .burger{
@@ -237,6 +239,8 @@ nav .burger div{
     nav .logo{
         margin: 0;
         width: 50px;
+        position: absolute;
+        left: 44%;
     }
     
     nav .logo img{

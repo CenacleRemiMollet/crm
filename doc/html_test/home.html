@@ -63,10 +63,10 @@
         </nav>
         <!-- fin du menu -->
 
-        <!-- Button top -->
+        <!-- Button top 
         <div class="top-button">
             <i class="fas fa-arrow-up"></i>
-        </div>
+        </div> -->
 
         <!-- Bannière centrale -->
 
@@ -130,26 +130,31 @@
                <div class="btn sinkido"><a href="#"><span class="first">sinkido</span><br><span class="second">self-défense système</span></a></div>
            </div>
 
-           <!-- Barre de recherche club -->
+           <!-- switch language button -->
 
+           <div class="language">
+                <label class="toggle">
+                    <input type="checkbox">
+                    <span class="toggle-switch"></span>
+                    <div class="fr">
+                    </div>
+                    <div class="en"></div>
+                </label>
+            </div> 
+
+           <!-- Barre de recherche club -->
+           
            <div class="search-club">
+
                <div class="first-line">
                     <h4>rechercher un club</h4>
+                    <div class="toggle-btn">
+                        <i class="fas fa-arrow-circle-right"></i>
+                        <i class="fas fa-times"></i>
+                    </div>
                 </div>
 
                 <div class="second-line">
-
-                    <!-- switch language button -->
-
-                    <div class="language">
-                        <label class="toggle">
-                            <input type="checkbox">
-                            <span class="toggle-switch"></span>
-                            <div class="fr">
-                            </div>
-                            <div class="en"></div>
-                        </label>
-                    </div> 
 
                     <!-- search country / city -->
 
@@ -367,11 +372,42 @@
 
             </section>
 
-            <!-- <section class="partenaires">
-                <h2>nos partenaires</h2>
+            <section class="partenaires">
+                <div class="title">
+                    <h2>nos partenaires</h2>
+                </div>
 
-                
-            </section> -->
+                <div class="links">
+                    
+                    <div class="case first">
+                        <a href="https://taekwonkidotoulon.jimdofree.com/">
+                            <img src="img/logo.jpg">
+                            <h5>Cénacle Côte d'Azur<br>Réunion de clubs sur la Côte d'Azur sous la direction de Maître Laurent Rodier</h5>
+                        </a>
+                    </div>
+                    <div class="case second">
+                        <a href="https://www.fftda.fr/">
+                            <img src="img/partners/fftda.jpg">
+                            <h5>Fédération Française de Taekwondo et disciplines associées</h5>
+                        </a>
+                    </div>
+                    <div class="case third">
+                        <a href="http://www.taekwonkido.com/">
+                            <img src="img/partners/LogoTKKD_France.jpg">
+                            <h5>Union Fédérale de Taekwonkido</h5>
+                        </a>
+                    </div>
+                    <div class="case fourth">
+                        <a href="http://www.hoshinkidohapkido.com/">
+                            <img src="img/partners/hoshinkido_logo3.png">
+                            <h5>Hoshinkido, écoles de Hapkido au Québec sous la direction de Me Serge Baubil</h5>
+                        </a>
+                    </div>
+                    
+                </div>
+
+            </section>
+
 
             <section class="join">
                 <div class="left">
@@ -455,6 +491,7 @@
 
         <!-- JS for menu & scroll -->
         <script src="app.js"></script>
+        <script src="search-club.js"></script>
         <script src="topbutton.js"></script>
     </body>
 </html>
