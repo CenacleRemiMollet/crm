@@ -1,0 +1,7 @@
+day_of_week,start_time,end_time,discipline,age_level,location
+wednesday,15:30,16:30,Taekwondo,child,gretz_0
+friday,21:00,22:30,Taekwondo,adult,gretz_0
+saturday,17:00,18:00,Taekwondo,child,gretz_0
+monday,20:00,21:15,Taekwondo,child,gretz_1
+monday,20:00,21:30,Taekwondo,adult,gretz_1
+wednesday,18:00,19:00,Taekwondo,child,gretz_2

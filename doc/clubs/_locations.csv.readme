@@ -1,0 +1,7 @@
+uuid: Name with lower character, without space, only _, ends with a number
+name: Name of place [ex: Ecole Henri Cahn]
+address: [ex: 26 Boulevard Général Gallieni]
+zipcode: [ex: 94360]
+city: [ex: Bry Sur Marne]
+county: [ex: 94]
+country: [ex: France]

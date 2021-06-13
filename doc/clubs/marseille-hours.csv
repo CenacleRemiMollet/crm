@@ -1,0 +1,5 @@
+day_of_week,start_time,end_time,discipline,age_level,location
+tuesday,18:30,19:30,Taekwondo,child,marseille_0
+tuesday,19:30,21:30,Taekwondo,adult,marseille_0
+friday,18:30,19:30,Taekwondo,child,marseille_0
+friday,19:30,21:30,Taekwondo,adult,marseille_0

@@ -1,0 +1,6 @@
+day_of_week,start_time,end_time,discipline,age_level,location
+monday,18:30,19:30,Taekwondo,child,meudon_0
+monday,19:30,20:30,Taekwondo,adult,meudon_0
+wednesday,20:00,22:30,Taekwondo,child,meudon_0
+wednesday,20:00,22:30,Taekwondo,adult,meudon_0
+
