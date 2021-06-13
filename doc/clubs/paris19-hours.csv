@@ -1,0 +1,8 @@
+day_of_week,start_time,end_time,discipline,age_level,location
+monday,18:00,19:00,Taekwondo,child,paris19_0
+monday,19:00,20:30,Taekwondo,adult,paris19_0
+wednesday,18:30,20:00,Taekwondo,adult,paris19_0
+wednesday,21:30,22:00,Hapkido,adult,paris19_0
+friday,18:00,19:00,Taekwondo,child,paris19_0
+friday,19:00,20:30,Taekwondo,adult,paris19_0
+saturday,10:45,11:45,Taekwondo,child,paris19_0
