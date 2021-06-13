@@ -1,0 +1,7 @@
+day_of_week,start_time,end_time,discipline,age_level,location
+monday,20:00,21:00,Taekwonkido,adult,villiers_sur_marne_1
+wednesday,19:00,20:00,Taekwondo,child,villiers_sur_marne_0
+wednesday,20:00,22:00,Taekwondo,adult,villiers_sur_marne_0
+thursday,20:00,21:30,Taekwondo,adult,villiers_sur_marne_1
+friday,19:00,20:00,Taekwondo,child,villiers_sur_marne_0
+friday,20:00,22:00,Taekwondo,adult,villiers_sur_marne_0
