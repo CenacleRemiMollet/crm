@@ -7,7 +7,7 @@ nav{
     width: 100%;
     width: 100%;
     display: flex !important;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     height: 10vh;
     background-color:#D1D1D1;
@@ -38,7 +38,6 @@ nav ul{
     padding: 0;
 }
 
-
 nav button{
     font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
@@ -50,14 +49,19 @@ nav button{
 }
 
 nav .dropdown-1 .content,
-nav .dropdown-2 .content{
+nav .dropdown-2 .content,
+nav .dropdown-3 .content {
     display: none;
     visibility: hidden;
 }
 
+nav .dropdown-3 {
+    display: none!important;
+    visibility: hidden!important;
+}
+
 
 nav .dropdown-1, .dropdown-2{
-    position: relative;
     flex-direction: column;
 }
 
@@ -73,12 +77,15 @@ nav .dropdown-2 .content a li{
 }
 
 nav .dropdown-1 button li,
-nav .dropdown-2 button li{
+nav .dropdown-2 button li,
+nav .dropdown-3 button li{
     margin-bottom: 0;
 }
 
 nav .logo{
     width: 70px;
+    margin-left: 25px;
+    margin-right: 25px;
 }
 
 nav .logo img{
@@ -87,14 +94,19 @@ nav .logo img{
 
 nav .nav-links{
     display: flex;
-    width: 70%;
-    justify-content: space-evenly;
-    margin-right: 100px;
+}
+
+nav .nav-links li {
+    margin-right: 50px;
 }
 
 nav .nav-links a{
     color: #000 !important;
     text-decoration: none !important;
+}
+
+nav .content-active li {
+    margin: 0;
 }
 
 nav .burger{
@@ -127,15 +139,11 @@ nav .burger div{
     border: none;
     outline: none;
     height: 20px;
-    width: 0px;
-    font-size: 0.7em;
+    width: 200px;
+    font-size: 0.9em;
     transition: 0.4s;
     padding: 0;
     transform: translateX(10px);
-}
-
-.search-box:hover > .search-txt {
-    width: 200px;
 }
 
 .search-box .search-btn {
@@ -160,13 +168,9 @@ nav .burger div{
     margin: 0;
 }
 
-@media screen and (max-width:1200px){
-    nav{
-        font-size: 13px;
-    }
-
-    nav .nav-links{
-        width: 85%;
+@media screen and (max-width:1400px){
+    nav {
+        font-size: 0.7em;
     }
 }
 
@@ -188,7 +192,7 @@ nav .burger div{
     nav .content-active{
         position: absolute;
         background-color: #D1D1D1;
-        top: 6vh;
+        top: 10vh;
         width: 15vw;
         padding: 10px 10px;
         box-shadow: 0px 9px 15px #202020;
@@ -208,7 +212,7 @@ nav .burger div{
 
     nav{
         justify-content: space-between;
-        padding: 5px 20px;
+        padding: 5px 10px;
         z-index: 700;
     }
     
@@ -222,7 +226,7 @@ nav .burger div{
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding-left: 10px;
+        padding-left: 15px;
         width: 85%;
         border-radius: 0px 20px 20px 0;
         transform: translateX(-110%);
@@ -263,7 +267,7 @@ nav .burger div{
     }
 
     nav li{
-        margin: 0;
+        margin: 25px 0 0 0;
     }
 
     nav .toggle .line1{
@@ -278,21 +282,55 @@ nav .burger div{
         transform: rotate(45deg) translate(-5px, -6px);
     }
 
+    nav .dropdown-3 {
+        display: block!important;
+        visibility: visible!important;
+    }
+
     nav .dropdown-1, 
-    nav .dropdown-2{
+    nav .dropdown-2,
+    nav .dropdown-3 {
         flex-direction: column;
         margin: 0;
     }
 
     nav .dropdown-1 li, 
-    nav .dropdown-2 li{
+    nav .dropdown-2 li, 
+    nav .dropdown-3 li {
         display: flex;
         align-items: center;
-        margin-bottom: 15px;
+        margin-bottom: 30px;
     }
 
-    nav .content-active{
+    nav .content-active {
         padding-left: 55px;
+        margin-top: 20px;
+    }
+
+    nav .content-active a{
+        margin-top: 20px;
+    }
+
+    
+    nav .dropdown-3 .content {
+        display: none;
+        visibility: hidden;
+    }
+
+    nav .content-active .contact{
+        margin: 0;
+        font-size: 0.9em;
+    }
+
+    nav .content-active .contact a {
+        margin-top: 10px;
+        font-size: 1em;
+        text-transform: lowercase;
+    }
+
+    nav .content-active .contact a i{
+        margin: 0 15px 0 0;
+        font-size: 25px;
     }
 }
 
@@ -310,5 +348,7 @@ nav .content-active{
 
 nav .content-active a{
     margin: 0;
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
+
+

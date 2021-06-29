@@ -31,7 +31,10 @@ p{
     right: 20px;
     bottom: 20px;
     cursor: pointer;
-    z-index: 300;
+    z-index: 2000;
+    opacity: 0;
+    transform: translateX(200px);
+    transition: 0.2s ease-in-out;
 }
 
 .top-button i{
@@ -63,7 +66,8 @@ p{
     border-radius: 20px;
     display: flex;
     align-items: center;
-    padding: 25px 25px;
+    justify-content: center;
+    padding: 25px;
 }
 
 .banner .title .logo {
@@ -234,16 +238,20 @@ p{
 
 #slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    appearance: none;
+    appearance: none; 
     width: 20px;
     height: 20px;
     border-radius: 50%;
     background: #CE2A37;
 }
 
+.banner .rayon {
+    position: relative;
+}
+
 .banner #selectValue{
     position: absolute;
-    bottom: 55px;
+    bottom: 30px;
     font-size: .8em;
 }
 
@@ -374,7 +382,7 @@ p{
 
 .banner .language {
     position: absolute;
-    top: 80px;
+    top: 12vh;
     right: 20px;
 }
 
@@ -461,6 +469,10 @@ main .ecole .text {
     padding: 0 100px 0 20px;
 }
 
+main .ecole .text p{
+    max-width: 700px;
+}
+
 main .clubs {
     width: 100%;
     background-image: url(img/home/fond_accueil_2.jpg);
@@ -477,6 +489,10 @@ main .clubs .text {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+main .clubs .text p {
+    max-width: 700px;
 }
 
 main .clubs .right {
@@ -510,11 +526,12 @@ main .competitions .text {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 50px;
+    padding: 25px;
 }
 
 main .competitions .text p{
     margin: 0;
+    max-width: 700px;
 }
 
 main .enseignement {
@@ -581,12 +598,12 @@ main .cours-ages .title {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin-bottom: 50px;
 }
 
 main .cours-ages .title p {
-    width: 50vw;
-    transform: translateX(50%);
+    max-width: 700px;
 }
 
 /* paramètres case âge */
@@ -717,11 +734,12 @@ main .partenaires .title h2 {
 }
 
 main .partenaires .links {
-    width: 70%;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 20px;
+    padding: 0 20px;
 }
 
 main .partenaires .case {
@@ -729,7 +747,7 @@ main .partenaires .case {
     border: 3px solid #CE2A37;
     border-radius: 20px;
     padding: 10px;
-    margin: 0 20px 20px 20px;
+    margin: 0 20px 120px 20px;
 }
 
 main .partenaires .case img {
@@ -763,10 +781,7 @@ main .partenaires .third a {
     justify-content: center;
 }
 
-main .partenaires .first h5,
-main .partenaires .second h5,
-main .partenaires .third h5,
-main .partenaires .fourth h5 {
+main .partenaires h5 {
     width: 100%;
     font-size: 18px;
     text-align: center;
@@ -810,6 +825,11 @@ main .partenaires .case:hover h5 {
     background-color: #272727ad;
 }
 
+main .partenaires .under-title {
+    display: none;
+    visibility: hidden;
+}
+
 /* section rejoignez-nous */
 
 main .join {
@@ -835,6 +855,10 @@ main .join .right {
     justify-content: center;
     align-items: center;
     padding: 0 100px;
+}
+
+main .join .right p {
+    max-width: 700px;
 }
 
 main .join .right .btn a {
@@ -907,11 +931,11 @@ main span {
     }
 
     main .clubs {
-        padding: 50px 50px;
+        padding: 50px 25px 50px 0;
     }
 
     main .clubs .text {
-        padding-right: 50px;
+      padding: 25px;
     }
 
     main .clubs .right img {
@@ -921,8 +945,29 @@ main span {
 
 @media screen and (max-width: 1000px) {
 
+    nav .logo {
+        display: none;
+        visibility: hidden;
+    }
+
+    .top-button{
+        display: none;
+        visibility: hidden;
+    }
+
     .banner {
         background-position: bottom;
+    }
+
+    .banner .drop,
+    .drop2,
+    .drop3 {
+        display: none;
+        visibility: hidden;
+    }
+
+    .banner .drop4 {
+        top: 12vh;
     }
 
     /* responsive search club */
@@ -972,6 +1017,7 @@ main span {
         position: absolute;
         right: 15px;
         top: 10px;
+        font-size: 30px;
     }
 
     .banner .search-club .second-line {
@@ -1038,11 +1084,6 @@ main span {
     main .competitions .left {
         display: flex;
         align-items: center;
-        padding: 20px;
-    }
-
-    main .competitions .text {
-        padding: 25px;
     }
 
     main .methode {
@@ -1062,7 +1103,7 @@ main span {
     }
 
     main .methode .right {
-        padding-right: 50px;
+        padding: 0 20px;
     }
 
     main .methode .right img {
@@ -1086,6 +1127,31 @@ main span {
     main .cours-ages .categories .case {
         width: 50%;
     }
+
+    main .partenaires .links {
+        width: 100%;
+    }
+
+    main .partenaires .case {
+        flex-direction: column;
+        position: relative;
+    }
+
+    main .partenaires .under-title {
+        text-transform: none;
+        position: absolute;
+        top: 190px;
+        font-size: 15px;
+        text-align: center;
+        display: block;
+        visibility: visible;
+    }
+
+    main .partenaires .links .case h5 {
+        display: none;
+        visibility: hidden;
+    }
+
 }
 
 @media screen and (min-width: 935px) {
@@ -1202,7 +1268,6 @@ main span {
     main .clubs .text {
         color: #212529;
         width: 100%;
-        margin: 25px 25px 0 25px;
     }
 
     main .competitions {
@@ -1284,6 +1349,12 @@ main span {
         transform: translateY(50px);
     }
 
+    main .cours-ages .categories .modal-dialog {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+
     main .partenaires .links {
         width: 100%;
     }
@@ -1313,6 +1384,12 @@ main span {
         background-image: url(img/home/home_mobile.JPG);
         background-size: cover;
         height: 90vh;
+    }
+
+    .banner .drop4 .bloc-text {
+        width: 190px;
+        font-size: 12px;
+        padding-left: 45px;
     }
     
     .banner .title {
@@ -1372,16 +1449,28 @@ main span {
         transform: translateY(80px);
     }
 
-    main .partenaires .first,
-    main .partenaires .second,
-    main .partenaires .third, 
-    main .partenaires .fourth {
+    main .partenaires .case {
         width: 150px;
         height: 150px;
     }
 
+    main .partenaires .first {
+        margin-bottom: 110px;
+    }
+
+    main .partenaires .second, 
+    main .partenaires .third, 
+    main .partenaires .fourth {
+        margin-bottom: 70px;
+    }
+
     main .partenaires .title {
         border-bottom: 2px solid #CE2A37;
+    }
+
+    main .partenaires .under-title {
+        top: 152px;
+        width: 190px;
     }
 
     main .join .left img {

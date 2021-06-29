@@ -26,7 +26,6 @@ footer h6{
 
 footer a i{
     color: #fff;
-    height: 100px;
     margin-left: 0;
 }
 
@@ -50,6 +49,11 @@ footer .contact i{
 
 footer .contact p{
     margin: 0;
+}
+
+footer .contact .data-contact {
+    display: flex;
+    flex-direction: column;
 }
 
 footer .social .icons a{
