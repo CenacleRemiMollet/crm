@@ -140,7 +140,7 @@ nav .burger div{
     outline: none;
     height: 20px;
     width: 200px;
-    font-size: 0.9em;
+    font-size: 0.8em;
     transition: 0.4s;
     padding: 0;
     transform: translateX(10px);

@@ -1,0 +1,505 @@
+body{
+    font-family: 'Montserrat', sans-serif;
+    background-color: rgb(228, 228, 228)!important;
+    padding: 0;
+    margin: 0 auto;
+}
+
+h1, h2, h3, h4, h5, h6, .btn{
+    font-family: 'Josefin Sans', sans-serif;
+    text-transform: uppercase;
+}
+
+p{
+    font-size: 1em;
+}
+
+/* SEARCH BAR */
+
+main .search-bar {
+    width: 900px;
+    height: 150px;
+    border-radius: 35px;
+    background: #e0e0e0;
+    box-shadow:  10px 10px 18px #bebebe, -10px -10px 18px #ffffff;
+    margin: 100px auto 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+}
+
+.search-bar .search-club {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-bar .search-club .first-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.search-bar .search-club .first-line .toggle-btn {
+    display: none;
+    visibility: hidden;
+}
+
+.search-bar .search-club .first-line h4 {
+    font-size: 1.3em;
+    transform: translateY(-5px);
+}
+
+.search-bar .search-club .second-line{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.search-bar .search-club .second-line #pays {
+    width: 230px;
+    height: 30px;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    border-right: solid #D1D1D1;
+    outline: none;
+    border-radius: 20px 0 0 20px;
+    padding: 0 15px;
+    box-shadow: 0 5px 10px #aaaaaa;
+    background-color: #fff;
+} 
+
+.search-bar .search-club .second-line #pays:hover{
+    cursor: pointer;
+}
+
+.search-bar .search-club .second-line #ville {
+    width: 230px;
+    height: 30px;
+    border : none;
+    outline: none;
+    border-radius: 0 20px 20px 0;
+    padding: 5px 20px 5px 20px;
+    margin-right: 25px;
+    box-shadow: 5px 5px 10px #aaaaaa;
+    font-style: italic;
+}
+
+.search-bar .search-club .second-line p{
+    font-size: 0.8em;
+    margin: 0 10px 0 0;
+    padding-top: 5px;
+}
+
+.search-bar .search-club .second-line #slider {
+    width: 150px;
+    height: 5px;
+    -webkit-appearance: none;
+    background: #707070;
+    border-radius: 10px;
+    outline: none;
+    box-shadow: 5px 5px 10px #aaaaaa;
+}
+
+#slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none; 
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #CE2A37;
+}
+
+.search-bar .rayon {
+    position: relative;
+}
+
+.search-bar #selectValue{
+    position: absolute;
+    bottom: 30px;
+    font-size: .8em;
+}
+
+.search-bar #selectValue::after{
+    content: 'km';
+    left: 18px;
+    position: absolute;
+}
+
+.search-bar .search-club .second-line #slider:hover {
+    cursor: pointer;
+}
+
+.search-bar .search-club .second-line .btn{
+    height: 30px;
+    font-size: 0.9em;
+    width: 130px;
+    padding: 3px 15px;
+    text-align: center;
+    background-color: #CE2A37;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 3px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.233);
+    border-radius: 25px;
+    transition: 0.2s;
+    margin-left: 25px;
+}
+
+.search-bar .search-club .second-line .btn a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.search-bar .search-club .second-line .btn:hover{
+    transform: translateY(3px);
+}
+
+/* SETTINGS */
+
+.settings {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.settings p {
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #212529;
+    font-size: 1.7em;
+    line-height: 1;
+}
+
+.settings nav {
+    background: none;
+}
+
+.settings form {
+    position: relative;
+    z-index: 9999;
+}
+
+/* GRID OR LIST BUTTONS */
+
+.settings nav {
+    width: auto;
+    align-items: flex-start;
+}
+
+.settings .nav-link {
+    padding: 5px 7px;
+}
+
+.settings .nav-item {
+    box-shadow: 2px 3px 7px #9e9e9e;
+    margin-right: 25px;
+    background-color: #fff;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings .nav-link i {
+    padding: 0;
+    margin: 0;
+    font-size: 22px;
+}
+
+.nav-pills .nav-link.active i {
+    color: #fff!important;
+}
+
+/* FILTER COURSES & AGE BARS */
+
+.settings .multiselect {
+    width: 200px;
+    cursor: pointer;
+}
+  
+.settings .selectBox {
+    position: relative;
+    z-index: 200;
+}
+  
+.settings .selectBox select {
+    width: 100%;
+    border: none;
+    border-radius: 50px;
+    padding: 5px 10px;
+    box-shadow: 0 5px 10px #aaaaaa;
+    appearance: none;
+}
+
+.settings .overSelect::after {
+    content: "";
+    background: url("img/icons/arrow-down.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 100%;
+    width: 32px;
+    right: 10px;
+    top: 3px;
+}
+  
+.settings .overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+  
+.settings #checkboxes,
+.settings #checkboxes2 {
+    display: none;
+    background-color: #fff;
+    padding: 30px 20px 15px 20px;
+    transform: translateY(-15px);
+    position: absolute;
+    width: 200px;
+    z-index: 100;
+    box-shadow: 2px 3px 7px #9e9e9e;
+}
+  
+.settings #checkboxes label,
+.settings #checkboxes2 label {
+    display: block;
+}
+
+.settings #checkboxes label:hover,
+.settings #checkboxes2 label:hover {
+    background-color: #ccc;
+}
+
+.settings #checkboxes .art,
+.settings #checkboxes2 .age {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
+    display: block;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.settings .art input,
+.settings .age input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.settings .art .checkmark,
+.settings .age .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: rgb(151, 151, 151);
+}
+
+.settings .art input:checked ~ .checkmark,
+.settings .age input:checked ~ .checkmark {
+    background-color: #007bff;
+}
+
+.settings .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.settings .art input:checked ~ .checkmark:after,
+.settings .age input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.settings .art .checkmark:after,
+.settings .age .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 8px;
+    height: 14px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/* CUSTOM CLASS BAR */
+
+.settings .select-box {
+    display: flex;
+    width: 250px;
+    flex-direction: column;
+}
+  
+.settings .select-box .options-container {
+    background: #fff;
+    max-height: 0;
+    width: 100%;
+    opacity: 0;
+    overflow: hidden;
+    order: 1;
+}
+  
+.settings .selected {
+    background: #fff;
+    height: 35px;
+    border-radius: 50px;
+    position: relative;
+    order: 0;
+    box-shadow: 2px 3px 7px #9e9e9e;
+    padding: 5px 15px;
+    z-index: 200;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+  
+.settings .selected::after {
+    content: "";
+    background: url("img/icons/arrow-down.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 100%;
+    width: 32px;
+    right: 10px;
+    top: 3px;
+}
+  
+.settings .select-box .options-container.active {
+    max-height: 200px;
+    opacity: 1;
+    box-shadow: 2px 3px 7px #9e9e9e;
+    transform: translateY(-15px);
+    padding-top: 20px;
+}
+
+/* ARROW UP
+  
+.settings .select-box .options-container.active + .selected::after {
+    transform: rotateX(180deg);
+    top: -3px;
+} */
+  
+.settings .select-box .option,
+.selected {
+    padding: 5px 15px;
+    cursor: pointer;
+}
+  
+.settings .select-box .option:hover {
+    background-color: #ccc;
+}
+  
+.settings .select-box label {
+    cursor: pointer;
+}
+  
+.settings .select-box .option .radio {
+    display: none;
+}
+
+
+/* CLUBS CARDS */
+
+.tab-content #p1 {
+    padding: 0 100px;
+    margin: 0 auto 200px;
+
+}
+
+.tab-content #p1 .content-p1 {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    justify-content: space-evenly;
+}
+
+.tab-content #p1 a {
+    text-decoration: none;
+    color: #212529;
+    cursor: pointer;
+}
+
+.tab-content #p1 .club {
+    background-color: #fff;
+    height: 200px;
+    width: 200px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 2px 3px 7px #9e9e9e;
+    cursor: pointer;
+    position: relative;
+    margin: 25px;
+}
+
+.tab-content #p1 .club .name {
+    position: absolute;
+    z-index: 200;
+    transition: 0.2s ease-in-out;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab-content #p1 .club .name img {
+    height: 140px;
+    padding-top: 15px;
+}
+
+.tab-content #p1 .club .name h3 {
+    height: 40px;
+    padding: 15px;
+}
+
+.tab-content #p1 .club h3 {
+    font-size: 1.1em;
+    text-transform: none;
+}
+
+.tab-content #p1 .club .choose {
+    opacity: 0;
+    transition: 0.2s ease-in-out;
+}
+
+.tab-content #p1 .club .choose i {
+    transform: rotate(-90deg);
+    color: #CE2A37;
+    font-size: 2em;
+}
+
+.tab-content #p1 .club:hover>.choose {
+    opacity: 1;
+}
+
+.tab-content #p1 .club:hover>.name {
+    opacity: 0;
+}
+
+
+
