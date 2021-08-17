@@ -1,0 +1,475 @@
+body{
+    font-family: 'Montserrat', sans-serif;
+    margin: 0 auto;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6, .btn{
+    font-family: 'Josefin Sans', sans-serif;
+    text-transform: uppercase;
+}
+
+.btn a {
+    transform: translateY(2px);
+}
+
+p{
+    font-size: 1em;
+}
+
+/* nav bar */
+
+nav .logo {
+    height: 9vh!important;
+}
+
+nav .logo img {
+    height: 100%;
+    width: auto!important;
+}
+
+nav .dropdown-4 button a {
+    text-align: start;
+}
+
+/* home banner */
+
+.banner{
+    height: 90vh;
+    background-image: url("img/home/home_club.jpg");
+    background-repeat: no-repeat;
+    background-size: 120%;
+    background-position: top 30% left 0%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* title banner */
+
+.banner .title{
+    background: rgba( 255, 255, 255, 0.45 );
+    backdrop-filter: blur( 4.0px );
+    -webkit-backdrop-filter: blur( 4.0px );
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.banner .title .logo {
+    width: 25%;
+}
+
+.banner .title .logo img {
+    width: 100%;
+}
+
+.banner .title .name {
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+}
+
+.banner .title .name h1 {
+    font-size: 2.2em;
+    margin-bottom: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.banner .title .name span {
+    font-size: 1.5em;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* courses buttons */
+
+.banner .buttons{
+    height: 100px;
+    width: 70%;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.banner .buttons .btn {
+    position: relative;
+    height: 50px;
+    width: 220px;
+    padding: 5px 15px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #CE2A37;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 3px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    z-index: 1;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+.banner .buttons .btn:hover {
+    letter-spacing: 3px;
+}
+
+.banner .buttons .sinkido:hover {
+    letter-spacing: 1px;
+}
+
+.banner .buttons .btn a,
+.banner .btn a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.banner .buttons .btn .second {
+    font-size: 0.8em;
+}
+
+.banner .buttons .sinkido a{
+    line-height: 0.9em;
+}
+
+/* animation on hover buttons */
+
+.banner .drop,
+.banner .drop2,
+.banner .drop3,
+.banner .drop4 {
+    position: absolute;
+    clip-path: circle(50%);
+    transition: 0.3s ease-in-out;
+}
+
+.banner .drop {
+    top: 12vh;
+    left: 10px;
+}
+
+.banner .drop2 {
+    top: 19vh;
+    left: 10px;
+}
+
+.banner .drop3 {
+    top: 26vh;
+    left: 10px;
+}
+
+.banner .drop4 {
+    top: 33vh;
+    left: 10px;
+}
+
+.banner .drop .bloc-text {
+    width: 310px;
+}
+
+.banner .drop2 .bloc-text {
+    width: 180px;
+}
+
+.banner .drop3 .bloc-text {
+    width: 240px;
+}
+
+.banner .drop4 .bloc-text {
+    width: 240px;
+}
+
+.banner .drop:hover,
+.banner .drop2:hover,
+.banner .drop3:hover,
+.banner .drop4:hover {
+    clip-path: circle(310px);
+}
+
+.banner .drop .bloc-button,
+.banner .drop2 .bloc-button,
+.banner .drop3 .bloc-button,
+.banner .drop4 .bloc-button {
+    position: relative;
+    color: #fff;
+    font-size: 22px;
+    background-color: #CE2A37;
+    width: 40px;
+    height: 40px;
+    border: solid 2px #fff;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.banner .drop .bloc-text,
+.banner .drop2 .bloc-text,
+.banner .drop3 .bloc-text,
+.banner .drop4 .bloc-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-size: 0.8em;
+    color: black;
+    border-radius: 50px;
+    font-weight: 500;
+    line-height: 20px;
+    background-color: #fff;
+    padding-left: 50px;
+    margin: 0;
+    z-index: 100;
+}
+
+/* switch button language */
+
+.banner .language {
+    position: absolute;
+    top: 12vh;
+    right: 20px;
+}
+
+.banner .language input {
+    display: none;
+}
+
+.banner .toggle {
+    width: 70px;
+    height: 30px;
+    background: #fff;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+    border-radius: 35px;
+    position: relative;
+    cursor: pointer;
+}
+
+.banner .toggle-switch:before {
+    content: url('img/france.png');
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    bottom: 3px;
+    left: 3px;
+    transition: 0.2s ease-in-out;
+}
+
+.banner .toggle-switch:after {
+    content: url('img/united-kingdom.png');
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    bottom: 3px;
+    left: 3px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    transform: scale(0);
+} 
+
+input[type=checkbox]:checked + .toggle-switch:before {
+    left: 55px;
+    transform: scale(0);
+}
+
+input[type=checkbox]:checked + .toggle-switch:after {
+    left: 42px;
+    transform: scale(1);
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 1430px){
+  
+    .banner .title .name h1 {
+        font-size: 1.6em;
+    }
+    
+    .banner .title .name span {
+        font-size: 1.6em;
+    }
+
+    .banner .buttons {
+        width: 90%;
+    }
+
+    main .cours-ages .categories .case .btn-primary h3 {
+        font-size: 3em;
+    }
+    main .cours-ages .categories .case .btn-primary:hover>h3 {
+        transform: translateY(65px);
+    }
+}
+
+
+@media screen and (max-width: 1060px){
+    .banner .title .name h1 {
+        font-size: 1.4em;
+    }
+    
+    .banner .title .name span {
+        font-size: 1.4em;
+    }
+
+    .banner .buttons .btn {
+        width: 180px;
+        font-size: 16px;
+    }
+
+    .banner .buttons .btn .second {
+        font-size: 0.6em;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+
+    nav .logo {
+        display: none;
+        visibility: hidden;
+    }
+
+    .top-button{
+        display: none;
+        visibility: hidden;
+    }
+
+    .banner .drop,
+    .drop2,
+    .drop3 {
+        display: none;
+        visibility: hidden;
+    }
+
+    .banner .drop4 {
+        top: 12vh;
+    }
+}
+
+@media screen and (min-width: 935px) {
+    .banner .title {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 935px){
+    
+    .banner {
+        background-size: 130%;
+        background-position: top 45% left 5%;
+    }
+    
+    .banner .title {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+        justify-content: center;
+    }
+
+    .banner .title .logo {
+        margin-bottom: 15px;
+    }
+
+    .banner .title .name {
+        margin: 0 5px;
+        padding: 0;
+    }
+
+    .banner .buttons .btn {
+        width: 150px;
+        height: 35px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    
+    .banner {
+        background-size: 200%;
+        background-position: top 20% left 35%;
+    }
+
+    .banner .title .logo {
+        width: 80px;
+    }
+
+    .banner .title {
+        padding: 15px;
+    }
+    
+    .banner .title .name h1 {
+        font-size: 1.5em;
+    }
+    
+    .banner .title .name span {
+        font-size: 1.2em;
+    }
+
+    .banner .buttons {
+        width: 95%;
+        height: 200px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .banner .buttons .btn {
+        
+        margin-bottom: 20px;
+    }
+
+    .banner .buttons .btn:hover {
+        letter-spacing: normal ;
+    }
+}
+
+@media screen and (max-width: 490px) {
+    
+    .banner {
+        background-image: url(img/home/home_mobile.JPG);
+        background-size: cover;
+        height: 90vh;
+    }
+
+    .banner .drop4 .bloc-text {
+        width: 190px;
+        font-size: 12px;
+        padding-left: 45px;
+    }
+    
+    .banner .title {
+        width: 70%;
+    }
+
+    .banner .title .logo {
+        width: 80px;
+    }
+    
+    .banner .title .name h1 {
+        font-size: 1em;
+    }
+    
+    .banner .title .name span {
+        font-size: 1.3em;
+    }
+
+    .banner .buttons {
+        flex-direction: column;
+        align-items: center;
+        height: 30%;
+    }
+
+    .banner .buttons .btn {
+        margin-bottom: 10px;
+        width: 130px;
+        font-size: 13px;
+    }
+}

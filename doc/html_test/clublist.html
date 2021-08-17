@@ -31,6 +31,10 @@
 
             <ul class="nav-links">
 
+                <div class="logo mobile">
+                    <a href="#"><img src="img/logo-taekwonkido.png" alt="logo du logo-taekwonkido"></a>
+                </div>
+
                 <div class="dropdown-2">
                     <button><li class="link"><a href="#"><img src="img/icon_master.png" class="icon">le cénacle<i class="fas fa-angle-down"></i></a></li></button>
                     <div class="content">
@@ -117,118 +121,126 @@
                          <div class="btn"><a href="#">rechercher</a></div>
                      </div>
                 </div>
-            </div>
+            </div> 
 
             <div class="settings">
-                <p>tous nos clubs</p>
-                <nav class="nav nav-pills">
-                    <a class="nav-item nav-link active" href="#p1" data-toggle="tab"><i class="fas fa-th"></i></a>
-                    <a class="nav-item nav-link" href="#p2" data-toggle="tab"><i class="fas fa-list"></i></a>
-                </nav>
 
-                <form>
-                    <div class="multiselect">
-                        <div class="selectBox" onclick="showCheckboxes()">
-                            <select>
-                                <option>Filtrer les cours</option>
-                            </select>
-                            <div class="overSelect"></div>
-                        </div>
+                    <p>tous nos clubs</p>
 
-                        <div id="checkboxes">
-                                <label class="art">
-                                    <input type="checkbox">Taekwondo
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="art">
-                                    <input type="checkbox">Taekwonkido
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="art">
-                                    <input type="checkbox">Hapkido
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="art">
-                                    <input type="checkbox">Sinkido
-                                    <span class="checkmark"></span>
-                                </label>
+                    <div class="second-line">
+                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="pills-thumbnails-tab" data-toggle="pill" href="#pills-thumbnails" role="tab" aria-controls="pills-thumbnails" aria-selected="true">
+                                <i class="fas fa-th"></i>
+                            </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="pills-list-tab" data-toggle="pill" href="#pills-list" role="tab" aria-controls="pills-list" aria-selected="false"><i class="fas fa-list"></i></a>
+                            </li>
+                        </ul>
+
+                        <div class="bars"> 
+                            <form class="cours">
+                                <div class="multiselect">
+                                    <div class="selectBox" onclick="showCheckboxes()">
+                                        <select>
+                                            <option>Filtrer les cours</option>
+                                        </select>
+                                        <div class="overSelect"></div>
+                                    </div>
+
+                                    <div id="checkboxes">
+                                            <label class="art">
+                                                <input type="checkbox">Taekwondo
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="art">
+                                                <input type="checkbox">Taekwonkido
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="art">
+                                                <input type="checkbox">Hapkido
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="art">
+                                                <input type="checkbox">Sinkido
+                                                <span class="checkmark"></span>
+                                            </label>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <form class="age">
+                                <div class="multiselect">
+                                    <div class="selectBox" onclick="showCheckboxes2()">
+                                        <select>
+                                            <option>Filtrer l'âge</option>
+                                        </select>
+                                        <div class="overSelect"></div>
+                                    </div>
+
+                                    <div id="checkboxes2">
+                                            <label class="age">
+                                                <input type="checkbox">Baby
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="age">
+                                                <input type="checkbox">Enfant
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="age">
+                                                <input type="checkbox">Adulte
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="age">
+                                                <input type="checkbox">Senior
+                                                <span class="checkmark"></span>
+                                            </label>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="select-box">
+
+                                <div class="options-container">
+
+                                    <div class="option">
+                                        <input
+                                        type="radio" class="radio" id="croissant" name="category" />
+                                        <label for="croissant">Ordre alphabétique A - Z</label>
+                                    </div>
+                            
+                                    <div class="option">
+                                        <input type="radio" class="radio" id="decroissant" name="category" />
+                                        <label for="decroissant">Ordre alphabétique Z - A</label>
+                                    </div>
+                            
+                                    <div class="option">
+                                        <input type="radio" class="radio" id="departement" name="category" />
+                                        <label for="departement">Département</label>
+                                    </div>
+                            
+                                    <div class="option">
+                                        <input type="radio" class="radio" id="pays" name="category" />
+                                        <label for="pays">Pays</label>
+                                    </div>
+                        
+                                </div>
+                        
+                                <div class="selected">
+                                Classer
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                </form>
-
-                <form>
-                    <div class="multiselect">
-                        <div class="selectBox" onclick="showCheckboxes2()">
-                            <select>
-                                <option>Filtrer l'âge</option>
-                            </select>
-                            <div class="overSelect"></div>
-                        </div>
-
-                        <div id="checkboxes2">
-                                <label class="age">
-                                    <input type="checkbox">Baby
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="age">
-                                    <input type="checkbox">Enfant
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="age">
-                                    <input type="checkbox">Adulte
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="age">
-                                    <input type="checkbox">Senior
-                                    <span class="checkmark"></span>
-                                </label>
-                        </div>
-                    </div>
-                </form>
-
-              
-                <div class="select-box">
-
-                    <div class="options-container">
-
-                        <div class="option">
-                            <input
-                            type="radio" class="radio" id="croissant" name="category" />
-                            <label for="croissant">Ordre alphabétique A - Z</label>
-                        </div>
-                
-                        <div class="option">
-                            <input type="radio" class="radio" id="decroissant" name="category" />
-                            <label for="decroissant">Ordre alphabétique Z - A</label>
-                        </div>
-                
-                        <div class="option">
-                            <input type="radio" class="radio" id="departement" name="category" />
-                            <label for="departement">Département</label>
-                        </div>
-                
-                        <div class="option">
-                            <input type="radio" class="radio" id="pays" name="category" />
-                            <label for="pays">Pays</label>
-                        </div>
-            
-                    </div>
-            
-                    <div class="selected">
-                    Classer
-                    </div>
-
-                </div>
                
             </div>
 
-            <div class="tab-content">
+            <div class="tab-content" id="pills-tabContent">
 
-                <div class="tab-pane active" id="p1">
+                    <div class="tab-pane fade show active" id="pills-thumbnails" role="tabpanel" aria-labelledby="pills-thumbnails-tab">
 
-                    <div class="content-p1">
-
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/bry_sur_marne.gif">
@@ -239,9 +251,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
-
-                        <a href="#">
+                        
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/charenton.jpg">
@@ -252,9 +262,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/chatenay.gif">
@@ -265,9 +273,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/chelles.gif">
@@ -278,9 +284,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/chenoise.jpg">
@@ -291,25 +295,21 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club compiegne">
                                 <div class="name">
-                                    <img src="img/clubs/compiegne.png" style="height: 70px;">
-                                    <h3 style="padding-top: 70px;"; ">Compiègne (60)</h3>
+                                    <img src="img/clubs/compiegne.png">
+                                    <h3>Compiègne (60)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club crecy">
                                 <div class="name">
-                                    <img src="img/clubs/crecy_la_chapelle.jpg"  style="height: 100px;">
+                                    <img src="img/clubs/crecy_la_chapelle.jpg">
                                     <h3>Crecy La Chapelle (77)</h3>
                                 </div>
                                 <div class="choose">
@@ -317,22 +317,18 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club fontenay">
                                 <div class="name">
                                     <img src="img/clubs/fontenay_tresigny.png">
-                                    <h3 style="padding: 15px 0;">Fontenay Tresigny (77)</h3>
+                                    <h3>Fontenay Tresigny (77)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/gretz.png">
@@ -343,9 +339,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/hollande.png">
@@ -356,22 +350,18 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club hyeres">
                                 <div class="name">
-                                    <img src="img/clubs/logocenaclerm.gif" style="height: 100px;">
-                                    <h3 style="padding-top: 40px;">Hyeres (83)</h3>
+                                    <img src="img/clubs/logocenaclerm.gif">
+                                    <h3>Hyeres (83)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/joinville.jpg">
@@ -382,22 +372,18 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club kourou">
                                 <div class="name">
-                                    <img src="img/clubs/logocenaclerm.gif" style="height: 100px;">
-                                    <h3 style="padding-top: 40px;">Kourou (973)</h3>
+                                    <img src="img/clubs/logocenaclerm.gif">
+                                    <h3>Kourou (973)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/la_garde.jpg">
@@ -408,9 +394,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/la_valette.jpg">
@@ -421,35 +405,29 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club perreux">
                                 <div class="name">
                                     <img src="img/clubs/le_perreux_sur_marne.gif">
-                                    <h3 style="padding: 8px 0;">Le Perreux Sur Marne (94)</h3>
+                                    <h3>Le Perreux Sur Marne (94)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club plessis">
                                 <div class="name">
                                     <img src="img/clubs/le_plessis_trevise.jpg">
-                                    <h3 style="padding: 15px 0;">Le Plessis Trevise (94)</h3>
+                                    <h3>Le Plessis Trevise (94)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/logo.jpg">
@@ -460,9 +438,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/asttpn.png">
@@ -473,9 +449,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/logo.jpg">
@@ -486,35 +460,29 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club meudon">
                                 <div class="name">
-                                    <img src="img/clubs/logocenaclerm.gif" style="height: 100px;">
-                                    <h3 style="padding-top: 40px;">Meudon (92)</h3>
+                                    <img src="img/clubs/logocenaclerm.gif">
+                                    <h3>Meudon (92)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club montreal">
                                 <div class="name">
-                                    <img src="img/clubs/montreal.jpg" style="height: 100px;">
-                                    <h3 style="padding-top: 40px;">Montréal (973)</h3>
+                                    <img src="img/clubs/montreal.jpg">
+                                    <h3>Montréal (973)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/morangis.gif">
@@ -525,22 +493,18 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club nogent">
                                 <div class="name">
-                                    <img src="img/clubs/nogent.jpg" style="height: 120px;">
-                                    <h3 style="padding-top: 20px;">Nogent (94)</h3>
+                                    <img src="img/clubs/nogent.jpg">
+                                    <h3>Nogent (94)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/noisiel.jpg">
@@ -551,9 +515,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/paris_v.gif">
@@ -564,9 +526,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/paris_xix.jpg">
@@ -577,9 +537,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/pommeuse.gif">
@@ -590,9 +548,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/pomponne.gif">
@@ -603,9 +559,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/provins.jpg">
@@ -616,9 +570,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/roissy_en_brie.jpg">
@@ -631,33 +583,28 @@
                             </div>
                         </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club sourdun">
                                 <div class="name">
-                                    <img src="img/clubs/logocenaclerm.gif" style="height: 100px;">
-                                    <h3 style="padding-top: 40px;">Sourdun (77)</h3>
+                                    <img src="img/clubs/logocenaclerm.gif">
+                                    <h3>Sourdun (77)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club suisse">
                                 <div class="name">
-                                    <img src="img/clubs/logocenaclerm.gif" style="height: 100px;">
-                                    <h3 style="padding-top: 40px;">Suisse</h3>
+                                    <img src="img/clubs/logocenaclerm.gif">
+                                    <h3>Suisse</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/torcy.jpg">
@@ -668,9 +615,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/toulon.gif">
@@ -681,9 +626,7 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/villejuif.gif">
@@ -694,35 +637,29 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club villeneuve">
                                 <div class="name">
                                     <img src="img/clubs/villeneuve_la_comtesse.png">
-                                    <h3 style="padding: 8px 0;">Villeneuve La Comtesse (17)</h3>
+                                    <h3>Villeneuve La Comtesse (17)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
-                            <div class="club">
+                            <div class="club villiers">
                                 <div class="name">
                                     <img src="img/clubs/villiers_sur_marne.jpg">
-                                    <h3 style="padding: 15px 0;">Villiers Sur Marne (94)</h3>
+                                    <h3>Villiers Sur Marne (94)</h3>
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
 
-                        <a href="#">
                             <div class="club">
                                 <div class="name">
                                     <img src="img/clubs/vincennes.jpg">
@@ -733,23 +670,23 @@
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
-                        </a>
-
                     </div>
-                </div>
-
-                <div class="tab-pane" id="p2">
-
-                    <div class="content-p2">
-
+                    
+                    <div class="tab-pane fade" id="pills-list" role="tabpanel" aria-labelledby="pills-list-tab">
                         <a href="#">
                             <div class="club" style="border-radius: 10px 10px 0 0;">
-                                <h3>Bry Sur Marne (94)</h3>
-                                <div class="arrow">
+                                <div class="title">
+                                    <h3>Bry Sur Marne (94)</h3>
+                                    <div class="arrow">
+                                        <h4>Choisir ce club</h4>
+                                        <i class="fas fa-arrow-circle-right"></i>
+                                        <div class="back"></div>
+                                    </div>
+                                </div>
+                                <a href="#" class="chooseClub">
                                     <h4>Choisir ce club</h4>
                                     <i class="fas fa-arrow-circle-right"></i>
-                                    <div class="back"></div>
-                                </div>
+                                </a>
                             </div>
                         </a>
 
@@ -1159,9 +1096,7 @@
                                 </div>
                             </div>
                         </a>
-                        
                     </div>
-                </div>
             </div>
             
         </main>
@@ -1241,5 +1176,6 @@
         <script src="search-club.js"></script>
         <script src="topbutton.js"></script>
         <script src="filters.js"></script>
+        <script src="selectClub.js"></script>
     </body>
 </html>
