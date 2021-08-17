@@ -2,11 +2,6 @@
 
 {% block dashboardcontent %}
 
-    <!-- Button top -->
-    <div class="top-button">
-        <i class="fas fa-arrow-up"></i>
-    </div> 
-
     {# Bannière centrale #}
     <section class="banner">
 
@@ -364,6 +359,25 @@
 
     </main>
 
+{% endblock %}
 
+
+
+{% block javascripts_end_body %}
+
+    {# JS rayon km #}
+    <script>
+        var slider = document.getElementById("slider");
+        var selector = document.getElementById("selector");
+        var selectValue = document.getElementById("selectValue");
+
+        selectValue.innerHTML = slider.value;
+
+        slider.oninput = function(){
+            selectValue.innerHTML = slider.value;
+            selector.style.left = this.value + "km";
+        }
+    </script>
 
 {% endblock %}
+
