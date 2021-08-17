@@ -1,0 +1,354 @@
+*{
+    box-sizing: border-box;
+    list-style: none;
+}
+
+nav{
+    width: 100%;
+    width: 100%;
+    display: flex !important;
+    justify-content: flex-start;
+    align-items: center;
+    height: 10vh;
+    background-color:#D1D1D1;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    font-weight: 600;
+    padding: 0;
+    z-index: 200;
+    position: relative;
+}
+
+nav .icon{
+    display: none;
+}
+
+nav i{
+    margin-left: 15px;
+    font-size: 1.3em;
+    color: #474747;
+}
+
+nav ul{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0 !important;
+    padding: 0;
+}
+
+nav button{
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    font-size: 1em;
+    font-weight: 600;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+nav .dropdown-1 .content,
+nav .dropdown-2 .content,
+nav .dropdown-3 .content {
+    display: none;
+    visibility: hidden;
+}
+
+nav .dropdown-3 {
+    display: none!important;
+    visibility: hidden!important;
+}
+
+
+nav .dropdown-1, .dropdown-2{
+    flex-direction: column;
+}
+
+
+nav .dropdown-1 .content a, 
+nav .dropdown-2 .content a{
+    margin: 10px;
+}
+
+nav .dropdown-1 .content a li, 
+nav .dropdown-2 .content a li{
+    display: inline-block;
+}
+
+nav .dropdown-1 button li,
+nav .dropdown-2 button li,
+nav .dropdown-3 button li{
+    margin-bottom: 0;
+}
+
+nav .logo{
+    width: 70px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+nav .logo img{
+    width: 100%;
+}
+
+nav .nav-links{
+    display: flex;
+}
+
+nav .nav-links li {
+    margin-right: 50px;
+}
+
+nav .nav-links a{
+    color: #000 !important;
+    text-decoration: none !important;
+}
+
+nav .content-active li {
+    margin: 0;
+}
+
+nav .burger{
+    display: none;
+}
+
+nav .burger div{
+    width: 25px;
+    height: 3px;
+    background-color: #000;
+    margin: 5px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+/* search bar */
+
+.search-box {
+    right: 0;
+    background: #fff;
+    height: 30px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    position: absolute;
+}
+
+.search-box .search-txt {
+    border: none;
+    outline: none;
+    height: 20px;
+    width: 200px;
+    font-size: 0.8em;
+    transition: 0.4s;
+    padding: 0;
+    transform: translateX(10px);
+}
+
+.search-box .search-btn {
+    background: #CE2A37;
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    z-index: 200;
+}
+
+.search-box .search-btn {
+    text-decoration: none;
+}
+
+.search-box .search-btn i {
+    color: #fff;
+    margin: 0;
+}
+
+@media screen and (max-width:1400px){
+    nav {
+        font-size: 0.7em;
+    }
+}
+
+@media screen and (min-width:1001px){
+    nav .link::after {
+        content: '';
+        display: block;
+        width: 0;
+        height: 2px;
+        background: #CE2A37;
+        transition: width .3s;
+    }
+
+    nav .link:hover::after{
+        width: 100%;
+        transition: width .3s;
+    }
+    
+    nav .content-active{
+        position: absolute;
+        background-color: #D1D1D1;
+        top: 10vh;
+        width: 15vw;
+        padding: 10px 10px;
+        box-shadow: 0px 9px 15px #202020;
+    }
+
+    nav .content-active li{
+        margin-top: 15px;
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width:1000px){
+    
+    body{
+        overflow-x: hidden;
+    }
+
+    nav{
+        justify-content: space-between;
+        padding: 5px 10px;
+        z-index: 700;
+    }
+    
+    nav .nav-links{
+        position: absolute;
+        left: 0px;
+        height: 90vh;
+        top: 10vh;
+        background-color:#D1D1D1;
+        box-shadow: 5px 8px 15px #575757;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 15px;
+        width: 85%;
+        border-radius: 0px 20px 20px 0;
+        transform: translateX(-110%);
+        transition: transform 0.2s ease-in-out;
+        z-index: 700;
+    }
+
+    nav .burger{
+        display: block;
+        cursor: pointer;
+        margin: 0;
+    }
+
+    nav .logo{
+        margin: 0;
+        width: 50px;
+        position: absolute;
+        left: 44%;
+    }
+    
+    nav .logo img{
+        width: 100%;
+    }
+
+    nav .icon{
+        display: block;
+        width: 40px;
+        background-color: rgb(241, 241, 241);
+        padding: 5px;
+        border-radius: 10px;
+        margin-right: 15px;
+    }
+
+    nav a{
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    nav li{
+        margin: 25px 0 0 0;
+    }
+
+    nav .toggle .line1{
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    nav .toggle .line2{
+        opacity: 0;
+    }
+
+    nav .toggle .line3{
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    nav .dropdown-3 {
+        display: block!important;
+        visibility: visible!important;
+    }
+
+    nav .dropdown-1, 
+    nav .dropdown-2,
+    nav .dropdown-3 {
+        flex-direction: column;
+        margin: 0;
+    }
+
+    nav .dropdown-1 li, 
+    nav .dropdown-2 li, 
+    nav .dropdown-3 li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    nav .content-active {
+        padding-left: 55px;
+        margin-top: 20px;
+    }
+
+    nav .content-active a{
+        margin-top: 20px;
+    }
+
+    
+    nav .dropdown-3 .content {
+        display: none;
+        visibility: hidden;
+    }
+
+    nav .content-active .contact{
+        margin: 0;
+        font-size: 0.9em;
+    }
+
+    nav .content-active .contact a {
+        margin-top: 10px;
+        font-size: 1em;
+        text-transform: lowercase;
+    }
+
+    nav .content-active .contact a i{
+        margin: 0 15px 0 0;
+        font-size: 25px;
+    }
+}
+
+nav .nav-active{
+    transform: translateX(0%);
+}
+
+nav .content-active{
+    display: flex;
+    flex-direction: column;
+    visibility: visible;
+    z-index: 200;
+    border-radius: 0 0 5px 5px;
+}
+
+nav .content-active a{
+    margin: 0;
+    font-size: 0.9em;
+}
+
+

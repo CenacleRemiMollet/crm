@@ -1,107 +1,57 @@
 {% extends 'base.html.twig' %}
 
+
+{# ============================================ #}
+
+
 {% block title %}C&eacute;nacle R&eacute;mi Mollet{% endblock %}
 
 
-{% block body %}
+{# ============================================ #}
 
-	<nav id="sidebar" style="height: 100%">
-		<div class="sidebar-header" style="padding-top:10px; padding-bottom: 10px;">
-			<a class="col-sm-3 col-md-2 mr-0" style="padding:2px!important" href="{{ path('home') }}"><img src="/assets/img/logo-taekwonkido.png" style="max-height:70px" /></a>
-		</div>
-		<ul class="list-unstyled components" style="padding-top:5px; padding-bottom: 10px;">
-			{{ render(controller('App\\Controller\\MenuLeftController::viewMenuLeft', {'club': club | default() })) }}
-		</ul>
-	</nav>
-	
-	<div id="content">
-		<nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px">
-			<div class="container-fluid" style="/*border-style: solid; border-color: blue;*/">
-				<div class="buttondivforsidenav">
-					<button type="button" id="sidebarCollapse" class="btn btn-primary">
-						<i class="fas fa-align-left"></i>
-						<span data-feather="menu"></span>
-					</button>
-				</div>
-				<div class="searchdiv">
-					<input class="form-control"
-							id="search-text"
-							type="text" placeholder="{% trans %}Search{% endtrans %}"
-							aria-label="{% trans %}Search{% endtrans %}"
-							{% if searchResult is defined%}value="{{ searchResult.q }}"{% endif %}>
-				</div>
-				<div class="loginoutdiv">
-					<ul class="navbar-nav">
-						<li class="nav-item text-nowrap">
-							{% if connectedUser is defined and connectedUser != null %}
-								<a class="btn btn-primary" href="/logout" role="button">{% trans %}Sign out{% endtrans %}</a>
-							{% else %}
-								<a class="btn btn-primary" href="/login" role="button">{% trans %}Sign in{% endtrans %}</a>
-							{% endif %}
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-		{% if isHome == false and currentPage != 'web_club_list-active' and club is defined and club.uuid is defined %}
-			<table>
-				<tr>
-					<td rowspan="2">
-						<a class="col-sm-3 col-md-2 mr-0" style="padding:2px!important" href="/club/{{ club.uuid }}"><img src="/api/club/{{ club.uuid }}/logo" style="max-height:90px" /></a>
-					</td>
-					<td><span class="h3 p-1">Club {{ club.name }}</span></td>
-				</tr>
-				<tr>
-					<td>
-						<span class="p-1">
-							{% for location in club.locations %}
-								{{ location.city }}
-							{% endfor %}
-						</span>
-					</td>
-				</tr>
-			</table>
-		{% endif %}
 
-		<div>
-			{% block dashboardcontent %}{% endblock %}
-		</div>
-
-		{% if isHome == false %}
-			{% if club is defined and club.uuid is defined %}
-				{# specific club footer #}
-				<div><h2>club footer</h2></div>
-			{% else %}
-				{% include 'footer-crm.html.twig' %}
-			{% endif %}
-		{% endif %}
-	</div>
-
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/dashboard/dashboard.css">
+    <link rel="stylesheet" href="/assets/menu/menu.css">
+    <link rel="stylesheet" href="/assets/footer/footer.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="/vendor/bootstrap-4.6.0/bootstrap.min.css">
 {% endblock %}
+
+
+{# ============================================ #}
 
 
 {% block javascripts %}
-	<script src="/vendor/jquery/jquery-3.3.1.min.js"></script>
-	<script src="/vendor/popper/popper.min.js"></script>
-	<script src="/vendor/bootstrap/bootstrap.min.js"></script>
-	<script src="/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script src="/vendor/feather/feather.min.js"></script>
-	<script type="text/javascript">
-		feather.replace();
-		$(document).ready(function () {
-			$("#sidebar").mCustomScrollbar({
-				theme: "minimal"
-			});
-			$(".mCSB_container").css("height", "100%");
-			
-			$('#sidebarCollapse').on('click', function () {
-			$('#sidebar, #content').toggleClass('active');
-				$('.collapse.in').toggleClass('in');
-				$('a[aria-expanded=true]').attr('aria-expanded', 'false');
-			});
-		});
-	</script>
-	<script src="/vendor/jquery.serializeobject/jquery.serializeObject.js"></script>
-	<script src="/assets/dashboard/dashboard.js"></script>
+
 {% endblock %}
+
+
+{# ============================================ #}
+
+
+{% block body %}
+	
+	{{ render(controller('App\\Controller\\MenuController::viewMenu')) }}
+
+    <!-- Button top -->
+    <div class="top-button">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+   	{% block dashboardcontent %}{% endblock %}
+
+    {{ render(controller('App\\Controller\\FooterController::viewFooter')) }}
+
+	<script src="/assets/menu/menu.js"></script>
+	<script src="/assets/topbutton.js"></script>
+	<script src="/assets/search-club/search-club.js"></script>
+	<script src="/vendor/fontawesome/fontawesome.js"></script>
+{% endblock %}
+
+
+
+
 
