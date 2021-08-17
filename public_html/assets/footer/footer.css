@@ -1,0 +1,198 @@
+footer{
+    background-color: #515151;
+    color: #fff;
+    height: fit-content;
+    padding: 2rem;
+}
+
+footer ul{
+    list-style: none;
+    padding: 0;
+    align-items: flex-start;
+}
+
+footer ul a{
+    margin: 0;
+}
+
+footer li{
+    color: #fff;
+}
+
+footer h6{
+    font-family: 'Josefin Sans', sans-serif;
+    text-transform: uppercase;
+}
+
+footer a i{
+    color: #fff;
+    margin-left: 0;
+}
+
+footer a:link {
+    text-decoration: none;
+    color: #fff;
+}
+
+footer .social a i{
+    font-size: 2.5rem;
+    height: fit-content;
+    margin-bottom: 15px;
+}
+
+footer .contact i{
+    margin-right: 15px;
+    margin-top: 10px;
+    font-size: 25px;
+    height: fit-content;
+}
+
+footer .contact p{
+    margin: 0;
+}
+
+footer .contact .data-contact {
+    display: flex;
+    flex-direction: column;
+}
+
+footer .social .icons a{
+    margin: 0;
+}
+
+@media screen and (min-width: 1200px){
+    footer .social a i{
+        margin-right: 20px;
+    }
+
+    footer .link::after {
+        content: '';
+        display: block;
+        width: 0;
+        height: 2px;
+        background: #CE2A37;
+        transition: width .3s;
+    }
+    
+    footer .link:hover::after{
+        width: 100%;
+        transition: width .3s;
+    }
+
+    footer ul{
+        display: flex;
+        flex-direction: column;
+    }
+
+    footer li{
+        display: inline-block;
+    }
+
+    footer i{
+        transition: .12s;
+    }
+
+    footer i:hover {
+        transform: translate(0, -5px);
+        color:#CE2A37;
+    }
+    
+}
+
+@media screen and (min-width: 701px) and (max-width: 1199px){
+    footer ul{
+        flex-direction: column;
+    }
+    
+    footer .social h6{
+        text-align: center;
+    }
+
+    footer .social .icons{
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 1000px){
+    
+    footer{
+        padding: 2rem 1rem;
+    }
+    
+    footer p{
+        font-size: 0.8em;
+    }
+
+    footer li{
+        font-size: 0.8em;
+    }
+
+    footer .data{
+        font-size: 0.8em;
+    }
+
+    footer .social .icons i{
+        margin: 0 0 10px 0;
+    }
+
+    footer .social .icons a{
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 700px){
+
+    footer{
+        flex-direction: column;
+        text-align: center;
+        width: 100%;
+    }
+
+    footer .contact{
+        margin-bottom: 2rem;
+        width: 100%;
+    }
+
+    footer .contact a{
+        justify-content: center;
+    }
+
+    footer .plan{
+        width: 100%;
+        padding-bottom: 20px;
+    }
+
+    footer .plan ul{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    footer .plan ul li{
+        padding: 0.5em 0.5em;
+    }
+
+    footer .courses{
+        padding-bottom: 20px;
+    }
+
+    footer .courses ul{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    footer .courses ul li{
+        padding: 0.5em 0.5em;
+    }
+
+    footer .social .icons{
+        justify-content: center;
+    }
+
+    footer .social .icons i{
+        padding: 0 1rem;
+    }
+
+
+}

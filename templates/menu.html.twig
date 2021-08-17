@@ -1,4 +1,43 @@
-{% for menuItem in menuItems %}
+<nav>
+    <div class="burger">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+    </div>
+
+    <div class="logo">
+        <a href="/"><img src="/assets/img/logo-taekwonkido.png" alt="logo du logo-taekwonkido"></a>
+    </div>
+
+    <ul class="nav-links">
+        <li class="link"><a href="#"><img src="/assets/img/icon_master.png" class="icon"> le maître</a></li>
+
+        <div class="dropdown-1">
+            <button><li class="link"><img src="/assets/img/belt.png" class="icon">les disciplines<i class="fas fa-angle-down"></i></li></button>
+            <div class="content">
+                <a href="#"><li class="link"> Taekwonkido</li></a>
+                <a href="#"><li class="link"> Taekwondo</li></a>
+                <a href="#"><li class="link"> Hapkido</li></a>
+                <a href="#"><li class="link"> Sinkido<br>Self-Défense Système</li></a>
+            </div>
+        </div>
+
+        <li class="link"><a href="#"><img src="/assets/img/pin.png" class="icon">liste des clubs</a></li>
+        <li class="link"><a href="#"><img src="/assets/img/gallery.png" class="icon">galerie</a></li>
+        <li class="link"><a href="#"><img src="/assets/img/question.png" class="icon">contact</a></li>
+
+        <div class="dropdown-2">
+            <button><li class="link"><img src="/assets/img/profile.png" class="icon">connexion / inscription<i class="fas fa-angle-down"></i></li></button>
+            <div class="content">
+                <a href="#"><li class="link">Se connecter</li></a>
+                <a href="#"><li class="link">Créer un compte</li></a>
+            </div>
+        </div>
+    </ul>
+</nav>
+
+
+{# {% for menuItem in menuItems %}
 	
 	{% if club is defined and club.uuid is defined %}
 		{% if menuItem.code == 'pres' %}
@@ -101,4 +140,4 @@
 		</li>
 	{% endif %}
 	
-{% endfor %}
+{% endfor %} #}

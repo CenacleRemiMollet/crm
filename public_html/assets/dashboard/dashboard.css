@@ -1,282 +1,1489 @@
-html {
-	height: 100%;
-}
-body {
-  font-size: .875rem;
-  height: 100%;
+body{
+    font-family: 'Montserrat', sans-serif;
+    margin: 0 auto;
+    padding: 0;
 }
 
-.feather {
-  width: 16px;
-  height: 16px;
-  vertical-align: text-bottom;
+h1, h2, h3, h4, h5, h6, .btn{
+    font-family: 'Josefin Sans', sans-serif;
+    text-transform: uppercase;
+}
+
+.btn a {
+    transform: translateY(2px);
+}
+
+p{
+    font-size: 1em;
+}
+
+/* Button scroll to top */
+
+.top-button{
+    height: 50px;
+    width: 50px;
+    background: #515151;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    cursor: pointer;
+    z-index: 2000;
+    opacity: 0;
+    transform: translateX(200px);
+    transition: 0.2s ease-in-out;
+}
+
+.top-button i{
+    color: #fff;
+    font-size: 1.5em;
+}
+
+/* home banner */
+
+.banner{
+    height: 90vh;
+    background-color: #515151;
+    background-image: url("/assets/home/banniere_accueil.png");
+    background-repeat: no-repeat;
+    background-position: top 10% left 50%;
+    background-size: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* title banner */
+
+.banner .title{
+    background: rgba( 255, 255, 255, 0.45 );
+    backdrop-filter: blur( 4.0px );
+    -webkit-backdrop-filter: blur( 4.0px );
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.banner .title .logo {
+    width: 25%;
+}
+
+.banner .title .logo img {
+    width: 100%;
+}
+
+.banner .title .name {
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+}
+
+.banner .title .name h1 {
+    font-size: 2.2em;
+    margin-bottom: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.banner .title .name span {
+    font-size: 1.5em;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* courses buttons */
+
+.banner .buttons{
+    height: 100px;
+    width: 70%;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.banner .buttons .btn {
+    position: relative;
+    height: 50px;
+    width: 220px;
+    padding: 5px 15px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #CE2A37;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 3px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    z-index: 1;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+.banner .buttons .btn:hover {
+    letter-spacing: 3px;
+}
+
+.banner .buttons .sinkido:hover {
+    letter-spacing: 1px;
+}
+
+.banner .buttons .btn a,
+.banner .btn a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.banner .buttons .btn .second {
+    font-size: 0.7em;
+}
+
+.banner .buttons .sinkido a{
+    line-height: 0.9em;
+}
+
+/* search bar club */ 
+
+.banner .search-club {
+    height: 15vh;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: #D1D1D1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner .search-club .first-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner .search-club .first-line .toggle-btn {
+    display: none;
+    visibility: hidden;
+}
+
+.banner .search-club .first-line h4 {
+    font-size: 1em;
+    transform: translateY(-5px);
+}
+
+.banner .search-club .second-line{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.banner .search-club .second-line #pays {
+    width: 300px;
+    height: 30px;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    border-right: solid #D1D1D1;
+    outline: none;
+    border-radius: 20px 0 0 20px;
+    padding: 5px 20px 5px 20px;
+    box-shadow: 0 5px 10px #aaaaaa;
+    font-size: 0.8em;
+    background-color: #fff;
+} 
+
+.banner .search-club .second-line #pays:hover{
+    cursor: pointer;
+}
+
+.banner #pays option:hover{
+    background-color: #CE2A37;
+}
+
+.banner .search-club .second-line #ville {
+    width: 300px;
+    height: 30px;
+    border : none;
+    outline: none;
+    border-radius: 0 20px 20px 0;
+    padding: 5px 20px 5px 20px;
+    margin-right: 50px;
+    box-shadow: 5px 5px 10px #aaaaaa;
+    font-style: italic;
+    font-size: 0.8em;
+}
+
+.banner .search-club .second-line p{
+    font-size: 0.8em;
+    margin: 0 10px 0 0;
+    padding-top: 5px;
+}
+
+.banner .search-club .second-line #slider {
+    width: 150px;
+    height: 5px;
+    -webkit-appearance: none;
+    background: #707070;
+    border-radius: 10px;
+    outline: none;
+    box-shadow: 5px 5px 10px #aaaaaa;
+}
+
+#slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none; 
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #CE2A37;
+}
+
+.banner .rayon {
+    position: relative;
+}
+
+.banner #selectValue{
+    position: absolute;
+    bottom: 30px;
+    font-size: .8em;
+}
+
+.banner #selectValue::after{
+    content: 'km';
+    left: 18px;
+    position: absolute;
+}
+
+.banner .search-club .second-line #slider:hover {
+    cursor: pointer;
+}
+
+.banner .search-club .second-line .btn{
+    height: 30px;
+    font-size: 0.7em;
+    color: #fff;
+    width: 130px;
+    padding: 5px 15px;
+    text-align: center;
+    background-color: #CE2A37;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 3px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.233);
+    border-radius: 25px;
+    transition: 0.2s;
+    margin: 0 50px 0 50px;
+}
+
+.banner .search-club .second-line .btn:hover{
+    transform: translateY(3px);
+}
+
+/* animation on hover buttons */
+
+.banner .drop,
+.banner .drop2,
+.banner .drop3,
+.banner .drop4 {
+    position: absolute;
+    clip-path: circle(50%);
+    transition: 0.3s ease-in-out;
+}
+
+.banner .drop {
+    top: 12vh;
+    left: 10px;
+}
+
+.banner .drop2 {
+    top: 19vh;
+    left: 10px;
+}
+
+.banner .drop3 {
+    top: 26vh;
+    left: 10px;
+}
+
+.banner .drop4 {
+    top: 33vh;
+    left: 10px;
+}
+
+.banner .drop .bloc-text {
+    width: 310px;
+}
+
+.banner .drop2 .bloc-text {
+    width: 180px;
+}
+
+.banner .drop3 .bloc-text {
+    width: 240px;
+}
+
+.banner .drop4 .bloc-text {
+    width: 240px;
+}
+
+.banner .drop:hover,
+.banner .drop2:hover,
+.banner .drop3:hover,
+.banner .drop4:hover {
+    clip-path: circle(310px);
+}
+
+.banner .drop .bloc-button,
+.banner .drop2 .bloc-button,
+.banner .drop3 .bloc-button,
+.banner .drop4 .bloc-button {
+    position: relative;
+    color: #fff;
+    font-size: 22px;
+    background-color: #CE2A37;
+    width: 40px;
+    height: 40px;
+    border: solid 2px #fff;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.banner .drop .bloc-text,
+.banner .drop2 .bloc-text,
+.banner .drop3 .bloc-text,
+.banner .drop4 .bloc-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-size: 0.8em;
+    color: black;
+    border-radius: 50px;
+    font-weight: 500;
+    line-height: 20px;
+    background-color: #fff;
+    padding-left: 50px;
+    margin: 0;
+    z-index: 100;
+}
+
+/* switch button language */
+
+.banner .language {
+    position: absolute;
+    top: 12vh;
+    right: 20px;
+}
+
+.banner .language input {
+    display: none;
+}
+
+.banner .toggle {
+    width: 70px;
+    height: 30px;
+    background: #fff;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+    border-radius: 35px;
+    position: relative;
+    cursor: pointer;
+}
+
+.banner .toggle-switch:before {
+    content: url('/assets/img/lang_french.png');
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    bottom: 3px;
+    left: 3px;
+    transition: 0.2s ease-in-out;
+}
+
+.banner .toggle-switch:after {
+    content: url('/assets/img/land_english.png');
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    bottom: 3px;
+    left: 3px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    transform: scale(0);
+} 
+
+input[type=checkbox]:checked + .toggle-switch:before {
+    left: 55px;
+    transform: scale(0);
+}
+
+input[type=checkbox]:checked + .toggle-switch:after {
+    left: 42px;
+    transform: scale(1);
+}
+
+/* présentation cénacle */
+
+main p {
+    font-size: 1em;
+}
+
+main h1 {
+    font-size: 3em;
+    font-weight: 700;
+    text-align: center;
+    margin: 15vh 0;
+}
+
+main .ecole {
+    display: flex;
+    width: 100%;
+    margin-bottom: 100px;
+}
+
+main .ecole .left {
+    width: 50%;
+}
+
+main .ecole .left img {
+    width: 100%;
+}
+
+main .ecole .text {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 100px 0 20px;
+}
+
+main .ecole .text p{
+    max-width: 700px;
+}
+
+main .clubs {
+    width: 100%;
+    background-image: url(/assets/home/fond_accueil_2.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    display: flex;
+    padding: 100px;
+}
+
+main .clubs .text {
+    width: 50%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+main .clubs .text p {
+    max-width: 700px;
+}
+
+main .clubs .right {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main .clubs .right img {
+    width: 80%;
+}
+
+main .competitions {
+    width: 100%;
+    display: flex;
+    background-color: #CE2A37;
+}
+
+main .competitions .left {
+    width: 50%;
+}
+
+main .competitions .left img {
+    width: 100%;
+}
+
+main .competitions .text {
+    width: 50%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 25px;
+}
+
+main .competitions .text p{
+    margin: 0;
+    max-width: 700px;
+}
+
+main .enseignement {
+    width: 100%;
+    background-image: url(/assets/home/accueil_4_fond.jpg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: right;
+    margin-bottom: 30vh;
+}
+
+main .enseignement .content {
+   width: 45vw;
+   transform: translateX(40%);
+   padding-top: 100px;
+}
+
+main .enseignement .content p {
+    padding-top: 20px;
+ }
+
+main .enseignement .content img {
+    width: 100%;
+}
+
+main .methode {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30vh;
 }
 
 
-/*
- * Sidebar
- */
-/*
-.sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-  padding: 0;
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+main .methode .left {
+    width: 50%;
+    padding-left: 100px;
 }
 
-.sidebar-sticky {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 48px;
-  height: calc(100vh - 48px);
-  padding-top: .5rem;
-  overflow-x: hidden;
-  overflow-y: auto;
+main .methode img {
+    width: 80%;
 }
 
-.sidebar .nav-link {
-  font-weight: 500;
-  color: #333;
+main .methode p {
+    width: 32vw;
+    padding-top: 20px;
 }
 
-.sidebar .nav-link .feather {
-  margin-right: 4px;
-  color: #999;
+main .methode .right {
+    width: 50%;
 }
 
-.sidebar .nav-link.active {
-  color: #007bff;
+main .methode .right img {
+    width: 85%;
 }
 
-.sidebar .nav-link:hover .feather,
-.sidebar .nav-link.active .feather {
-  color: inherit;
+main .cours-ages {
+    width: 100%;
+    margin-bottom: 30vh;
+    position: relative;
 }
 
-.sidebar-heading {
-  font-size: .75rem;
-  text-transform: uppercase;
-}*/
-
-/*
- * Navbar
- */
-
-/*.navbar-brand {
-  padding-top: .75rem;
-  padding-bottom: .75rem;
-  font-size: 1rem;
-  background-color: rgba(0, 0, 0, .25);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+main .cours-ages .title {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
 }
 
-.navbar .form-control {
-  padding: .75rem 1rem;
-  border-width: 0;
-  border-radius: 0;
-}*/
-
-.form-control-dark {
-  color: #000;
-  background-color: rgba(100, 255, 255, .1);
-  border-color: rgba(255, 255, 255, .1);
+main .cours-ages .title p {
+    max-width: 700px;
 }
 
-.form-control-dark:focus {
-  border-color: transparent;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+/* paramètres case âge */
+
+main .cours-ages .categories {
+    width: 100%;
+    display: flex;
+    margin: 0;
+    padding: 0;
 }
 
-/*
- * Utilities
- */
-
-.border-top { border-top: 1px solid #e5e5e5; }
-.border-bottom { border-bottom: 1px solid #e5e5e5; }
-
-a,
-a:hover,
-a:focus {
-	color: inherit;
-	text-decoration: none;
-	transition: all 0.3s;
+main .cours-ages .categories .case {
+    width: 25%;
 }
 
-.navbar {
-	padding: 15px 10px;
-	background: #fff;
-	border: none;
-	border-radius: 0;
-	margin-bottom: 40px;
-	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+main .cours-ages .categories .case .btn-primary {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: #CE2A37;
+    border-radius: 0;
+    border-color: #515151;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
 }
 
-.navbar-btn {
-	box-shadow: none;
-	outline: none !important;
-	border: none;
+main .cours-ages .categories .case .btn-primary:focus {
+    box-shadow: 0 0 0 4px #2020208e;
+}
+
+main .cours-ages .categories .case .btn-primary img {
+    width: 100%;
+    position: relative;
+    z-index: 100;
+    opacity: 70%;
+    transition: 0.5s;
+}
+
+main .cours-ages .categories .case .btn-primary h3 {
+    position: absolute;
+    z-index: 200;
+    margin: 0;
+    font-size: 4em;
+    transition: 0.5s;
+}
+
+/* animation hover case */
+
+main .cours-ages .categories .case .btn-primary:hover {
+    background: none;
+    transition: 0.5s ease-in-out;
+}
+
+main .cours-ages .categories .case .btn-primary:hover>img {
+    opacity: 100%;
+    
+}
+
+main .cours-ages .categories .case .btn-primary:hover>h3 {
+    transform: translateY(80px);
+}
+
+/* paramètres fenêtre modale */
+
+main .cours-ages .modal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0;
+    border: none;
+    transform: translateY(25px);
+}
+
+main .cours-ages .modal-header button {
+    transform: translateY(-170px);
+    font-size: 2.5em;
+}
+
+main .cours-ages .modal-header img {
+    width: 80px;
+    margin-bottom: 20px;
+}
+
+main .cours-ages .modal-body {
+    padding-top: 0;
+    border: none;
+}
+
+main .cours-ages #age-baby .modal {
+    top: 15vh;
+}
+
+main .cours-ages #age-kid .modal {
+    top: 20vh;
+}
+
+main .cours-ages #age-adult .modal {
+    top: 10vh;
+}
+
+main .cours-ages #age-senior .modal {
+    top: 15vh;
+}
+
+/* end modal */
+
+/* section partenaires */
+
+main .partenaires {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+main .partenaires .title {
+    border-bottom: 4px solid #CE2A37;
+    width: 70%;
+}
+
+main .partenaires .title h2 {
+    text-align: center;
+}
+
+main .partenaires .links {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 0 20px;
+}
+
+main .partenaires .case {
+    height: 180px;
+    border: 3px solid #CE2A37;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 0 20px 120px 20px;
+}
+
+main .partenaires .case img {
+    height: 100%;
+}
+
+main .partenaires .first, .second, .third, .fourth{
+    width: 200px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+}
+
+main .partenaires .first img,
+main .partenaires .second img,
+main .partenaires .fourth img{
+    width: 100%;
+    position: relative;
+    z-index: 100;
+}
+
+main .partenaires .third img {
+    width: 75%;
+    position: relative;
+    z-index: 100;
+}
+
+main .partenaires .third a {
+    display: flex;
+    justify-content: center;
+}
+
+main .partenaires h5 {
+    width: 100%;
+    font-size: 18px;
+    text-align: center;
+    line-height: 22px;
+    position: absolute;
+    z-index: 200;
+    top: 0;
+    left: 0;
+    text-transform: none;
+    text-decoration: none;
+    color: #fff;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    padding: 40px 5px;
+    transition: .3s ease-in-out;
+    display: none;
+    visibility: hidden;
+} 
+
+main .partenaires .second h5{
+    padding: 60px 5px;
+}
+
+main .partenaires .third h5{
+    padding: 70px 5px;
+}
+
+main .partenaires .fourth h5{
+    padding: 50px 5px;
+}
+
+main .partenaires .case:hover {
+    border: none;
+}
+
+main .partenaires .case:hover h5 {
+    display: block;
+    visibility: visible;
+    border-radius: 20px;
+    background-color: #272727ad;
+}
+
+main .partenaires .under-title {
+    display: none;
+    visibility: hidden;
+}
+
+/* section rejoignez-nous */
+
+main .join {
+    width: 100%;
+    display: flex;
+    margin-bottom: 150px;
+}
+
+main .join .left {
+    width: 35%;
+}
+
+main .join .left img {
+    width: 100%;
+    transform: translateX(-30px);
+}
+
+main .join .right {
+    width: 65%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 100px;
+}
+
+main .join .right p {
+    max-width: 700px;
+}
+
+main .join .right .btn a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main .join .right .btn {
+    height: 50px;
+    width: 230px;
+    padding: 5px 15px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #CE2A37;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border-top: 3px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    transition: 0.5s;
+}
+
+main .join .right .btn:hover {
+    letter-spacing: 1px;
+} 
+
+main span {
+    font-style: italic;
+    font-weight: 700;
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 1430px){
+  
+    .banner .title .name h1 {
+        font-size: 1.6em;
+    }
+    
+    .banner .title .name span {
+        font-size: 1.6em;
+    }
+
+    .banner .buttons {
+        width: 90%;
+    }
+
+    main .cours-ages .categories .case .btn-primary h3 {
+        font-size: 3em;
+    }
+    main .cours-ages .categories .case .btn-primary:hover>h3 {
+        transform: translateY(65px);
+    }
 }
 
 
-.wrapper {
-	display: flex;
-	width: 100%;
+@media screen and (max-width: 1060px){
+    .banner .title .name h1 {
+        font-size: 1.4em;
+    }
+    
+    .banner .title .name span {
+        font-size: 1.4em;
+    }
+
+    .banner .buttons .btn {
+        width: 180px;
+        font-size: 16px;
+    }
+
+    main .clubs {
+        padding: 50px 25px 50px 0;
+    }
+
+    main .clubs .text {
+      padding: 25px;
+    }
+
+    main .clubs .right img {
+        width: 100%;
+    }
 }
 
-#sidebar {
-	width: 250px;
-	position: fixed;
-	top: 0;
-	left: 0;
-	height: 100vh;
-	z-index: 999;
-	background: #5a5a5a;
-	color: #fff;
-	transition: all 0.3s;
+@media screen and (max-width: 1000px) {
+
+    nav .logo {
+        display: none;
+        visibility: hidden;
+    }
+
+    .top-button{
+        display: none;
+        visibility: hidden;
+    }
+
+    .banner {
+        background-position: bottom;
+    }
+
+    .banner .drop,
+    .drop2,
+    .drop3 {
+        display: none;
+        visibility: hidden;
+    }
+
+    .banner .drop4 {
+        top: 12vh;
+    }
+
+    /* responsive search club */
+
+    .banner .search-club .first-line h4 {
+        transform: translateY(5px);
+        margin: 0;
+        padding: 0;
+    }
+
+    .banner .search-club .first-line .toggle-btn {
+        display: block;
+        visibility: visible;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 15px;
+    }
+
+    .banner .search-club .first-line .toggle-btn i {
+        font-size: 2em;
+        color: #CE2A37;
+    }
+
+    .banner .search-club-open .first-line .toggle-btn i {
+        display: none;
+        visibility: hidden;
+    }
+
+    .banner .search-club {
+        height: 10%;
+        transition: 0.2s ease-in-out;
+        position: absolute;
+        bottom: 0;
+        z-index: 500;
+    }
+
+    .banner .search-club .first-line .toggle-btn .fa-times {
+        display: none;
+        visibility: hidden;
+    }
+
+    .banner .search-club-open .first-line .toggle-btn .fa-times {
+        display: block;
+        visibility: visible;
+        color: #515151;
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        font-size: 30px;
+    }
+
+    .banner .search-club .second-line {
+        flex-direction: column;
+        display: none;
+        visibility: hidden;
+        margin-top: 20px;
+    }
+
+    .banner .search-club-open {
+        height: 50vh;
+        opacity: 1;
+        transition: 0.2s ease-in-out;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .banner .search-club-open .second-line {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        visibility: visible;
+    }
+
+    .banner .search-club-open .second-line #pays {
+        border: none;
+        outline: none;
+        border-radius: 20px;
+        box-shadow: 0 5px 10px #aaaaaa;
+        font-size: 0.8em;
+        background-color: #fff;
+        margin-bottom: 15px;
+    } 
+
+    .banner .search-club-open .second-line #ville {
+        margin: 0;
+        border-radius: 20px;
+        margin-bottom: 20px;
+    }
+
+    .banner .rayon {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .banner .search-club .second-line p{
+        padding: 0;
+        margin: 0;
+    }
+    
+    .banner #selectValue{
+        position: absolute;
+        bottom: 0;
+        left: -50px;
+        font-size: .8em;
+    }
+
+    /* end responsive search club */
+
+    main h1 {
+        margin: 60px 0;
+    }
+
+    main .competitions .left {
+        display: flex;
+        align-items: center;
+    }
+
+    main .methode {
+        margin-bottom: 100px;
+    }
+
+    main .methode .left {
+        padding: 0 25px 0 50px;
+    }
+
+    main .methode .left img {
+        width: 100%;
+    }
+
+    main .methode .left p {
+        width: 100%;
+    }
+
+    main .methode .right {
+        padding: 0 20px;
+    }
+
+    main .methode .right img {
+        width: 100%;
+    }
+
+    main .cours-ages .title {
+        width: 100%;
+        padding: 0 25px;
+    }
+
+    main .cours-ages .title p {
+        width: 100%;
+        transform: translateX(0);
+    }
+
+    main .cours-ages .categories {
+        flex-wrap: wrap;
+    }
+
+    main .cours-ages .categories .case {
+        width: 50%;
+    }
+
+    main .partenaires .links {
+        width: 100%;
+    }
+
+    main .partenaires .case {
+        flex-direction: column;
+        position: relative;
+    }
+
+    main .partenaires .under-title {
+        text-transform: none;
+        position: absolute;
+        top: 190px;
+        font-size: 15px;
+        text-align: center;
+        display: block;
+        visibility: visible;
+    }
+
+    main .partenaires .links .case h5 {
+        display: none;
+        visibility: hidden;
+    }
+
 }
 
-#sidebar.active {
-	margin-left: -250px;
+@media screen and (min-width: 935px) {
+    .banner .title {
+        width: 50%;
+    }
 }
 
-#sidebar .sidebar-header {
-	padding: 20px;
-	background: #5a5a5a;
+@media screen and (max-width: 935px){
+    
+    .banner {
+        background-size: 110%;
+    }
+    
+    .banner .title {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+        justify-content: center;
+    }
+
+    .banner .title .logo {
+        margin-bottom: 15px;
+    }
+
+    .banner .title .name {
+        margin: 0 5px;
+        padding: 0;
+    }
+
+    .banner .buttons .btn {
+        width: 150px;
+        height: 35px;
+        font-size: 12px;
+    }
+
+    main .ecole .text {
+        padding: 0 20px;
+    }
+
 }
 
-#sidebar ul.components {
-	padding: 20px 0;
+@media screen and (max-width: 780px) {
+    
+    .banner {
+        background-size: 110%;
+        background-position: bottom;
+    }
+
+    .banner .title .logo {
+        width: 80px;
+    }
+
+    .banner .title {
+        padding: 15px;
+    }
+    
+    .banner .title .name h1 {
+        font-size: 1.5em;
+    }
+    
+    .banner .title .name span {
+        font-size: 1.2em;
+    }
+
+    .banner .buttons {
+        width: 95%;
+        height: 200px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .banner .buttons .btn {
+        
+        margin-bottom: 20px;
+    }
+
+    .banner .buttons .btn:hover {
+        letter-spacing: normal ;
+    }
+
+    main .ecole {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 50px;
+    }
+
+    main .ecole .left {
+        width: 100%;
+    }
+
+    main .ecole .text {
+        width: 100%;
+        padding: 25px;
+    }
+
+    main .clubs {
+        background: none;
+        flex-direction: column-reverse;
+        margin-bottom: 100px;
+        padding: 0;
+    }
+
+    main .clubs .right {
+       width: 100%;
+    }
+
+    main .clubs .right img {
+        width: 100%;
+    }
+
+    main .clubs .text {
+        color: #212529;
+        width: 100%;
+    }
+
+    main .competitions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    main .competitions .left {
+        width: 100%;
+        padding: 0;
+    }
+
+    main .competitions .text {
+        width: 100%;
+    }
+
+    main .enseignement {
+        width: 100%;
+        background: none;
+        margin-bottom: 50px;
+    }
+
+    main .enseignement .content {
+        width: 100%;
+        transform: translateX(0);
+        display: flex;
+        flex-direction: column;
+        padding-top: 0;
+    }
+
+    main .enseignement h2 {
+        order: 2;
+        margin: 0;
+        padding: 25px 25px 0 25px;
+    }
+
+    main .enseignement p {
+        order: 3;
+        padding: 0 25px!important;
+    }
+
+    main .enseignement .content img {
+        width: 100%;
+        order: 1;
+    }
+
+    main .methode {
+        flex-direction: column;
+    }
+
+    main .methode .left {
+        order: 2;
+        width: 100%;
+        padding: 0 25px;
+    }
+
+    main .methode .left img {
+        display: none;
+        visibility: hidden;
+    }
+
+    main .methode .left p {
+        padding: 0 ;
+    }
+
+    main .methode .right {
+        width: 100%;
+    }
+
+    main .methode .right img {
+        width: 100%;
+    }
+
+    main .cours-ages {
+        margin-bottom: 100px;
+    }
+
+    main .cours-ages .categories .case .btn-primary:hover>h3 {
+        transform: translateY(50px);
+    }
+
+    main .cours-ages .categories .modal-dialog {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+
+    main .partenaires .links {
+        width: 100%;
+    }
+
+    main .join {
+        flex-direction: column;
+    }
+
+    main .join .left {
+        width: 100%;
+    }
+
+    main .join .left img {
+        width: 60%;
+    }
+
+    main .join .right {
+        width: 100%;
+        padding: 0 25px;
+    }
+
 }
 
-#sidebar ul p {
-	color: #fff;
-	padding: 10px;
+@media screen and (max-width: 490px) {
+    
+    .banner {
+        background-image: url(/assets/home/home_mobile.JPG);
+        background-size: cover;
+        height: 90vh;
+    }
+
+    .banner .drop4 .bloc-text {
+        width: 190px;
+        font-size: 12px;
+        padding-left: 45px;
+    }
+    
+    .banner .title {
+        width: 70%;
+    }
+
+    .banner .title .logo {
+        width: 80px;
+    }
+    
+    .banner .title .name h1 {
+        font-size: 1em;
+    }
+    
+    .banner .title .name span {
+        font-size: 1.3em;
+    }
+
+    .banner .buttons {
+        flex-direction: column;
+        align-items: center;
+        height: 30%;
+    }
+
+    .banner .buttons .btn {
+        margin-bottom: 10px;
+        width: 130px;
+        font-size: 13px;
+    }
+
+    main p {
+        font-size: 0.8em ;
+    }
+
+    main h1 {
+        font-size: 2.3em;
+    }
+
+    main h2 {
+        font-size: 1.2em;
+    }
+
+    main .ecole,
+    main .clubs {
+        margin-bottom: 25px;
+    }
+
+    main .cours-ages .categories {
+        flex-wrap: wrap;
+    }
+
+    main .cours-ages .categories .case {
+        width: 100%;
+    }
+
+    main .cours-ages .categories .case .btn-primary:hover>h3 {
+        transform: translateY(80px);
+    }
+
+    main .partenaires .case {
+        width: 150px;
+        height: 150px;
+    }
+
+    main .partenaires .first {
+        margin-bottom: 110px;
+    }
+
+    main .partenaires .second, 
+    main .partenaires .third, 
+    main .partenaires .fourth {
+        margin-bottom: 70px;
+    }
+
+    main .partenaires .title {
+        border-bottom: 2px solid #CE2A37;
+    }
+
+    main .partenaires .under-title {
+        top: 152px;
+        width: 190px;
+    }
+
+    main .join .left img {
+        width: 80%;
+    }
 }
 
-#sidebar ul li a {
-	padding: 10px;
-	font-size: 1.1em;
-	display: block;
-}
 
-#sidebar ul li a:hover {
-	color: #5a5a5a;
-	background: #fff;
-}
 
-#sidebar ul li.active>a,
-a[aria-expanded="true"] {
-	color: #fff;
-	background: #6d7fcc;
-}
 
-#topbar {
-	left: 250px;
-}
 
-a[data-toggle="collapse"] {
-	position: relative;
-}
 
-.dropdown-toggle::after {
-	display: block;
-	position: absolute;
-	top: 50%;
-	right: 20px;
-	transform: translateY(-50%);
-}
 
-/*ul ul a {
-	font-size: 0.9em !important;
-	padding-left: 30px !important;
-	background: #6d7fcc;
-}*/
-
-ul.CTAs {
-	padding: 20px;
-}
-
-ul.CTAs a {
-	text-align: center;
-	font-size: 0.9em !important;
-	display: block;
-	border-radius: 5px;
-	margin-bottom: 5px;
-}
-
-a.download {
-	background: #fff;
-	color: #5a5a5a;
-}
-
-a.article,
-a.article:hover {
-	background: #6d7fcc !important;
-	color: #fff !important;
-}
-
-#content {
-	width: calc(100% - 250px);
-	padding: 10px;
-	min-height: 100vh;
-	transition: all 0.3s;
-	position: absolute;
-	top: 0;
-	right: 0;
-}
-
-#content.active {
-	width: 100%;
-}
-
-.buttondivforsidenav {
-	display: inline;
-	width: 3rem;
-	/*border-style: solid;
-	border-color: red;*/
-}
-
-.searchdiv {
-	display: inline ;
-	width: calc(98% - 3rem - 9rem);
-	/*border-style: solid;
-	border-color: green;*/
-}
-
-.loginoutdiv {
-	display: inline;
-	min-width: 5rem;
-	/*border-style: solid;
-	border-color: yellow;*/
-}
-
-@media (max-width: 768px) {
-	#sidebar {
-		margin-left: -250px;
-	}
-	#sidebar.active {
-		margin-left: 0;
-	}
-	#content {
-		width: 100%;
-	}
-	#content.active {
-		width: calc(100% - 250px);
-	}
-	#sidebarCollapse span {
-		display: none;
-	}
-	#topbar {
-		left: 0rem;
-	}
-}
-
-.menu-left-club {
-	background: #444;
-}
 
 
 

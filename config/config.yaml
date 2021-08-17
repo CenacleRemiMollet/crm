@@ -1,9 +1,0 @@
-# app/config/config.yml
-fos_rest:
-    body_converter:
-        enabled: true
-        validate: true
-sensio_framework_extra:
-    request:
-        converters: true
-        auto_convert: false
