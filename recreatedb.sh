@@ -24,7 +24,7 @@ runSql function_unaccent.sql
 
 php bin/console make:migration
 php bin/console doctrine:migrations:migrate --no-interaction
-php bin/console doctrine:fixtures:load --no-interaction --group=MenuItemFixtures
+# php bin/console doctrine:fixtures:load --no-interaction --group=MenuItemFixtures
 php bin/console cache:clear
 
 runSql cities.sql
