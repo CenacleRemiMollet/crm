@@ -31,6 +31,31 @@ class MediaManager
 		return new Media(null, $this->projectPath);
 	}
 
+	public function save($inFile, $category, $basename)
+	{
+		$folder = $this->getCategoryFolder($category);
+		$newfname = $folder.DIRECTORY_SEPARATOR.$basename.strtolower(substr($inFile, strrpos($inFile, '.')));
+		try {
+			$file = fopen($inFile, 'rb', false);
+			if ($file) {
+				$newf = fopen($newfname, 'wb');
+				if ($newf) {
+					while(!feof($file)) {
+						fwrite($newf, fread($file, 1024 * 8), 1024 * 8);
+					}
+				}
+			}
+			if ($file) {
+				fclose($file);
+			}
+			if ($newf) {
+				fclose($newf);
+			}
+		} catch(\Exception $e) {
+			echo $e->getMessage();
+		}
+	}
+
 	public function downloadAndSave($url, $category, $basename)
 	{
 		$folder = $this->getCategoryFolder($category);
@@ -40,7 +65,7 @@ class MediaManager
 				'ssl' => array(
 					'verify_peer' => false,
 					'verify_peer_name' => false
-			),
+				),
 				'http' => array(
 					'header' => 'User-Agent: Mozilla/5.0 (Linux) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36')));
 			$file = fopen($url, 'rb', false, $context);

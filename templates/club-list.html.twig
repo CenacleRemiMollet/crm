@@ -1,0 +1,159 @@
+{% extends 'dashboard.html.twig' %}
+
+
+{% block stylesheets2 %}
+	<link rel="stylesheet" href="/assets/club/clublist.css">
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+    <main>
+ 
+        <div class="settings">
+
+                <p>tous nos clubs</p>
+
+                <div class="second-line">
+                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="pills-thumbnails-tab" data-toggle="pill" href="#pills-thumbnails" role="tab" aria-controls="pills-thumbnails" aria-selected="true">
+                            <i class="fas fa-th"></i>
+                        </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="pills-list-tab" data-toggle="pill" href="#pills-list" role="tab" aria-controls="pills-list" aria-selected="false"><i class="fas fa-list"></i></a>
+                        </li>
+                    </ul>
+
+                    <div class="bars"> 
+                        <form class="cours">
+                            <div class="multiselect">
+                                <div class="selectBox" onclick="showCheckboxes()">
+                                    <select>
+                                        <option>Filtrer les cours</option>
+                                    </select>
+                                    <div class="overSelect"></div>
+                                </div>
+
+                                <div id="checkboxes">
+                                        <label class="art">
+                                            <input type="checkbox">Taekwondo
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="art">
+                                            <input type="checkbox">Taekwonkido
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="art">
+                                            <input type="checkbox">Hapkido
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="art">
+                                            <input type="checkbox">Sinkido
+                                            <span class="checkmark"></span>
+                                        </label>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form class="age">
+                            <div class="multiselect">
+                                <div class="selectBox" onclick="showCheckboxes2()">
+                                    <select>
+                                        <option>Filtrer l'âge</option>
+                                    </select>
+                                    <div class="overSelect"></div>
+                                </div>
+
+                                <div id="checkboxes2">
+                                        <label class="age">
+                                            <input type="checkbox">Baby
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="age">
+                                            <input type="checkbox">Enfant
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="age">
+                                            <input type="checkbox">Adulte
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="age">
+                                            <input type="checkbox">Senior
+                                            <span class="checkmark"></span>
+                                        </label>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="select-box">
+                            <div class="options-container">
+                                <div class="option">
+                                    <input
+                                    type="radio" class="radio" id="croissant" name="category" />
+                                    <label for="croissant">Ordre alphabétique A - Z</label>
+                                </div>
+                                <div class="option">
+                                    <input type="radio" class="radio" id="decroissant" name="category" />
+                                    <label for="decroissant">Ordre alphabétique Z - A</label>
+                                </div>
+                                <div class="option">
+                                    <input type="radio" class="radio" id="departement" name="category" />
+                                    <label for="departement">Département</label>
+                                </div>
+                                <div class="option">
+                                    <input type="radio" class="radio" id="pays" name="category" />
+                                    <label for="pays">Pays</label>
+                                </div>
+                            </div>
+                    
+                            <div class="selected">
+	                            Classer
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           
+        </div>
+
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-thumbnails" role="tabpanel" aria-labelledby="pills-thumbnails-tab">
+                {% for club in clubs %}
+                	{% for location in club.locations %}
+                        <div class="club noHover">
+                            <div class="name">
+                                <img src="{{ club._links.logo.href }}">
+                                <h3>{{ location.city }} ({{ location.county }})</h3>
+                            </div>
+                            <div class="choose">
+                                <h3>Choisir ce club</h3>
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </div>
+                        </div>
+                   {% endfor %}
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="pills-list" role="tabpanel" aria-labelledby="pills-list-tab">
+                 {% for club in clubs %}
+                	{% for location in club.locations %}
+                         <a href="#">
+                            <div class="club" style="border-radius: 10px 10px 0 0;">
+                                <h3>{{ location.city }} ({{ location.county }})</h3>
+                                <div class="arrow">
+                                    <h4>Choisir ce club</h4>
+                                    <i class="fas fa-arrow-circle-right"></i>
+                                    <div class="back"></div>
+                                </div>
+                            </div>
+                        </a>
+                   {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+        
+    </main>
+    
+
+{% endblock %}
+

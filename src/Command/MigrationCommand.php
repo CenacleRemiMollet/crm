@@ -57,7 +57,7 @@ class MigrationCommand extends Command
 		$this->importDump($this->projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'migration.sql');
 
 		echo PHP_EOL.'====== Logo ======'.PHP_EOL;
-		$this->downloadClubLobo($domain);
+		$this->downloadClubLogo($domain);
 
 		echo PHP_EOL.'====== CSV Locations ======'.PHP_EOL;
 		$locations = $this->loadCSVLocations();
@@ -87,13 +87,31 @@ class MigrationCommand extends Command
 	}
 
 
-	private function downloadClubLobo($domain)
+	private function downloadClubLogo($domain)
 	{
+		$imgClubsPath = $this->projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'html_test'.DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.'clubs'.DIRECTORY_SEPARATOR;
+
 		foreach($this->doctrine->getManager()->getRepository(Club::class)->findAll() as $club)
 		{
-			$url = 'http://'.$domain.'/param_clubs/logo_club/'.$club->getLogo();
-			echo 'Download logo from '.$url.PHP_EOL;
-			$this->mediaManager->downloadAndSave($url, 'club', $club->getUuid());
+			$imgLogo = $club->getLogo();
+			if("villiers_sur_marne.gif" === $imgLogo) {
+				$imgLogo = "villiers_sur_marne.jpg";
+			}
+			$imgFile = $imgClubsPath.$imgLogo;
+			if (file_exists($imgFile)) {
+				echo 'Copy logo for "'.$club->getUuid().'" from '.$imgFile.PHP_EOL;
+				$this->mediaManager->save($imgFile, 'club', $club->getUuid());
+
+				if("villiers_sur_marne.jpg" === $imgLogo) {
+					$club->setLogo($imgLogo);
+					$this->doctrine->getManager()->persist($club);
+				}
+
+			} else {
+				$url = 'http://'.$domain.'/param_clubs/logo_club/'.$club->getLogo();
+				echo 'Download logo for "'.$club->getUuid().'" from '.$url.PHP_EOL;
+				$this->mediaManager->downloadAndSave($url, 'club', $club->getUuid());
+			}
 		}
 	}
 
