@@ -910,3 +910,12 @@ main .search-bar {
 }
 
 
+/* bootstrap hack: fix content width inside hidden tabs */
+.tab-content > .tab-pane:not(.active),
+.pill-content > .pill-pane:not(.active) {
+    display: none;
+    height: 0;
+    overflow-y: hidden;
+    padding: 0;
+} 
+/* bootstrap hack end */
