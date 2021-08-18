@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\MenuItem;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 class MenuController extends AbstractController
 {
 
-	public function viewMenu()
+	public function viewMenu(SessionInterface $session)
 	{
+		$club = $session->get('club-selected');
 // 		$menuItems = $this->getDoctrine()->getManager()
 // 				->getRepository(MenuItem::class)
 // 				->findBy([], ['priority' => 'ASC']);
@@ -26,7 +29,8 @@ class MenuController extends AbstractController
 // 		}
 
 		return $this->render(
-			'menu.html.twig', []
+			'menu.html.twig',
+			['club' => $club]
 			//['menuItems' => $filteredMenuItems, 'club' => $club]
 		);
 	}

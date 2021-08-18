@@ -47,7 +47,6 @@ p{
 .banner{
     height: 90vh;
     background-color: #515151;
-    background-image: url("/assets/home/banniere_accueil.png");
     background-repeat: no-repeat;
     background-position: top 10% left 50%;
     background-size: 80%;
@@ -55,6 +54,10 @@ p{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.banner_home_imgbg {
+	background-image: url("/assets/home/banniere_accueil.png");
 }
 
 /* title banner */

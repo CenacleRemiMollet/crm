@@ -1,0 +1,14 @@
+{% extends 'dashboard.html.twig' %}
+
+
+{% block stylesheets2 %}
+	<link href="/assets/club/club.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+<!-- <br> -->
+{% include ['club/' ~ club.uuid ~ '/home.html.twig', 'club/default-home.html.twig'] %}
+
+{% endblock %}

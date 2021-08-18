@@ -119,25 +119,27 @@
 
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-thumbnails" role="tabpanel" aria-labelledby="pills-thumbnails-tab">
-                {% for club in clubs %}
+                {% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
                 	{% for location in club.locations %}
-                        <div class="club noHover">
-                            <div class="name">
-                                <img src="{{ club._links.logo.href }}">
-                                <h3>{{ location.city }} ({{ location.county }})</h3>
-                            </div>
-                            <div class="choose">
-                                <h3>Choisir ce club</h3>
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </div>
-                        </div>
+                        <a href="/club/{{ club.uuid }}">
+                            <div class="club noHover">
+                                <div class="name">
+                                    <img src="{{ club._links.logo.href }}">
+                                    <h3>{{ location.city }} ({{ location.county }})</h3>
+                                </div>
+                                <div class="choose">
+                                    <h3>Choisir ce club</h3>
+                                    <i class="fas fa-arrow-circle-right"></i>
+                                </div>
+                            </div
+                        </a>
                    {% endfor %}
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="pills-list" role="tabpanel" aria-labelledby="pills-list-tab">
-                 {% for club in clubs %}
+                 {% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
                 	{% for location in club.locations %}
-                         <a href="#">
+                         <a href="/club/{{ club.uuid }}">
                             <div class="club" style="border-radius: 10px 10px 0 0;">
                                 <h3>{{ location.city }} ({{ location.county }})</h3>
                                 <div class="arrow">

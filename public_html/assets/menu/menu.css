@@ -24,6 +24,19 @@ nav .icon{
     display: none;
 }
 
+nav .dropdown-4 button a {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+nav .dropdown-4 .icon{
+    display: flex;
+    width: 25px;
+    margin-right: 8px;
+}
+
 nav i{
     margin-left: 15px;
     font-size: 1.3em;
@@ -38,7 +51,7 @@ nav ul{
     padding: 0;
 }
 
-nav button{
+nav button {
     font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
     font-size: 1em;
@@ -50,7 +63,8 @@ nav button{
 
 nav .dropdown-1 .content,
 nav .dropdown-2 .content,
-nav .dropdown-3 .content {
+nav .dropdown-3 .content,
+nav .dropdown-4 .content {
     display: none;
     visibility: hidden;
 }
@@ -61,38 +75,46 @@ nav .dropdown-3 {
 }
 
 
-nav .dropdown-1, .dropdown-2{
+nav .dropdown-1, .dropdown-2, .dropdown-4 {
     flex-direction: column;
 }
 
 
 nav .dropdown-1 .content a, 
-nav .dropdown-2 .content a{
+nav .dropdown-2 .content a,
+nav .dropdown-4 .content a {
     margin: 10px;
 }
 
 nav .dropdown-1 .content a li, 
-nav .dropdown-2 .content a li{
+nav .dropdown-2 .content a li,
+nav .dropdown-4 .content a li {
     display: inline-block;
 }
 
 nav .dropdown-1 button li,
 nav .dropdown-2 button li,
-nav .dropdown-3 button li{
+nav .dropdown-3 button li,
+nav .dropdown-4 button li {
     margin-bottom: 0;
 }
 
-nav .logo{
+nav .logo {
     width: 70px;
     margin-left: 25px;
     margin-right: 25px;
 }
 
-nav .logo img{
+nav .mobile {
+    display: none;
+    visibility: hidden;
+}
+
+nav .logo img {
     width: 100%;
 }
 
-nav .nav-links{
+nav .nav-links {
     display: flex;
 }
 
@@ -100,7 +122,7 @@ nav .nav-links li {
     margin-right: 50px;
 }
 
-nav .nav-links a{
+nav .nav-links a {
     color: #000 !important;
     text-decoration: none !important;
 }
@@ -109,11 +131,11 @@ nav .content-active li {
     margin: 0;
 }
 
-nav .burger{
+nav .burger {
     display: none;
 }
 
-nav .burger div{
+nav .burger div {
     width: 25px;
     height: 3px;
     background-color: #000;
@@ -171,6 +193,10 @@ nav .burger div{
 @media screen and (max-width:1400px){
     nav {
         font-size: 0.7em;
+    }
+
+    nav .nav-links li {
+        margin-right: 30px;
     }
 }
 
@@ -241,17 +267,23 @@ nav .burger div{
     }
 
     nav .logo{
-        margin: 0;
-        width: 50px;
-        position: absolute;
-        left: 44%;
+        display: none;
+        visibility: hidden;
+    }
+
+    nav .mobile {
+        display: block;
+        visibility: visible;
+        margin: 20px 0 0 0;
+        width: 100%;
     }
     
     nav .logo img{
-        width: 100%;
+        width: 55px;
     }
 
-    nav .icon{
+    nav .icon,
+    nav .dropdown-4 .icon {
         display: block;
         width: 40px;
         background-color: rgb(241, 241, 241);
@@ -289,14 +321,16 @@ nav .burger div{
 
     nav .dropdown-1, 
     nav .dropdown-2,
-    nav .dropdown-3 {
+    nav .dropdown-3,
+    nav .dropdown-4 {
         flex-direction: column;
         margin: 0;
     }
 
     nav .dropdown-1 li, 
     nav .dropdown-2 li, 
-    nav .dropdown-3 li {
+    nav .dropdown-3 li,
+    nav .dropdown-4 li {
         display: flex;
         align-items: center;
         margin-bottom: 30px;
@@ -311,7 +345,6 @@ nav .burger div{
         margin-top: 20px;
     }
 
-    
     nav .dropdown-3 .content {
         display: none;
         visibility: hidden;
@@ -332,6 +365,10 @@ nav .burger div{
         margin: 0 15px 0 0;
         font-size: 25px;
     }
+
+    .search-box .search-txt {
+        font-size: 1em;
+    }
 }
 
 nav .nav-active{
@@ -350,5 +387,3 @@ nav .content-active a{
     margin: 0;
     font-size: 0.9em;
 }
-
-

@@ -1,0 +1,15 @@
+{% extends 'dashboard.html.twig' %}
+
+
+{% block stylesheets2 %}
+	<link href="/assets/clubs/club.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+	<div class="row p-3 flex-nowrap">
+		<span class="clubname h3 p-1">{% trans %}Club not found{% endtrans %}</span>
+	</div>
+	
+{% endblock %}
