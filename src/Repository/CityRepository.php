@@ -19,13 +19,13 @@ class CityRepository extends ServiceEntityRepository
 		parent::__construct($registry, City::class);
 	}
 
-	public function findByStartsWith($value)
+	public function findByStartsWith($value, $limit = 10)
 	{
 		return $this->createQueryBuilder('c')
-		    ->andWhere('c.city_name LIKE :val')
+		    ->andWhere('c.city_name LIKE :val OR c.zip_code LIKE :val')
 		    ->setParameter('val', $value.'%')
-		    ->orderBy('c.city_name', 'ASC')
-		    ->setMaxResults(10)
+		    ->orderBy('c.city_name, c.zip_code', 'ASC')
+		    ->setMaxResults(max(min($limit, 50), 1))
 		    ->getQuery()
 		    ->getResult()
 		;

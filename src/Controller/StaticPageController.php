@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\ClubLocation;
 
 class StaticPageController extends AbstractController
 {
@@ -38,6 +40,43 @@ class StaticPageController extends AbstractController
 	{
 		$user = $this->getUser();
 		return $this->render('showcase/taekwonkido.html.twig', [
+			'connectedUser' => $user
+		]);
+	}
+
+	/**
+	 * @Route("/searchclub", name="Search club around a city")
+	 */
+	public function searchClub(Request $request): Response
+	{
+		$user = $this->getUser();
+
+		$query = $request->query->get('q');
+		if($query == null) {
+			return $this->render('searchclub.html.twig', [
+				'connectedUser' => $user
+			]);
+		}
+		if(mb_strlen($query) < 3) {
+			return $this->render('searchclub.html.twig', [
+				'error' => 'query is too short',
+				'connectedUser' => $user
+			]);
+		}
+
+		$limit = $request->query->get('limit', 20);
+		$cities = $this->getDoctrine()->getManager()
+		->getRepository(City::class)
+		->findByStartsWith($query, $limit);
+
+		foreach ($cities as &$city) {
+
+		}
+
+		$response = $this->forward('App\Controller\Api\ClubSearchController::searchAroundWithdistance', ['request' => $request, "zipcode" => "???"]);
+		$json = json_decode($response->getContent());
+
+		return $this->render('searchclub.html.twig', [
 			'connectedUser' => $user
 		]);
 	}

@@ -1,5 +1,7 @@
 {% extends 'dashboard.html.twig' %}
 
+
+
 {% block dashboardcontent %}
 
     {# Bannière centrale #}
@@ -53,17 +55,16 @@
             </div>
         </div>
 
-        <!-- Boutons disciplines -->
+        {# Boutons disciplines #}
 
        <div class="buttons">
            <div class="btn"><a href="#">taekwondo</a></div>
-           <div class="btn"><a href="#">taekwonkido</a></div>
+           <div class="btn"><a href="/taekwonkido">taekwonkido</a></div>
            <div class="btn"><a href="#">hapkido</a></div>
            <div class="btn sinkido"><a href="#"><span class="first">sinkido</span><br><span class="second">self-défense système</span></a></div>
        </div>
 
-       <!-- switch language button -->
-
+       {# switch language button #}
        <div class="language">
             <label class="toggle">
                 <input type="checkbox">
@@ -74,52 +75,11 @@
             </label>
         </div> 
 
-       <!-- Barre de recherche club -->
-       
-       <div class="search-club">
-
-           <div class="first-line">
-                <h4>rechercher un club</h4>
-                <div class="toggle-btn">
-                    <i class="fas fa-arrow-circle-right"></i>
-                    <i class="fas fa-times"></i>
-                </div>
-            </div>
-
-            <div class="second-line">
-
-                <!-- search country / city -->
-
-                <label for="country"></label>
-                <select name="pays" id="pays">
-                    <option label="France Métropolitaine" value="France"></option>
-                    <option label="Guyane" value="guyane"></option>
-                    <option label="Suisse" value="suisse"></option>
-                    <option label="Hollande" value="hollande"></option>
-                    <option label="Canada" value="Canada"></option>
-                </select>
-
-                <label for="ville"></label>
-                <input type="text" name="ville" id="ville" placeholder="Renseigner une ville">
-
-                <!-- rayon city -->
-
-                <p>Rayon</p>
-
-                <div class="rayon">
-                    <input type="range" min="1" max="25" step="1" value="1" id="slider">
-                    <div id="selector">
-                        <div id="selectValue"></div>
-                    </div>
-                </div>
-
-                <div class="btn"><a href="#">rechercher</a></div>
-            </div>
-       </div>
-       
+       {% block searchclub %}{{ parent() }}{% endblock %}
+     
     </section>
 
-    <!-- Présentation cénacle -->
+    {# Présentation cénacle #}
 
     <main>
 
@@ -193,13 +153,13 @@
             <div class="categories">
 
                 <div id="age-baby" class="case">
-                    <!-- Button trigger modal -->
+                    {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#baby">
                         <h3>baby</h3>
                         <img src="/assets/home/accueil_6_1.jpg">
                     </button>
                     
-                    <!-- Modal -->
+                    {# Modal #}
                     <div class="modal fade" id="baby" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -220,13 +180,13 @@
                 </div>
 
                 <div id="age-kid" class="case">
-                    <!-- Button trigger modal -->
+                    {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#kid">
                         <h3>enfant</h3>
                         <img src="/assets/home/accueil_6_2.jpg">
                     </button>
                     
-                    <!-- Modal -->
+                    {# Modal #}
                     <div class="modal fade" id="kid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -247,13 +207,13 @@
                 </div>
 
                 <div id="age-adult" class="case">
-                    <!-- Button trigger modal -->
+                    {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adult">
                         <h3>adulte</h3>
                         <img src="/assets/home/accueil_6_3.jpg">
                     </button>
                     
-                    <!-- Modal -->
+                    {# Modal #}
                     <div class="modal fade" id="adult" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -274,13 +234,13 @@
                 </div>
 
                 <div id="age-senior" class="case">
-                    <!-- Button trigger modal -->
+                    {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#senior">
                         <h3>senior</h3>
                         <img src="/assets/home/accueil_6_4.jpg">
                     </button>
                     
-                    <!-- Modal -->
+                    {# Modal #}
                     <div class="modal fade" id="senior" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -365,19 +325,7 @@
 
 {% block javascripts_end_body %}
 
-    {# JS rayon km #}
-    <script>
-        var slider = document.getElementById("slider");
-        var selector = document.getElementById("selector");
-        var selectValue = document.getElementById("selectValue");
-
-        selectValue.innerHTML = slider.value;
-
-        slider.oninput = function(){
-            selectValue.innerHTML = slider.value;
-            selector.style.left = this.value + "km";
-        }
-    </script>
+	{% block searchclubjs %}{{ parent() }}{% endblock %}
 
 {% endblock %}
 

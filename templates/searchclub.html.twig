@@ -1,0 +1,22 @@
+{% extends 'dashboard.html.twig' %}
+
+
+
+{% block dashboardcontent %}
+
+    <section class="banner">
+
+       {% block searchclub %}{{ parent() }}{% endblock %}
+     
+    </section>
+
+{% endblock %}
+
+
+
+{% block javascripts_end_body %}
+
+	{% block searchclubjs %}{{ parent() }}{% endblock %}
+
+{% endblock %}
+

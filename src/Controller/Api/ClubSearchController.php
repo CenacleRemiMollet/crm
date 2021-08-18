@@ -24,57 +24,6 @@ use App\Model\CityModel;
 class ClubSearchController extends AbstractController
 {
 
-	private $logger;
-
-	public function __construct(LoggerInterface $logger)
-	{
-		$this->logger = $logger;
-	}
-
-	/**
-	 * @Route("/api/clubsearch/cityname", name="api_club_search-city", methods={"GET"})
-	 * @OA\Get(
-	 *     path="/api/clubsearch/cityname",
-	 *     summary="Search club by a city",
-	 *     @OA\Parameter(
-	 *         @OA\Schema(type="string"),
-	 *         in="query",
-	 *         allowReserved=true,
-	 *         name="q",
-     *         required=true
-     *     ),
-	 *     @OA\Response(response="200", description="Successful")
-	 * )
-	 */
-	public function searchByCity(Request $request)
-	{
-		$query = $request->query->get('q');
-		$query = trim($query);
-		if(mb_strlen($query) < 3) {
-			return new Response('{}', 200, array(
-				'Content-Type' => 'application/hal+json'
-			));
-		}
-
-		$cities = $this->getDoctrine()->getManager()
-		->getRepository(City::class)
-		->findByStartsWith($query);
-
-		$cityModels = array();
-		foreach ($cities as &$city) {
-			array_push($cityModels, new CityModel($city));
-		}
-
-		//$output = array('cities' => $cities);
-		$hateoas = HateoasBuilder::create()->build();
-		$json = json_decode($hateoas->serialize($cityModels, 'json'));
-
-		return new Response(json_encode($json), 200, array(
-			'Content-Type' => 'application/hal+json'
-		));
-	}
-
-
 	/**
 	 * @Route("/api/clubsearch/zc/{zipcode}", name="api_club_search-zipcode", methods={"GET"})
 	 * @OA\Get(
@@ -106,7 +55,7 @@ class ClubSearchController extends AbstractController
 	 */
 	public function searchAroundWithdistance(Request $request, $zipcode)
 	{
-		$distance = $request->query->get('distance', 5);
+		$distance = $request->query->get('d', 5);
 
 		$clubLocations = $this->getDoctrine()->getManager()
 		->getRepository(ClubLocation::class)
