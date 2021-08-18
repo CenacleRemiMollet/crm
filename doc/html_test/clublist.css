@@ -771,7 +771,11 @@ main .search-bar {
         padding: 0;
     }
 
-    
+    /* PANEL 1 */
+
+    .tab-content #pills-thumbnails .noHover {
+        pointer-events: none;
+    }
 
     /* PANEL 2 */
     
@@ -780,11 +784,6 @@ main .search-bar {
         width: 80vw;
     }
 
-    .tab-content #pills-list .club .title {
-        display: none;
-        visibility: hidden;
-    }
-    
     .tab-content #pills-list .club h3 {
         font-size: 0.8em;
         width: 100%;
@@ -794,33 +793,6 @@ main .search-bar {
         display: none;
         visibility: hidden;
     }
-    
-    .tab-content #pills-list .club .chooseClub {
-        display: flex;
-        visibility: visible;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-    }
-    
-    .tab-content #pills-list .club .chooseClub h4 {
-        font-size: 1em;
-        margin: 0;
-        padding: 4px 0 0 0;
-        line-height: 0;
-        text-transform: initial;
-    }
-
-    .tab-content #pills-list .club .chooseClub i {
-        font-size: 1.5em;
-        margin: 0;
-        padding: 0;
-        color: #CE2A37;
-        transform: translateX(10px);
-    }
-    
-
-    /* END PANEL 2 */
     
 }
 
