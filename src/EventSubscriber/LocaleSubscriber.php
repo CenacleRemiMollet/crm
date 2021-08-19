@@ -29,11 +29,11 @@ class LocaleSubscriber implements EventSubscriberInterface
         // try to see if the locale has been set as a _locale routing parameter
         //$this->logger->debug('LocaleSubscriber: Request.getLocale(): '.$request->getLocale());
         if ($locale = $request->getSession()->get('_locale2')) {
-        	$this->logger->debug('LocaleSubscriber set locale from request.session.locale2: "'.$locale.'"');
+        	//$this->logger->debug('LocaleSubscriber set locale from request.session.locale2: "'.$locale.'"');
         	$request->getSession()->set('_locale', $locale);
         	$request->setLocale($locale);
         } else if ($locale = $request->getLocale()) {
-        	$this->logger->debug('LocaleSubscriber set locale from request.locale: "'.$locale.'"');
+        	//$this->logger->debug('LocaleSubscriber set locale from request.locale: "'.$locale.'"');
         	$request->getSession()->set('_locale', $locale);
         	$request->setLocale($locale);
 //         } elseif ($locale = $request->getSession()->get('_locale')) {
@@ -42,7 +42,7 @@ class LocaleSubscriber implements EventSubscriberInterface
 //         	$request->setLocale($locale);
         } else {
             // if no explicit locale has been set on this request, use one from the session
-        	$this->logger->debug('LocaleSubscriber set default locale: "'.$this->defaultLocale.'"');
+        	//$this->logger->debug('LocaleSubscriber set default locale: "'.$this->defaultLocale.'"');
             $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
             $request->setLocale($this->defaultLocale);
         }

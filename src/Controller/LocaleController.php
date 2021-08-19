@@ -54,11 +54,11 @@ class LocaleController extends AbstractController
 				->setStatusCode(Response::HTTP_BAD_REQUEST);
 		}
 		$locale = $localeModel->getLocale();
-		$this->logger->debug('Set locale to "'.$locale.'"');
+		//$this->logger->debug('Set locale to "'.$locale.'"');
 		$request->setLocale($locale);
 		$request->getSession()->set('_locale', $locale);
 		$request->getSession()->set('_locale2', $locale);
-		$this->logger->debug('Setted locale to "'.$request->getLocale().'"');
+		//$this->logger->debug('Setted locale to "'.$request->getLocale().'"');
 		$json = $serializer->serialize($localeModel, 'json');
 		return new Response($json, 200, array(
 			'Content-Type' => 'application/json'
