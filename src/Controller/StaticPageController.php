@@ -12,7 +12,7 @@ class StaticPageController extends AbstractController
 {
 
 	/**
-	 * @Route("/", name="home")
+	 * @Route("/", methods={"GET"}, name="home")
 	 */
 	public function viewHome(): Response
 	{
@@ -23,7 +23,7 @@ class StaticPageController extends AbstractController
 	}
 
 	/**
-	 * @Route("/master", name="master")
+	 * @Route("/master", methods={"GET"}, name="master")
 	 */
 	public function viewMaster(): Response
 	{
@@ -34,7 +34,7 @@ class StaticPageController extends AbstractController
 	}
 
 	/**
-	 * @Route("/taekwonkido", name="Taekwonkido")
+	 * @Route("/taekwonkido", methods={"GET"}, name="Taekwonkido")
 	 */
 	public function viewTaekwonkido(): Response
 	{
@@ -45,7 +45,7 @@ class StaticPageController extends AbstractController
 	}
 
 	/**
-	 * @Route("/searchclub", name="Search club around a city")
+	 * @Route("/searchclub", methods={"GET"}, name="Search club around a city")
 	 */
 	public function searchClub(Request $request): Response
 	{

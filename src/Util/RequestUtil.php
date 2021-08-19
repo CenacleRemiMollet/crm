@@ -2,13 +2,13 @@
 
 namespace App\Util;
 
-use Exception;
+use App\Exception\ViolationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validation;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Exception\ViolationException;
+use Exception;
 
 class RequestUtil
 {
@@ -31,7 +31,7 @@ class RequestUtil
 		if ( ! $data) {
 			throw new BadRequestHttpException('Empty body.');
 		}
-	
+
 		try {
 			$object = $this->serializer->deserialize($data, $model, 'json');
 		} catch (Exception $e) {

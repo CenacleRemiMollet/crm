@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2649d49eb72c6d40d9289314e3d9c386",
+    "content-hash": "b0b5d57579c7af1a85f09e1596f76be1",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -2042,12 +2042,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "6ebb9cc9b41fcc830e5efe9a98c03f244d16f8a7"
+                "reference": "74a440a2b1fc1269103f9d4405ec25d197b1625a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/6ebb9cc9b41fcc830e5efe9a98c03f244d16f8a7",
-                "reference": "6ebb9cc9b41fcc830e5efe9a98c03f244d16f8a7",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/74a440a2b1fc1269103f9d4405ec25d197b1625a",
+                "reference": "74a440a2b1fc1269103f9d4405ec25d197b1625a",
                 "shasum": ""
             },
             "require": {
@@ -2147,7 +2147,7 @@
                 "issues": "https://github.com/nelmio/NelmioApiDocBundle/issues",
                 "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/master"
             },
-            "time": "2021-08-16T14:40:54+00:00"
+            "time": "2021-08-17T19:52:21+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -2355,6 +2355,48 @@
                 "source": "https://github.com/phpstan/phpdoc-parser/tree/0.5.5"
             },
             "time": "2021-06-11T13:24:46+00:00"
+        },
+        {
+            "name": "primus852/symfony-short-response",
+            "version": "1.2.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/primus852/symfony-short-response.git",
+                "reference": "16e03d7231f38f7d383a9acd3144c62d5b5d88c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/primus852/symfony-short-response/zipball/16e03d7231f38f7d383a9acd3144c62d5b5d88c8",
+                "reference": "16e03d7231f38f7d383a9acd3144c62d5b5d88c8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "symfony/http-foundation": "^3.4|^4.0|^5.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "primus852\\ShortResponse\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "Torsten Wolter",
+                    "email": "findnibbler@gmail.com",
+                    "homepage": "https://leaguestreams.net"
+                }
+            ],
+            "description": "Simple JSON Responses for a Symfony Project",
+            "support": {
+                "issues": "https://github.com/primus852/symfony-short-response/issues",
+                "source": "https://github.com/primus852/symfony-short-response/tree/1.2.8"
+            },
+            "time": "2019-12-18T17:02:22+00:00"
         },
         {
             "name": "psr/cache",

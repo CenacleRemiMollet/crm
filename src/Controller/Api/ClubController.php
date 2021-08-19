@@ -23,6 +23,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club", name="api_club_list-active", methods={"GET"})
 	 * @OA\Get(
+	 *     tags={"API"},
 	 *     path="/api/club",
 	 *     summary="List all active clubs",
 	 *     @OA\Response(response="200", description="Successful")
@@ -46,6 +47,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club/{uuid}", name="api_club_one", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
+	 *     tags={"API"},
 	 *     path="/api/club/{uuid}",
 	 *     summary="Give a club",
 	 *     @OA\Parameter(
@@ -88,6 +90,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club/{uuid}/logo", name="api_club_one_logo", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
+	 *     tags={"API"},
 	 *     path="/api/club/{uuid}/logo",
 	 *     summary="Give a club",
 	 *     @OA\Parameter(
@@ -114,6 +117,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club/{uuid}/lessons", name="api_club_lessons", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
+	 *     tags={"API"},
 	 *     path="/api/club/{uuid}/lessons",
 	 *     summary="Give some hours",
 	 *     @OA\Parameter(
@@ -138,18 +142,18 @@ class ClubController extends AbstractController
 		if(count($clubLessons) == 0) {
 			return new Response('Club not found: '.$uuid, 404);
 		}
-			
+
 		$lessonList = array();
 		foreach($clubLessons as &$clubLesson) {
 			array_push($lessonList, new ClubLessonView($clubLesson));
 		}
-		
+
 		$hateoas = HateoasBuilder::create()->build();
 		$json = json_decode($hateoas->serialize($lessonList, 'json'));
-		
+
 		return new Response(json_encode($json), 200, array(
 			'Content-Type' => 'application/hal+json'
 		));
 	}
-	
+
 }

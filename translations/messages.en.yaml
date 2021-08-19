@@ -1,0 +1,29 @@
+
+
+
+# Common / Disciplines
+discipline:
+  taekwonkido: Taekwonkido
+  taekwondo: Taekwondo
+  hapkido: Hapkido
+  sinkido self defense system: Sinkido Self-Défense Système
+  sinkido self defense system 2 lines: Sinkido<br>Self-Défense Système
+
+
+# Menu
+menu:
+  club name: "%name% club"
+  club:
+    sign up conditions: Sign up conditions
+    prices: Prices
+    hours: Hours
+  the master: the master
+  disciplines: disciplines
+  club list: club list
+  gallery: gallery
+  contact: contact
+  signin signup: sign in / sign up
+  signin_signup:
+    signin: Sign in
+    signup: Sign up
+

@@ -33,6 +33,7 @@ class CityController extends AbstractController
 	/**
 	 * @Route("/api/city", name="api_club_search-city", methods={"GET"})
 	 * @OA\Get(
+	 *     tags={"API"},
 	 *     path="/api/city",
 	 *     summary="Search a city",
 	 *     @OA\Parameter(
