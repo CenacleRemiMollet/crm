@@ -13,6 +13,7 @@ class MenuController extends AbstractController
 	public function viewMenu(SessionInterface $session)
 	{
 		$club = $session->get('club-selected');
+		$lessons = $session->get('lessons-selected');
 // 		$menuItems = $this->getDoctrine()->getManager()
 // 				->getRepository(MenuItem::class)
 // 				->findBy([], ['priority' => 'ASC']);
@@ -29,8 +30,11 @@ class MenuController extends AbstractController
 // 		}
 
 		return $this->render(
-			'menu.html.twig',
-			['club' => $club]
+			'modules/menu.html.twig',
+			[
+				'club' => $club,
+				'lessons' => $lessons
+			]
 			//['menuItems' => $filteredMenuItems, 'club' => $club]
 		);
 	}

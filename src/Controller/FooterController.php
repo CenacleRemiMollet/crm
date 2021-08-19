@@ -11,7 +11,7 @@ class FooterController extends AbstractController
 	public function viewFooter()
 	{
 		return $this->render(
-			'footer.html.twig', []
+			'modules/footer.html.twig', []
 			//['menuItems' => $filteredMenuItems, 'club' => $club]
 		);
 	}

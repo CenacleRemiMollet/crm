@@ -45,6 +45,39 @@ class StaticPageController extends AbstractController
 	}
 
 	/**
+	 * @Route("/taekwondo", methods={"GET"}, name="Taekwondo")
+	 */
+	public function viewTaekwondo(): Response
+	{
+		$user = $this->getUser();
+		return $this->render('showcase/taekwondo.html.twig', [
+			'connectedUser' => $user
+		]);
+	}
+
+	/**
+	 * @Route("/hapkido", methods={"GET"}, name="Hapkido")
+	 */
+	public function viewHapkido(): Response
+	{
+		$user = $this->getUser();
+		return $this->render('showcase/hapkido.html.twig', [
+			'connectedUser' => $user
+		]);
+	}
+
+	/**
+	 * @Route("/sinkido", methods={"GET"}, name="Sinkido")
+	 */
+	public function viewSinkido(): Response
+	{
+		$user = $this->getUser();
+		return $this->render('showcase/sinkido.html.twig', [
+			'connectedUser' => $user
+		]);
+	}
+
+	/**
 	 * @Route("/searchclub", methods={"GET"}, name="Search club around a city")
 	 */
 	public function searchClub(Request $request): Response

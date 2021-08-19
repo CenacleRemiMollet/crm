@@ -1,0 +1,16 @@
+<div class="buttons">
+	{% set disciplines = lessons|map(l => l.discipline|lower) %}
+	
+	{% if 'taekwondo' in disciplines %}
+		<div class="btn"><a href="/taekwondo">taekwondo</a></div>
+	{% endif %}
+	{% if 'taekwonkido' in disciplines %}
+		<div class="btn"><a href="/taekwonkido">taekwonkido</a></div>
+	{% endif %}
+	{% if 'hapkido' in disciplines %}
+		<div class="btn"><a href="/hapkido">hapkido</a></div>
+	{% endif %}
+	{% if 'sinkido' in disciplines %}
+		<div class="btn sinkido"><a href="/sinkido"><span class="first">sinkido</span><br><span class="second">self-défense système</span></a></div>
+	{% endif %}
+</div>

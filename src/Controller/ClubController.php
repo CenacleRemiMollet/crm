@@ -30,6 +30,7 @@ class ClubController extends AbstractController
 	public function viewOne($uuid, LoggerInterface $logger, SessionInterface $session)
 	{
 		$user = $this->getUser();
+
 		$response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
 		if($response->getStatusCode() != 200) {
 			return $this->render('club/club-not-found.html.twig', [
@@ -38,9 +39,15 @@ class ClubController extends AbstractController
 		}
 		$club = json_decode($response->getContent())->club;
 		$session->set('club-selected', $club);
+
+		$response = $this->forward('App\Controller\Api\ClubController::getLessons', ['uuid' => $uuid]);
+		$lessons = json_decode($response->getContent());
+		$session->set('lessons-selected', $lessons);
+
 		return $this->render('club/club.html.twig', [
 			'connectedUser' => $user,
-			'club' => $club
+			'club' => $club,
+			'lessons' => $lessons
 		]);
 	}
 

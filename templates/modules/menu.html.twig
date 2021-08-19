@@ -26,10 +26,11 @@
         <div class="dropdown-1">
             <button><li class="link"><img src="/assets/img/belt.png" class="icon">{% trans %}menu.disciplines{% endtrans %}<i class="fas fa-angle-down"></i></li></button>
             <div class="content">
-                <a href="/taekwonkido"><li class="link"> {% trans %}discipline.taekwonkido{% endtrans %}</li></a>
-                <a href="#"><li class="link"> {% trans %}discipline.taekwondo{% endtrans %}</li></a>
-                <a href="#"><li class="link"> {% trans %}discipline.hapkido{% endtrans %}</li></a>
-                <a href="#"><li class="link"> {% trans %}discipline.sinkido self defense system 2 lines{% endtrans %}</li></a>
+                {% set disciplines = lessons|map(l => l.discipline|lower) %}
+                <a href="/taekwonkido"><li class="link"> {% trans %}discipline.taekwonkido{% endtrans %}</li> {% if 'taekwonkido' not in disciplines %}****{% endif %}</a>
+                <a href="/taekwondo"><li class="link"> {% trans %}discipline.taekwondo{% endtrans %}</li> {% if 'taekwondo' not in disciplines %}****{% endif %}</a>
+                <a href="/hapkido"><li class="link"> {% trans %}discipline.hapkido{% endtrans %}</li> {% if 'hapkido' not in disciplines %}****{% endif %}</a>
+                <a href="/sinkido"><li class="link"> {% trans %}discipline.sinkido self defense system 2 lines{% endtrans %}</li> {% if 'sinkido' not in disciplines %}****{% endif %}</a>
             </div>
         </div>
 

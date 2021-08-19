@@ -18,22 +18,22 @@
    <!-- boutons animés -->
 
    <div class="drop">
-            <button class="bloc-button">
-                    <i class="fas fa-map-marker-alt"></i>
-            </button>
-            <div class="bloc-text">
-                    Ecole Henri Cahn, Boulevard Galliéni<br>
-                    94360 Bry-sur-Marne
-            </div>
+        <button class="bloc-button">
+                <i class="fas fa-map-marker-alt"></i>
+        </button>
+        <div class="bloc-text">
+                Ecole Henri Cahn, Boulevard Galliéni<br>
+                94360 Bry-sur-Marne
+        </div>
    </div>
 
    <div class="drop2">
-            <button class="bloc-button">
-                <i class="fas fa-phone-alt" aria-hidden="true"></i>
-            </button>
-            <div class="bloc-text">
-                06 95 90 44 08
-            </div>
+        <button class="bloc-button">
+            <i class="fas fa-phone-alt" aria-hidden="true"></i>
+        </button>
+        <div class="bloc-text">
+            06 95 90 44 08
+        </div>
    </div>
 
    <div class="drop3">
@@ -55,23 +55,7 @@
     </div>
 
     <!-- Boutons disciplines -->
+    {% include 'club/disciplines-buttons.html.twig' %}
 
-   <div class="buttons">
-       <div class="btn"><a href="/taekwondo">taekwondo</a></div>
-       <div class="btn"><a href="/taekwonkido">taekwonkido</a></div>
-       <div class="btn"><a href="/hapkido">hapkido</a></div>
-       <div class="btn sinkido"><a href="/sinkido"><span class="first">sinkido</span><br><span class="second">self-défense système</span></a></div>
-   </div>
-
-   <!-- switch language button -->
-
-   <div class="language">
-        <label class="toggle">
-            <input type="checkbox">
-            <span class="toggle-switch"></span>
-            <div class="fr">
-            </div>
-            <div class="en"></div>
-        </label>
-    </div> 
+    {% include 'modules/locale-button.html.twig' %}
 </section>
