@@ -15,15 +15,19 @@ function contentSlide() {
 	buttons.forEach(function(button) {
 		var contents = button.parentElement.getElementsByClassName('content');
 		Array.prototype.slice.call(contents).forEach(function(content) {
-			button.addEventListener('click', () => {
-				console.log(content.classList);
-				content.classList.toggle('content-active');
-				content.classList.toggle('content');
-				console.log(content.classList);
+			console.log(content);
+			button.addEventListener('mouseenter', () => {
+				content.classList.add('content-active');
+				content.classList.remove('content');
+			});
+			button.addEventListener('mouseleave', () => {
+				content.classList.remove('content-active');
+				content.classList.add('content');
 			});
 		});
 	});
 }
+
 
 navSlide();
 contentSlide();

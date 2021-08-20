@@ -31,12 +31,25 @@
                 {% else %}
                 	{% set disciplines = null %}
                 {% endif %}
-                <a href="/taekwonkido"><li class="link"> {% trans %}discipline.taekwonkido{% endtrans %}</li> {% if disciplines is not null and 'taekwonkido' not in disciplines %}****{% endif %}</a>
-                <a href="/taekwondo"><li class="link"> {% trans %}discipline.taekwondo{% endtrans %}</li> {% if disciplines is not null and 'taekwondo' not in disciplines %}****{% endif %}</a>
-                <a href="/hapkido"><li class="link"> {% trans %}discipline.hapkido{% endtrans %}</li> {% if disciplines is not null and 'hapkido' not in disciplines %}****{% endif %}</a>
-                <a href="/sinkido"><li class="link"> {% trans %}discipline.sinkido self defense system 2 lines{% endtrans %}</li> {% if disciplines is not null and 'sinkido' not in disciplines %}****{% endif %}</a>
+                <a href="/taekwonkido"><li class="link dropdown-item"> {% trans %}discipline.taekwonkido{% endtrans %}</li> {% if disciplines is not null and 'taekwonkido' not in disciplines %}****{% endif %}</a>
+                <a href="/taekwondo"><li class="link dropdown-item"> {% trans %}discipline.taekwondo{% endtrans %}</li> {% if disciplines is not null and 'taekwondo' not in disciplines %}****{% endif %}</a>
+                <a href="/hapkido"><li class="link dropdown-item"> {% trans %}discipline.hapkido{% endtrans %}</li> {% if disciplines is not null and 'hapkido' not in disciplines %}****{% endif %}</a>
+                <a href="/sinkido"><li class="link dropdown-item"> {% trans %}discipline.sinkido self defense system 2 lines{% endtrans %}</li> {% if disciplines is not null and 'sinkido' not in disciplines %}****{% endif %}</a>
             </div>
         </div>
+        
+        <!-- <div class="dropdown-1">
+            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            	<li class="link"><img src="/assets/img/belt.png" class="icon">{% trans %}menu.disciplines{% endtrans %}<i class="fas fa-angle-down"></i></li>
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </div> -->
 
         <li class="link"><a href="/club"><img src="/assets/img/pin.png" class="icon">{% trans %}menu.club list{% endtrans %}</a></li>
         <!-- <li class="link"><a href="#"><img src="/assets/img/gallery.png" class="icon">{% trans %}menu.gallery{% endtrans %}</a></li> -->
