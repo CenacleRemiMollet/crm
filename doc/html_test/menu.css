@@ -29,6 +29,8 @@ nav .dropdown-4 button a {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    line-height: 1.2;
+    text-align: start;
 }
 
 nav .dropdown-4 .icon{
