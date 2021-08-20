@@ -228,6 +228,9 @@ nav .burger div {
         margin-top: 15px;
         display: inline-block;
     }
+    .btn, .dropdown-menu {
+		font-size: 0.9em!important;
+	}
 }
 
 @media screen and (max-width:1000px){
@@ -387,3 +390,8 @@ nav .content-active a{
     margin: 0;
     font-size: 0.9em;
 }
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; // remove the gap so it doesn't close
+ }
