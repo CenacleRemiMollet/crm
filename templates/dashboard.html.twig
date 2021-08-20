@@ -35,7 +35,7 @@
 
 {% block betweenheadandbody %}
  	<script id="search-city-item-template" type="text/x-handlebars-template">
-		<div>{{ '{{element.name}}' }}</div>
+		<div>{{ '{{ name }} ({{ zipcode }})' }}</div>
 	</script>
 {% endblock %}
 
@@ -122,7 +122,7 @@
         $(document).ready(function() {
             function getDisplayName(result) {
 				//console.log("getDisplayName", result);
-                return result.name;
+                return result.name + ' (' + result.zipcode + ')';
             }
 
         	var bloodhound = new Bloodhound({
@@ -150,24 +150,16 @@
         		source: bloodhound,
                 display: getDisplayName,
                 templates: {
-                    suggestion: searchCityItemTemplate
+                    suggestion: function(result) {
+                    	return searchCityItemTemplate(result);
+                    }
                 }
         	});
         	$('#ville').focus();
             $('#ville').bind('typeahead:select', function(ev, result) {
             	var element = result.element;
-            	/* if(result.type == 'location') {
-            		window.location = '/v2/view-grid/' + element.name;
-            	}
-            	if(result.type == 'env') {
-            		window.location = '/v2/view-grid/' + element.location + '/' + element.name;
-            	}
-            	if(result.type == 'product') {
-            		window.location = '/v2/view-details/' + element.location + '/' + element.environment + '/' + element.name;
-            	}
-            	if(result.type == 'instance') {
-            		window.location = '/v2/view-details/' + element.location + '/' + element.env + '/' + element.productName + '/' + element.name;
-            	} */
+            	console.log("search select", result);
+            	// window.location = '/v2/view-grid/' + element.name;
             });
         });
     </script>
