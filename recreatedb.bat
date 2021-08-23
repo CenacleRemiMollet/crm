@@ -29,7 +29,7 @@ call:mysqlScript configuration_properties.sql
 echo.
 echo To add fake values :
 echo.
-echo php bin/console doctrine:fixtures:load --append --group=ClubsFixtures --group=AccountUserFixtures --group=UserClubLinkFixtures
+echo php bin/console doctrine:fixtures:load --append --group=AccountUserFixtures --group=ClubsFixtures --group=UserClubLinkFixtures
 echo.
 echo.
 echo.

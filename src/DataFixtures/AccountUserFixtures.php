@@ -7,7 +7,7 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AccountUserFixtures extends Fixture // implements OrderedFixtureInterface
 {
@@ -20,7 +20,7 @@ class AccountUserFixtures extends Fixture // implements OrderedFixtureInterface
 	private $passwordEncoder;
 
 
-	public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+	public function __construct(UserPasswordHasherInterface $passwordEncoder)
 	{
 		$this->passwordEncoder = $passwordEncoder;
 	}
@@ -77,7 +77,7 @@ class AccountUserFixtures extends Fixture // implements OrderedFixtureInterface
 		$account = new Account();
 		$account->setUser($user);
 		$account->setLogin($login);
-		$account->setPassword($this->passwordEncoder->encodePassword($account, $password));
+		$account->setPassword($this->passwordEncoder->hashPassword($account, $password));
 		$account->setRoles($roles);
 		return $account;
 	}

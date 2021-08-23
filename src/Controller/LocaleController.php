@@ -26,12 +26,6 @@ class LocaleController extends AbstractController
 
 	/**
 	 * @Route("/locale", methods={"GET"}, name="web_locale-get")
-	 * @OA\Get(
-	 *     tags={"Web"},
-	 *     path="/locale",
-	 *     summary="Get the current locale",
-	 *     @OA\Response(response="200", description="Successful")
-	 * )
 	 */
 	public function getLocale(Request $request)
 	{
