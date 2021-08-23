@@ -21,12 +21,12 @@ class Club
 	 * @ORM\Column(type="integer")
 	 */
 	private $id;
-	
+
 	/**
 	 * @ORM\Column(type="string", length=64)
 	 */
 	private $uuid;
-	
+
 	/**
 	 * @ORM\Column(type="string", length=255)
 	 */
@@ -50,6 +50,16 @@ class Club
 	/**
 	 * @ORM\Column(type="string", length=512, nullable=true)
 	 */
+	private $twitter_url;
+
+	/**
+	 * @ORM\Column(type="string", length=512, nullable=true)
+	 */
+	private $instagram_url;
+
+	/**
+	 * @ORM\Column(type="string", length=512, nullable=true)
+	 */
 	private $mailing_list;
 
 	/**
@@ -68,150 +78,174 @@ class Club
 	private $userClubSubscribes;
 
 	public function __construct()
-	{
-		$this->clubLessons = new ArrayCollection();
-		$this->uuid = StringUtils::random_str(16);
-		$this->userClubSubscribes = new ArrayCollection();
-	}
+                  	{
+                  		$this->clubLessons = new ArrayCollection();
+                  		$this->uuid = StringUtils::random_str(16);
+                  		$this->userClubSubscribes = new ArrayCollection();
+                  	}
 
 	public function getId(): ?int
-	{
-		return $this->id;
-	}
+                  	{
+                  		return $this->id;
+                  	}
 
 	public function getUuid(): ?string
-	{
-		return $this->uuid;
-	}
-	
+                  	{
+                  		return $this->uuid;
+                  	}
+
 	public function setUuid(string $uuid): self
-	{
-		$this->uuid = $uuid;
-		return $this;
-	}
-	
+                  	{
+                  		$this->uuid = $uuid;
+                  		return $this;
+                  	}
+
 	public function getName(): ?string
-	{
-		return $this->name;
-	}
+                  	{
+                  		return $this->name;
+                  	}
 
 	public function setName(string $name): self
-	{
-		$this->name = $name;
-		return $this;
-	}
+                  	{
+                  		$this->name = $name;
+                  		return $this;
+                  	}
 
 	public function getLogo(): ?string
-	{
-		return $this->logo;
-	}
+                  	{
+                  		return $this->logo;
+                  	}
 
 	public function setLogo(string $logo): self
-	{
-		$this->logo = $logo;
-		return $this;
-	}
+                  	{
+                  		$this->logo = $logo;
+                  		return $this;
+                  	}
 
 	public function getWebsiteUrl(): ?string
-	{
-		return $this->website_url;
-	}
+                  	{
+                  		return $this->website_url;
+                  	}
 
 	public function setWebsiteUrl(?string $website_url): self
-	{
-		$this->website_url = $website_url;
-		return $this;
-	}
+                  	{
+                  		$this->website_url = $website_url;
+                  		return $this;
+                  	}
 
 	public function getFacebookUrl(): ?string
-	{
-		return $this->facebook_url;
-	}
+                  	{
+                  		return $this->facebook_url;
+                  	}
 
 	public function setFacebookUrl(?string $facebook_url): self
-	{
-		$this->facebook_url = $facebook_url;
-		return $this;
-	}
+                  	{
+                  		$this->facebook_url = $facebook_url;
+                  		return $this;
+                  	}
 
 	public function getMailingList(): ?string
-	{
-		return $this->mailing_list;
-	}
+                  	{
+                  		return $this->mailing_list;
+                  	}
 
 	public function setMailingList(?string $mailing_list): self
-	{
-		$this->mailing_list = $mailing_list;
-		return $this;
-	}
+                  	{
+                  		$this->mailing_list = $mailing_list;
+                  		return $this;
+                  	}
 
 	public function getActive(): ?bool
-	{
-		return $this->active;
-	}
+                  	{
+                  		return $this->active;
+                  	}
 
 	public function setActive(bool $active): self
-	{
-		$this->active = $active;
-		return $this;
-	}
+                  	{
+                  		$this->active = $active;
+                  		return $this;
+                  	}
 
 	/**
 	 * @return Collection|ClubLesson[]
 	 */
 	public function getClubLessons(): Collection
-	{
-		return $this->clubLessons;
-	}
+                  	{
+                  		return $this->clubLessons;
+                  	}
 
 	public function addClubLesson(ClubLesson $clubLesson): self
-	{
-		if (!$this->clubLessons->contains($clubLesson)) {
-			$this->clubLessons[] = $clubLesson;
-			$clubLesson->setClub($this);
-		}
-		return $this;
-	}
+                  	{
+                  		if (!$this->clubLessons->contains($clubLesson)) {
+                  			$this->clubLessons[] = $clubLesson;
+                  			$clubLesson->setClub($this);
+                  		}
+                  		return $this;
+                  	}
 
 	public function removeClubLesson(ClubLesson $clubLesson): self
-	{
-		if ($this->clubLessons->contains($clubLesson)) {
-			$this->clubLessons->removeElement($clubLesson);
-			// set the owning side to null (unless already changed)
-			if ($clubLesson->getClub() === $this) {
-				$clubLesson->setClub(null);
-			}
-		}
-		return $this;
-	}
+                  	{
+                  		if ($this->clubLessons->contains($clubLesson)) {
+                  			$this->clubLessons->removeElement($clubLesson);
+                  			// set the owning side to null (unless already changed)
+                  			if ($clubLesson->getClub() === $this) {
+                  				$clubLesson->setClub(null);
+                  			}
+                  		}
+                  		return $this;
+                  	}
 
 	/**
 	 * @return Collection|UserClubSubscribe[]
 	 */
 	public function getUserClubSubscribes(): Collection
-	{
-		return $this->userClubSubscribes;
-	}
+                  	{
+                  		return $this->userClubSubscribes;
+                  	}
 
 	public function addUserClubSubscribe(UserClubSubscribe $userClubSubscribe): self
-	{
-		if (!$this->userClubSubscribes->contains($userClubSubscribe)) {
-			$this->userClubSubscribes[] = $userClubSubscribe;
-			$userClubSubscribe->setClub($this);
-		}
-		return $this;
-	}
+                  	{
+                  		if (!$this->userClubSubscribes->contains($userClubSubscribe)) {
+                  			$this->userClubSubscribes[] = $userClubSubscribe;
+                  			$userClubSubscribe->setClub($this);
+                  		}
+                  		return $this;
+                  	}
 
 	public function removeUserClubSubscribe(UserClubSubscribe $userClubSubscribe): self
-	{
-		if ($this->userClubSubscribes->contains($userClubSubscribe)) {
-			$this->userClubSubscribes->removeElement($userClubSubscribe);
-			// set the owning side to null (unless already changed)
-			if ($userClubSubscribe->getClub() === $this) {
-				$userClubSubscribe->setClub(null);
-			}
-		}
+                  	{
+                  		if ($this->userClubSubscribes->contains($userClubSubscribe)) {
+                  			$this->userClubSubscribes->removeElement($userClubSubscribe);
+                  			// set the owning side to null (unless already changed)
+                  			if ($userClubSubscribe->getClub() === $this) {
+                  				$userClubSubscribe->setClub(null);
+                  			}
+                  		}
 
-		return $this;
-	}
+                  		return $this;
+                  	}
+
+    public function getTwitterUrl(): ?string
+    {
+        return $this->twitter_url;
+    }
+
+    public function setTwitterUrl(?string $twitter_url): self
+    {
+        $this->twitter_url = $twitter_url;
+
+        return $this;
+    }
+
+    public function getInstagramUrl(): ?string
+    {
+        return $this->instagram_url;
+    }
+
+    public function setInstagramUrl(?string $instagram_url): self
+    {
+        $this->instagram_url = $instagram_url;
+
+        return $this;
+    }
 }

@@ -22,7 +22,9 @@ php bin/console doctrine:migrations:migrate --no-interaction
 rem php bin/console doctrine:fixtures:load --no-interaction --group=MenuItemFixtures
 php bin/console cache:clear
 
+call:mysqlScript schema-update.sql
 call:mysqlScript cities.sql
+call:mysqlScript configuration_properties.sql
 
 echo.
 echo To add fake values :

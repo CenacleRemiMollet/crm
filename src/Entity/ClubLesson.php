@@ -69,125 +69,142 @@ class ClubLesson
 	 */
 	private $end_time;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $description;
+
 	public function __construct()
-	{
-		$this->clubLessonTimeSlots = new ArrayCollection();
-		$this->userClubSubscribes = new ArrayCollection();
-		$this->uuid = StringUtils::random_str(16);
-	}
+         	{
+         		$this->clubLessonTimeSlots = new ArrayCollection();
+         		$this->userClubSubscribes = new ArrayCollection();
+         		$this->uuid = StringUtils::random_str(16);
+         	}
 
 	public function getId(): ?int
-	{
-		return $this->id;
-	}
+         	{
+         		return $this->id;
+         	}
 
 	public function getUuid(): ?string
-	{
-		return $this->uuid;
-	}
+         	{
+         		return $this->uuid;
+         	}
 
 	public function setUuid(string $uuid): self
-	{
-		$this->uuid = $uuid;
-
-		return $this;
-	}
+         	{
+         		$this->uuid = $uuid;
+         
+         		return $this;
+         	}
 
 	public function getClubLocation(): ?ClubLocation
-	{
-		return $this->club_location;
-	}
+         	{
+         		return $this->club_location;
+         	}
 
 	public function setClubLocation(?ClubLocation $club_location): self
-	{
-		$this->club_location = $club_location;
-
-		return $this;
-	}
+         	{
+         		$this->club_location = $club_location;
+         
+         		return $this;
+         	}
 
 	public function getClub(): ?Club
-	{
-		return $this->club;
-	}
+         	{
+         		return $this->club;
+         	}
 
 	public function setClub(?Club $club): self
-	{
-		$this->club = $club;
-
-		return $this;
-	}
+         	{
+         		$this->club = $club;
+         
+         		return $this;
+         	}
 
 	public function getPoint(): ?int
-	{
-		return $this->point;
-	}
+         	{
+         		return $this->point;
+         	}
 
 	public function setPoint(int $point): self
-	{
-		$this->point = $point;
-
-		return $this;
-	}
+         	{
+         		$this->point = $point;
+         
+         		return $this;
+         	}
 
 	public function getDiscipline(): ?string
-	{
-		return $this->discipline;
-	}
+         	{
+         		return $this->discipline;
+         	}
 
 	public function setDiscipline(string $discipline): self
-	{
-		$this->discipline = $discipline;
-
-		return $this;
-	}
+         	{
+         		$this->discipline = $discipline;
+         
+         		return $this;
+         	}
 
 	public function getAgeLevel(): ?string
-	{
-		return $this->age_level;
-	}
+         	{
+         		return $this->age_level;
+         	}
 
 	public function setAgeLevel(?string $age_level): self
-	{
-		$this->age_level = $age_level;
-
-		return $this;
-	}
+         	{
+         		$this->age_level = $age_level;
+         
+         		return $this;
+         	}
 
 	public function getDayOfWeek(): ?string
-	{
-		return $this->day_of_week;
-	}
+         	{
+         		return $this->day_of_week;
+         	}
 
 	public function setDayOfWeek(string $day_of_week): self
-	{
-		$this->day_of_week = $day_of_week;
-
-		return $this;
-	}
+         	{
+         		$this->day_of_week = $day_of_week;
+         
+         		return $this;
+         	}
 
 	public function getStartTime(): ?\DateTimeInterface
-	{
-		return $this->start_time;
-	}
+         	{
+         		return $this->start_time;
+         	}
 
 	public function setStartTime(\DateTimeInterface $start_time): self
-	{
-		$this->start_time = $start_time;
-
-		return $this;
-	}
+         	{
+         		$this->start_time = $start_time;
+         
+         		return $this;
+         	}
 
 	public function getEndTime(): ?\DateTimeInterface
-	{
-		return $this->end_time;
-	}
+         	{
+         		return $this->end_time;
+         	}
 
 	public function setEndTime(\DateTimeInterface $end_time): self
-	{
-		$this->end_time = $end_time;
+         	{
+         		$this->end_time = $end_time;
+         
+         		return $this;
+         	}
 
-		return $this;
-	}
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
 
 
 
