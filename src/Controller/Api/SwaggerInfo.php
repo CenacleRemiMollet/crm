@@ -10,7 +10,7 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\Info(
- *   title="Cénacle Rémi Mollet",
+ *   title="API Cénacle Rémi Mollet",
  *   version="0.1",
  *   @OA\License(
  *     name="Apache License 2.0",

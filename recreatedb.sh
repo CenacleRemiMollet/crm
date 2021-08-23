@@ -27,12 +27,14 @@ php bin/console doctrine:migrations:migrate --no-interaction
 # php bin/console doctrine:fixtures:load --no-interaction --group=MenuItemFixtures
 php bin/console cache:clear
 
+runSql schema-update.sql
 runSql cities.sql
+runSql configuration_properties.sql
 
 echo ''
 echo 'To add fake values :'
 echo ''
-echo 'php bin/console doctrine:fixtures:load --append --group=ClubsFixtures --group=AccountUserFixtures --group=UserClubLinkFixtures'
+echo 'php bin/console doctrine:fixtures:load --append --group=AccountUserFixtures --group=ClubsFixtures --group=UserClubLinkFixtures'
 echo ''
 echo ''
 echo ''

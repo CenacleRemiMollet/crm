@@ -23,7 +23,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club", name="api_club_list-active", methods={"GET"})
 	 * @OA\Get(
-	 *     tags={"API"},
+	 *     tags={"Club"},
 	 *     path="/api/club",
 	 *     summary="List all active clubs",
 	 *     @OA\Response(response="200", description="Successful")
@@ -47,7 +47,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club/{uuid}", name="api_club_one", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
-	 *     tags={"API"},
+	 *     tags={"Club"},
 	 *     path="/api/club/{uuid}",
 	 *     summary="Give a club",
 	 *     @OA\Parameter(
@@ -90,7 +90,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club/{uuid}/logo", name="api_club_one_logo", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
-	 *     tags={"API"},
+	 *     tags={"Club"},
 	 *     path="/api/club/{uuid}/logo",
 	 *     summary="Give a club",
 	 *     @OA\Parameter(
@@ -117,7 +117,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club/{uuid}/lessons", name="api_club_lessons", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
-	 *     tags={"API"},
+	 *     tags={"Club"},
 	 *     path="/api/club/{uuid}/lessons",
 	 *     summary="Give some hours",
 	 *     @OA\Parameter(
