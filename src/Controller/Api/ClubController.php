@@ -26,7 +26,17 @@ class ClubController extends AbstractController
 	 *     tags={"Club"},
 	 *     path="/api/club",
 	 *     summary="List all active clubs",
-	 *     @OA\Response(response="200", description="Successful")
+	 *     @OA\Response(
+	 *         response="200",
+	 *         description="Successful",
+	 *         @OA\MediaType(
+	 *             mediaType="application/hal+json",
+	 *             @OA\Schema(
+	 *                 type="array",
+	 *                 @OA\Items(ref="#/components/schemas/Club")
+	 *             )
+	 *         )
+	 *     )
 	 * )
 	 */
 	public function listActive()
@@ -35,9 +45,8 @@ class ClubController extends AbstractController
 			->getRepository(Club::class)
 			->findAllActiveWithLocations();
 
-		$output = array('clubs' => $clubs);
 		$hateoas = HateoasBuilder::create()->build();
-		$json = json_decode($hateoas->serialize($output, 'json'));
+		$json = json_decode($hateoas->serialize($clubs, 'json'));
 
 		return new Response(json_encode($json), 200, array(
 			'Content-Type' => 'application/hal+json'
@@ -61,7 +70,14 @@ class ClubController extends AbstractController
      *             pattern="[a-z0-9_]{2,64}"
      *         )
      *     ),
-	 *     @OA\Response(response="200", description="Successful")
+	 *     @OA\Response(
+	 *         response="200",
+	 *         description="Successful",
+	 *         @OA\MediaType(
+	 *             mediaType="application/hal+json",
+	 *             @OA\Schema(ref="#/components/schemas/Club")
+	 *         )
+	 *     )
 	 * )
 	 */
 	public function one($uuid)
@@ -69,12 +85,12 @@ class ClubController extends AbstractController
 		$clubs = $this->getDoctrine()->getManager()
 			->getRepository(Club::class)
 			->findBy(['uuid' => $uuid]);
-		$output = [];
+		$output = null;
 		if(count($clubs) > 0) {
 			$clubloc = $this->getDoctrine()->getManager()
 				->getRepository(ClubLocation::class)
 				->findByClubs([$clubs[0]]);
-			$output = array('club' => $clubloc[0]);
+			$output = $clubloc[0];
 		} else {
 			return new Response('Club not found: '.$uuid, 404);
 		}
@@ -104,7 +120,13 @@ class ClubController extends AbstractController
 	 *             pattern="[a-z0-9_]{2,64}"
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="200", description="Successful")
+	 *     @OA\Response(
+	 *         response="200",
+	 *         description="Successful",
+	 *         @OA\MediaType(mediaType="image/gif"),
+	 *         @OA\MediaType(mediaType=" image/jpeg"),
+	 *         @OA\MediaType(mediaType="application/octet-stream")
+	 *     )
 	 * )
 	 */
 	public function getLogo($uuid, KernelInterface $appKernel, LoggerInterface $logger)
@@ -131,7 +153,17 @@ class ClubController extends AbstractController
 	 *             pattern="[a-z0-9_]{2,64}"
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="200", description="Successful")
+	 *     @OA\Response(
+	 *         response="200",
+	 *         description="Successful",
+	 *         @OA\MediaType(
+	 *             mediaType="application/hal+json",
+	 *             @OA\Schema(
+	 *                 type="array",
+	 *                 @OA\Items(ref="#/components/schemas/ClubLesson")
+	 *             )
+	 *         )
+	 *     )
 	 * )
 	 */
 	public function getLessons($uuid)

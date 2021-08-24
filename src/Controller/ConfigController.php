@@ -6,14 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use OpenApi\Annotations as OA;
 use Psr\Log\LoggerInterface;
-use App\Util\RequestUtil;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Serializer\SerializerInterface;
-use App\Model\LocaleModel;
-use App\Exception\ViolationException;
-use primus852\ShortResponse\ShortResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class ConfigController extends AbstractController
@@ -29,11 +22,13 @@ class ConfigController extends AbstractController
 	 * @Route("/config", methods={"GET"}, name="web_config-get")
 	 * @IsGranted("ROLE_ADMIN")
 	 */
-	public function getConfig(Request $request)
+	public function getConfig(Request $request): Response
 	{
-		return new Response('{}', 200, array(
-			'Content-Type' => 'application/json'
-		));
+		$response = $this->forward('App\Controller\Api\ConfigController::getAllProperties');
+		$json = json_decode($response->getContent());
+		return $this->render('home.html.twig', [
+			'properties' => $json
+		]);
 	}
 
 }

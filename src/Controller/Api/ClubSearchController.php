@@ -24,6 +24,13 @@ use App\Model\CityModel;
 class ClubSearchController extends AbstractController
 {
 
+	private $logger;
+
+	public function __construct(LoggerInterface $logger)
+	{
+		$this->logger = $logger;
+	}
+
 	/**
 	 * @Route("/api/clubsearch/zc/{zipcode}", name="api_club_search-zipcode", methods={"GET"})
 	 * @OA\Get(
@@ -51,7 +58,17 @@ class ClubSearchController extends AbstractController
      *             default=5
      *         )
      *     ),
-	 *     @OA\Response(response="200", description="Successful")
+	 *     @OA\Response(
+	 *         response="200",
+	 *         description="Successful",
+	 *         @OA\MediaType(
+	 *             mediaType="application/hal+json",
+	 *             @OA\Schema(
+	 *                 type="array",
+	 *                 @OA\Items(ref="#/components/schemas/ClubLocation")
+	 *             )
+	 *         )
+	 *     )
 	 * )
 	 */
 	public function searchAroundWithdistance(Request $request, $zipcode)
@@ -80,9 +97,8 @@ class ClubSearchController extends AbstractController
 		->findByClubs($clubs);
 
 
-		$output = array('clubs' => $clubViews);
 		$hateoas = HateoasBuilder::create()->build();
-		$json = json_decode($hateoas->serialize($output, 'json'));
+		$json = json_decode($hateoas->serialize($clubViews, 'json'));
 
 		return new Response(json_encode($json), 200, array(
 			'Content-Type' => 'application/hal+json'

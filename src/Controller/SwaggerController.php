@@ -21,7 +21,7 @@ class SwaggerController extends AbstractController
 	 */
 	public function configJson()
 	{
-		$openapi = \OpenApi\scan('../src/Controller'); // /Api
+		$openapi = \OpenApi\scan('../src'); // /Controller/Api
 		return new Response($openapi->toJson(), 200, array(
 			'Content-Type: application/x-yaml'
 		));

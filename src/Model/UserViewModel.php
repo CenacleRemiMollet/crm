@@ -26,9 +26,9 @@ class UserViewModel
 	private $firstname;
 
 	/**
-	 * @OA\Property(type="object", items = @OA\Items(ref="#/components/schemas/DateModel"))
+	 * @OA\Property(type="object")
 	 */
-	private $birthday;
+	private $birthday; 	// , items = @ OA \ Items(ref="#/components/schemas/DateModel")
 
 	/**
 	 * @OA\Property(type="string", example="F")
@@ -71,9 +71,9 @@ class UserViewModel
 	private $mails;
 
 	/**
-	 * @OA\Property(type="object", items = @OA\Items(ref="#/components/schemas/DateModel"))
+	 * @OA\Property(type="object")
 	 */
-	private $created;
+	private $created; // , items = @ OA\Items(ref="#/components/schemas/DateModel")
 
 	public function __construct(User $user)
 	{

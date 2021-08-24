@@ -207,6 +207,7 @@ class MigrationCommand extends Command
 				$lesson->setClub($club);
 				$lesson->setClubLocation($locations[$line["location"]]);
 				$lesson->setDiscipline($line["discipline"]);
+				$lesson->setDescription(isset($line["description"]) ? $line["description"] : '');
 				$lesson->setPoint(1);
 				$lesson->setAgeLevel($line["age_level"]);
 				$lesson->setDayOfWeek($line["day_of_week"]);

@@ -14,7 +14,7 @@
         {% if club is defined and club.uuid is defined %}
     		<div class="dropdown">
                 <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                	<img src="/assets/img/aim.png" class="icon">{% trans  with {'%name%': club.name} %}menu.club name{% endtrans %} {#<i class="fas fa-angle-down"></i>#}
+                	<img src="/assets/img/aim.png" class="icon">{% trans  with {'%name%': club.name} %}menu.club name{% endtrans %}
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.sign up conditions{% endtrans %}</li></a>
@@ -28,7 +28,7 @@
         
 		<div class="dropdown btn-group">
             <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            	<img src="/assets/img/belt.png" class="icon">{% trans %}menu.disciplines{% endtrans %} {#<i class="fas fa-angle-down"></i>#}
+            	<img src="/assets/img/belt.png" class="icon">{% trans %}menu.disciplines{% endtrans %}
             </button>
             <div class="dropdown-menu">
                 {% if lessons %}
@@ -48,17 +48,29 @@
         <!-- <a class="btn link" href="#"><img src="/assets/img/gallery.png" class="icon">{% trans %}menu.gallery{% endtrans %}</a> -->
         <a class="btn link" href="#"><img src="/assets/img/question.png" class="icon">{% trans %}menu.contact{% endtrans %}</a>
  
-		<div class="dropdown btn-group">
-            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            	<img src="/assets/img/profile.png" class="icon">{% trans %}menu.signin signup{% endtrans %} {#<i class="fas fa-angle-down"></i>#}
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="/login"><li class="link">{% trans %}menu.signin_signup.signin{% endtrans %}</li></a>
-                <a class="dropdown-item" href="#"><li class="link">{% trans %}menu.signin_signup.signup{% endtrans %}</li></a>
-            </div>
-        </div> 
-        
+    	<div class="dropdown btn-group">
+    		{% if app.user is null %}
+                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                	<img src="/assets/img/profile.png" class="icon">{% trans %}menu.signin signup{% endtrans %}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/login"><li class="link">{% trans %}menu.signin_signup.signin{% endtrans %}</li></a>
+                    <a class="dropdown-item" href="#"><li class="link">{% trans %}menu.signin_signup.signup{% endtrans %}</li></a>
+                </div>
+            {% else %}
+                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                	<img src="/assets/img/profile.png" class="icon">{% trans %}menu.signin signup.my account{% endtrans %}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#"><li class="link">{% trans %}menu.signin_signup.me{% endtrans %}</li></a>
+                    <a class="dropdown-item" href="/config"><li class="link">{% trans %}menu.signin_signup.config{% endtrans %}</li></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/logout"><li class="link">{% trans %}menu.signin_signup.logout{% endtrans %}</li></a>
+                </div>
+            {% endif %}
+        </div>
 	</ul>
+	
 {#
     <ul class="nav-links">
         {% if club is defined and club.uuid is defined %}
@@ -102,4 +114,5 @@
         </div>
     </ul>
     #}
+    
 </nav>

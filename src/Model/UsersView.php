@@ -4,6 +4,7 @@ namespace App\Model;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Annotations as OA;
 
+
 /**
  * @Serializer\XmlRoot("users")
  * @OA\Schema(schema="UsersView")
@@ -11,7 +12,7 @@ use OpenApi\Annotations as OA;
 class UsersView
 {
 	/**
-	 * @OA\Property(type="object", @OA\Items(ref="#/components/schemas/Pagination"))
+	 * @OA\Property(ref="#/components/schemas/Pagination")
 	 */
 	private $pagination;
 

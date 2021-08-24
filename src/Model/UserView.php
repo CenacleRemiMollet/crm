@@ -15,12 +15,12 @@ class UserView extends UserViewModel
 	 * @OA\Property(type="string", example="j.doe")
 	 */
 	private $login;
-	
+
 	/**
-	 * @OA\Property(type="array", example="abcDEF654", items = @OA\Items(type="string"))
+	 * @OA\Property(type="array", example="abcDEF654", items = @OA\Items(type="array", type="string"))
 	 */
 	private $roles;
-	
+
 	public function __construct(User $user)
 	{
 		parent::__construct($user);
