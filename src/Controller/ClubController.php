@@ -15,11 +15,9 @@ class ClubController extends AbstractController
 	 */
 	public function listActive()
 	{
-		$user = $this->getUser();
 		$response = $this->forward('App\Controller\Api\ClubController::listActive');
 		$json = json_decode($response->getContent());
 		return $this->render('club/club-list.html.twig', [
-			'connectedUser' => $user,
 			'clubs' => $json
 		]);
 	}

@@ -23,14 +23,14 @@ use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\AccountSessionHistory;
 use App\Entity\Account;
 
-class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements PasswordAuthenticatedInterface
+class ApiAuthenticator extends AbstractAuthenticator
 {
     use TargetPathTrait;
-
-    public const LOGIN_ROUTE = 'app_login';
 
     private $entityManager;
     private $urlGenerator;
@@ -47,9 +47,18 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
     	$this->logger = $logger;
     }
 
+    public function start(Request $request, AuthenticationException $authException = null): Response
+    {
+    	$this->logger->debug('ApiAuthenticator.start(...)'.$request->getRequestUri());
+    	$url = $this->getLoginUrl($request);
+
+    	return new RedirectResponse($url);
+    }
+
+
     public function authenticate(Request $request): PassportInterface
     {
-        $login = $request->request->get('login', '');
+    	$login = $request->request->get('login', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $login);
 
@@ -64,10 +73,9 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
 
     public function supports(Request $request): bool
     {
-//    	$this->logger->info('LoginFormAuthenticator.supports(): '.('app_login' === $request->attributes->get('_route')
-//    		 && $request->isMethod('POST')));
-    	return 'app_login' === $request->attributes->get('_route')
-    		&& $request->isMethod('POST');
+    	return false;
+    	$this->logger->debug('ApiAuthenticator.supports(...): '.str_starts_with($request->getRequestUri(), "/api"));
+   		return str_starts_with($request->getRequestUri(), "/api");
     }
 
     public function getCredentials(Request $request)
@@ -85,7 +93,27 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
     	return $credentials;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider): ?Account
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    {
+    	// on success, let the request continue
+    	return null;
+    }
+
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    {
+
+    	$data = [
+    		// you may want to customize or obfuscate the message first
+    		'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+
+    		// or to translate this message
+    		// $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
+    	];
+
+    	return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+    }
+
+    /*public function getUser($credentials, UserProviderInterface $userProvider): ?Account
     {
     	$token = new CsrfToken('authenticate', $credentials['csrf_token']);
     	if (!$this->csrfTokenManager->isTokenValid($token)) {
@@ -105,17 +133,17 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
     	}
 
     	return $user;
-    }
+    }*/
 
-    public function getPassword($credentials): ?string
-    {
-    	$pwd = $credentials['password'];
-    	$user = $credentials['user'];
-    	if(substr($pwd, 0, 5) === 'sha1:') {
-    		return $this->checkCredentialsLegacy(substr($pwd, 5), $credentials, $user);
-    	}
-    	return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
-    }
+//     public function getPassword($credentials): ?string
+//     {
+//     	$pwd = $credentials['password'];
+//     	$user = $credentials['user'];
+//     	if(substr($pwd, 0, 5) === 'sha1:') {
+//     		return $this->checkCredentialsLegacy(substr($pwd, 5), $credentials, $user);
+//     	}
+//     	return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+//     }
 
 //     public function checkCredentials($credentials, UserInterface $user): bool
 //     {
@@ -126,54 +154,30 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
 //     	return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
 //     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
-    {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
-        }
+//     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+//     {
+//         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+//             return new RedirectResponse($targetPath);
+//         }
 
-        $sessionHst = new AccountSessionHistory();
-        $sessionHst->setAccount($token->getUser());
-        $sessionHst->setIp($request->getClientIp());
-        $sessionHst->setUserAgent($request->headers->get('User-Agent'));
-        $this->entityManager->persist($sessionHst);
-        $this->entityManager->flush();
+//         $sessionHst = new AccountSessionHistory();
+//         $sessionHst->setAccount($token->getUser());
+//         $sessionHst->setIp($request->getClientIp());
+//         $sessionHst->setUserAgent($request->headers->get('User-Agent'));
+//         $this->entityManager->persist($sessionHst);
+//         $this->entityManager->flush();
 
-        return new RedirectResponse($this->urlGenerator->generate('home'));
-        // For example:
-        //return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
-    }
-
-    //********************************************
-
-    protected function getLoginUrl(Request $request): string
-    {
-//     	if( str_starts_with($request->getRequestUri(), "/api")) {
-//     		$this->logger->info('RRRR '.$request->getRequestUri());
-//     		throw new \Exception();
-//     	}
-    	return $this->urlGenerator->generate(self::LOGIN_ROUTE);
-    }
+//         return new RedirectResponse($this->urlGenerator->generate('home'));
+//         // For example:
+//         //return new RedirectResponse($this->urlGenerator->generate('some_route'));
+//         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+//     }
 
     //********************************************
 
-    private function checkCredentialsLegacy($sha1, $credentials, Account $user)
-    {
-    	$salt = 'gh(-#fgbVD56ù@iutyxc +tyu_75^rrtyè6';
-    	$input = sha1($credentials['password'].$salt);
-    	if($input === $sha1) {
-    		$this->logger->info('Upgrade legacy password for user '.$user->getId());
-    		$newpwd = $this->passwordEncoder->encodePassword($user, $credentials['password']);
-    		//$this->logger->info('newpwd '.$newpwd);
-    		$user->setPassword($newpwd);
-    		$user = $this->entityManager->flush();
-    		return true;
-    	}
-    	$newpwd = $this->passwordEncoder->encodePassword($user, $credentials['password']);
-    	$this->logger->info('Bad legacy password for user '.$user->getId());
-    	//$this->logger->info('newpwd2: '.$newpwd);
-    	return false;
-    }
+//     protected function getLoginUrl(Request $request): string
+//     {
+//     	throw new \Exception(); // never call
+//     }
 
 }
