@@ -25,7 +25,7 @@ class RequestUtil
 		$this->violator = new ViolationUtil($translator);
 	}
 
-	public function validate(Request $request, string $model): object
+	public function validate(Request $request, string $model)
 	{
 		$data = $request->getContent();
 		if ( ! $data) {
@@ -38,12 +38,31 @@ class RequestUtil
 			throw new BadRequestHttpException('Invalid body, '.$e->getMessage().' - '.$data);
 		}
 
-		$errors = $this->validator->validate($object);
-
-		if ($errors->count()) {
-			throw new ViolationException($this->violator->build($errors));
+		if(is_array($object)) {
+			foreach($object as &$obj) {
+				$this->valid($obj);
+			}
+		} else {
+			$this->validOne($object);
 		}
 
 		return $object;
+	}
+
+	private function valid($object) {
+		if(is_array($object)) {
+			foreach($object as &$obj) {
+				$this->valid($obj);
+			}
+		} else {
+			$this->validOne($object);
+		}
+	}
+
+	private function validOne($object) {
+		$errors = $this->validator->validate($object);
+		if ($errors->count()) {
+			throw new ViolationException($this->violator->build($errors));
+		}
 	}
 }

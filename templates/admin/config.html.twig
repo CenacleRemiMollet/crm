@@ -1,0 +1,72 @@
+{% extends 'dashboard.html.twig' %}
+
+
+{% block stylesheets2 %}
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+	<br>
+    <div class="table-content">
+        <table class="table table-borded table-responsive table-striped " id="table-list">
+            <thead class="table-dark">
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+            	{% for property in properties %}
+                    <tr>
+                        <td>{{ property.key }}</td>
+                        <td>{{ property.value }}</td>
+                    </tr>
+           		
+            	{% endfor %}
+            </tbody>
+        </table>
+        <!-- <button class="btn btn-info" id="add"><span class="glyphicon glyphicon-plus-sign"></span>Add New Members</button> -->
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts_end_body %}
+	<script src="/vendor/bootstable/bootstable.min.js"></script>
+    <script>
+        $("#table-list").SetEditable({
+        	columnsEd: "1",
+        	onEdit: function(row) {
+        		var propKey = row[0].childNodes[1].innerHTML;
+        		var propValue = row[0].childNodes[3].innerHTML;
+        		$.ajax({
+        			type: 'POST',			
+        			url : '/api/config/properties',
+        			contentType: 'application/json',	
+        			data: JSON.stringify([{'key': propKey, 'value': propValue}]),
+        			dataType: 'json',
+        			cache: false,			
+        			success: function (response) {
+        				console.log('success', response);
+        				if(response.status) {
+        					
+        				}						
+        			},
+        			error: function(response) {
+        				//console.log('error', response.status, response);
+        			}
+				});
+        	},
+        	//onDelete: function(row) { console.log('onDelete', row); },
+        	//onBeforeDelete: function(row) { console.log('onBeforeDelete', row); }, 
+        	//onAdd: function(row) { console.log('onAdd', row); }
+        	
+        });
+        /*$('#add').click(function() {
+            rowAddNew('table-list', [1,2,3]);
+        });*/
+    </script>
+{% endblock %}

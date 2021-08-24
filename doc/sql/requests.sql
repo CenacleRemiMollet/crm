@@ -58,4 +58,13 @@ SELECT 'club', c.id, c.uuid, c.name
     OR remove_accents(lower(cles.discipline)) LIKE :query
     OR remove_accents(lower(cles.age_level)) LIKE :query
  GROUP BY 1, 2, 3
-    
+
+
+-- update ConfigurationProperty
+UPDATE configuration_property
+ SET property_value = 'mollet.remi@orange.frA',
+     updated_date = CURRENT_TIMESTAMP,
+     updater_user_id  = 1,
+     previous_value = (SELECT property_value FROM configuration_property WHERE property_key = 'club.contact.default.email')
+ WHERE configuration_property.property_key = 'club.contact.default.email'
+  AND configuration_property.property_value <> 'mollet.remi@orange.frA';

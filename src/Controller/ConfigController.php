@@ -26,7 +26,7 @@ class ConfigController extends AbstractController
 	{
 		$response = $this->forward('App\Controller\Api\ConfigController::getAllProperties');
 		$json = json_decode($response->getContent());
-		return $this->render('home.html.twig', [
+		return $this->render('admin/config.html.twig', [
 			'properties' => $json
 		]);
 	}

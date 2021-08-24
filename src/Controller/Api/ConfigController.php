@@ -17,6 +17,8 @@ use App\Exception\ViolationException;
 use primus852\ShortResponse\ShortResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Entity\ConfigurationProperty;
+use App\Model\ConfigurationPropertyUpdate;
+use App\Model\ConfigurationPropertyView;
 
 class ConfigController extends AbstractController
 {
@@ -35,7 +37,17 @@ class ConfigController extends AbstractController
 	 *     path="/api/config/properties",
 	 *     summary="List all configuration properties",
 	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Response(response="200", description="Successful"),
+	 *     @OA\Response(
+	 *         response="200",
+	 *         description="Successful",
+	 *         @OA\MediaType(
+	 *             mediaType="application/hal+json",
+	 *             @OA\Schema(
+	 *                 type="array",
+	 *                 @OA\Items(ref="#/components/schemas/ConfigurationProperty")
+	 *             )
+	 *         )
+	 *     ),
 	 *     @OA\Response(response="401", description="You are not authorized")
 	 * )
 	 */
@@ -44,13 +56,54 @@ class ConfigController extends AbstractController
 		$properties = $this->getDoctrine()->getManager()
 			->getRepository(ConfigurationProperty::class)
 			->findAll();
+		$propModels = array();
+		foreach ($properties as &$property) {
+			array_push($propModels, new ConfigurationPropertyView($property));
+		}
 
 		$hateoas = HateoasBuilder::create()->build();
-		$json = json_decode($hateoas->serialize($properties, 'json'));
+		$json = json_decode($hateoas->serialize($propModels, 'json'));
 
 		return new Response(json_encode($json), 200, array(
 			'Content-Type' => 'application/json'
 		));
 	}
 
+
+	/**
+	 * @Route("/api/config/properties", methods={"POST"}, name="api_configuration_properties-update")
+	 * @IsGranted("ROLE_ADMIN")
+	 * @OA\Post(
+	 *     tags={"Configuration"},
+	 *     path="/api/config/properties",
+	 *     summary="Update some properties",
+	 *     security = {{"basicAuth": {}}},
+	 *     @OA\RequestBody(
+	 *         @OA\MediaType(
+	 *            mediaType="application/json",
+	 *            @OA\Schema(
+	 *               type="object",
+	 *               ref="#/components/schemas/ConfigurationPropertyUpdate"
+	 *            )
+	 *        )
+	 *    ),
+	 *    @OA\Response(response="200", description="Successful"),
+	 *    @OA\Response(response="401", description="You are not authorized")
+	 * )
+	 */
+	public function updateProperties(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
+	{
+		$requestUtil = new RequestUtil($serializer, $translator);
+		try {
+			//$propertiesToUpdate = $requestUtil->validate($request, ConfigurationPropertyUpdate::class);
+			$propertiesToUpdate = $requestUtil->validate($request, 'App\Model\ConfigurationPropertyUpdate[]');
+		} catch (ViolationException $e) {
+			return ShortResponse::error("data", $e->getErrors())
+				->setStatusCode(Response::HTTP_BAD_REQUEST);
+		}
+
+		return new Response('{}', 200, array(
+			'Content-Type' => 'application/json'
+		));
+	}
 }
