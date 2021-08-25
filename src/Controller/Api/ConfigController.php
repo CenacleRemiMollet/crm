@@ -19,6 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Entity\ConfigurationProperty;
 use App\Model\ConfigurationPropertyUpdate;
 use App\Model\ConfigurationPropertyView;
+use App\Service\ConfigurationPropertyService;
 
 class ConfigController extends AbstractController
 {
@@ -87,7 +88,7 @@ class ConfigController extends AbstractController
 	 *            )
 	 *        )
 	 *    ),
-	 *    @OA\Response(response="200", description="Successful"),
+	 *    @OA\Response(response="204", description="Successful"),
 	 *    @OA\Response(response="401", description="You are not authorized")
 	 * )
 	 */
@@ -102,8 +103,16 @@ class ConfigController extends AbstractController
 				->setStatusCode(Response::HTTP_BAD_REQUEST);
 		}
 
-		return new Response('{}', 200, array(
+		$account = $this->getUser();
+		$propService = new ConfigurationPropertyService($this->getDoctrine()->getManager());
+		foreach($propertiesToUpdate as &$propertyToUpdate) {
+			$propService->update($account, $propertyToUpdate);
+		}
+
+		return new Response('{}', 204, array(
 			'Content-Type' => 'application/json'
 		));
 	}
+
+
 }

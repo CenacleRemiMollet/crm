@@ -29,6 +29,7 @@
             </tbody>
         </table>
         <!-- <button class="btn btn-info" id="add"><span class="glyphicon glyphicon-plus-sign"></span>Add New Members</button> -->
+        <br>
     </div>
 
 {% endblock %}
@@ -49,24 +50,23 @@
         			data: JSON.stringify([{'key': propKey, 'value': propValue}]),
         			dataType: 'json',
         			cache: false,			
-        			success: function (response) {
-        				console.log('success', response);
-        				if(response.status) {
-        					
-        				}						
+        			success: function (data) {
+        				//console.log('success', data);
         			},
-        			error: function(response) {
-        				//console.log('error', response.status, response);
+        			error: function(data) {
+        				//console.log('error', data);
         			}
 				});
         	},
         	//onDelete: function(row) { console.log('onDelete', row); },
-        	//onBeforeDelete: function(row) { console.log('onBeforeDelete', row); }, 
+        	onBeforeDelete: function(row) {
+        		console.log('onBeforeDelete', row);
+        		throw new Exception(); // to ignore delete
+        	}, 
         	//onAdd: function(row) { console.log('onAdd', row); }
-        	
         });
         /*$('#add').click(function() {
-            rowAddNew('table-list', [1,2,3]);
+            rowAddNewAndEdit('table-list', [1,2,3]);
         });*/
     </script>
 {% endblock %}
