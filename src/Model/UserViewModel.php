@@ -3,10 +3,12 @@
 namespace App\Model;
 
 use App\Entity\User;
+use JMS\Serializer\Annotation as Serializer;
+use OpenApi\Annotations as OA;
 
 /**
  * @Serializer\XmlRoot("user")
- * @OA\Schema(schema="UserViewModel")
+ * @OA\Schema(schema="UserBase")
  */
 class UserViewModel
 {
@@ -26,7 +28,7 @@ class UserViewModel
 	private $firstname;
 
 	/**
-	 * @OA\Property(type="object")
+	 * @OA\Property(ref="#/components/schemas/DateModel")
 	 */
 	private $birthday; 	// , items = @ OA \ Items(ref="#/components/schemas/DateModel")
 

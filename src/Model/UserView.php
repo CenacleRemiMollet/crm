@@ -2,12 +2,15 @@
 
 namespace App\Model;
 
+use Hateoas\Configuration\Annotation as Hateoas;
 use App\Entity\User;
+use JMS\Serializer\Annotation as Serializer;
+use OpenApi\Annotations as OA;
 
 /**
  * @Serializer\XmlRoot("user")
  * @Hateoas\Relation("self", href = "expr('/api/user/' ~ object.getUuid())")
- * @OA\Schema(schema="UserView")
+ * @OA\Schema(schema="User")
  */
 class UserView extends UserViewModel
 {
@@ -17,7 +20,7 @@ class UserView extends UserViewModel
 	private $login;
 
 	/**
-	 * @OA\Property(type="array", example="abcDEF654", items = @OA\Items(type="array", type="string"))
+	 * @OA\Property(type="array", example="abcDEF654", @OA\Items(type="string"))
 	 */
 	private $roles;
 

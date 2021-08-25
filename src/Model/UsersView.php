@@ -7,7 +7,7 @@ use OpenApi\Annotations as OA;
 
 /**
  * @Serializer\XmlRoot("users")
- * @OA\Schema(schema="UsersView")
+ * @OA\Schema(schema="Users")
  */
 class UsersView
 {
@@ -17,7 +17,7 @@ class UsersView
 	private $pagination;
 
 	/**
-	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/UserView"))
+	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/User"))
 	 */
 	private $users;
 

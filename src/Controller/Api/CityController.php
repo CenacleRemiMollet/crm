@@ -43,7 +43,17 @@ class CityController extends AbstractController
 	 *         name="q",
 	 *         required=true
 	 *     ),
-	 *     @OA\Response(response="200", description="Successful")
+	 *     @OA\Response(
+	 *         response="200",
+	 *         description="Successful",
+	 *         @OA\MediaType(
+	 *             mediaType="application/hal+json",
+	 *             @OA\Schema(
+	 *                 type="array",
+	 *                 @OA\Items(ref="#/components/schemas/City")
+	 *             )
+	 *         )
+	 *     )
 	 * )
 	 */
 	public function searchByCity(Request $request)

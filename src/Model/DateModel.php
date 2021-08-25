@@ -1,6 +1,9 @@
 <?php
 namespace App\Model;
 
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
+use OpenApi\Annotations as OA;
 
 /**
  * @Serializer\XmlRoot("date")
@@ -61,7 +64,7 @@ class DateModel
 	{
 		return $this->iso8601;
 	}
-	
+
 
 }
 

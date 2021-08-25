@@ -2,6 +2,9 @@
 namespace App\Model;
 
 use App\Util\DateIntervalUtils;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
+use OpenApi\Annotations as OA;
 
 /**
  * @Serializer\XmlRoot("birthday")

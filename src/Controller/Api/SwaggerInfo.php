@@ -17,24 +17,13 @@ use OpenApi\Annotations as OA;
  *     url="http://www.apache.org/licenses/LICENSE-2.0.txt"
  *   )
  * )
+ *
  * @OA\SecurityScheme(
- *     type="oauth2",
- *     name="main_auth",
- *     securityScheme="main_auth",
- *     @OA\Flow(
- *         flow="implicit",
- *         authorizationUrl="http://petstore.swagger.io/oauth/dialog",
- *         scopes={
- *             "write:pets": "modify pets in your account",
- *             "read:pets": "read your pets",
- *         }
- *     )
- * )
- * @OA\SecurityScheme(
- *     type="apiKey",
- *     in="header",
- *     securityScheme="api_key",
- *     name="api_key"
+ *     name="authorization",
+ *     type="http",
+ *     in="query",
+ *     securityScheme="http",
+ *     scheme="basic"
  * )
  */
 class SwaggerInfo {}
