@@ -124,7 +124,7 @@ class ClubController extends AbstractController
 	 *         response="200",
 	 *         description="Successful",
 	 *         @OA\MediaType(mediaType="image/gif"),
-	 *         @OA\MediaType(mediaType=" image/jpeg"),
+	 *         @OA\MediaType(mediaType="image/jpeg"),
 	 *         @OA\MediaType(mediaType="application/octet-stream")
 	 *     )
 	 * )

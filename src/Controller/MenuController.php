@@ -5,6 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\MenuItem;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Entity\ConfigurationProperty;
+use App\Service\ConfigurationPropertyService;
 
 
 class MenuController extends AbstractController
@@ -12,6 +14,9 @@ class MenuController extends AbstractController
 
 	public function viewMenu(SessionInterface $session)
 	{
+		$propService = new ConfigurationPropertyService($this->getDoctrine()->getManager());
+		$menuProperties = $propService->findStartsWithToMap('menu.');
+
 		$club = $session->get('club-selected');
 		$lessons = $session->get('lessons-selected');
 // 		$menuItems = $this->getDoctrine()->getManager()
@@ -33,9 +38,9 @@ class MenuController extends AbstractController
 			'modules/menu.html.twig',
 			[
 				'club' => $club,
-				'lessons' => $lessons
+				'lessons' => $lessons,
+				'menuProperties' => $menuProperties
 			]
-			//['menuItems' => $filteredMenuItems, 'club' => $club]
 		);
 	}
 }

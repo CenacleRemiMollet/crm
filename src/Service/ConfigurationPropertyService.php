@@ -29,6 +29,18 @@ class ConfigurationPropertyService
 		$this->em = $em;
 	}
 
+	public function findStartsWithToMap($prefix)
+	{
+		$properties = $this->em->getRepository(ConfigurationProperty::class)
+			->findByStartsWith($prefix);
+		$map = array();
+		foreach($properties as &$property) {
+			//array_push($map[$property->getPropertyKey()], $property->getPropertyValue());
+			$map[$property->getPropertyKey()] = $property->getPropertyValue();
+		}
+		return $map;
+	}
+
 	public function update(Account $modifierAccount, ConfigurationPropertyUpdate $propUpdate) :ConfigurationProperty
 	{
 		$properties = $this->em
