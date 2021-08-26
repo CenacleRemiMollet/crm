@@ -1,4 +1,14 @@
-name,child_1,child_2,child_3,adult
+discipline,category,price,description,description2,ismain
+taekwondo,child,185,child_1,,true
+taekwondo,child,180,child_1,,true
+taekwondo,child,175,child_1,,true
+taekwondo,adult,175,,true
+hapkido,child,145,,true
+hapkido,child,135,,true
+hapkido,child,125,,true
+hapkido,child,195,,true
+
+
 taekwondo,185,180,175,195
 hapkido,145,135,125,195
 baby taekwondo,95,90,85,

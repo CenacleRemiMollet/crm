@@ -31,6 +31,20 @@ class MediaManager
 		return new Media(null, $this->projectPath);
 	}
 
+	public function upload($uploadDir, $inFile, $category, $filename)
+	{
+		$folder = $this->getCategoryFolder($category);
+		$newfname = $folder.DIRECTORY_SEPARATOR.$basename.strtolower(substr($url, strrpos($url, '.')));
+
+		try {
+			$inFile->move($uploadDir, $filename);
+		} catch (FileException $e){
+			$this->logger->error('failed to upload image: ' . $e->getMessage());
+			throw new FileException('Failed to upload file');
+		}
+	}
+
+
 	public function save($inFile, $category, $basename)
 	{
 		$folder = $this->getCategoryFolder($category);

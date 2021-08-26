@@ -20,6 +20,11 @@
                     <a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.sign up conditions{% endtrans %}</li></a>
                     <a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.prices{% endtrans %}</li></a>
                     <a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.hours{% endtrans %}</li></a>
+                   	{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CLUB_MANAGER') %}
+                    	<div class="dropdown-divider"></div>
+                    	<a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.configure-ui{% endtrans %}</li></a>
+                    	<a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.configure-details{% endtrans %}</li></a>
+                     {% endif %}
                  </div>
             </div> 
         {% endif %}
@@ -74,7 +79,9 @@
                     </button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="#"><li class="link">{% trans %}menu.signin_signup.me{% endtrans %}</li></a>
-                        <a class="dropdown-item" href="/config"><li class="link">{% trans %}menu.signin_signup.config{% endtrans %}</li></a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        	<a class="dropdown-item" href="/config"><li class="link">{% trans %}menu.signin_signup.config{% endtrans %}</li></a>
+                        {% endif %}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/logout"><li class="link">{% trans %}menu.signin_signup.logout{% endtrans %}</li></a>
                     </div>
@@ -82,49 +89,5 @@
             </div>
         {% endif %}
 	</ul>
-	
-{#
-    <ul class="nav-links">
-        {% if club is defined and club.uuid is defined %}
-            <div class="dropdown-4">
-                <button><li class="link"><a href="#"><img src="/assets/img/aim.png" class="icon">{% trans  with {'%name%': club.name} %}menu.club name{% endtrans %}<i class="fas fa-angle-down"></i></a></li></button>
-                <div class="content">
-                    <a href="#"><li class="link">{% trans %}menu.club.sign up conditions{% endtrans %}</li></a>
-                    <a href="#"><li class="link">{% trans %}menu.club.prices{% endtrans %}</li></a>
-                    <a href="#"><li class="link">{% trans %}menu.club.hours{% endtrans %}</li></a>
-                </div>
-            </div>
-        {% endif %}
-
-        <li class="link"><a href="/master"><img src="/assets/img/icon_master.png" class="icon"> {% trans %}menu.the master{% endtrans %}</a></li>
-
-        <div class="dropdown-1">
-            <button><li class="link"><img src="/assets/img/belt.png" class="icon">{% trans %}menu.disciplines{% endtrans %}<i class="fas fa-angle-down"></i></li></button>
-            <div class="content">
-            	{% if lessons %}
-                    {% set disciplines = lessons|map(l => l.discipline|lower) %}
-                {% else %}
-                	{% set disciplines = null %}
-                {% endif %}
-                <a href="/taekwonkido"><li class="link dropdown-item"> {% trans %}discipline.taekwonkido{% endtrans %}</li> {% if disciplines is not null and 'taekwonkido' not in disciplines %}****{% endif %}</a>
-                <a href="/taekwondo"><li class="link dropdown-item"> {% trans %}discipline.taekwondo{% endtrans %}</li> {% if disciplines is not null and 'taekwondo' not in disciplines %}****{% endif %}</a>
-                <a href="/hapkido"><li class="link dropdown-item"> {% trans %}discipline.hapkido{% endtrans %}</li> {% if disciplines is not null and 'hapkido' not in disciplines %}****{% endif %}</a>
-                <a href="/sinkido"><li class="link dropdown-item"> {% trans %}discipline.sinkido self defense system 2 lines{% endtrans %}</li> {% if disciplines is not null and 'sinkido' not in disciplines %}****{% endif %}</a>
-            </div>
-        </div>
- 
-        <li class="link"><a href="/club"><img src="/assets/img/pin.png" class="icon">{% trans %}menu.club list{% endtrans %}</a></li>
-        <!-- <li class="link"><a href="#"><img src="/assets/img/gallery.png" class="icon">{% trans %}menu.gallery{% endtrans %}</a></li> -->
-        <li class="link"><a href="#"><img src="/assets/img/question.png" class="icon">{% trans %}menu.contact{% endtrans %}</a></li>
-
-        <div class="dropdown-2">
-            <button><li class="link"><img src="/assets/img/profile.png" class="icon">{% trans %}menu.signin signup{% endtrans %}<i class="fas fa-angle-down"></i></li></button>
-            <div class="content">
-                <a href="#"><li class="link">{% trans %}menu.signin_signup.signin{% endtrans %}</li></a>
-                <a href="#"><li class="link">{% trans %}menu.signin_signup.signup{% endtrans %}</li></a>
-            </div>
-        </div>
-    </ul>
-    #}
-    
+  
 </nav>
