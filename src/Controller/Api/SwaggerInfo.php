@@ -25,5 +25,14 @@ use OpenApi\Annotations as OA;
  *     securityScheme="http",
  *     scheme="basic"
  * )
+ *
+ * @OA\Parameter(
+ *     description="ClientId",
+ *     in="header",
+ *     name="X-ClientId",
+ *     required=true,
+ *     @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")
+ * )
+
  */
 class SwaggerInfo {}

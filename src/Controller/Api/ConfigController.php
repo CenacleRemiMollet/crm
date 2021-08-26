@@ -78,6 +78,7 @@ class ConfigController extends AbstractController
 	 *     tags={"Configuration"},
 	 *     path="/api/config/properties",
 	 *     summary="Update some properties",
+	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
 	 *     security = {{"basicAuth": {}}},
 	 *     @OA\RequestBody(
 	 *         @OA\MediaType(

@@ -11,7 +11,6 @@
 
 	<br>
     <div class="table-content">
-        <input type="hidden" name="token" value="{{ csrf_token('update-config-property') }}"/>
         <table class="table table-borded table-responsive table-striped " id="table-list">
             <thead class="table-dark">
                 <tr>
@@ -25,7 +24,6 @@
                         <td>{{ property.key }}</td>
                         <td>{{ property.value }}</td>
                     </tr>
-           		
             	{% endfor %}
             </tbody>
         </table>
@@ -51,6 +49,7 @@
         			data: JSON.stringify([{'key': propKey, 'value': propValue}]),
         			dataType: 'json',
         			cache: false,			
+        			beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
         			success: function (data) {
         				//console.log('success', data);
         			},

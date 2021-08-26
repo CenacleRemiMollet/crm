@@ -128,6 +128,7 @@ class UserController extends AbstractController
 	 *     summary="Create an user",
 	 *     tags={"User"},
 	 *     security = {{"basicAuth": {}}},
+	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
      *     @OA\RequestBody(
      *         description="User object that needs to be added",
      *         required=true,

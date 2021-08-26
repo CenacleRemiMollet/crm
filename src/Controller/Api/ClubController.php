@@ -7,6 +7,7 @@ use Hateoas\HateoasBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\ClubLocation;
 use OpenApi\Annotations as OA;
@@ -109,7 +110,7 @@ class ClubController extends AbstractController
 	 * @OA\Get(
 	 *     tags={"Club"},
 	 *     path="/api/club/{uuid}/logo",
-	 *     summary="Give a image logo club",
+	 *     summary="Give an image logo club",
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
 	 *         in="path",
@@ -138,7 +139,8 @@ class ClubController extends AbstractController
 	 * @OA\Post(
 	 *     tags={"Club"},
 	 *     path="/api/club/{uuid}/logo",
-	 *     summary="Upload a image logo club",
+	 *     summary="Upload an image logo club",
+	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
 	 *         in="path",
@@ -152,7 +154,7 @@ class ClubController extends AbstractController
 	 *         description="Logo",
 	 *         @OA\MediaType(
 	 *            mediaType="multipart/form-data",
-	 *            @OA\Schema(@OA\Property(property="file", type="string", format="binary"))
+	 *            @OA\Schema(@OA\Property(property="logo", type="string", format="binary"))
 	 *         )
 	 *     ),
 	 *     @OA\Response(
@@ -163,12 +165,14 @@ class ClubController extends AbstractController
 	 */
 	public function uploadLogo(Request $request, $uuid, KernelInterface $appKernel, LoggerInterface $logger)
 	{
-		$token = $request->get("token");
-		if (!$this->isCsrfTokenValid('upload', $token)) {
-			$logger->info("CSRF failure");
-			return new Response("Operation not allowed",  Response::HTTP_BAD_REQUEST,
-				['content-type' => 'text/plain']);
+		$clubs = $this->getDoctrine()->getManager()
+			->getRepository(Club::class)
+			->findBy(['uuid' => $uuid]);
+		if(count($clubs) == 0) {
+			return new Response("Club not found",
+				Response::HTTP_NOT_FOUND, ['content-type' => 'text/plain']);
 		}
+
 
 		$file = $request->files->get('logo');
 		if (empty($file)) {
@@ -176,20 +180,22 @@ class ClubController extends AbstractController
 				Response::HTTP_UNPROCESSABLE_ENTITY, ['content-type' => 'text/plain']);
 		}
 
-		//$filename = $file->getClientOriginalName();
-		//$uploader->upload($uploadDir, $file, $filename);
-		//$mediaManager = new MediaManager($appKernel, $logger);
-		//$mediaManager->upload($uploadDir, $inFile, $category, $filename)
+		$mediaManager = new MediaManager($appKernel, $logger);
+		$newFileName = $mediaManager->upload('club', $uuid, $file);
+		$club = $clubs[0];
+		if($newFileName !== $club->getLogo()) {
+			$previousFileName = $club->getLogo();
+			$club->setLogo($newFileName);
+			$this->getDoctrine()->getManager()->flush();
+
+			$mediaManager->delete('club', $previousFileName);
+		}
 
 		return new Response("File uploaded",  Response::HTTP_OK,
 			['content-type' => 'text/plain']);
-
-
-		//$media = $mediaManager->find('club', $uuid);
-		//return new BinaryFileResponse($media->getFileOrDefault('assets/clubs/defaultlogo.gif'));
 	}
 
-		/**
+	/**
 	 * @Route("/api/club/{uuid}/lessons", name="api_club_lessons", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
 	 *     tags={"Club"},

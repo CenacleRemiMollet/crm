@@ -32,7 +32,7 @@ class ClubSearchController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/clubsearch/zc/{zipcode}", name="api_club_search-zipcode", methods={"GET"})
+	 * @Route("/api/clubsearch/zc/{zipcode}", name="api_club_search-zipcode", methods={"GET"}, requirements={"zipcode"="[0-9]{4-7}"})
 	 * @OA\Get(
 	 *     tags={"Club"},
 	 *     path="/api/clubsearch/zc/{zipcode}",
@@ -45,7 +45,7 @@ class ClubSearchController extends AbstractController
      *         @OA\Schema(
      *             format="string",
      *             type="string",
-     *             pattern="[0-_]{4,7}"
+     *             pattern="[0-9]{4,7}"
      *         )
      *     ),
 	 *     @OA\Parameter(

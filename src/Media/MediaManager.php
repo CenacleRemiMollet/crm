@@ -31,19 +31,21 @@ class MediaManager
 		return new Media(null, $this->projectPath);
 	}
 
-	public function upload($uploadDir, $inFile, $category, $filename)
+	public function upload($category, $uuid, $inFile)
 	{
+		$this->logger->debug('upload: '.$inFile->getClientOriginalName());
 		$folder = $this->getCategoryFolder($category);
-		$newfname = $folder.DIRECTORY_SEPARATOR.$basename.strtolower(substr($url, strrpos($url, '.')));
+		$newfname = $uuid.'.'.strtolower(pathinfo($inFile->getClientOriginalName(), PATHINFO_EXTENSION));
+		$this->logger->debug('$newfname: '.$newfname);
 
 		try {
-			$inFile->move($uploadDir, $filename);
+			$inFile->move($folder, $newfname);
 		} catch (FileException $e){
-			$this->logger->error('failed to upload image: ' . $e->getMessage());
+			$this->logger->error('failed to upload image: '.$e->getMessage());
 			throw new FileException('Failed to upload file');
 		}
+		return $newfname;
 	}
-
 
 	public function save($inFile, $category, $basename)
 	{
@@ -100,6 +102,12 @@ class MediaManager
 		} catch(\Exception $e) {
 			echo $e->getMessage();
 		}
+	}
+
+	public function delete($category, $fileName)
+	{
+		$folder = $this->getCategoryFolder($category);
+		return unlink($folder.DIRECTORY_SEPARATOR.$fileName);
 	}
 
 	//***************************************************
