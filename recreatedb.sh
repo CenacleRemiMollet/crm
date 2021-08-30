@@ -13,23 +13,32 @@ dbcredentials=`sed 's/.*mysql:\/\/\(.*\)@.*/\1/' <<< $dburl`
 dbuser=`cut -d: -f1 <<< $dbcredentials`
 dbpassword=`cut -d: -f2 <<< $dbcredentials`
 
-function runSql() {
+function runSqlScript() {
   echo ''
-  echo Running SQL scripts $1
+  echo Running SQL scripts: $1
   echo ''
 	mysql --user=$dbuser --password=$dbpassword -D $dbname < doc/sql/$1
 }
 
-runSql function_unaccent.sql
+function runSqlQuery() {
+  echo ''
+  echo Running SQL query: $1
+  echo ''
+	echo "$1" | mysql --user=$dbuser --password=$dbpassword -D $dbname
+}
+
+runSqlQuery "ALTER DATABASE $dbname CHARACTER SET utf8 COLLATE utf8_general_ci;"
+
+runSqlScript function_unaccent.sql
 
 php bin/console make:migration
 php bin/console doctrine:migrations:migrate --no-interaction
 # php bin/console doctrine:fixtures:load --no-interaction --group=MenuItemFixtures
 php bin/console cache:clear
 
-runSql schema-update.sql
-runSql cities.sql
-runSql configuration_properties.sql
+runSqlScript schema-update.sql
+runSqlScript cities.sql
+runSqlScript configuration_properties.sql
 
 echo ''
 echo 'To add fake values :'

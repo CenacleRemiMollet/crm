@@ -41,6 +41,7 @@ class UserController extends AbstractController
 	 * @Route("/api/user", name="api_user_list-all", methods={"GET"})
 	 * @IsGranted("ROLE_TEACHER")
 	 * @OA\Get(
+	 *     operationId="listAllUsers",
 	 *     path="/api/user",
 	 *     summary="List of users",
 	 *     tags={"User"},
@@ -124,6 +125,7 @@ class UserController extends AbstractController
  	 * @Route("/api/user", name="api_user_create-one", methods={"POST"})
 	 * @IsGranted("ROLE_CLUB_MANAGER")
 	 * @OA\Post(
+	 *     operationId="getUser",
 	 *     path="/api/user",
 	 *     summary="Create an user",
 	 *     tags={"User"},
@@ -179,6 +181,7 @@ class UserController extends AbstractController
 	/**
 	 * @Route("/api/user/me", name="api_user_me", methods={"GET"})
 	 * @OA\Get(
+	 *     operationId="getUserMe",
 	 *     path="/api/user/me",
 	 *     summary="Gives informations about me",
 	 *     tags={"User"},
@@ -195,26 +198,10 @@ class UserController extends AbstractController
 	public function me()
 	{
 		$grantedRoles = array();
-// 		if($this->isGranted('ROLE_SUPER_ADMIN')) {
-// 			array_push($grantedRoles, 'ROLE_SUPER_ADMIN');
-// 		}
-		if($this->isGranted('ROLE_ADMIN')) {
-			array_push($grantedRoles, 'ROLE_ADMIN');
-		}
-		if($this->isGranted('ROLE_CLUB_MANAGER')) {
-			array_push($grantedRoles, 'ROLE_CLUB_MANAGER');
-		}
-		if($this->isGranted('ROLE_TEACHER')) {
-			array_push($grantedRoles, 'ROLE_TEACHER');
-		}
-		if($this->isGranted('ROLE_STUDENT')) {
-			array_push($grantedRoles, 'ROLE_STUDENT');
-		}
-		if($this->isGranted('ROLE_USER')) {
-			array_push($grantedRoles, 'ROLE_USER');
-		}
-		if($this->isGranted('IS_AUTHENTICATED_ANONYMOUSLY')) {
-			array_push($grantedRoles, 'IS_AUTHENTICATED_ANONYMOUSLY');
+		foreach (\Roles::ROLES as &$role) {
+			if($this->isGranted($role)) {
+				array_push($grantedRoles, $role);
+			}
 		}
 
 		$account = $this->getUser();

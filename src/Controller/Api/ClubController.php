@@ -17,6 +17,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Entity\ClubLesson;
 use App\Model\ClubLessonView;
+use App\Model\ClubCreate;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 class ClubController extends AbstractController
@@ -25,6 +27,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club", name="api_club_list-active", methods={"GET"})
 	 * @OA\Get(
+	 *     operationId="getActiveClubList",
 	 *     tags={"Club"},
 	 *     path="/api/club",
 	 *     summary="List all active clubs",
@@ -58,6 +61,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club/{uuid}", name="api_club_one", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
+	 *     operationId="getClub",
 	 *     tags={"Club"},
 	 *     path="/api/club/{uuid}",
 	 *     summary="Give a club",
@@ -106,8 +110,79 @@ class ClubController extends AbstractController
 	}
 
 	/**
+	 * @Route("/api/club/", name="api_club_create", methods={"POST"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 * @IsGranted({"ROLE_ADMIN", "ROLE_CLUB_MANAGER"})
+	 * @OA\Post(
+	 *     operationId="createClub",
+	 *     tags={"Club"},
+	 *     path="/api/club",
+	 *     summary="Create a club",
+	 *     security = {{"basicAuth": {}}},
+	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
+     *     @OA\RequestBody(
+     *         description="User object that needs to be added",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ClubCreate"),
+     *     ),
+	 *     @OA\Response(
+	 *         response="200",
+	 *         description="Successful"
+	 *     )
+	 * )
+	 */
+	public function create(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
+	{
+		$requestUtil = new RequestUtil($serializer, $translator);
+		try {
+			$clubToCreate = $requestUtil->validate($request, ClubCreate::class);
+		} catch (ViolationException $e) {
+			return ShortResponse::error("data", $e->getErrors())
+				->setStatusCode(Response::HTTP_BAD_REQUEST);
+		}
+
+		$account = $this->getUser();
+
+		if($this->isGranted(\Roles::ROLE_ADMIN)) {
+			// ok
+		} elseif($this->isGranted(\Roles::ROLE_CLUB_MANAGER)) {
+			//$account
+		} else {
+			return ShortResponse::error("role", "")
+				->setStatusCode(Response::HTTP_FORBIDDEN);
+		}
+
+		// 	TODO
+	}
+
+	/**
+	 * @Route("/api/club/{uuid}", name="api_club_update", methods={"PUT"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 * @OA\Put(
+	 *     operationId="updateClub",
+	 *     tags={"Club"},
+	 *     path="/api/club/{uuid}",
+	 *     summary="Update a club",
+	 *     security = {{"basicAuth": {}}},
+	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
+     *     @OA\RequestBody(
+     *         description="User object that needs to be added",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ClubUpdate"),
+     *     ),
+	 *     @OA\Response(
+	 *         response="200",
+	 *         description="Successful"
+	 *     )
+	 * )
+	 */
+	public function update(Request $request, $uuid, SerializerInterface $serializer, TranslatorInterface $translator)
+	{
+		// 	TODO
+	}
+
+	/**
 	 * @Route("/api/club/{uuid}/logo", name="api_club_one_logo", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
+	 *     operationId="getClubLogo",
 	 *     tags={"Club"},
 	 *     path="/api/club/{uuid}/logo",
 	 *     summary="Give an image logo club",
@@ -137,9 +212,11 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club/{uuid}/logo", name="api_club_upload_logo", methods={"POST"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Post(
+	 *     operationId="updateClubLogo",
 	 *     tags={"Club"},
 	 *     path="/api/club/{uuid}/logo",
 	 *     summary="Upload an image logo club",
+	 *     security = {{"basicAuth": {}}},
 	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
@@ -149,7 +226,7 @@ class ClubController extends AbstractController
 	 *         @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")
 	 *     ),
 	 *     @OA\RequestBody(
-	 *         request="Product",
+	 *         request="Logo",
 	 *         required=true,
 	 *         description="Logo",
 	 *         @OA\MediaType(
@@ -198,6 +275,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/api/club/{uuid}/lessons", name="api_club_lessons", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
+	 *     operationId="getClubLessons",
 	 *     tags={"Club"},
 	 *     path="/api/club/{uuid}/lessons",
 	 *     summary="Give some hours",

@@ -21,14 +21,14 @@ class ClubLocation
 	 * @ORM\Column(type="integer")
 	 */
 	private $id;
-	
+
 	/**
 	 * @ORM\Column(type="string", length=64)
 	 */
 	private $uuid;
-	
+
 	/**
-	 * @ORM\Column(type="string", length=255)
+	 * @ORM\Column(type="string", length=128)
 	 */
 	private $name;
 
@@ -43,7 +43,7 @@ class ClubLocation
 	private $city;
 
 	/**
-	 * @ORM\Column(type="string", length=255)
+	 * @ORM\Column(type="string", length=20)
 	 */
 	private $zipcode;
 
@@ -72,19 +72,19 @@ class ClubLocation
 	{
 		return $this->id;
 	}
-	
+
 	public function getUuid(): ?string
 	{
 		return $this->uuid;
 	}
-	
+
 	public function setUuid(string $uuid): self
 	{
 		$this->uuid = $uuid;
-		
+
 		return $this;
 	}
-	
+
 	public function getName(): ?string
 	{
 		return $this->name;

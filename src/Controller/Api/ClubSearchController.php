@@ -34,6 +34,7 @@ class ClubSearchController extends AbstractController
 	/**
 	 * @Route("/api/clubsearch/zc/{zipcode}", name="api_club_search-zipcode", methods={"GET"}, requirements={"zipcode"="[0-9]{4-7}"})
 	 * @OA\Get(
+	 *     operationId="searchAroundWithdistance",
 	 *     tags={"Club"},
 	 *     path="/api/clubsearch/zc/{zipcode}",
 	 *     summary="Search all clubs around a zipcode with a distance in kilometers",

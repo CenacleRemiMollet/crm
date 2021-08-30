@@ -14,6 +14,7 @@ rem CRM_DATABASE_URL = mysql://root:@127.0.0.1:3306/my_db
 for %%a in (%CRM_DATABASE_URL:/= %) do set db_name=%%a
 rem db_name = my_db
 
+call:mysqlQuery "ALTER DATABASE %db_name% CHARACTER SET utf8 COLLATE utf8_general_ci;"
 
 call:mysqlScript function_unaccent.sql
 
@@ -44,7 +45,12 @@ goto:eof
 
 :mysqlScript
 echo.
-echo Running SQL scripts %~1
-echo.
+echo Running SQL scripts: %~1
 mysql -u root --password= -D %db_name% < doc\sql\%~1
+goto:eof
+
+:mysqlQuery
+echo.
+echo Running SQL query: %~1
+echo %~1 | mysql -u root --password= -D %db_name%
 goto:eof

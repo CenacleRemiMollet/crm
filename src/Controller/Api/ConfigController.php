@@ -34,6 +34,7 @@ class ConfigController extends AbstractController
 	 * @Route("/api/config/properties", methods={"GET"}, name="api_configuration_properties-get")
 	 * @IsGranted("ROLE_ADMIN")
 	 * @OA\Get(
+	 *     operationId="getAllProperties",
 	 *     tags={"Configuration"},
 	 *     path="/api/config/properties",
 	 *     summary="List all configuration properties",
@@ -75,6 +76,7 @@ class ConfigController extends AbstractController
 	 * @Route("/api/config/properties", methods={"POST"}, name="api_configuration_properties-update")
 	 * @IsGranted("ROLE_ADMIN")
 	 * @OA\Post(
+	 *     operationId="updateProperties",
 	 *     tags={"Configuration"},
 	 *     path="/api/config/properties",
 	 *     summary="Update some properties",
