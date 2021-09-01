@@ -4,9 +4,14 @@ body{
     padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6, .btn{
+h1, h2, h3, h4, h5, h6 {
     font-family: 'Josefin Sans', sans-serif;
     text-transform: uppercase;
+}
+
+.btn {
+    padding: 0;
+    margin: 0;
 }
 
 .btn a {
@@ -47,30 +52,29 @@ p{
 
 /* START BANNER */
 
-.banner {
+.bannerClub {
     width: 100%;
+    height: 350px;
     margin: 100px 0;
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-image: url("img/club.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
 
-.banner img {
-    width: 100%;
-    z-index: 1;
-}
-
-.banner h1 {
-    position: absolute;
-    z-index: 2;
+.bannerClub h1 {
     font-size: 4.5em;
     -webkit-text-stroke: 3px #fff;
     color: transparent;
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     letter-spacing: 4px;
+    text-align: center;
 }
+
+/* END BANNER */
 
 main {
     width: 1400px;
@@ -165,6 +169,10 @@ main .sixth {
     margin-top: 50px;
 }
 
+main .seven {
+    margin-top: 75px;
+}
+
 main .second .line {
     border-bottom: 3px solid #515151;
     border-radius: 50px;
@@ -198,6 +206,7 @@ main .fourth {
 
 main .fourth .plus,
 main .fifth .plus {
+    font-family: sans-serif;
     font-size: 6em;
     font-weight: bold;
     color: #515151;
@@ -207,6 +216,8 @@ main .fifth .plus {
 main .fourth .price {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     box-shadow: 2px 3px 7px #9e9e9e;
     border-radius: 15px;
     align-items: center;
@@ -220,11 +231,13 @@ main .fourth .infoHover ul {
     margin: 0;
 }
 
-main .fourth .infoHover ul li {
+main .fourth .infoHover ul li,
+.fourth .modal-body ul li {
     list-style: initial;
 }
 
-main .fourth .infoHover p {
+main .fourth .infoHover p,
+.fourth .modal-body p {
     font-weight: bold;
 }
 
@@ -232,18 +245,17 @@ main .fourth .info p {
     margin: 0;
 }
 
-main .fourth .info .front {
+main .fourth .info .front,
+.fourth .btn .front {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: 0.2s ease-in-out;
 }
 
 main .fourth .infoHover {
     display: none;
     visibility: hidden;
-    transition: 0.5s ease-in-out;
 }
 
 main .fourth .info:hover {
@@ -252,7 +264,7 @@ main .fourth .info:hover {
     padding: 25px;
 }
 
-main .fourth .info:hover>.front {
+ main .fourth .info:hover>.front {
     display: none;
     visibility: hidden;
 }
@@ -262,6 +274,34 @@ main .fourth .info:hover>.infoHover {
     visibility: visible;
 }
 
+main .fourth .btn {
+    display: none;
+    visibility: hidden;
+    padding: 0;
+}
+
+main .fourth .modal {
+    top: 25vh;
+}
+
+main .fourth .modal-header {
+    padding: 0 1rem;
+    border: none;
+}
+
+main .fourth .modal-body ul {
+    padding: 0 1rem;
+}
+
+main .fourth .close {
+    font-size: 2.5em;
+}
+
+.fourth .btn.focus, 
+.fourth .btn:focus {
+    box-shadow: none;
+}
+
 main .fourth .number {
     font-size: 4em;
     font-weight: bold;
@@ -269,7 +309,7 @@ main .fourth .number {
     color: #515151;
 }
 
-main .fourth .text {
+main .fourth .text{
     font-weight: bold;
     margin-top: 10px;
 }
@@ -290,12 +330,6 @@ main .fifth {
     margin: 50px auto 0 auto;
 }
 
-main .fifth .cours {
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
-}
-
 main .fifth .midTitle {
     display: flex;
     flex-direction: column;
@@ -308,6 +342,13 @@ main .fifth .midTitle h3 {
     margin-top: 25px;
 }
 
+main .fifth .cours {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
 main .fifth .tarifs {
     display: flex;
     flex-direction: column;
@@ -316,6 +357,8 @@ main .fifth .tarifs {
     border-radius: 15px;
     padding: 20px 15px;
     width: 250px;
+    flex-wrap: wrap;
+    margin: 0 25px 50px 25px;
 }
 
 main .cours .tarifs .id {
@@ -394,7 +437,7 @@ main .sixth .board {
     box-shadow: 2px 3px 7px #9e9e9e;
     border-radius: 0 0 15px 15px;
     width: 700px;
-    margin: 50px auto;
+    margin: 50px auto 0 auto;
 }
 
 main .sixth .board .boardLeft,
@@ -415,8 +458,12 @@ main .sixth .board h4 {
     text-align: center;
     margin: 0;
     width: 100%;
-    padding: 20px 0 ;
+    height: 100px;
+    padding: 20px 20px ;
     background-color: #D1D1D1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 main .sixth .board .boardLeft ul,
@@ -440,10 +487,6 @@ main .seven .bloc .title .line {
     width: 100%;
 }
 
-main .seven {
-    margin: 100px auto;
-}
-
 /* PLANNING COURS */
 
 main .seven .board {
@@ -451,7 +494,7 @@ main .seven .board {
     justify-content: center;
     box-shadow: 2px 3px 7px #9e9e9e;
     border-radius: 0 0 15px 15px;
-    margin: 50px auto;
+    margin: 50px auto 250px auto;
 }
 
 main .seven .board h5,
@@ -504,6 +547,10 @@ main .seven .board .jour .doubleCase .case {
     width: 50%;
 }
 
+main .seven .planning-mobile {
+    display: none;
+    visibility: hidden;
+}
 
 /* SPACES HEIGHT */
 
@@ -653,8 +700,189 @@ main .seven .board .jour .case:hover>.adresse {
     visibility: visible;
 }
 
-/* RESPONSIVE */
 
+/* PLANNING MOBILE */
+
+.seven .content .carousel {
+    display: none;
+    visibility: hidden;
+}
+
+.prev-icon img {
+    transform: rotate(180deg);
+    width: 30px;
+}
+
+.next-icon img {
+    width: 30px;
+}
+
+.carousel-indicators li {
+    background-color: #515151!important;
+}
+
+.carousel .carousel-control-prev {
+    left: -80px;
+}
+
+.carousel .carousel-control-next {
+    right: -80px;
+}
+
+.carousel {
+    height: 500px;
+    width: 500px;
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto 250px auto;
+}
+
+.carousel-inner {
+    height: 100%;
+    box-shadow: 2px 3px 7px #9e9e9e;
+    border-radius: 15px;
+}
+
+.carousel-inner .carousel-item {
+    transition-duration: 0.3s;
+}
+
+.carousel h5,
+.carousel h6 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.carousel-inner .jourName {
+    text-align: center;
+    margin: 0 0 5px 0;
+    padding: 10px 0;
+    font-style: italic;
+    font-size: 1.3em;
+    border-bottom: 3px dashed #9e9e9e;
+}
+
+.carousel-inner .carousel-item .case {
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.carousel-inner .carousel-item .doubleCase {
+    display: flex;
+    width: 100%;
+}
+
+.carousel-inner .carousel-item .doubleCase .case {
+    width: 50%;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.carousel-inner .carousel-item .case .coursName {
+    font-size: 1.1em;
+    line-height: 1;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.carousel-inner .carousel-item .case .coursSubname {
+    font-size: 0.7em;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.carousel-inner .carousel-item .case .public {
+    text-transform: lowercase;
+    font-style: italic;
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.carousel-inner .carousel-item .case .public .grade {
+    text-transform: lowercase;
+    font-style: italic;
+    font-size: 1em;
+    font-weight: normal;
+    line-height: 1;
+    margin: 0;
+}
+
+.carousel-inner .carousel-item .case .frontCase .heure {
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.carousel-inner .carousel-item .case .frontCase .master {
+    text-transform: initial;
+    font-style: italic;
+    font-size: 1em;
+    line-height: 1;
+    margin: 0;
+}
+
+.carousel-inner .carousel-item .case .adresse {
+    font-size: 1em;
+    text-transform: initial;
+    margin: 0;
+    line-height: 1;
+    display: none;
+    visibility: hidden;
+}
+
+.adresse.visible {
+    display: block;
+    visibility: visible;
+}
+
+.frontCase.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+/* CASE COLOR */
+
+.carousel-inner .carousel-item .taekwondo {
+    background-color: #E66F78;
+}
+
+.carousel-inner .carousel-item .taekwonkido {
+    background-color: #8AB6F1;
+}
+
+.carousel-inner .carousel-item .hapkido {
+    background-color: #9CE799;
+}
+
+.carousel-inner .carousel-item .sinkido {
+    background-color: #F8FF8B;
+}
+
+.carousel-inner .carousel-item .khido {
+    background-color: #F7A668;
+}
+
+.carousel-inner .carousel-item .empty {
+    background-color: #D1D1D1;
+}
+/* END PLANNING MOBILE */
+
+
+
+
+/* RESPONSIVE */
 
 @media screen and (min-width: 1499px){
     
@@ -687,13 +915,27 @@ main .seven .board .jour .case:hover>.adresse {
 
 @media screen and (max-width: 1499px){
     
+    .bannerClub {
+        margin: 100px 0;
+        height: 300px;
+    }
+
+    main {
+        width: auto;
+        margin: 0 auto;
+    }
+    
+    main .section {
+        padding: 0 100px;
+    }
+
     main .seven {
         padding: 0;
     }
 
     main .seven .bloc,
     main .seven .content .step {
-        padding: 0 150px;
+        padding: 0 100px;
     }
     
     main .seven .board {
@@ -704,11 +946,340 @@ main .seven .board .jour .case:hover>.adresse {
         width: 150px;
     }
 
+    main .seven .board .empty {
+        width: 100px;
+    }
+
     main .seven .board .jour .case {
         padding: 5px;
+    }
+
+    main .seven .board .jourLarge {
+        width: 249px;
     }
 }
 
 @media screen and (max-width: 1200px){
+    .bannerClub {
+        margin: 50px 0;
+        height: 250px;
+    }
 
+    main .section {
+        padding: 0 50px;
+    }
+
+    main .fourth {
+        width: 85vw;
+    }
+
+    main .seven {
+        padding: 0;
+    }
+
+    main .seven .bloc,
+    main .seven .content .step {
+        padding: 0 50px;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+
+    main .fourth .info {
+        display: none;
+        visibility: hidden;
+        pointer-events: none;
+    }
+    
+    main .fourth .btn,
+    main .fourth .btn .info {
+        display: block;
+        visibility: visible;
+    }
+
+    main .seven .board {
+        display: none;
+        visibility: hidden;
+    }
+
+    main .seven .content .carousel {
+        display: block;
+        visibility: visible;
+    }
+}
+
+@media screen and (max-width: 1000px){
+    
+    .bannerClub {
+        height: 200px;
+    }
+    
+    .bannerClub h1 {
+        font-size: 3em;
+    }
+
+    main .sixth .board {
+        width: 75vw;
+    }
+}
+
+@media screen and (max-width: 750px){
+    
+    .bannerClub {
+        height: 300px;
+        background-size: 300%;
+        background-position: left 72% top 30%;
+    }
+    
+    .bannerClub h1 {
+        font-size: 3em;
+        -webkit-text-stroke: 2px #fff;
+    }
+
+    main .main-title {
+        font-size: 1.5em;
+        margin-bottom: 50px;
+    }
+
+    main .title h3 {
+        font-size: 1.2em;
+    }
+
+    main .first {
+        flex-direction: column;
+    }
+
+    main .section .left,
+    main .section .right {
+        padding: 0;
+    }
+
+    main .section .right {
+        margin-top: 50px;
+    }
+
+    main .fourth {
+        height: 230px;
+        width: 90vw;
+        padding: 25px;
+    }
+
+    main .fourth .price {
+        width: 165px;
+        height: 165px;
+    }
+
+    main .fourth .text {
+        font-size: 0.9em;
+        text-align: center;
+        line-height: 1;
+    }
+
+    main .fifth {
+        margin-top: 25px;
+    }
+
+    main .fifth .midTitle {
+        margin-bottom: 25px;
+    }
+
+    main .fifth .midTitle h3 {
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+    main .fifth .tarifs .id .age {
+        margin: 0;
+    } 
+
+    main .fifth .cours {
+        flex-direction: column;
+    }
+
+    main .fifth .tarifs {
+        width: 100%;
+        padding: 15px 0;
+        margin: 15px 0;
+    }
+
+    main .fifth .tarifs .box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+        width: 100%;
+    }
+
+    main .cours .tarifs .case {
+        width: 33%;
+        height: 80%;
+        padding: 0 5px;
+        justify-content: flex-start;
+    }
+
+    main .cours .tarifs .one, 
+    main .cours .tarifs .two {
+        border-bottom: none;
+        border-right: 3px dashed #9e9e9e;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    
+    .seven .carousel {
+        height: 550px;
+        width: 250px;
+    }
+
+    .prev-icon img {
+        width: 25px;
+    }
+    
+    .next-icon img {
+        width: 25px;
+    }
+    
+    .carousel .carousel-control-prev {
+        left: -35px;
+    }
+    
+    .carousel .carousel-control-next {
+        right: -35px;
+    }
+
+    .carousel-inner .jourName {
+        font-size: 1.2em;
+    }
+
+    .carousel-inner .carousel-item .doubleCase {
+        margin: 0;
+    }
+    
+    .carousel-inner .carousel-item .doubleCase .case {
+        padding: 5px;
+        margin: 0;
+        width: 120px;
+    }
+
+    .carousel-inner .carousel-item .doubleCase .case:nth-child(1) {
+        margin-left: 5px;
+    }
+
+    .carousel-inner .carousel-item .doubleCase .case:nth-child(2) {
+        margin-right: 5px;
+    }
+
+    .carousel-inner .carousel-item .case .coursName {
+        font-size: 1em;
+    }
+    
+    .carousel-inner .carousel-item .case .public {
+        font-size: 0.8em;
+    }
+
+    .carousel-inner .carousel-item .case .frontCase .heure {
+        font-size: 1em;
+    }
+    
+    .carousel-inner .carousel-item .case .frontCase .master {
+        font-size: 0.8em;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .bannerClub h1 {
+        font-size: 2.5em;
+    }
+
+    main .main-title {
+        padding: 0 25px;
+        font-size: 1.5em;
+    }
+
+    main .section {
+        padding: 0 20px;
+    }
+
+    main .section p {
+        line-height: normal;
+    }
+
+    main .fourth .plus, main .fifth .plus {
+        font-size: 4em;
+        margin: 0 10px;
+    }
+
+    main .fourth {
+        padding: 15px;
+        height: auto;
+    }
+
+    main .fourth .price {
+        height: 145px;
+        width: 120px;
+        padding: 10px;
+    }
+
+    main .fourth .number {
+        font-size: 3.5em;
+    }
+
+    main .fourth .info {
+        justify-content: center;
+    }
+
+    main .fifth {
+        margin-top: 25px;
+    }
+
+    main .fifth .midTitle h3 {
+        font-size: 1.2em;
+        text-align: center;
+        margin: 0;
+    }
+
+    main .fifth .tarifs .box {
+        height: 180px;
+    }
+
+    main .fifth .tarifs .case .subcaption {
+        font-size: 0.8em;
+    }
+
+    main .fifth .tarifs .subcaption br {
+        display: none;
+        visibility: hidden;
+    }
+
+    main .sixth .bloc .content .caption2 {
+        font-size: 1em;
+    }
+
+    main .sixth .board {
+        width: 85vw;
+        margin: 25px auto 50px auto;
+    }
+
+    main .sixth .board h4 {
+        font-size: 0.9em;
+        height: 65px;
+        padding: 10px 10px;
+    }
+
+    main .sixth .board .boardLeft ul, 
+    main .sixth .board .boardRight ul {
+        padding: 5px;
+    }
+
+    main .seven .bloc, main .seven .content .step {
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    main .fourth {
+        flex-direction: column;
+        width: fit-content;
+        padding: 40px;
+    }
 }
