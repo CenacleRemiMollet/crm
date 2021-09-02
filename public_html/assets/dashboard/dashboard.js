@@ -9,7 +9,9 @@ $(document).ready(function() {
 			type:       'PUT',
 			dataType:   'json',
 			data:       JSON.stringify({'locale': lang}),
-			async:      true,
+			//async:      true,
+			cache: false,
+			beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
 			success: function(data, status) {
 			    //console.info("data", data);
 			    location.reload();
