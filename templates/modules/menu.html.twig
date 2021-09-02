@@ -55,7 +55,11 @@
         {% endif %}
         
         {% if menuProperties["menu.club-list.enabled"] == "true" %}
-        	<a class="btn link" href="/club"><img src="/assets/img/pin.png" class="icon">{% trans %}menu.club list{% endtrans %}</a>
+            {% if club is defined and club.uuid is defined %}
+            	<a class="btn link" href="/club?select=clear"><img src="/assets/img/pin.png" class="icon">{% trans %}menu.club list selected{% endtrans %}</a>
+            {% else %}
+            	<a class="btn link" href="/club"><img src="/assets/img/pin.png" class="icon">{% trans %}menu.club list{% endtrans %}</a>
+            {% endif %}
         {% endif %}
         
         <!-- <a class="btn link" href="#"><img src="/assets/img/gallery.png" class="icon">{% trans %}menu.gallery{% endtrans %}</a> -->

@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ClubController extends AbstractController
 {
@@ -13,8 +14,13 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/club", name="web_club_list-active", methods={"GET"})
 	 */
-	public function listActive()
+	public function listActive(Request $request, SessionInterface $session)
 	{
+		if($request->query->get('select') === 'clear') {
+			$session->remove('club-selected');
+			$session->remove('lessons-selected');
+		}
+
 		$response = $this->forward('App\Controller\Api\ClubController::listActive');
 		$json = json_decode($response->getContent());
 		return $this->render('club/club-list.html.twig', [
