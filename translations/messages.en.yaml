@@ -14,6 +14,7 @@ discipline:
 menu:
   club name: "%name% club"
   club:
+    home: Home
     sign up conditions: Sign up conditions
     prices: Prices
     hours: Hours

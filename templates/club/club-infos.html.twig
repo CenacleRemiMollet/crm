@@ -1,0 +1,783 @@
+{% extends 'dashboard.html.twig' %}
+
+
+{% block stylesheets2 %}
+	<link href="/assets/club/infos_club.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+<div class="bannerClub">
+    <h1>rejoindre le club</h1>
+</div>
+
+<main>
+    <h2 class="main-title">Comment faire partie du club ?</h2>
+
+    <div class="first section">
+        <div class="left bloc">
+            <div class="title">
+                <div class="line"></div>
+                <h3>je m'inscris</h3>
+                <div class="line"></div>
+            </div>
+
+            <div class="content">
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>J'ai l'accord du maître</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Je remplis la fiche d’inscription (dans la brochure remise sur place) avec autorisation parentale (ou du tuteur légal pour les mineurs) et l’acceptation signée du règlement intérieur ("Charte du Do-Jang")<!-- <br><span>ou alors</span> <a class="online">je m'inscris en ligne</a>--></p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Je paye l’adhésion Cénacle, les frais d’inscription-assurance et la cotisation</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Je fournis les documents demandés le plus rapidement possible et je donne tout en une seule fois</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="right bloc">
+            <div class="title">
+                <div class="line"></div>
+                <h3>documents à fournir</h3>
+                <div class="line"></div>
+            </div>
+
+            <div class="content">
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>3 photos d’identité avec le nom derrière (1 seule photo pour les anciens du club)</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Certificat médical d’aptitude à la pratique du TKD-TKKD/HKD en salle et en compétition : attention, il est conseillé que le médecin mentionne que l’élève est à jour de ses vaccinations diphtérie-tétanos-polio et hépatite</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>10 enveloppes timbrées au tarif normal, autocollantes, format allongé (22cm X 11 cm ), sans rien inscrire dessus</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Pour les Hapkidoïstes nouveaux venus, prendre la carte de grades (8 €) + 1 photo : coupon à remplir dans la brochure</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="second section">
+        <div class="bloc">
+            <div class="title">
+                <div class="line"></div>
+                <h3>à noter</h3>
+                <div class="line"></div>
+            </div>
+
+            <div class="content">
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Au bout de trois séances, vous ne pourrez plus avoir accès au cours si vous n’êtes toujours pas en règle ! C'est une question de sérieux et d'assurance</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>La présence à tous les cours est absolument obligatoire. Pas de dilettantes! Nous n'avons pas de temps à perdre ! Nous garantissons les progrès de l'élève seulement s'il est assidu et sérieux. Toute absence au cours doit être excusée. Pour les mineurs, en cas d'absences répétées, les parents seront tenus au courant. Au bout de 3 absences non motivées, l'exclusion du club (sans remboursement de cotisation) sera immédiate.</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Toute adhésion au Cénacle Rémi Mollet implique l'application des règles prescrites (Charte du Do-Jang)</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Vous pouvez demander tout document inhérent au club (statuts, règlement intérieur, etc.) au responsable du club</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Si vous désirez les conditions générales de couverture de notre Mutuelle liée à l’inscription ou si vous voulez payer une couverture mutualiste complémentaire, veuillez contacter : Me Rémi Mollet, Parc des Sports, 3 rue du clos Ste Catherine, 94360 Bry/Marne </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="third section">
+        <div class="bloc">
+            <div class="title">
+                <div class="line"></div>
+                <h3 id="prices">tarifs</h3>
+                <div class="line"></div>
+            </div>
+
+            <div class="content">
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>La tenue d’entraînement du club + 1 ceinture : pour les nouveaux inscrits, les frais pour la tenue du club sont compris dans les frais d'inscription</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Les cotisations ne sont pas remboursables</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Par ailleurs, une fois la période des inscriptions passée, les gradés auront une cotisation majorée</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Les stages, passages de grades et autres activités organisées par le Cénacle ou une fédération sont la plupart du temps en sus</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Le paiement de la cotisation permet de faire les cours à Bry et évidemment dans tous les autres clubs du Cénacle</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="fourth section">
+        <div class="price">
+            <span class="number">29</span>
+            <span class="euro">euros</span>
+            <span class="text">adhésion cénacle</span>
+        </div>
+
+        <span class="plus">+</span>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btnprice" data-toggle="modal" data-target="#exampleModal">
+            <div class="price info">
+                <div class="front">
+                    <span class="number">79</span>
+                    <span class="euro">euros</span>
+                    <span class="text">inscription de base</span>
+                    <i class="fas fa-angle-down"></i>
+                </div>
+            </div>
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>l'inscription de base comprend :
+                            <ul>
+                                <li>droit d’entrée, affiliations fédérales & assurance</li> 
+                                <li>tenue du club avec ceinture pour les nouveaux élèves) : 79 € 
+                                (ou 59 € pour Hapkidoïstes adultes - tenue non comprise)</li> 
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="price info">
+            <div class="front">
+                <span class="number">79</span>
+                <span class="euro">euros</span>
+                <span class="text">inscription de base</span>
+                <i class="fas fa-angle-down"></i>
+            </div>
+            <div class="infoHover">
+                <p>l'inscription de base comprend :
+                    <ul>
+                        <li>droit d’entrée, affiliations fédérales & assurance</li> 
+                        <li>tenue du club avec ceinture pour les nouveaux élèves) : 79 € 
+                        (ou 59 € pour Hapkidoïstes adultes - tenue non comprise)</li> 
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="fifth section">
+        <div class="midTitle">
+            <span class="plus">+</span>
+            <h3>la ou les cotisation(s) au choix</h3>
+        </div>
+
+        <div class="cours">
+
+            <div class="tarifs">
+                <div class="id">
+                    <h3 class="discipline">Taekwondo</h3>
+                    <h4 class="age">enfants<br>(6 - 12 ans)</h4>
+                </div>
+
+                <div class="box">
+                    <div class="one case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">1er enfant</span>
+                    </div>
+
+                    <div class="two case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">2ème enfant</span>
+                    </div>
+
+                    <div class="three case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">3ème enfant</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarifs">
+                <div class="id">
+                    <h3 class="discipline">Taekwondo -<br> Taekwonkido</h3>
+                    <h4 class="age">adultes<br>(13 ans et plus)</h4>
+                </div>
+
+                <div class="box">
+                    <div class="one case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">débutants <br><span class="subcaption">(1ère année)</span>
+                    </div>
+
+                    <div class="two case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">anciens <br><span class="subcaption">(2ème année ou +) <br>en septembre</span>
+                    </div>
+
+                    <div class="three case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">anciens <br><span class="subcaption">(2ème année ou +) <br>à partir d'octobre</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarifs">
+                <div class="id">
+                    <h3 class="discipline">Hapkido</h3>
+                    <h6 class="discipline">self-défense coréenne</h6>
+                    <h4 class="age">enfants<br>(6 - 12 ans)</h4>
+                </div>
+
+                <div class="box">
+                    <div class="one case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">1er enfant</span>
+                    </div>
+
+                    <div class="two case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">2ème enfant</span>
+                    </div>
+
+                    <div class="three case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">3ème enfant</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarifs">
+                <div class="id">
+                    <h3 class="discipline">Hapkido</h3>
+                    <h6 class="discipline">self-défense coréenne</h6>
+                    <h4 class="age">adultes<br>(13 ans et plus)</h4>
+                </div>
+
+                <div class="box">
+                    <div class="one case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">débutants <br><span class="subcaption">(1ère année)</span>
+                    </div>
+
+                    <div class="two case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">anciens <br><span class="subcaption">(2ème année ou +) <br>en septembre</span>
+                    </div>
+
+                    <div class="three case">
+                        <span class="price">000</span>
+                        <span class="euros">euros</span>
+                        <span class="caption">anciens <br><span class="subcaption">(2ème année ou +) <br>à partir d'octobre</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="sixth section">
+        <div class="bloc">
+            <div class="title">
+                <div class="line"></div>
+                <h3>parrainage</h3>
+                <div class="line"></div>
+            </div>
+
+            <div class="content">
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Ces avantages ne sont pas valables pour des personnes appartenant à la même famille</p>
+                </div>
+                <div class="step">
+                    <img src="/assets/icons/check-mark.svg">
+                    <p>Ces avantages concernent la cotisation et non le droit d’affiliation Cénacle (29€) et les droits d’inscription-assurance</p>
+                </div>
+                <h4 class="caption2">Chaque élève "ramenant" au club des élèves aura les avantages suivants :</h4>
+
+                <div class="board">
+                    <div class="boardLeft">
+                        <h4>nombre<br> d'élèves ramenés</h4>
+                        <ul>
+                            <li>2</li>
+                            <li>3</li>
+                            <li>4</li>
+                            <li>5</li>
+                            <li>6 et +</li>
+                        </ul>
+                    </div>
+                    <div class="boardRight">
+                        <h4>rabais sur<br> la cotisation</h4>
+                        <ul>
+                            <li>20%</li>
+                            <li>35%</li>
+                            <li>50%</li>
+                            <li>75%</li>
+                            <li>Gratuite</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="seven section">
+        <div class="bloc">
+            <div class="title">
+                <div class="line"></div>
+                <h3 id="hours">horaires</h3>
+                <div class="line"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="step">
+                <img src="/assets/icons/check-mark.svg">
+                <p>Le cours Taekwonkido est ouvert aux pratiquants de Taekwondo et de Hapkido</p>
+            </div>
+            <div class="step">
+                <img src="/assets/icons/check-mark.svg">
+                <p>Les protections (plastrons, casques, etc.) sont obligatoires pour le cours compétition</p>
+            </div>
+
+            <div class="board">
+
+                <div class="jour lundi empty">
+                    <h4 class="jourName">lundi</h4>
+                </div>
+
+                <div class="jour mardi">
+                    <h4 class="jourName">mardi</h4>
+
+                    <div class="medium"></div>
+                    <div class="hour"></div>
+                    <div class="half"></div>
+
+                    <div class="case extraSmall taekwonkido">
+                        <div class="frontCase">
+                            <h5 class="coursName">taekwonkido</h5>
+                            <h5 class="heure">19h - 19h30</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                    </div>
+
+                    <div class="case medium taekwondo">
+                        <div class="frontCase">
+                            <h5 class="coursName">taekwondo</h5>
+                            <h5 class="public">enfants <span class="grade">gradés</span></h5>
+                            <h5 class="public">adultes <span class="grade">tous niveaux</span></h5>
+                            <h5 class="heure">19h30 - 20h30</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                    </div>
+
+                    <div class="case medium hapkido">
+                        <div class="frontCase">
+                            <h5 class="coursName">hapkido</h5>
+                            <h5 class="public">enfants et adultes<span class="grade"> tous niveaux</span></h5>
+                            <h5 class="heure">20h30 - 21h30</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                    </div>
+                </div>
+
+                <div class="jour mercredi">
+                    <h4 class="jourName">mercredi</h4>
+
+                    <div class="medium"></div>
+                    <div class="hour"></div>
+                    <div class="quarter"></div>
+
+                    <div class="case medium taekwondo">
+                        <div class="frontCase">
+                            <h5 class="coursName">taekwondo</h5>
+                            <h5 class="public">enfants (6 - 9 ans)<span class="grade"> blanches à oranges-pourpres</span></h5>
+                            <h5 class="public">baby (4 - 5 ans)</h5>
+                            <h5 class="heure">18h45 - 19h45</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                    </div>
+
+                    <div class="case medium taekwondo">
+                        <div class="frontCase">
+                            <h5 class="coursName">taekwondo</h5>
+                            <h5 class="public">enfants<span class="grade"> pourpres et plus</span></h5>
+                            <h5 class="public">enfants (10 - 12 ans)</h5>
+                            <h5 class="heure">19h45 - 20h45</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                    </div>
+
+                    <div class="half"></div>
+
+                    <div class="case small hapkido">
+                        <div class="frontCase">
+                            <h5 class="coursName">hapkido</h5>
+                            <h5 class="public"><span class="grade">ceintures noires</span></h5>
+                            <h5 class="heure">21h15 - 22h</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase 3 rue Amyot, Paris 5ème</h6>
+                    </div>
+                    
+                </div>
+
+                <div class="jour jourLarge jeudi">
+                    <h4 class="jourName">jeudi</h4>
+
+                    <div class="medium"></div>
+                    <div class="hour"></div>
+                    <div class="half"></div>
+                    <div class="quarter"></div>
+
+
+                    <div class="case medium sinkido">
+                        <div class="frontCase">
+                            <h5 class="coursName">sinkido <br><span class="coursSubname">self-défense système</span></h5>
+                            <h5 class="heure">19h15 - 20h15</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                    </div>
+
+                    <div class="doubleCase">
+                        <div class="case medium taekwondo">
+                            <div class="frontCase">
+                                <h5 class="coursName">taekwondo</h5>
+                                <h5 class="public">enfants<span class="grade"> gradés</span></h5>
+                                <h5 class="public">adultes<span class="grade"> tous niveaux</span></h5>
+                                <h5 class="heure">20h15 - 21h15</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                        </div>
+
+                        <div class="case medium hapkido">
+                            <div class="frontCase">
+                                <h5 class="coursName">hapkido</h5>
+                                <h5 class="public">enfants et adultes<span class="grade"> tous niveaux</span></h5>
+                                <h5 class="heure">20h15 - 21h15</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                        </div>
+                    </div>
+
+                    <div class="case extraSmall hapkido">
+                        <div class="frontCase">
+                            <h5 class="coursName">hapkido</h5>
+                            <h5 class="public"><span class="grade">ceintures noires</span></h5>
+                            <h5 class="heure">21h - 21h30</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                    </div>
+                </div>
+
+                <div class="jour vendredi">
+                    <h4 class="jourName">vendredi</h4>
+
+                    <div class="medium"></div>
+                    <div class="hour"></div>
+                    <div class="quarter"></div>
+
+                    <div class="case medium taekwondo">
+                        <div class="frontCase">
+                            <h5 class="coursName">taekwondo</h5>
+                            <h5 class="public">enfants (6 - 9 ans)<span class="grade"> blanches à oranges-pourpres</span></h5>
+                            <h5 class="public">baby (4 - 5 ans)</h5>
+                            <h5 class="heure">18h45 - 19h45</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                    </div>
+
+                    <div class="case medium taekwondo">
+                        <div class="frontCase">
+                            <h5 class="coursName">taekwondo</h5>
+                            <h5 class="public">enfants<span class="grade"> pourpres et plus</span></h5>
+                            <h5 class="public">enfants (10 - 12 ans)</h5>
+                            <h5 class="heure">19h45 - 20h45</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                    </div>
+                </div>
+
+                <div class="jour samedi">
+                    <h4 class="jourName">samedi</h4>
+
+                    <div class="medium"></div>
+
+                    <div class="case extraLarge khido">
+                        <div class="frontCase">
+                            <h5 class="coursName">khido</h5>
+                            <h6 class="master">avec le GM Michel Morlon</h6>
+                            <h5 class="heure">17h30 - 19h30</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase Géo André <br>rue Mentienne Villiers s/ Marne</h6>
+                    </div>
+                </div>
+
+                <div class="jour dimanche">
+                    <h4 class="jourName">dimanche</h4>
+
+                    <div class="case medium taekwondo">
+                        <div class="frontCase">
+                            <h5 class="coursName">taekwondo <br><span class="coursSubname">cours combats <br>(réunion plusieurs clubs)</span></h5>
+                            <h5 class="heure">9h30 - 12h15</h5>
+                        </div>
+                        <h6 class="adresse">Gymnase Chanu <br>rue Eugène Delacroix Roissy-en-Brie</h6>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="carouselExampleIndicators" class="carousel slide" data-interval="false">
+                <ol class="carousel-indicators">
+                  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="6"></li>
+                </ol>
+
+                <div class="carousel-inner">
+
+                    <div class="carousel-item active">
+                        <h4 class="jourName">lundi</h4>
+                        <div class="case empty">
+                            <h5 class="coursName">pas de cours</h5>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <h4 class="jourName">mardi</h4>
+
+                        <div class="case taekwonkido">
+                            <div class="frontCase">
+                                <h5 class="coursName">taekwonkido</h5>
+                                <h5 class="heure">19h - 19h30</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                        </div>
+
+                        <div class="case taekwondo">
+                            <div class="frontCase">
+                                <h5 class="coursName">taekwondo</h5>
+                                <h5 class="public">enfants <span class="grade">gradés</span></h5>
+                                <h5 class="public">adultes <span class="grade">tous niveaux</span></h5>
+                                <h5 class="heure">19h30 - 20h30</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                        </div>
+
+                        <div class="case hapkido">
+                            <div class="frontCase">
+                                <h5 class="coursName">hapkido</h5>
+                                <h5 class="public">enfants et adultes<span class="grade"> tous niveaux</span></h5>
+                                <h5 class="heure">20h30 - 21h30</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <h4 class="jourName">mercredi</h4>
+
+                        <div class="case taekwondo">
+                            <div class="frontCase">
+                                <h5 class="coursName">taekwondo</h5>
+                                <h5 class="public">enfants (6 - 9 ans)<span class="grade"> blanches à oranges-pourpres</span></h5>
+                                <h5 class="public">baby (4 - 5 ans)</h5>
+                                <h5 class="heure">18h45 - 19h45</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                        </div>
+
+                        <div class="case taekwondo">
+                            <div class="frontCase">
+                                <h5 class="coursName">taekwondo</h5>
+                                <h5 class="public">enfants<span class="grade"> pourpres et plus</span></h5>
+                                <h5 class="public">enfants (10 - 12 ans)</h5>
+                                <h5 class="heure">19h45 - 20h45</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                        </div>
+    
+                        <div class="case hapkido">
+                            <div class="frontCase">
+                                <h5 class="coursName">hapkido</h5>
+                                <h5 class="public"><span class="grade">ceintures noires</span></h5>
+                                <h5 class="heure">21h15 - 22h</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase 3 rue Amyot, Paris 5ème</h6>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <h4 class="jourName">jeudi</h4>
+
+                        <div class="case sinkido">
+                            <div class="frontCase">
+                                <h5 class="coursName">sinkido <br><span class="coursSubname">self-défense système</span></h5>
+                                <h5 class="heure">19h15 - 20h15</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                        </div>
+
+                        <div class="doubleCase">
+                            <div class="case taekwondo">
+                                <div class="frontCase">
+                                    <h5 class="coursName">taekwondo</h5>
+                                    <h5 class="public">enfants<span class="grade"> gradés</span></h5>
+                                    <h5 class="public">adultes<span class="grade"> tous niveaux</span></h5>
+                                    <h5 class="heure">20h15 - 21h15</h5>
+                                </div>
+                                <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                            </div>
+
+                            <div class="case hapkido">
+                                <div class="frontCase">
+                                    <h5 class="coursName">hapkido</h5>
+                                    <h5 class="public">enfants et adultes<span class="grade"> tous niveaux</span></h5>
+                                    <h5 class="heure">20h15 - 21h15</h5>
+                                </div>
+                                <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                            </div>
+                        </div>
+
+                        <div class="case hapkido">
+                            <div class="frontCase">
+                                <h5 class="coursName">hapkido</h5>
+                                <h5 class="public"><span class="grade">ceintures noires</span></h5>
+                                <h5 class="heure">21h - 21h30</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <h4 class="jourName">vendredi</h4>
+
+                        <div class="case taekwondo">
+                            <div class="frontCase">
+                                <h5 class="coursName">taekwondo</h5>
+                                <h5 class="public">enfants (6 - 9 ans)<span class="grade"> blanches à oranges-pourpres</span></h5>
+                                <h5 class="public">baby (4 - 5 ans)</h5>
+                                <h5 class="heure">18h45 - 19h45</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                        </div>
+
+                        <div class="case taekwondo">
+                            <div class="frontCase">
+                                <h5 class="coursName">taekwondo</h5>
+                                <h5 class="public">enfants<span class="grade"> pourpres et plus</span></h5>
+                                <h5 class="public">enfants (10 - 12 ans)</h5>
+                                <h5 class="heure">19h45 - 20h45</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <h4 class="jourName">samedi</h4>
+
+                        <div class="case khido">
+                            <div class="frontCase">
+                                <h5 class="coursName">khido</h5>
+                                <h6 class="master">avec le GM Michel Morlon</h6>
+                                <h5 class="heure">17h30 - 19h30</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase Géo André <br>rue Mentienne Villiers s/ Marne</h6>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <h4 class="jourName">dimanche</h4>
+
+                        <div class="case taekwondo">
+                            <div class="frontCase">
+                                <h5 class="coursName">taekwondo <br><span class="coursSubname">cours combats <br>(réunion plusieurs clubs)</span></h5>
+                                <h5 class="heure">9h30 - 12h15</h5>
+                            </div>
+                            <h6 class="adresse">Gymnase Chanu <br>rue Eugène Delacroix Roissy-en-Brie</h6>
+                        </div>
+                    </div>
+
+                </div>
+
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                  <span class="prev-icon" aria-hidden="true">
+                      <img src="/assets/icons/next.svg">
+                  </span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                  <span class="next-icon" aria-hidden="true">
+                    <img src="/assets/icons/next.svg">
+                  </span>
+                  <span class="sr-only">Next</span>
+                </a>
+                
+            </div>
+
+        </div>
+    </div>
+
+
+</main>
+
+{% endblock %}
+
+
+{% block javascripts_end_body %}
+	<script src="/assets/club/infos_club.js"></script>
+{% endblock %}

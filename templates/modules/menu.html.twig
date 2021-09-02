@@ -17,9 +17,10 @@
                 	<img src="/assets/img/aim.png" class="icon">{% trans  with {'%name%': club.name} %}menu.club name{% endtrans %}
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.sign up conditions{% endtrans %}</li></a>
-                    <a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.prices{% endtrans %}</li></a>
-                    <a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.hours{% endtrans %}</li></a>
+                    <a class="dropdown-item" href="/club/{{ club.uuid }}"><li class="link">{% trans %}menu.club.home{% endtrans %}</li></a>
+                    <a class="dropdown-item" href="/club/{{ club.uuid }}/infos"><li class="link">{% trans %}menu.club.sign up conditions{% endtrans %}</li></a>
+                    <a class="dropdown-item" href="/club/{{ club.uuid }}/infos#prices"><li class="link">{% trans %}menu.club.prices{% endtrans %}</li></a>
+                    <a class="dropdown-item" href="/club/{{ club.uuid }}/infos#hours"><li class="link">{% trans %}menu.club.hours{% endtrans %}</li></a>
                    	{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CLUB_MANAGER') %}
                     	<div class="dropdown-divider"></div>
                     	<a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.configure-ui{% endtrans %}</li></a>

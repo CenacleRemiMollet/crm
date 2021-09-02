@@ -14,6 +14,7 @@ discipline:
 menu:
   club name: "%name% club"
   club:
+    home: Accueil
     sign up conditions: Conditions d'inscription
     prices: Tarifs
     hours: Horaires
