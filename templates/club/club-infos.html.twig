@@ -392,15 +392,32 @@
             </div>
 
             <div class="board">
-
-                <div class="jour lundi empty">
+                <div class="jour lundi {% if(lessons|filter(l => l.day_of_week == 'monday')|length == 0) %}empty{% endif %}">
                     <h4 class="jourName">lundi</h4>
+                    {% for lesson in lessons|filter(l => l.day_of_week == 'monday') %}
+                        <div class="case extraSmall {{ lesson.discipline|lower }}">
+                            <div class="frontCase">
+                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                            </div>
+                            <h6 class="adresse">{{ lesson.location.name }}</h6>
+                        </div>
+					{% endfor %}
                 </div>
 
                 <div class="jour mardi">
                     <h4 class="jourName">mardi</h4>
 
-                    <div class="medium"></div>
+					{% for lesson in lessons|filter(l => l.day_of_week == 'tuesday') %}
+                        <div class="case extraSmall {{ lesson.discipline|lower }}">
+                            <div class="frontCase">
+                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                            </div>
+                            <h6 class="adresse">{{ lesson.location.name }}</h6>
+                        </div>
+					{% endfor %}
+                    <!-- <div class="medium"></div>
                     <div class="hour"></div>
                     <div class="half"></div>
 
@@ -429,13 +446,22 @@
                             <h5 class="heure">20h30 - 21h30</h5>
                         </div>
                         <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="jour mercredi">
                     <h4 class="jourName">mercredi</h4>
+					{% for lesson in lessons|filter(l => l.day_of_week == 'wednesday') %}
+                        <div class="case extraSmall {{ lesson.discipline|lower }}">
+                            <div class="frontCase">
+                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                            </div>
+                            <h6 class="adresse">{{ lesson.location.name }}</h6>
+                        </div>
+					{% endfor %}
 
-                    <div class="medium"></div>
+                    <!-- <div class="medium"></div>
                     <div class="hour"></div>
                     <div class="quarter"></div>
 
@@ -468,14 +494,24 @@
                             <h5 class="heure">21h15 - 22h</h5>
                         </div>
                         <h6 class="adresse">Gymnase 3 rue Amyot, Paris 5ème</h6>
-                    </div>
+                    </div> -->
                     
                 </div>
 
                 <div class="jour jourLarge jeudi">
                     <h4 class="jourName">jeudi</h4>
+                    
+                    {% for lesson in lessons|filter(l => l.day_of_week == 'thursday') %}
+                        <div class="case extraSmall {{ lesson.discipline|lower }}">
+                            <div class="frontCase">
+                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                            </div>
+                            <h6 class="adresse">{{ lesson.location.name }}</h6>
+                        </div>
+					{% endfor %}
 
-                    <div class="medium"></div>
+                    <!-- <div class="medium"></div>
                     <div class="hour"></div>
                     <div class="half"></div>
                     <div class="quarter"></div>
@@ -518,12 +554,22 @@
                         </div>
                         <h6 class="adresse">Gymnase école Henri Cahn</h6>
                     </div>
+                    -->
                 </div>
 
                 <div class="jour vendredi">
                     <h4 class="jourName">vendredi</h4>
 
-                    <div class="medium"></div>
+                    {% for lesson in lessons|filter(l => l.day_of_week == 'friday') %}
+                        <div class="case extraSmall {{ lesson.discipline|lower }}">
+                            <div class="frontCase">
+                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                            </div>
+                            <h6 class="adresse">{{ lesson.location.name }}</h6>
+                        </div>
+					{% endfor %}
+                    <!-- <div class="medium"></div>
                     <div class="hour"></div>
                     <div class="quarter"></div>
 
@@ -545,13 +591,23 @@
                             <h5 class="heure">19h45 - 20h45</h5>
                         </div>
                         <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                    </div>
+                    </div>-->
                 </div>
 
                 <div class="jour samedi">
                     <h4 class="jourName">samedi</h4>
 
-                    <div class="medium"></div>
+                    {% for lesson in lessons|filter(l => l.day_of_week == 'saturday') %}
+                        <div class="case extraSmall {{ lesson.discipline|lower }}">
+                            <div class="frontCase">
+                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                            </div>
+                            <h6 class="adresse">{{ lesson.location.name }}</h6>
+                        </div>
+					{% endfor %}
+					
+                    <!-- <div class="medium"></div>
 
                     <div class="case extraLarge khido">
                         <div class="frontCase">
@@ -560,19 +616,27 @@
                             <h5 class="heure">17h30 - 19h30</h5>
                         </div>
                         <h6 class="adresse">Gymnase Géo André <br>rue Mentienne Villiers s/ Marne</h6>
-                    </div>
+                    </div>-->
                 </div>
 
                 <div class="jour dimanche">
                     <h4 class="jourName">dimanche</h4>
-
-                    <div class="case medium taekwondo">
+					{% for lesson in lessons|filter(l => l.day_of_week == 'sunday') %}
+                        <div class="case extraSmall {{ lesson.discipline|lower }}">
+                            <div class="frontCase">
+                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                            </div>
+                            <h6 class="adresse">{{ lesson.location.name }}</h6>
+                        </div>
+					{% endfor %}
+                    <!-- <div class="case medium taekwondo">
                         <div class="frontCase">
                             <h5 class="coursName">taekwondo <br><span class="coursSubname">cours combats <br>(réunion plusieurs clubs)</span></h5>
                             <h5 class="heure">9h30 - 12h15</h5>
                         </div>
                         <h6 class="adresse">Gymnase Chanu <br>rue Eugène Delacroix Roissy-en-Brie</h6>
-                    </div>
+                    </div>-->
                 </div>
 
             </div>
