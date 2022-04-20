@@ -389,17 +389,22 @@
             <div class="step">
                 <img src="/assets/icons/check-mark.svg">
                 <p>Les protections (plastrons, casques, etc.) sont obligatoires pour le cours compétition</p>
-                {% set days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] %}
             </div>
-
+            
+            {% set days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] %}
             <div class="board">
             	{% for day in days %}
-                    <div class="jour lundi {% if(lessons|filter(l => l.day_of_week == day)|length == 0) %}empty{% endif %}">
+                    <div class="jour mardi {% if(lessons|filter(l => l.day_of_week == day)|length == 0) %}empty{% endif %}">
                         <h4 class="jourName">{{ day|trans }}</h4>
+                		{% set rend = (day in startTimeByDays|keys) ? startTimeByDays[day] : 0 %}
+                	    {% for i in 0..rend %}
+                			<div class="quarter"></div>
+                		{% endfor %}
                         {% for lesson in lessons|filter(l => l.day_of_week == day) %}
-                            <div class="case extraSmall {{ lesson.discipline|lower }}">
+                            <div class="case small {{ lesson.discipline|lower }}">
                                 <div class="frontCase">
                                     <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                    <h5 class="public">{{ lesson.age_level }}</h5>
                                     <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
                                 </div>
                                 <h6 class="adresse">{{ lesson.location.name }}</h6>
@@ -407,431 +412,42 @@
                         {% endfor %}
                     </div>
                 {% endfor %}
-            {#
-                <div class="jour lundi {% if(lessons|filter(l => l.day_of_week == 'monday')|length == 0) %}empty{% endif %}">
-                    <h4 class="jourName">lundi</h4>
-                    {% for lesson in lessons|filter(l => l.day_of_week == 'monday') %}
-                        <div class="case extraSmall {{ lesson.discipline|lower }}">
-                            <div class="frontCase">
-                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
-                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
-                            </div>
-                            <h6 class="adresse">{{ lesson.location.name }}</h6>
-                        </div>
-					{% endfor %}
-                </div>
-
-                <div class="jour mardi">
-                    <h4 class="jourName">mardi</h4>
-
-					{% for lesson in lessons|filter(l => l.day_of_week == 'tuesday') %}
-                        <div class="case extraSmall {{ lesson.discipline|lower }}">
-                            <div class="frontCase">
-                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
-                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
-                            </div>
-                            <h6 class="adresse">{{ lesson.location.name }}</h6>
-                        </div>
-					{% endfor %}
-                    <!-- <div class="medium"></div>
-                    <div class="hour"></div>
-                    <div class="half"></div>
-
-                    <div class="case extraSmall taekwonkido">
-                        <div class="frontCase">
-                            <h5 class="coursName">taekwonkido</h5>
-                            <h5 class="heure">19h - 19h30</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                    </div>
-
-                    <div class="case medium taekwondo">
-                        <div class="frontCase">
-                            <h5 class="coursName">taekwondo</h5>
-                            <h5 class="public">enfants <span class="grade">gradés</span></h5>
-                            <h5 class="public">adultes <span class="grade">tous niveaux</span></h5>
-                            <h5 class="heure">19h30 - 20h30</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                    </div>
-
-                    <div class="case medium hapkido">
-                        <div class="frontCase">
-                            <h5 class="coursName">hapkido</h5>
-                            <h5 class="public">enfants et adultes<span class="grade"> tous niveaux</span></h5>
-                            <h5 class="heure">20h30 - 21h30</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                    </div> -->
-                </div>
-
-                <div class="jour mercredi">
-                    <h4 class="jourName">mercredi</h4>
-					{% for lesson in lessons|filter(l => l.day_of_week == 'wednesday') %}
-                        <div class="case extraSmall {{ lesson.discipline|lower }}">
-                            <div class="frontCase">
-                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
-                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
-                            </div>
-                            <h6 class="adresse">{{ lesson.location.name }}</h6>
-                        </div>
-					{% endfor %}
-
-                    <!-- <div class="medium"></div>
-                    <div class="hour"></div>
-                    <div class="quarter"></div>
-
-                    <div class="case medium taekwondo">
-                        <div class="frontCase">
-                            <h5 class="coursName">taekwondo</h5>
-                            <h5 class="public">enfants (6 - 9 ans)<span class="grade"> blanches à oranges-pourpres</span></h5>
-                            <h5 class="public">baby (4 - 5 ans)</h5>
-                            <h5 class="heure">18h45 - 19h45</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                    </div>
-
-                    <div class="case medium taekwondo">
-                        <div class="frontCase">
-                            <h5 class="coursName">taekwondo</h5>
-                            <h5 class="public">enfants<span class="grade"> pourpres et plus</span></h5>
-                            <h5 class="public">enfants (10 - 12 ans)</h5>
-                            <h5 class="heure">19h45 - 20h45</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                    </div>
-
-                    <div class="half"></div>
-
-                    <div class="case small hapkido">
-                        <div class="frontCase">
-                            <h5 class="coursName">hapkido</h5>
-                            <h5 class="public"><span class="grade">ceintures noires</span></h5>
-                            <h5 class="heure">21h15 - 22h</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase 3 rue Amyot, Paris 5ème</h6>
-                    </div> -->
-                    
-                </div>
-
-                <div class="jour jourLarge jeudi">
-                    <h4 class="jourName">jeudi</h4>
-                    
-                    {% for lesson in lessons|filter(l => l.day_of_week == 'thursday') %}
-                        <div class="case extraSmall {{ lesson.discipline|lower }}">
-                            <div class="frontCase">
-                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
-                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
-                            </div>
-                            <h6 class="adresse">{{ lesson.location.name }}</h6>
-                        </div>
-					{% endfor %}
-
-                    <!-- <div class="medium"></div>
-                    <div class="hour"></div>
-                    <div class="half"></div>
-                    <div class="quarter"></div>
-
-
-                    <div class="case medium sinkido">
-                        <div class="frontCase">
-                            <h5 class="coursName">sinkido <br><span class="coursSubname">self-défense système</span></h5>
-                            <h5 class="heure">19h15 - 20h15</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                    </div>
-
-                    <div class="doubleCase">
-                        <div class="case medium taekwondo">
-                            <div class="frontCase">
-                                <h5 class="coursName">taekwondo</h5>
-                                <h5 class="public">enfants<span class="grade"> gradés</span></h5>
-                                <h5 class="public">adultes<span class="grade"> tous niveaux</span></h5>
-                                <h5 class="heure">20h15 - 21h15</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                        </div>
-
-                        <div class="case medium hapkido">
-                            <div class="frontCase">
-                                <h5 class="coursName">hapkido</h5>
-                                <h5 class="public">enfants et adultes<span class="grade"> tous niveaux</span></h5>
-                                <h5 class="heure">20h15 - 21h15</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                        </div>
-                    </div>
-
-                    <div class="case extraSmall hapkido">
-                        <div class="frontCase">
-                            <h5 class="coursName">hapkido</h5>
-                            <h5 class="public"><span class="grade">ceintures noires</span></h5>
-                            <h5 class="heure">21h - 21h30</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                    </div>
-                    -->
-                </div>
-
-                <div class="jour vendredi">
-                    <h4 class="jourName">vendredi</h4>
-
-                    {% for lesson in lessons|filter(l => l.day_of_week == 'friday') %}
-                        <div class="case extraSmall {{ lesson.discipline|lower }}">
-                            <div class="frontCase">
-                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
-                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
-                            </div>
-                            <h6 class="adresse">{{ lesson.location.name }}</h6>
-                        </div>
-					{% endfor %}
-                    <!-- <div class="medium"></div>
-                    <div class="hour"></div>
-                    <div class="quarter"></div>
-
-                    <div class="case medium taekwondo">
-                        <div class="frontCase">
-                            <h5 class="coursName">taekwondo</h5>
-                            <h5 class="public">enfants (6 - 9 ans)<span class="grade"> blanches à oranges-pourpres</span></h5>
-                            <h5 class="public">baby (4 - 5 ans)</h5>
-                            <h5 class="heure">18h45 - 19h45</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                    </div>
-
-                    <div class="case medium taekwondo">
-                        <div class="frontCase">
-                            <h5 class="coursName">taekwondo</h5>
-                            <h5 class="public">enfants<span class="grade"> pourpres et plus</span></h5>
-                            <h5 class="public">enfants (10 - 12 ans)</h5>
-                            <h5 class="heure">19h45 - 20h45</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                    </div>-->
-                </div>
-
-                <div class="jour samedi">
-                    <h4 class="jourName">samedi</h4>
-
-                    {% for lesson in lessons|filter(l => l.day_of_week == 'saturday') %}
-                        <div class="case extraSmall {{ lesson.discipline|lower }}">
-                            <div class="frontCase">
-                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
-                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
-                            </div>
-                            <h6 class="adresse">{{ lesson.location.name }}</h6>
-                        </div>
-					{% endfor %}
-					
-                    <!-- <div class="medium"></div>
-
-                    <div class="case extraLarge khido">
-                        <div class="frontCase">
-                            <h5 class="coursName">khido</h5>
-                            <h6 class="master">avec le GM Michel Morlon</h6>
-                            <h5 class="heure">17h30 - 19h30</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase Géo André <br>rue Mentienne Villiers s/ Marne</h6>
-                    </div>-->
-                </div>
-
-                <div class="jour dimanche">
-                    <h4 class="jourName">dimanche</h4>
-					{% for lesson in lessons|filter(l => l.day_of_week == 'sunday') %}
-                        <div class="case extraSmall {{ lesson.discipline|lower }}">
-                            <div class="frontCase">
-                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
-                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
-                            </div>
-                            <h6 class="adresse">{{ lesson.location.name }}</h6>
-                        </div>
-					{% endfor %}
-                    <!-- <div class="case medium taekwondo">
-                        <div class="frontCase">
-                            <h5 class="coursName">taekwondo <br><span class="coursSubname">cours combats <br>(réunion plusieurs clubs)</span></h5>
-                            <h5 class="heure">9h30 - 12h15</h5>
-                        </div>
-                        <h6 class="adresse">Gymnase Chanu <br>rue Eugène Delacroix Roissy-en-Brie</h6>
-                    </div>-->
-                </div>
-#}
             </div>
 
             <div id="carouselExampleIndicators" class="carousel slide" data-interval="false">
                 <ol class="carousel-indicators">
-                  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                  <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                  <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-                  <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
-                  <li data-target="#carouselExampleIndicators" data-slide-to="6"></li>
+                  {% set firstactive = days|filter(d => lessons|filter(l => l.day_of_week == d))|first %}
+                  <li data-target="#carouselExampleIndicators" data-slide-to="0" {% if(firstactive == 'monday') %}class="active"{% endif %}></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="1" {% if(firstactive == 'tuesday') %}class="active"{% endif %}></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="2" {% if(firstactive == 'wednesday') %}class="active"{% endif %}></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="3" {% if(firstactive == 'thursday') %}class="active"{% endif %}></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="4" {% if(firstactive == 'friday') %}class="active"{% endif %}></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="5" {% if(firstactive == 'saturday') %}class="active"{% endif %}></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="6" {% if(firstactive == 'sunday') %}class="active"{% endif %}></li>
                 </ol>
 
                 <div class="carousel-inner">
-
-                    <div class="carousel-item active">
-                        <h4 class="jourName">lundi</h4>
-                        <div class="case empty">
-                            <h5 class="coursName">pas de cours</h5>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <h4 class="jourName">mardi</h4>
-
-                        <div class="case taekwonkido">
-                            <div class="frontCase">
-                                <h5 class="coursName">taekwonkido</h5>
-                                <h5 class="heure">19h - 19h30</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                        </div>
-
-                        <div class="case taekwondo">
-                            <div class="frontCase">
-                                <h5 class="coursName">taekwondo</h5>
-                                <h5 class="public">enfants <span class="grade">gradés</span></h5>
-                                <h5 class="public">adultes <span class="grade">tous niveaux</span></h5>
-                                <h5 class="heure">19h30 - 20h30</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                        </div>
-
-                        <div class="case hapkido">
-                            <div class="frontCase">
-                                <h5 class="coursName">hapkido</h5>
-                                <h5 class="public">enfants et adultes<span class="grade"> tous niveaux</span></h5>
-                                <h5 class="heure">20h30 - 21h30</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <h4 class="jourName">mercredi</h4>
-
-                        <div class="case taekwondo">
-                            <div class="frontCase">
-                                <h5 class="coursName">taekwondo</h5>
-                                <h5 class="public">enfants (6 - 9 ans)<span class="grade"> blanches à oranges-pourpres</span></h5>
-                                <h5 class="public">baby (4 - 5 ans)</h5>
-                                <h5 class="heure">18h45 - 19h45</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                        </div>
-
-                        <div class="case taekwondo">
-                            <div class="frontCase">
-                                <h5 class="coursName">taekwondo</h5>
-                                <h5 class="public">enfants<span class="grade"> pourpres et plus</span></h5>
-                                <h5 class="public">enfants (10 - 12 ans)</h5>
-                                <h5 class="heure">19h45 - 20h45</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                        </div>
-    
-                        <div class="case hapkido">
-                            <div class="frontCase">
-                                <h5 class="coursName">hapkido</h5>
-                                <h5 class="public"><span class="grade">ceintures noires</span></h5>
-                                <h5 class="heure">21h15 - 22h</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase 3 rue Amyot, Paris 5ème</h6>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <h4 class="jourName">jeudi</h4>
-
-                        <div class="case sinkido">
-                            <div class="frontCase">
-                                <h5 class="coursName">sinkido <br><span class="coursSubname">self-défense système</span></h5>
-                                <h5 class="heure">19h15 - 20h15</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                        </div>
-
-                        <div class="doubleCase">
-                            <div class="case taekwondo">
-                                <div class="frontCase">
-                                    <h5 class="coursName">taekwondo</h5>
-                                    <h5 class="public">enfants<span class="grade"> gradés</span></h5>
-                                    <h5 class="public">adultes<span class="grade"> tous niveaux</span></h5>
-                                    <h5 class="heure">20h15 - 21h15</h5>
+					{% for day in days %}
+                        <div class="carousel-item {% if(firstactive == day) %}active{% endif %}">
+                            <h4 class="jourName">{{ day|trans }}</h4>
+                            {% if(lessons|filter(l => l.day_of_week == day)|length == 0) %}
+                                <div class="case empty">
+                                    <h5 class="coursName">pas de cours</h5>
                                 </div>
-                                <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                            </div>
-
-                            <div class="case hapkido">
-                                <div class="frontCase">
-                                    <h5 class="coursName">hapkido</h5>
-                                    <h5 class="public">enfants et adultes<span class="grade"> tous niveaux</span></h5>
-                                    <h5 class="heure">20h15 - 21h15</h5>
-                                </div>
-                                <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                            </div>
+                            {% else %}
+                            	{% for lesson in lessons|filter(l => l.day_of_week == day) %}
+                                	<div class="case {{ lesson.discipline|lower }}">
+                                        <div class="frontCase">
+                                            <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                            <h5 class="public">{{ lesson.age_level }}</h5>
+                                            <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                                        </div>
+                                        <h6 class="adresse">{{ lesson.location.name }}</h6>
+                                    </div>
+			                    {% endfor %}
+                            {% endif %}
                         </div>
-
-                        <div class="case hapkido">
-                            <div class="frontCase">
-                                <h5 class="coursName">hapkido</h5>
-                                <h5 class="public"><span class="grade">ceintures noires</span></h5>
-                                <h5 class="heure">21h - 21h30</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <h4 class="jourName">vendredi</h4>
-
-                        <div class="case taekwondo">
-                            <div class="frontCase">
-                                <h5 class="coursName">taekwondo</h5>
-                                <h5 class="public">enfants (6 - 9 ans)<span class="grade"> blanches à oranges-pourpres</span></h5>
-                                <h5 class="public">baby (4 - 5 ans)</h5>
-                                <h5 class="heure">18h45 - 19h45</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                        </div>
-
-                        <div class="case taekwondo">
-                            <div class="frontCase">
-                                <h5 class="coursName">taekwondo</h5>
-                                <h5 class="public">enfants<span class="grade"> pourpres et plus</span></h5>
-                                <h5 class="public">enfants (10 - 12 ans)</h5>
-                                <h5 class="heure">19h45 - 20h45</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase école Henri Cahn</h6>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <h4 class="jourName">samedi</h4>
-
-                        <div class="case khido">
-                            <div class="frontCase">
-                                <h5 class="coursName">khido</h5>
-                                <h6 class="master">avec le GM Michel Morlon</h6>
-                                <h5 class="heure">17h30 - 19h30</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase Géo André <br>rue Mentienne Villiers s/ Marne</h6>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <h4 class="jourName">dimanche</h4>
-
-                        <div class="case taekwondo">
-                            <div class="frontCase">
-                                <h5 class="coursName">taekwondo <br><span class="coursSubname">cours combats <br>(réunion plusieurs clubs)</span></h5>
-                                <h5 class="heure">9h30 - 12h15</h5>
-                            </div>
-                            <h6 class="adresse">Gymnase Chanu <br>rue Eugène Delacroix Roissy-en-Brie</h6>
-                        </div>
-                    </div>
-
+                    {% endfor %}
                 </div>
 
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">

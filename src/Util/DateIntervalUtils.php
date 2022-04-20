@@ -13,6 +13,18 @@ class DateIntervalUtils
 		}
 		return $res;
 	}
+	
+	public static function parseHourDoubleDotsMinute($strtime): \DateInterval
+	{
+	    return new \DateInterval('PT'.str_replace(':', 'H', $strtime).'M');
+	}
 
+	public static function getTotalMinutes(\DateInterval $interval){
+	    return ($interval->d * 24 * 60) + ($interval->h * 60) + $interval->i;
+	}
+	
+	public static function getTotalHours(\DateInterval $interval){
+	    return ($interval->d * 24) + $interval->h + $interval->i / 60;
+	}
 }
 

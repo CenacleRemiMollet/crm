@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Util\DateIntervalUtils;
 
 class ClubController extends AbstractController
 {
@@ -68,7 +69,42 @@ class ClubController extends AbstractController
 
 		return $this->render('club/club-infos.html.twig', [
 			'club' => $club,
-			'lessons' => $lessons
+			'lessons' => $lessons,
+		    'startTimeByDays' => $this->determineStartsOffsetByQuarter($lessons)
 		]);
+	}
+	
+	private function determineStartsOffsetByQuarter($lessons)
+	{
+	    $startTimeMinuteByDays = array();
+	    foreach($lessons as &$lesson) {
+	        $startMinutes = DateIntervalUtils::getTotalMinutes(DateIntervalUtils::parseHourDoubleDotsMinute($lesson->start_time));
+	        if(array_key_exists($lesson->day_of_week, $startTimeMinuteByDays)) {
+	            $startTimeMinuteByDays[$lesson->day_of_week] = min($startMinutes, $startTimeMinuteByDays[$lesson->day_of_week]);
+	        } else {
+	            $startTimeMinuteByDays[$lesson->day_of_week] = $startMinutes;
+	        }
+	    }
+	    $minStartMinutes = min($startTimeMinuteByDays);
+	    
+	    $startOffsetByDays = array();
+	    foreach ($startTimeMinuteByDays as $day => $minutes) {
+	        $startOffsetByDays[$day] = ceil(($minutes - $minStartMinutes) / 15);
+	    }
+	    asort($startOffsetByDays);
+	    $previous = 0;
+	    $diff = 0;
+	    foreach ($startOffsetByDays as $day => $minutes) {
+	        if($minutes != 0) {
+	            $d = $minutes - $previous;
+	            if($d > 1) {
+	                $diff = $d - 1;
+	            }
+	            $previous = $startOffsetByDays[$day];
+	            $startOffsetByDays[$day] = $startOffsetByDays[$day] - $diff;
+	        }
+	    }
+	    return $startOffsetByDays;
+	    
 	}
 }

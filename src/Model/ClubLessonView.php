@@ -50,6 +50,11 @@ class ClubLessonView
 	private $end_time;
 
 	/**
+	 * @OA\Property(type="string", example="20:45", pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")
+	 */
+	private $duration;
+	
+	/**
 	 * @OA\Property(ref="#/components/schemas/ClubLocation")
 	 */
 	private $location;
@@ -63,6 +68,7 @@ class ClubLessonView
 		$this->day_of_week = $clubLesson->getDayOfWeek();
 		$this->start_time = $clubLesson->getStartTime()->format('H:i');
 		$this->end_time = $clubLesson->getEndTime()->format('H:i');
+		$this->duration = $clubLesson->getStartTime()->diff($clubLesson->getEndTime());
 		$this->location = new ClubLocationView($clubLesson->getClubLocation());
 	}
 
@@ -99,6 +105,11 @@ class ClubLessonView
 	public function getEndTime(): ?string
 	{
 		return $this->end_time;
+	}
+	
+	public function getDuration(): ?string
+	{
+	    return $this->duration;
 	}
 
 	public function getLocation(): ?ClubLocationView

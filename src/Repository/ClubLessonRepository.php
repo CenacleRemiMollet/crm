@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * @method ClubLesson|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,7 +25,6 @@ class ClubLessonRepository extends ServiceEntityRepository
     /**
      * @return ClubLesson[] Returns an array of ClubLesson objects
      */
-
     public function findByClubUuid_TODEL($clubUuid)
     {
 		$sql = "SELECT "//*, loc.uuid AS club_location_uuid, loc.name AS club_location_name,"
@@ -77,28 +77,15 @@ class ClubLessonRepository extends ServiceEntityRepository
 
 	public function findByClubUuid($clubUuid)
 	{
-		$dql = "SELECT cl, c, cloc".
-				" FROM App\Entity\ClubLesson cl".
-				"  JOIN cl.club c".
-				"  JOIN cl.club_location cloc".
-				" WHERE c.uuid = :clubUuid";
-		$query = $this->getEntityManager()->createQuery($dql);
-		$query->setParameter('clubUuid', $clubUuid);
-		//dump($query->getResult());
-		return $query->getResult();
-
-
+	    $dql = "SELECT cl, c, cloc".
+               " FROM App\Entity\ClubLesson cl".
+               "  JOIN cl.club c".
+               "  JOIN cl.club_location cloc".
+               " WHERE c.uuid = :clubUuid".
+               " ORDER BY FIELD(cl.day_of_week, 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'), cl.start_time";
+	    $query = $this->getEntityManager()->createQuery($dql);
+	    $query->setParameter('clubUuid', $clubUuid);
+	    return $query->getResult();
 	}
 
-    /*
-    public function findOneBySomeField($value): ?ClubLesson
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
