@@ -389,9 +389,25 @@
             <div class="step">
                 <img src="/assets/icons/check-mark.svg">
                 <p>Les protections (plastrons, casques, etc.) sont obligatoires pour le cours compétition</p>
+                {% set days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] %}
             </div>
 
             <div class="board">
+            	{% for day in days %}
+                    <div class="jour lundi {% if(lessons|filter(l => l.day_of_week == day)|length == 0) %}empty{% endif %}">
+                        <h4 class="jourName">{{ day|trans }}</h4>
+                        {% for lesson in lessons|filter(l => l.day_of_week == day) %}
+                            <div class="case extraSmall {{ lesson.discipline|lower }}">
+                                <div class="frontCase">
+                                    <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                    <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                                </div>
+                                <h6 class="adresse">{{ lesson.location.name }}</h6>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {#
                 <div class="jour lundi {% if(lessons|filter(l => l.day_of_week == 'monday')|length == 0) %}empty{% endif %}">
                     <h4 class="jourName">lundi</h4>
                     {% for lesson in lessons|filter(l => l.day_of_week == 'monday') %}
@@ -638,7 +654,7 @@
                         <h6 class="adresse">Gymnase Chanu <br>rue Eugène Delacroix Roissy-en-Brie</h6>
                     </div>-->
                 </div>
-
+#}
             </div>
 
             <div id="carouselExampleIndicators" class="carousel slide" data-interval="false">
