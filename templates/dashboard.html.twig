@@ -78,10 +78,10 @@
             <label for="country"></label>
             <select name="pays" id="pays">
                 <option label="France Métropolitaine" value="France"></option>
-                <option label="Guyane" value="guyane"></option>
+                {#<option label="Guyane" value="guyane"></option>
                 <option label="Suisse" value="suisse"></option>
                 <option label="Hollande" value="hollande"></option>
-                <option label="Canada" value="Canada"></option>
+                <option label="Canada" value="Canada"></option>#}
             </select>
 
             <label for="ville"></label>
@@ -100,7 +100,7 @@
                 </div>
             </div>
 
-            <div class="btn"><a href="#">rechercher</a></div>
+            <div class="btn" id="clubsearchbtn"><a href="#">rechercher</a></div>
         </div>
    </div>
 {% endblock %}
@@ -114,6 +114,7 @@
         var slider = document.getElementById("slider");
         var selector = document.getElementById("selector");
         var selectValue = document.getElementById("selectValue");
+        var zipcodeSelected;
 
         selectValue.innerHTML = slider.value;
 
@@ -162,10 +163,25 @@
         	$('#ville').focus();
             $('#ville').bind('typeahead:select', function(ev, result) {
             	var element = result.element;
-            	console.log("search select", result);
+            	console.log("search select", result.zipcode, slider.value);
+            	zipcodeSelected = result.zipcode;
             	// window.location = '/v2/view-grid/' + element.name;
             });
+            $('#ville').on('keypress',function(e) {
+                if(e.which == 13) {
+                    goToSearchClub();
+                }
+            });
+            $('#clubsearchbtn').click(function() {
+            	goToSearchClub();
+			});
         });
+        
+        function goToSearchClub() {
+        	if(zipcodeSelected && zipcodeSelected != '') {
+            		window.location = '/club?zc=' + zipcodeSelected + '&d=' + slider.value;
+            }
+        }
     </script>
 {% endblock %}
 

@@ -17,24 +17,32 @@
 
    <!-- boutons animés -->
 
-   <div class="drop">
-        <button class="bloc-button">
-                <i class="fas fa-map-marker-alt"></i>
-        </button>
-        <div class="bloc-text">
-                Ecole Henri Cahn, Boulevard Galliéni<br>
-                94360 Bry-sur-Marne
-        </div>
-   </div>
+	<div class="drop">
+		<button class="bloc-button">
+			<i class="fas fa-map-marker-alt"></i>
+		</button>
+		<div class="bloc-text">
+			{% if(club.locations|length == 1) %}
+    			{% for location in club.locations %}
+    			    {{ location.address }}<br>{{ location.city }}
+    			{% endfor %}
+    		{% else %}
+    			{% for location in club.locations %}
+    			    {{ location.address }}, {{ location.city }}<br>
+    			{% endfor %}
+    		{% endif %}
+		</div>
+	</div>
 
-   <div class="drop2">
+	
+    <div class="drop2">
         <button class="bloc-button">
-            <i class="fas fa-phone-alt" aria-hidden="true"></i>
+        	<i class="fas fa-phone-alt" aria-hidden="true"></i>
         </button>
         <div class="bloc-text">
-            06 95 90 44 08
+        	06 95 90 44 08
         </div>
-   </div>
+    </div>
 
    <div class="drop3">
         <button class="bloc-button">
