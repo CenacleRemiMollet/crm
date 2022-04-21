@@ -1,68 +1,104 @@
 
 
 # Misc
-french: french
-english: english
+french: "french"
+english: "english"
 
-monday: monday
-tuesday: tuesday
-wednesday: wednesday
-thursday: thursday
-friday: friday
-saturday: saturday
-sunday: sunday
+monday: "monday"
+tuesday: "tuesday"
+wednesday: "wednesday"
+thursday: "thursday"
+friday: "friday"
+saturday: "saturday"
+sunday: "sunday"
 
-cenaclerm: Rémi Mollet cenacle
+cenaclerm: "Rémi Mollet cenacle"
 
 
 # Common / Disciplines
 discipline:
-  taekwonkido: Taekwonkido
-  taekwondo: Taekwondo
-  hapkido: Hapkido
-  sinkido self defense system: Sinkido Self-Défense Système
-  sinkido self defense system 2 lines: Sinkido<br>Self-Défense Système
+  taekwonkido: "Taekwonkido"
+  taekwondo: "Taekwondo"
+  hapkido: "Hapkido"
+  sinkido self defense system: "Sinkido Self-Défense Système"
+  sinkido self defense system 2 lines: "Sinkido<br>Self-Défense Système"
 
 
 # Menu
 menu:
   club name: "%name% club"
   club:
-    home: Home
-    sign up conditions: Sign up conditions
-    prices: Prices
-    hours: Hours
-  the master: the master
-  disciplines: disciplines
-  club list: club list
-  gallery: gallery
-  contact: contact
-  signin signup: sign in / sign up
+    home: "Home"
+    sign up conditions: "Sign up conditions"
+    prices: "Prices"
+    hours: "Hours"
+  the master: "the master"
+  disciplines: "disciplines"
+  club list: "club list"
+  gallery: "gallery"
+  contact: "contact"
+  signin signup: "sign in / sign up"
   signin_signup:
-    signin: Sign in
-    signup: Sign up
+    signin: "Sign in"
+    signup: "Sign up"
 
 
 # Home / Cenacle
 home:
-  martialart: martial arts
+  martialart: "martial arts"
   cenacle:
-    thecenacle: the cenacle
+    thecenacle: "the cenacle"
     ourschool:
-      title: our school
+      title: "our school"
       text: 
     ourclubs:
-      title: our clubs
+      title: "our clubs"
       text: 
     thecompetitions:
-      title: the competitions
+      title: "the competitions"
       text: 
     ourteaching:
-      title: our teaching
+      title: "our teaching"
       text: 
     ourmethod:
-      title: our method
+      title: "our method"
       text: 
-      
-      
-      
+ 
+ 
+# ShowCase
+
+showcase: 
+  
+# ShowCase / Master
+
+  master:
+    numbers:
+      starts: "<span>1973</span><br>Carrier start"
+      countyears: "<span>%nbyears%</span><br>years of practice"
+    hiscareer:
+      title: "his career"
+      text: 
+    hisrewards:
+      title: "his rewards"
+      text: 
+    yearsevent:
+      _1998: 
+      _2000: 
+      _2009: 
+    hisworks:
+      title: "his works"
+      text: 
+    hiscontributions:
+      title: "his contributions"
+      text: 
+    section4.text: 
+    hisstudents:
+      title: "his students"
+      text: ""
+    hisdemonstrations:
+      title: "his demonstrations"
+      text: 
+    conclusion:
+      title: "conclusion"
+      text: 
+

@@ -1,67 +1,104 @@
 
 
 # Misc
-french: français
-english: anglais
+french: "français"
+english: "anglais"
 
-monday: lundi
-tuesday: mardi
-wednesday: mercredi
-thursday: jeudi
-friday: vendredi
-saturday: samedi
-sunday: dimanche
+monday: "lundi"
+tuesday: "mardi"
+wednesday: "mercredi"
+thursday: "jeudi"
+friday: "vendredi"
+saturday: "samedi"
+sunday: "dimanche"
 
-cenaclerm: Cénacle Rémi Mollet
+cenaclerm: "Cénacle Rémi Mollet"
 
 
 # Common / Disciplines
 discipline:
-  taekwonkido: Taekwonkido
-  taekwondo: Taekwondo
-  hapkido: Hapkido
-  sinkido self defense system: Sinkido Self-Défense Système
-  sinkido self defense system 2 lines: Sinkido<br>Self-Défense Système
+  taekwonkido: "Taekwonkido"
+  taekwondo: "Taekwondo"
+  hapkido: "Hapkido"
+  sinkido self defense system: "Sinkido Self-Défense Système"
+  sinkido self defense system 2 lines: "Sinkido<br>Self-Défense Système"
 
 
 # Menu
 menu:
   club name: "%name% club"
   club:
-    home: Accueil
-    sign up conditions: Conditions d'inscription
-    prices: Tarifs
-    hours: Horaires
-  the master: le maître
-  disciplines: les disciplines
-  club list: liste des clubs
-  club list selected: changer de club
-  gallery: galerie
-  contact: contact
-  signin signup: connexion / inscription
+    home: "Accueil"
+    sign up conditions: "Conditions d'inscription"
+    prices: "Tarifs"
+    hours: "Horaires"
+  the master: "le maître"
+  disciplines: "les disciplines"
+  club list: "liste des clubs"
+  club list selected: "changer de club"
+  gallery: "galerie"
+  contact: "contact"
+  signin signup: "connexion / inscription"
   signin_signup:
-    signin: Se connecter
-    signup: Créer un compte
+    signin: "Se connecter"
+    signup: "Créer un compte"
 
 
 # Home / Cenacle
 home:
-  martialart: arts martiaux
+  martialart: "arts martiaux"
   cenacle:
-    thecenacle: le cénacle
+    thecenacle: "le cénacle"
     ourschool:
-      title: notre école
-      text: Le Cénacle Rémi Mollet est une <span>école d'Arts Martiaux</span> Français, Coréens et asiatiques. On y enseigne principalement le Taekwonkido, Taekwondo, mais aussi le Hapkido et le Gumdo. Le Cénacle est composé d'une trentaine de clubs (dojang) répartis dans toute la France. Il y a même un club aux Pays-Bas et des sympathisants en Suisse, en Angleterre, etc.
+      title: "notre école"
+      text: "Le Cénacle Rémi Mollet est une <span>école d'Arts Martiaux</span> Français, Coréens et asiatiques. On y enseigne principalement le Taekwonkido, Taekwondo, mais aussi le Hapkido et le Gumdo. Le Cénacle est composé d'une trentaine de clubs (dojang) répartis dans toute la France. Il y a même un club aux Pays-Bas et des sympathisants en Suisse, en Angleterre, etc."
     ourclubs:
-      title: nos clubs
-      text: La particularité du Cénacle est l'organisation d'<span>activités communes</span> à tous les clubs. Cela génère une <span>dynamique de groupe</span> tout à fait exceptionnelle. Cette dynamique favorise la création de liens entre les élèves des différents clubs. Par exemple, il est possible pour un élève de s'entraîner dans tous les clubs de son choix, sous certaines conditions. Il peut tout à fait assister aux cours dispensés par le Maître Rémi Mollet sans supplément de cotisation.
+      title: "nos clubs"
+      text: "La particularité du Cénacle est l'organisation d'<span>activités communes</span> à tous les clubs. Cela génère une <span>dynamique de groupe</span> tout à fait exceptionnelle. Cette dynamique favorise la création de liens entre les élèves des différents clubs. Par exemple, il est possible pour un élève de s'entraîner dans tous les clubs de son choix, sous certaines conditions. Il peut tout à fait assister aux cours dispensés par le Maître Rémi Mollet sans supplément de cotisation."
     thecompetitions:
-      title: les compétitions
-      text: Le Cénacle organise des <span>compétitions</span> combat et technique, des <span>stages</span> combat, technique, poomse. Le Cénacle organise aussi ses propres passages de grades et invite de nombreux Maîtres (Coréens le plus souvent). Notons par exemple la venue du Grand Maître Park Hae-Man à diverses reprises. De plus certains élèves du Cénacle sont déjà partis plusieurs fois en Corée, pour participer à une compétition internationale. Ils ont même ramené quelques médailles.
+      title: "les compétitions"
+      text: "Le Cénacle organise des <span>compétitions</span> combat et technique, des <span>stages</span> combat, technique, poomse. Le Cénacle organise aussi ses propres passages de grades et invite de nombreux Maîtres (Coréens le plus souvent). Notons par exemple la venue du Grand Maître Park Hae-Man à diverses reprises. De plus certains élèves du Cénacle sont déjà partis plusieurs fois en Corée, pour participer à une compétition internationale. Ils ont même ramené quelques médailles."
     ourteaching:
-      title: notre enseignement
-      text: Le Cénacle est sous la direction de <span>Maître Rémi Mollet</span>. Maître Rémi Mollet désire enseigner un Taekwondo Coréen, c'est-à-dire qu'il est le plus fidèle possible au Taekwondo enseigné en Corée. Pour ce faire, il part fréquemment en Corée afin de prendre connaissance des <span>dernières évolutions</span> du Taekwondo. En effet, le Taekwondo est un art martial vivant et de fait est amené à changer fréquemment. Le Taekwondo pratiqué au sein du Cénacle est conforme aux normes du <span>Kukkiwon</span> (maison mère du Taekwondo).
+      title: "notre enseignement"
+      text: "Le Cénacle est sous la direction de <span>Maître Rémi Mollet</span>. Maître Rémi Mollet désire enseigner un Taekwondo Coréen, c'est-à-dire qu'il est le plus fidèle possible au Taekwondo enseigné en Corée. Pour ce faire, il part fréquemment en Corée afin de prendre connaissance des <span>dernières évolutions</span> du Taekwondo. En effet, le Taekwondo est un art martial vivant et de fait est amené à changer fréquemment. Le Taekwondo pratiqué au sein du Cénacle est conforme aux normes du <span>Kukkiwon</span> (maison mère du Taekwondo)."
     ourmethod:
-      title: notre méthode
-      text: Après de très nombreuses années de pratique et d'enseignement, Maître Mollet et le docteur Taddeï ont décidé d'orienter leur pratique vers une méthode plus réaliste, axée sur <span>le combat réel et l'autodéfense</span>, synthétisant divers arts et notamment le Khido, discipline fondée par Maître Michel Morlon, créée en 1984. Le Taekwonkido est une <span>méthode pratique et réfléchie</span>, cherchant à produire le maximum de forces à partir de principes physiques et médicaux. Il est fondé sur l'utilisation naturelle du corps, avec des formes techniques allégées.
+      title: "notre méthode"
+      text: "Après de très nombreuses années de pratique et d'enseignement, Maître Mollet et le docteur Taddeï ont décidé d'orienter leur pratique vers une méthode plus réaliste, axée sur <span>le combat réel et l'autodéfense</span>, synthétisant divers arts et notamment le Khido, discipline fondée par Maître Michel Morlon, créée en 1984. Le Taekwonkido est une <span>méthode pratique et réfléchie</span>, cherchant à produire le maximum de forces à partir de principes physiques et médicaux. Il est fondé sur l'utilisation naturelle du corps, avec des formes techniques allégées."
+
+# ShowCase
+
+showcase: 
+  
+# ShowCase / Master
+
+  master:
+    numbers:
+      starts: "<span>1973</span><br>Début de carrière"
+      countyears: "<span>%nbyears%</span><br>ans de pratique"
+    hiscareer:
+      title: "sa carrière"
+      text: "Maître Rémi Mollet a débuté les Arts Martiaux en 1973, ce qui lui fait donc %nbyears% ans de pratique ! Il est haut-gradé en Taekwondo, Hapkido (Self-Défense coréenne). Mais ses grades sont aussi nombreux dans divers arts Martiaux coréens : Daehan Hapkido, Sin Moo Hapkido, etc. Il est même Diplômé en Kick-Boxing. Mais il est également Professeur de Lettres Classiques au collège-lycée Albert de Mun à Nogent/Marne. Ainsi la tête et les jambes sont réunies en une seule personne !"
+    hisrewards:
+      title: "ses récompenses"
+      text: "Sa reconnaissance est internationale puisqu'il a même été nommé \"Instructeur de l'année\" par le Hall of Fame en Floride (U.S.A.) en Septembre 98 et Septembre 2004. Tout récemment, lui qui était déjà diplômé d'état en France, vient de passer Instructeur certifié \"Maître W.T.F.\" (Corée) en Juillet 2000, en Corée, au terme d'un Séminaire d'une semaine à raison de 8 heures par jour. Aux Etats-Unis à nouveau, il a reçu le \"Silver Life Achievement Award\" récompensant plus de trente ans au service des arts martiaux. En 2009, il a été nommé \"Grandmaster\" de l'année pour le Taekwonkido."
+    yearsevent:
+      _1998: "<span>1998 & 2004</span><br>instructeur de l'année"
+      _2000: "<span>2000</span><br>maître world taekwondo federation"
+      _2009: "<span>2009</span><br>grandmaster"
+    hisworks:
+      title: "ses ouvrages"
+      text: "En 1988, afin de promouvoir les arts martiaux coréens, Maître Rémi Mollet a écrit un livre \"Découvrir le Taekwondo\" (aux éditions Amphora) et en 2006 l'ouvrage \"Hapkido, Art Coréen d'autodéfense\" (Budo Edition) et d'autres sont en préparation. Il a sorti le premier DVD en France sur le Taekwondo \"Encyclo TKD\". Parallèlement, il écrit régulièrement de nombreux articles dans des magazines spécialisés dans les arts martiaux et sports de combat. Il a d'ailleurs lui-même fait l'objet de plusieurs articles dans la presse (\"Taekwondo-Choc\", \"Karate-Bushido\", \"Arts Martiaux Traditionnels d'Asie\", \"Taekwondo Times\", etc.)."
+    hiscontributions:
+      title: "ses contributions"
+      text: "Pendant près de 15 ans, au sein de la Fédération de karaté (car à l'époque le Taekwondo y était rattaché), il a œuvré à diverses tâches : Juge Technique National, arbitre National, Juré aux Passages de Grades et aux Diplômes d'instructeur Fédéral, Responsable Technique du Val de Marne de 1988 à 1996, Membre de la Commission Technique Nationale pendant 3 ans (c'est lui qui a rédigé les premiers cahiers techniques fédéraux en France), responsable du Collège des Professeurs de la ligue Ile de France. Il est actuellement Président de l'Union Fédérale de Taekwonkido, créée en 1996."
+    section4.text: "Depuis de nombreuses années, il est un disciple de Me Kim Yong-Ho, 9ème dan (le plus haut gradé Taekwondo en France) qui fut Président du Comité Technique de la Fédération Mondiale de Taekwondo. La seconde \"patrie\" de Maître Rémi Mollet, c'est la Corée et il y va tous les ans afin de se ressourcer et de s'entraîner."
+    hisstudents:
+      title: "ses élèves"
+      text: "Certains de ses élèves sont devenus de grands champions : Valérie Chevé (plusieurs fois Championne de France), Thierry Troudart (multiple Champion de France, Vainqueur de la Coupe de Méditerranée, 3ème au Championnat du Monde à New-York en 1993) et enfin Pascal Gentil (Médaille d'Or à la Coupe du Monde et 3ème aux jeux Olympiques de Sydney en 2000) qui a débuté dans un de ses clubs."
+    hisdemonstrations:
+      title: "ses démonstrations"
+      text: "Après avoir passé autant d'années à développer le Taekwondo, Maître Rémi Mollet s'est employé à promouvoir un autre art coréen : Hapkido. Dans les années 90, il a jugé bon de réunir les principales tendances du Hapkido en France et créa l'Union Fédérale de Hapkido. Depuis, nombreuses ont été les démonstrations tant en France qu'à l'étranger et nombreux ont été les stages qu'il a prodigués. Tous ces efforts ont abouti à une démonstration qu'il a effectuée lors de la Nuit des Arts Martiaux de Paris Bercy le 25 Mars 2000 et qui a remporté un vif succès. Il a également participé au salon des Arts Martiaux de Vincennes (parc Floral) en octobre 1999 et en octobre 2000. Il a effectué deux démos de Taekwondo, Hapkido, Taekwonkido aux 2 premières nuits des arts martiaux traditionnels, en 2007 et 2008, organisées par le magazine Dragon - Art et Combat."
+    conclusion:
+      title: "conclusion"
+      text: "Pour finir, nous dirons qu'il est Directeur Technique du Cénacle, vaste amicale de clubs qui regroupe une trentaine de Do-Jangs (salles d'entraînement) sur Paris, le Sud de la France et l'étranger. Il va régulièrement y animer des stages et faire profiter les pratiquants d'une expérience pédagogique de plus de 35 ans."
 
