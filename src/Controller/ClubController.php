@@ -22,7 +22,7 @@ class ClubController extends AbstractController
 			$session->remove('lessons-selected');
 		}
 
-		$response = $this->forward('App\Controller\Api\ClubController::listActive');
+		$response = $this->forward('App\Controller\Api\ClubSearchController::search', ["request" => $request]);
 		$json = json_decode($response->getContent());
 		return $this->render('club/club-list.html.twig', [
 			'clubs' => $json

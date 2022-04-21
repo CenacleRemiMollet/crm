@@ -19,6 +19,7 @@ use App\Model\ClubLessonView;
 use App\Model\ClubLocationView;
 use App\Entity\City;
 use App\Model\CityModel;
+use App\Controller\ControllerUtils;
 
 
 class ClubSearchController extends AbstractController
@@ -32,9 +33,107 @@ class ClubSearchController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/clubsearch/zc/{zipcode}", name="api_club_search-zipcode", methods={"GET"}, requirements={"zipcode"="[0-9]{4-7}"})
+	 * @Route("/api/clubsearch", name="api_club_search", methods={"GET"})
 	 * @OA\Get(
-	 *     operationId="searchAroundWithdistance",
+	 *     operationId="searchClub",
+	 *     tags={"Club"},
+	 *     path="/api/clubsearch",
+	 *     summary="Search clubs",
+	 *     @OA\Parameter(
+	 *         description="Zip code",
+	 *         in="query",
+	 *         name="zc",
+	 *         required=false,
+	 *         @OA\Schema(
+	 *             format="string",
+	 *             type="string",
+	 *             pattern="\d{4,6}"
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *         description="Distance in kilometers",
+	 *         in="query",
+	 *         name="d",
+	 *         required=false,
+	 *         @OA\Schema(
+	 *             type="integer",
+	 *             default=5
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *         description="Disciplines separated by comma",
+	 *         in="query",
+	 *         name="dis",
+	 *         required=false,
+	 *         @OA\Schema(
+	 *             format="string",
+	 *             type="string"
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *         description="Days of week separated by comma",
+	 *         in="query",
+	 *         name="days",
+	 *         required=false,
+	 *         @OA\Schema(
+	 *             format="string",
+	 *             type="string"
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response="200",
+	 *         description="Successful",
+	 *         @OA\MediaType(
+	 *             mediaType="application/hal+json",
+	 *             @OA\Schema(
+	 *                 type="array",
+	 *                 @OA\Items(ref="#/components/schemas/ClubLocation")
+	 *             )
+	 *         )
+	 *     )
+	 * )
+	 */
+	public function search(Request $request)
+	{
+	    $zipcode = $request->query->get('zc', '');
+	    $distance = $request->query->get('d', 5);
+	    $disciplines = ControllerUtils::parseDisciplines($request->query->get('dis', ''));
+	    $days = ControllerUtils::parseDays($request->query->get('days', ''));
+	    
+	    $clubLocations = $this->getDoctrine()->getManager()
+	    ->getRepository(ClubLocation::class)
+	    ->findByZipcodeAndDistance($zipcode, $distance, $disciplines, $days, true);
+	    
+	    $this->logger->debug('Search club around '.$zipcode.' in '.$distance.' km : '.count($clubLocations).' club(s)');
+	    
+	    //$clubLocationByIds = array();
+	    $clubLocationIds = array();
+	    foreach ($clubLocations as &$clubLocation) {
+	        //$clubLocationByIds[$clubLocation->getId()] = new ClubLocationView($clubLocation);
+	        array_push($clubLocationIds, $clubLocation->getId());
+	    }
+	    
+	    $clubs = $clubLocations = $this->getDoctrine()->getManager()
+	    ->getRepository(Club::class)
+	    ->findByClubLocationIds($clubLocationIds);
+	    
+	    $clubViews = $this->getDoctrine()->getManager()
+	    ->getRepository(ClubLocation::class)
+	    ->findByClubs($clubs);
+	    
+	    
+	    $hateoas = HateoasBuilder::create()->build();
+	    $json = json_decode($hateoas->serialize($clubViews, 'json'));
+	    
+	    return new Response(json_encode($json), 200, array(
+	        'Content-Type' => 'application/hal+json'
+	    ));
+	}
+	    
+	/**
+	 * @Route("/api/clubsearch/zc/{zipcode}", name="api_club_search-zipcode", methods={"GET"}, requirements={"zipcode"="\d{4,6}"})
+	 * @OA\Get(
+	 *     operationId="searchClubAroundWithdistance",
 	 *     tags={"Club"},
 	 *     path="/api/clubsearch/zc/{zipcode}",
 	 *     summary="Search all clubs around a zipcode with a distance in kilometers",
@@ -46,7 +145,7 @@ class ClubSearchController extends AbstractController
      *         @OA\Schema(
      *             format="string",
      *             type="string",
-     *             pattern="[0-9]{4,7}"
+     *             pattern="\d{4,6}"
      *         )
      *     ),
 	 *     @OA\Parameter(
@@ -71,6 +170,7 @@ class ClubSearchController extends AbstractController
 	 *         )
 	 *     )
 	 * )
+	 * @deprecated
 	 */
 	public function searchAroundWithdistance(Request $request, $zipcode)
 	{
@@ -82,10 +182,10 @@ class ClubSearchController extends AbstractController
 
 		$this->logger->debug('Search club around '.$zipcode.' in '.$distance.' km : '.count($clubLocations).' club(s)');
 
-		$clubLocationByIds = array();
+		//$clubLocationByIds = array();
 		$clubLocationIds = array();
 		foreach ($clubLocations as &$clubLocation) {
-			$clubLocationByIds[$clubLocation->getId()] = new ClubLocationView($clubLocation);
+			//$clubLocationByIds[$clubLocation->getId()] = new ClubLocationView($clubLocation);
 			array_push($clubLocationIds, $clubLocation->getId());
 		}
 
@@ -105,6 +205,5 @@ class ClubSearchController extends AbstractController
 			'Content-Type' => 'application/hal+json'
 		));
 	}
-
-
+	
 }

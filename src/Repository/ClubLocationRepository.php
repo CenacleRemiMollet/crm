@@ -53,20 +53,39 @@ class ClubLocationRepository extends ServiceEntityRepository
 		return $query->getResult();
 	}
 
-	public function findByZipcodeAndDistance($zipcode, $distance) {
+	public function findByZipcodeAndDistance($zipcode, $distance, $disciplines, $days, $active) {
 		$sql = "SELECT cl.*"
 				." FROM club_location cl"
-				."  JOIN ("
-				."   SELECT clist.zip_code,"
-				."          (6371 * acos( cos(radians(cref.latitude)) * cos(radians(clist.latitude)) * cos(radians(clist.longitude) - radians(cref.longitude)) + sin(radians(cref.latitude)) * sin(radians(clist.latitude)))) AS distance"
-				."    FROM city clist, (SELECT * FROM city WHERE zip_code = :zipcode LIMIT 1) cref"
-				."    HAVING distance < :distance"
-				."  ) c ON cl.zipcode = c.zip_code";
+		        ."  JOIN club_lesson cles ON (cles.club_location_id = cl.id)"
+		        ."  JOIN club c ON (c.id = cles.club_id)";
+	    if(! is_null($zipcode) && ! empty($zipcode) && ! is_null($distance)) {
+	        $sql = 	$sql."  JOIN ("
+	            ."   SELECT clist.zip_code,"
+	            ."          (6371 * acos( cos(radians(cref.latitude)) * cos(radians(clist.latitude)) * cos(radians(clist.longitude) - radians(cref.longitude)) + sin(radians(cref.latitude)) * sin(radians(clist.latitude)))) AS distance"
+	            ."    FROM city clist, (SELECT * FROM city WHERE zip_code = :zipcode LIMIT 1) cref"
+	            ."    HAVING distance < :distance"
+	            ."  ) c ON cl.zipcode = c.zip_code";
+	    }
+	    $sql = 	$sql." WHERE ";
+	    if(! is_null($active) && ! $active) {
+	        $sql = 	$sql." NOT ";
+	    }
+	    $sql = 	$sql." c.active";
+		    
+		if(! is_null($disciplines) && ! empty($disciplines)) {
+		    $sql = 	$sql." AND cles.discipline IN ('".implode("','", $disciplines)."')";
+		}
+		if(! is_null($days) && ! empty($days)) {
+		    $sql = 	$sql." AND cles.day_of_week IN ('".implode("','", $days)."')";
+		}
+						
 		$rsm = new ResultSetMappingBuilder($this->getEntityManager());
 		$rsm->addRootEntityFromClassMetadata('App\Entity\ClubLocation', 'l');
 		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
-		$query->setParameter('zipcode', $zipcode);
-		$query->setParameter('distance', $distance);
+		if(! is_null($zipcode) && ! is_null($distance)) {
+            $query->setParameter('zipcode', $zipcode);
+            $query->setParameter('distance', $distance);
+		}
 		return $query->getResult();
 	}
 
