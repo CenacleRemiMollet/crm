@@ -68,6 +68,16 @@ class Club
 	private $active;
 
 	/**
+	 * @ORM\Column(type="string", length=512, nullable=true)
+	 */
+	private $contact_email;
+	
+	/**
+	 * @ORM\Column(type="string", length=64, nullable=true)
+	 */
+	private $contact_phone;
+	
+	/**
 	 * @ORM\OneToMany(targetEntity="App\Entity\ClubLesson", mappedBy="club", orphanRemoval=true)
 	 */
 	private $clubLessons;
@@ -166,7 +176,29 @@ class Club
                   		return $this;
                   	}
 
-	/**
+  	public function getContactEmail(): ?string
+  	{
+  	    return $this->contact_email;
+  	}
+  	
+  	public function setContactEmail(?string $contact_email): self
+  	{
+  	    $this->contact_email = $contact_email;
+  	    return $this;
+  	}
+                  	
+  	public function getContactPhone(): ?string
+  	{
+  	    return $this->contact_phone;
+  	}
+  	
+  	public function setContactPhone(?string $contact_phone): self
+  	{
+  	    $this->contact_phone = $contact_phone;
+  	    return $this;
+  	}
+  	
+  	/**
 	 * @return Collection|ClubLesson[]
 	 */
 	public function getClubLessons(): Collection

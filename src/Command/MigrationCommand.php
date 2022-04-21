@@ -72,10 +72,10 @@ class MigrationCommand extends Command
 	private function importDump($dumpfile)
 	{
 		$conn = $this->doctrine->getConnection();
-
+		$params = $conn->getParams();
 		$cmd = sprintf('mysql -u %s --password=%s %s < %s',
-			$conn->getUsername(),
-			$conn->getPassword(),
+		    $params['user'],
+		    $params['password'],
 			$conn->getDatabase(),
 			$dumpfile
 			);
