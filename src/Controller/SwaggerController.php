@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use OpenApi\Generator;
 
 class SwaggerController extends AbstractController
 {
@@ -21,9 +22,9 @@ class SwaggerController extends AbstractController
 	 */
 	public function configJson()
 	{
-		$openapi = \OpenApi\scan('../src'); // /Controller/Api
+	   $openapi = Generator::scan(['../src']); // /Controller/Api
 		return new Response($openapi->toJson(), 200, array(
-			'Content-Type: application/x-yaml'
+			'Content-Type: application/json'
 		));
 	}
 
