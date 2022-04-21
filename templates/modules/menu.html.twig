@@ -11,7 +11,7 @@
 
     <ul class="nav-links">
         
-        {% if club is defined and club.uuid is defined and menuProperties["menu.club.enabled"] == "true"%}
+        {% if club is defined and club.uuid is defined and menuProperties["menu.club.enabled"] == "true" %}
     		<div class="dropdown">
                 <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 	<img src="/assets/img/aim.png" class="icon">{% trans  with {'%name%': club.name} %}menu.club name{% endtrans %}

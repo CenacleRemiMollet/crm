@@ -12,6 +12,8 @@ friday: vendredi
 saturday: samedi
 sunday: dimanche
 
+cenaclerm: Cénacle Rémi Mollet
+
 
 # Common / Disciplines
 discipline:
@@ -40,4 +42,26 @@ menu:
   signin_signup:
     signin: Se connecter
     signup: Créer un compte
+
+
+# Home / Cenacle
+home:
+  martialart: arts martiaux
+  cenacle:
+    thecenacle: le cénacle
+    ourschool:
+      title: notre école
+      text: Le Cénacle Rémi Mollet est une <span>école d'Arts Martiaux</span> Français, Coréens et asiatiques. On y enseigne principalement le Taekwonkido, Taekwondo, mais aussi le Hapkido et le Gumdo. Le Cénacle est composé d'une trentaine de clubs (dojang) répartis dans toute la France. Il y a même un club aux Pays-Bas et des sympathisants en Suisse, en Angleterre, etc.
+    ourclubs:
+      title: nos clubs
+      text: La particularité du Cénacle est l'organisation d'<span>activités communes</span> à tous les clubs. Cela génère une <span>dynamique de groupe</span> tout à fait exceptionnelle. Cette dynamique favorise la création de liens entre les élèves des différents clubs. Par exemple, il est possible pour un élève de s'entraîner dans tous les clubs de son choix, sous certaines conditions. Il peut tout à fait assister aux cours dispensés par le Maître Rémi Mollet sans supplément de cotisation.
+    thecompetitions:
+      title: les compétitions
+      text: Le Cénacle organise des <span>compétitions</span> combat et technique, des <span>stages</span> combat, technique, poomse. Le Cénacle organise aussi ses propres passages de grades et invite de nombreux Maîtres (Coréens le plus souvent). Notons par exemple la venue du Grand Maître Park Hae-Man à diverses reprises. De plus certains élèves du Cénacle sont déjà partis plusieurs fois en Corée, pour participer à une compétition internationale. Ils ont même ramené quelques médailles.
+    ourteaching:
+      title: notre enseignement
+      text: Le Cénacle est sous la direction de <span>Maître Rémi Mollet</span>. Maître Rémi Mollet désire enseigner un Taekwondo Coréen, c'est-à-dire qu'il est le plus fidèle possible au Taekwondo enseigné en Corée. Pour ce faire, il part fréquemment en Corée afin de prendre connaissance des <span>dernières évolutions</span> du Taekwondo. En effet, le Taekwondo est un art martial vivant et de fait est amené à changer fréquemment. Le Taekwondo pratiqué au sein du Cénacle est conforme aux normes du <span>Kukkiwon</span> (maison mère du Taekwondo).
+    ourmethod:
+      title: notre méthode
+      text: Après de très nombreuses années de pratique et d'enseignement, Maître Mollet et le docteur Taddeï ont décidé d'orienter leur pratique vers une méthode plus réaliste, axée sur <span>le combat réel et l'autodéfense</span>, synthétisant divers arts et notamment le Khido, discipline fondée par Maître Michel Morlon, créée en 1984. Le Taekwonkido est une <span>méthode pratique et réfléchie</span>, cherchant à produire le maximum de forces à partir de principes physiques et médicaux. Il est fondé sur l'utilisation naturelle du corps, avec des formes techniques allégées.
 

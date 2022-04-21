@@ -12,6 +12,8 @@ friday: friday
 saturday: saturday
 sunday: sunday
 
+cenaclerm: Rémi Mollet cenacle
+
 
 # Common / Disciplines
 discipline:
@@ -40,3 +42,27 @@ menu:
     signin: Sign in
     signup: Sign up
 
+
+# Home / Cenacle
+home:
+  martialart: martial arts
+  cenacle:
+    thecenacle: the cenacle
+    ourschool:
+      title: our school
+      text: 
+    ourclubs:
+      title: our clubs
+      text: 
+    thecompetitions:
+      title: the competitions
+      text: 
+    ourteaching:
+      title: our teaching
+      text: 
+    ourmethod:
+      title: our method
+      text: 
+      
+      
+      

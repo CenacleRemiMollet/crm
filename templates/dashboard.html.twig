@@ -3,9 +3,13 @@
 
 {# ============================================ #}
 
-
-{% block title %}C&eacute;nacle R&eacute;mi Mollet{% endblock %}
-
+{% set selectedclub = app.session.get('club-selected') %}
+{% block title %}
+    {% if selectedclub is defined and selectedclub.uuid is defined %}
+        {{ selectedclub.name }} - 
+    {%  endif %}
+	C&eacute;nacle R&eacute;mi Mollet
+{% endblock %}
 
 {# ============================================ #}
 
