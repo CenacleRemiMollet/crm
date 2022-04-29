@@ -20,8 +20,9 @@ discipline:
   taekwonkido: "Taekwonkido"
   taekwondo: "Taekwondo"
   hapkido: "Hapkido"
-  sinkido self defense system: "Sinkido Self-Défense Système"
-  sinkido self defense system 2 lines: "Sinkido<br>Self-Défense Système"
+  sinkido self defense system: "Sinkido Self-Defense System"
+  sinkido self defense system 2 lines: "Sinkido<br>Self-Defense System"
+  sinkido self defense system 2 lines upper lower: "<span class=\"first\">sinkido</span><br><span class=\"second\">self-defense systeme</span>"
 
 
 # Menu
@@ -102,3 +103,31 @@ showcase:
       title: "conclusion"
       text: 
 
+
+# Club
+
+club:
+
+# Club / Home
+  home:
+    martialarts: "martial arts"
+  buttons:
+    firstsessionfree : "A free trial lesson!"
+    
+
+# Footer
+
+footer:
+  contactus:
+    title: ""
+    text: "Cénacle Rémi Mollet <br>Ecole Henri Cahn, Boulevard Galliéni <br>94360 Bry-sur-Marne<br>France"
+  siteplan:
+    title: ""
+    thecenacle: ""
+    themaster: "The master"
+    thedisciplines: ""
+    clublist: "List of clubs"
+    login: "Login"
+    privacypolicy: ""
+  ourdisciplines.title: ""
+  followus.title: ""

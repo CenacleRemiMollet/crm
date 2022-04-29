@@ -1,5 +1,5 @@
 
-<!-- Bannière centrale -->
+{#-- Bannière centrale --#}
 <section class="banner banner_club_default banner_club_{{ club.uuid }}">
 
    <div class="title">
@@ -11,11 +11,11 @@
             	{% for location in club.locations %}
                		{{ location.city }}<br>
                	{% endfor %}
-            <span>arts martiaux</span></h1>
+            <span>{% trans %}club.home.martialarts{% endtrans %}</span></h1>
         </div>
    </div>
 
-   <!-- boutons animés -->
+   {#-- boutons animés --#}
 
 	<div class="drop">
 		<button class="bloc-button">
@@ -33,36 +33,44 @@
     		{% endif %}
 		</div>
 	</div>
-
 	
-    <div class="drop2">
-        <button class="bloc-button">
-        	<i class="fas fa-phone-alt" aria-hidden="true"></i>
-        </button>
-        <div class="bloc-text">
-        	06 95 90 44 08
-        </div>
-    </div>
+	{% set dropNum = 2 %}
 
-   <div class="drop3">
-        <button class="bloc-button">
-            <i class="fas fa-envelope" aria-hidden="true"></i>
-        </button>
-        <div class="bloc-text">
-            remi.mollet@cenaclerm.fr
-        </div>
-    </div>
+	{% if(club.contact_phone is defined) %}
+		<div class="drop{{ dropNum }}">
+			<button class="bloc-button">
+				<i class="fas fa-phone-alt" aria-hidden="true"></i>
+			</button>
+			<div class="bloc-text">
+	            {{ club.contact_phone }}
+			</div>
+		</div>
+		{% set dropNum = dropNum + 1 %}
+	{% endif %}
 
-    <div class="drop4">
+	{% if(club.contact_email is defined) %}
+		<div class="drop{{ dropNum }}">
+			<button class="bloc-button">
+				<i class="fas fa-envelope" aria-hidden="true"></i>
+			</button>
+			<div class="bloc-text">
+				{{ club.contact_email }}
+			</div>
+		</div>
+		{% set dropNum = dropNum + 1 %}
+	{% endif %}
+
+
+    <div class="drop{{ dropNum }}">
         <button class="bloc-button">
             <i class="fas fa-gift"></i>
         </button>
         <div class="bloc-text">
-            Un cours d'essai gratuit !
+            {% trans %}club.buttons.firstsessionfree{% endtrans %}
         </div>
     </div>
 
-    <!-- Boutons disciplines -->
+    {#-- Boutons disciplines --#}
     {% include 'club/disciplines-buttons.html.twig' %}
 
     {% include 'modules/locale-button.html.twig' %}

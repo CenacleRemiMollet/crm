@@ -1,37 +1,37 @@
 <footer class="d-flex m-0">
     <div class="contact col-xl-4 col-lg-4 col-md-4">
-        <h6>nous contacter</h6>
-        <p>Cénacle Rémi Mollet <br>Ecole Henri Cahn, Boulevard Galliéni <br>94360 Bry-sur-Marne</p>
+        <h6>{% trans %}footer.contactus.title{% endtrans %}</h6>
+        <p>{% trans %}footer.contactus.text{% endtrans %}</p>
         <div class="data-contact">
-            <a href="tel:+33695904408"><i class="fas fa-phone-alt"></i>06 95 90 44 08</a>
+            <a href="tel:+33695904408"><i class="fas fa-phone-alt"></i>+33 6 95 90 44 08</a>
             <a href="mailto:remi.mollet@cenaclerm.fr"><i class="fas fa-envelope"></i>remi.mollet@cenaclerm.fr</a>
         </div> 
     </div>
 
     <div class="plan col-xl-3 col-lg-3">
-        <h6>plan du site</h6>
+        <h6>{% trans %}footer.siteplan.title{% endtrans %}</h6>
         <ul>
-            <a href="/"><li class="link">Le cénacle</li></a> 
-            <a href="/master"><li class="link">Le maître</li></a> 
-            <li class="link">Les disciplines</li>
-            <a href="/club"><li class="link">Liste des clubs</li></a> 
-            <a href="#"><li class="link">Connexion</li></a> 
-            <a href="#"><li class="link">Politique de confidentialité</li></a>
+            <a href="/"><li class="link">{% trans %}footer.siteplan.thecenacle{% endtrans %}</li></a> 
+            <a href="/master"><li class="link">{% trans %}footer.siteplan.themaster{% endtrans %}</li></a> 
+            <li class="link">{% trans %}footer.siteplan.thedisciplines{% endtrans %}</li>
+            <a href="/club"><li class="link">{% trans %}footer.siteplan.clublist{% endtrans %}</li></a> 
+            <a href="#"><li class="link">{% trans %}footer.siteplan.login{% endtrans %}</li></a> 
+            <a href="#"><li class="link">{% trans %}footer.siteplan.privacypolicy{% endtrans %}</li></a>
         </ul>
     </div>
 
     <div class="courses col-xl-3 col-lg-3">
-        <h6>nos disciplines</h6>
+        <h6>{% trans %}footer.ourdisciplines.title{% endtrans %}</h6>
         <ul>
-            <a href="/taekwonkido"><li class="link">Taekwonkido</li></a>
-            <a href="/taekwondo"><li class="link">Taekwondo</li></a>
-            <a href="/hapkido"><li class="link">Hapkido</li></a>
-            <a href="/sinkido"> <li class="link">Sinkido Self-Défense Système</li></a>
+            <a href="/taekwonkido"><li class="link">{% trans %}discipline.taekwonkido{% endtrans %}</li></a>
+            <a href="/taekwondo"><li class="link">{% trans %}discipline.taekwondo{% endtrans %}</li></a>
+            <a href="/hapkido"><li class="link">{% trans %}discipline.hapkido{% endtrans %}</li></a>
+            <a href="/sinkido"> <li class="link">{% trans %}discipline.sinkido{% endtrans %}</li></a>
         </ul>
     </div>
 
     <div class="social col-xl-2 col-lg-2">
-        <h6>nous suivre</h6>
+        <h6>{% trans %}footer.followus.title{% endtrans %}</h6>
         <div class="icons d-flex flex-xl-row flex-lg-column flex-md-column align-items-center">
             <a href="#"><i class="fab fa-facebook"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>

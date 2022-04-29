@@ -22,6 +22,7 @@ discipline:
   hapkido: "Hapkido"
   sinkido self defense system: "Sinkido Self-Défense Système"
   sinkido self defense system 2 lines: "Sinkido<br>Self-Défense Système"
+  sinkido self defense system 2 lines upper lower: "<span class=\"first\">sinkido</span><br><span class=\"second\">self-défense système</span>"
 
 
 # Menu
@@ -102,3 +103,31 @@ showcase:
       title: "conclusion"
       text: "Pour finir, nous dirons qu'il est Directeur Technique du Cénacle, vaste amicale de clubs qui regroupe une trentaine de Do-Jangs (salles d'entraînement) sur Paris, le Sud de la France et l'étranger. Il va régulièrement y animer des stages et faire profiter les pratiquants d'une expérience pédagogique de plus de 35 ans."
 
+
+# Club
+
+club:
+
+# Club / Home
+  home:
+    martialarts: "arts martiaux"
+  buttons:
+    firstsessionfree : "Un cours d'essai gratuit !"
+
+
+# Footer
+
+footer:
+  contactus:
+    title: "nous contacter"
+    text: "Cénacle Rémi Mollet <br>Ecole Henri Cahn, Boulevard Galliéni <br>94360 Bry-sur-Marne"
+  siteplan:
+    title: "plan du site"
+    thecenacle: "Le cénacle"
+    themaster: "Le maître"
+    thedisciplines: "Les disciplines"
+    clublist: "Liste des clubs"
+    login: "Connexion"
+    privacypolicy: "Politique de confidentialité"
+  ourdisciplines.title: "nos disciplines"
+  followus.title: "nous suivre"
