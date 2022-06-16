@@ -1,5 +1,2 @@
-name,child_1,child_2,child_3,adult
-taekwondo,177,167,157,200
-subscribe after september,40,40,40,40
-instructor,,,,0
-coc,130,125,120,130
+discipline,age_level_name,age_level_description,child_1,child_2,child_3,adult
+Taekwondo,,,187,177,167,210

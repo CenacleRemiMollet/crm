@@ -1,2 +1,4 @@
-name,child_1,child_2,child_3,adult
-taekwondo,284,,,344
+discipline,age_level_name,age_level_description,child_1,child_2,child_3,adult
+Taekwondo,Enfants,(6-13 ans),274,,,
+Taekwondo,Adolescents,(14-17 ans),284,,,
+Taekwondo,,,,,,344

@@ -1,22 +1,4 @@
-discipline,category,price,description,description2,ismain
-taekwondo,child,185,child_1,,true
-taekwondo,child,180,child_1,,true
-taekwondo,child,175,child_1,,true
-taekwondo,adult,175,,true
-hapkido,child,145,,true
-hapkido,child,135,,true
-hapkido,child,125,,true
-hapkido,child,195,,true
-
-
-
-TODO 
-
-
-taekwondo,185,180,175,195
-hapkido,145,135,125,195
-baby taekwondo,95,90,85,
-subscribe after september,40,40,40,40
-instructor,,,,0
-coc,140,130,120,145
-2nd,80,70,60,140
+discipline,age_level_name,age_level_description,child_1,child_2,child_3,adult
+Taekwondo,,,185,180,175,195
+Hapkido,,,145,135,125,195
+Baby Taekwondo,,(4-5 ans),95,90,85,

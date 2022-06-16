@@ -1,8 +1,4 @@
-name,child_1,child_2,child_3,adult
-taekwondo,235,225,215,260
-taekwondo,90,80,70,100
-hapkido,165,155,145,260
-subscribe after september,40,40,40,40
-instructor,,,,0
-coc,155,145,135,175
-2nd,105,95,85,155
+discipline,age_level_name,age_level_description,child_1,child_2,child_3,adult
+Taekwondo,,,235,225,215,260
+Taekwonkido,,,90,80,70,100
+Hapkido,,,165,155,145,260
