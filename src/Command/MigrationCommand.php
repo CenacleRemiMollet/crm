@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Exception;
 use App\Entity\ClubLocation;
 use App\Entity\ClubLesson;
+use App\Entity\ClubPrice;
 
 /**
  * php bin/console crm:migration --domainname=<domain> --dump=dump_src.sql
@@ -64,6 +65,9 @@ class MigrationCommand extends Command
 
 		echo PHP_EOL.'====== CSV Hours ======'.PHP_EOL;
 		$this->loadCSVHours($locations);
+		
+		echo PHP_EOL.'====== CSV Prices ======'.PHP_EOL;
+		$this->loadCSVPrices();
 
 		return Command::SUCCESS;
 	}
@@ -232,5 +236,57 @@ class MigrationCommand extends Command
 		$manager->flush();
 	}
 
+	
+	private function loadCSVPrices()
+	{
+	    $clubsPath = $this->projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'clubs'.DIRECTORY_SEPARATOR;
+	    $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
+	    foreach($this->doctrine->getManager()->getRepository(Club::class)->findAll() as $club)
+	    {
+	        $csvFile = $clubsPath.$club->getUuid().'-prices.csv';
+	        if (! file_exists($csvFile)) {
+	            echo 'File not found: '.$csvFile.PHP_EOL;
+	            continue;
+	        }
+	        echo 'Loading: '.$csvFile.PHP_EOL;
+	        $data = $serializer->decode(file_get_contents($csvFile), 'csv');
+	        $this->saveOrUpdatePrice($club, $data);
+	    }
+	}
+
+	private function saveOrUpdatePrice(Club $club, $data)
+	{
+	    $this->deletePricesForAClub($club);
+	    foreach ($data as $line) {
+	        if(implode($line, "-") === "") {
+	            continue;
+	        }
+	        try {
+	            $clubPrice = new ClubPrice();
+	            $clubPrice->setClubId($club->getId());
+	            $clubPrice->setDiscipline($line["discipline"]);
+	            $clubPrice->setAgeLevelName(isset($line["age_level_name"]) ? $line["age_level_name"] : '');
+	            $clubPrice->setAgeLevelDescription(isset($line["age_level_description"]) ? $line["age_level_description"] : '');
+	            $clubPrice->setPriceChild1(isset($line["child_1"]) ? floatval($line["child_1"]) : null);
+	            $clubPrice->setPriceChild2(isset($line["child_2"]) ? floatval($line["child_2"]) : null);
+	            $clubPrice->setPriceChild3(isset($line["child_3"]) ? floatval($line["child_3"]) : null);
+	            $clubPrice->setPriceAdult(isset($line["adult"]) ? floatval($line["adult"]) : null);
+	            $this->doctrine->getManager()->persist($clubPrice);
+	        } catch(Exception $e) {
+	            throw new \Exception("Failed to save the club price ".$club->getName()." with line (".implode($line, ",").")", 0, $e);
+	        }
+	    }
+	    $this->doctrine->getManager()->flush();
+	}
+
+	private function deletePricesForAClub(Club $club)
+	{
+	    $manager = $this->doctrine->getManager();
+	    foreach($manager->getRepository(ClubPrice::class)->findBy(["club_id" => $club->getId()]) as $lesson)
+	    {
+	        $manager->remove($lesson);
+	    }
+	    $manager->flush();
+	}
 }
 

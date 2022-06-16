@@ -41,7 +41,7 @@ class DumpDbCommand extends Command
 		$path = $path.DIRECTORY_SEPARATOR.'dump-'.$now->format('Ymd-His').'.sql';
 		$output->writeln('Writing dump to '.$path);
 
-		$cmd = sprintf('mysqldump -u %s --password=%s %s > %s',
+		$cmd = sprintf('mariadb-dump -u %s --password=%s %s > %s',
 			$conn->getUsername(),
 			$conn->getPassword(),
 			$conn->getDatabase(),
