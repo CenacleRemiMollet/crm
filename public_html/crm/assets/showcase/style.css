@@ -92,21 +92,22 @@ section{
     margin : 2rem 1rem 3rem 1rem;
 }
 
-.second{
+
+.secondd{
     margin-top : 3rem;
 }
 
-.second img{
+.secondd img{
     width : 50%;
 }
 
-.second .technics{
+.secondd .technics{
     border-left : solid #CE2A37 5px;
     padding: 0rem 1.5rem;
     margin-top : 2.5rem
 }
 
-.second .content{
+.secondd .content{
     margin: 0 1rem;
 }
 
@@ -181,11 +182,11 @@ section{
 
 @media screen and (min-width: 577px) and (max-width: 991px) {
     
-    .second{
+    .secondd{
         margin: 0 auto;
     }
     
-    .second img{
+    .secondd img{
         width: 60%;
     }
     
@@ -257,13 +258,13 @@ section{
     }
 
     .first h2,
-    .second h2,
+    .secondd h2,
     .third h2 {
         font-size : 1.2em;
     }
 
     .first p,
-    .second p,
+    .secondd p,
     .third p {
         font-size : 0.8em;
     }
@@ -273,11 +274,11 @@ section{
         margin: 1rem 1rem;
     }
 
-    .second{
+    .secondd{
         margin: 0 auto;
     }
 
-    .second img{
+    .secondd img{
         width: 100%;
     }
 

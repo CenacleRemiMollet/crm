@@ -758,7 +758,7 @@ main .partenaires .case img {
 }
 
 main .partenaires .first, .second, .third, .fourth{
-    width: 200px;
+    /*width: 200px;*/
     display: flex;
     align-items: center;
     position: relative;
