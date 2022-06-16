@@ -57,7 +57,7 @@ p{
 }
 
 .banner_home_imgbg {
-	background-image: url("/assets/home/banniere_accueil.png");
+	background-image: url("/crm/assets/home/banniere_accueil.png");
 }
 
 /* title banner */
@@ -404,7 +404,7 @@ p{
 }
 
 .banner .toggle-switch:before {
-    content: url('/assets/img/lang_french.png');
+    content: url('/crm/assets/img/lang_french.png');
     position: absolute;
     width: 25px;
     height: 25px;
@@ -415,7 +415,7 @@ p{
 }
 
 .banner .toggle-switch:after {
-    content: url('/assets/img/land_english.png');
+    content: url('/crm/assets/img/land_english.png');
     position: absolute;
     width: 25px;
     height: 25px;
@@ -478,7 +478,7 @@ main .ecole .text p{
 
 main .clubs {
     width: 100%;
-    background-image: url(/assets/home/fond_accueil_2.jpg);
+    background-image: url(/crm/assets/home/fond_accueil_2.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position-y: center;
@@ -539,7 +539,7 @@ main .competitions .text p{
 
 main .enseignement {
     width: 100%;
-    background-image: url(/assets/home/accueil_4_fond.jpg);
+    background-image: url(/crm/assets/home/accueil_4_fond.jpg);
     background-repeat: no-repeat;
     background-size: contain;
     background-position-x: right;
@@ -1384,7 +1384,7 @@ main span {
 @media screen and (max-width: 490px) {
     
     .banner {
-        background-image: url(/assets/home/home_mobile.JPG);
+        background-image: url(/crm/assets/home/home_mobile.JPG);
         background-size: cover;
         height: 90vh;
     }

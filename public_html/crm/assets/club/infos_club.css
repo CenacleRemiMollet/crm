@@ -59,7 +59,7 @@ p{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url("/assets/club/club.jpg");
+    background-image: url("/crm/assets/club/club.jpg");
     background-size: 100%;
     background-repeat: no-repeat;
 }

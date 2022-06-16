@@ -8,7 +8,7 @@
 	<span>List all MimeTypes :</span>
 	<ul>
 		{% for mimeType in mimeTypes %}
-			<li><a href="/debug/email/{{ emailType }}/{{ mimeType }}">{{ mimeType }}</a></li>
+			<li><a href="{{ app.request.baseUrl }}/debug/email/{{ emailType }}/{{ mimeType }}">{{ mimeType }}</a></li>
 		{% endfor %}
 	</ul>
 	

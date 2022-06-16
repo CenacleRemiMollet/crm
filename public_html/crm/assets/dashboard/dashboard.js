@@ -5,7 +5,7 @@ $(document).ready(function() {
 		lang = this.checked ? 'en' : 'fr';
 		//console.log("Change locale to " + lang);
 		$.ajax({
-			url:        '/locale',
+			url:        '/crm/locale',
 			type:       'PUT',
 			dataType:   'json',
 			data:       JSON.stringify({'locale': lang}),

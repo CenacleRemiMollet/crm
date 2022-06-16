@@ -3,9 +3,10 @@
 namespace App\Controller\Api;
 
 use OpenApi\Annotations as OA;
+use Symfony\Component\Routing\Annotation\Route;
 
 // see https://github.com/zircote/swagger-php/blob/master/Examples/swagger-spec/petstore-with-external-docs/controllers/PetWithDocsController.php
-// see http://localhost/swagger/swagger-config.json
+// see http://localhost/crm/swagger-config.json
 
 
 /**
@@ -33,6 +34,8 @@ use OpenApi\Annotations as OA;
  *     required=true,
  *     @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")
  * )
-
+ * @OA\Server(
+ *     url="/crm"
+ * )
  */
 class SwaggerInfo {}

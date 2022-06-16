@@ -1,7 +1,7 @@
 {% extends 'dashboard.html.twig' %}
 
 {% block stylesheets2 %}
-    <link rel="stylesheet" href="/assets/showcase/master/master.css">
+    <link rel="stylesheet" href="{{ app.request.baseUrl }}/assets/showcase/master/master.css">
 {% endblock %}
 
 
@@ -17,7 +17,7 @@
         </div>
 
         <div class="image col-xl-4 col-lg-4 col-md-5 col-sm-5">
-            <img src="/assets/showcase/master/1.jpg" alt="le maître Rémi Mollet">
+            <img src="{{ app.request.baseUrl }}/assets/showcase/master/1.jpg" alt="le maître Rémi Mollet">
         </div>
 
         <div class="content col-lg-4 col-sm-10">
@@ -29,7 +29,7 @@
     <section class="section-two">
 
         <div class="image">
-            <img src="/assets/showcase/master/3.jpg" alt="démonstration du maître">
+            <img src="{{ app.request.baseUrl }}/assets/showcase/master/3.jpg" alt="démonstration du maître">
         </div>
        
         <div class="content align-self-center">
@@ -48,7 +48,7 @@
 
     <section class="section-three">
         <div class="first d-flex justify-content-center">
-            <div class="image col-xl-5 col-lg-5"><img src="/assets/showcase/master/9.png" alt="le maître donne un coup de pied sauté"></div>
+            <div class="image col-xl-5 col-lg-5"><img src="{{ app.request.baseUrl }}/assets/showcase/master/9.png" alt="le maître donne un coup de pied sauté"></div>
             <div class="content-1 col-xl-6" pr-5>
                 <h2>{% trans %}showcase.master.hisworks.title{% endtrans %}</h2>
                 <p>{% trans %}showcase.master.hisworks.text{% endtrans %}</p>
@@ -59,7 +59,7 @@
                <h2>{% trans %}showcase.master.hiscontributions.title{% endtrans %}</h2>
                <p>{% trans %}showcase.master.hiscontributions.text{% endtrans %}</p>
            </div>
-           <div class="image col-xl-6"><img src="/assets/showcase/master/4.png" alt="le maître bloque une attaque par un coup de pied latéral"></div>
+           <div class="image col-xl-6"><img src="{{ app.request.baseUrl }}/assets/showcase/master/4.png" alt="le maître bloque une attaque par un coup de pied latéral"></div>
        </div>
     </section>
 
@@ -80,7 +80,7 @@
         </div>
 
         <div class="image">
-            <img src="/assets/showcase/master/master.jpg" alt="le maître applique une clé de bras en self-défense">
+            <img src="{{ app.request.baseUrl }}/assets/showcase/master/master.jpg" alt="le maître applique une clé de bras en self-défense">
         </div>
 
         <div class="second-text text">
@@ -94,7 +94,7 @@
         <div class="red-banner"></div>
         <div class="container d-flex col-10 p-0 m-0 justify-content-center">
             <div class="left d-block col-xl-6 col-lg-7 col-md-7 m-0 p-0">
-                <img src="/assets/showcase/master/6.jpg" alt="le maître passe une clé à son élève">
+                <img src="{{ app.request.baseUrl }}/assets/showcase/master/6.jpg" alt="le maître passe une clé à son élève">
                 <div class="content">
                     <h2>{% trans %}showcase.master.hisdemonstrations.title{% endtrans %}</h2>
                     <p>{% trans %}showcase.master.hisdemonstrations.text{% endtrans %}</p>
@@ -102,14 +102,14 @@
             </div>
 
             <div class="right col-xl-5 col-md-6 m-0 p-0 align-self-center">
-                <img src="/assets/showcase/master/master2.jpg" alt="le maître passe une clé de bras à son élève">
+                <img src="{{ app.request.baseUrl }}/assets/showcase/master/master2.jpg" alt="le maître passe une clé de bras à son élève">
             </div>
         </div>
     </section>
 
     <section class="section-six d-flex">
         <div class="image col-xl-6 col-lg-6 col-md-6 m-0 p-0">
-            <img src="/assets/showcase/master/master3.png" alt="le maître donne un coup de pied latéral à son élève">
+            <img src="{{ app.request.baseUrl }}/assets/showcase/master/master3.png" alt="le maître donne un coup de pied latéral à son élève">
         </div>
         <div class="content col-xl-5 col-lg-5 col-md-5 align-self-center">
             <h2>{% trans %}showcase.master.conclusion.title{% endtrans %}</h2>

@@ -35,7 +35,7 @@
 
 
 {% block javascripts_end_body %}
-	<script src="/vendor/bootstable/bootstable.min.js"></script>
+	<script src="{{ app.request.baseUrl }}/vendor/bootstable/bootstable.min.js"></script>
     <script>
         $("#table-list").SetEditable({
         	columnsEd: "1",
@@ -44,7 +44,7 @@
         		var propValue = row[0].childNodes[3].innerHTML;
         		$.ajax({
         			type: 'POST',			
-        			url : '/api/config/properties',
+        			url : '{{ app.request.baseUrl }}/api/config/properties',
         			contentType: 'application/json',	
         			data: JSON.stringify([{'key': propKey, 'value': propValue}]),
         			dataType: 'json',

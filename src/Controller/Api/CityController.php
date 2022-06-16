@@ -20,7 +20,6 @@ use App\Entity\City;
 use App\Model\CityView;
 use App\Model\CityModel;
 
-
 class CityController extends AbstractController
 {
 	private $logger;

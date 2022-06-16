@@ -9,7 +9,7 @@
 
        <div class="title">
            <div class="logo">
-                <img src="/assets/home/logo.jpg" alt="logo taekwonkido">
+                <img src="{{ app.request.baseUrl }}/assets/home/logo.jpg" alt="logo taekwonkido">
             </div>
             <div class="name">
                 <h1>{% trans %}cenaclerm{% endtrans %}<br>
@@ -58,9 +58,9 @@
         {# Boutons disciplines #}
 
        <div class="buttons">
-           <div class="btn"><a href="/taekwondo">taekwondo</a></div>
-           <div class="btn"><a href="/taekwonkido">taekwonkido</a></div>
-           <div class="btn"><a href="/hapkido">hapkido</a></div>
+           <div class="btn"><a href="{{ app.request.baseUrl }}/taekwondo">taekwondo</a></div>
+           <div class="btn"><a href="{{ app.request.baseUrl }}/taekwonkido">taekwonkido</a></div>
+           <div class="btn"><a href="{{ app.request.baseUrl }}/hapkido">hapkido</a></div>
            <div class="btn sinkido"><a href="/sinkido"><span class="first">sinkido</span><br><span class="second">self-défense système</span></a></div>
        </div>
 
@@ -79,7 +79,7 @@
         <section class="ecole">
 
             <div class="left">
-                <img src="/assets/home/accueil_1.jpg" alt="le maître rémi mollet donne un coup de poing retourné à son élève">
+                <img src="{{ app.request.baseUrl }}/assets/home/accueil_1.jpg" alt="le maître rémi mollet donne un coup de poing retourné à son élève">
             </div>
 
             <div class="text">
@@ -95,14 +95,14 @@
             </div>
 
             <div class="right">
-                <img src="/assets/home/accueil_2.jpg" alt="le maître montre une technique de défense">
+                <img src="{{ app.request.baseUrl }}/assets/home/accueil_2.jpg" alt="le maître montre une technique de défense">
             </div>
         </section>
 
         <section class="competitions">
 
             <div class="left">
-                <img src="/assets/home/accueil_3.jpg" alt="deux élèves s'affrontent en compétition combat">
+                <img src="{{ app.request.baseUrl }}/assets/home/accueil_3.jpg" alt="deux élèves s'affrontent en compétition combat">
             </div>
 
             <div class="text">
@@ -114,7 +114,7 @@
         <section class="enseignement">
             <div class="content">
                 <h2>{% trans %}home.cenacle.ourteaching.title{% endtrans %}</h2>
-                <img src="/assets/home/accueil_4_pix.jpg" alt="les élèves d'un club et le maître rémi mollet">
+                <img src="{{ app.request.baseUrl }}/assets/home/accueil_4_pix.jpg" alt="les élèves d'un club et le maître rémi mollet">
                 <p>{% trans %}home.cenacle.ourteaching.text{% endtrans %}</p>
             </div>
         </section>
@@ -122,12 +122,12 @@
         <section class="methode">
             <div class="left">
                 <h2>{% trans %}home.cenacle.ourmethod.title{% endtrans %}</h2>
-                <img src="/assets/home/accueil_5_2.jpg" alt="deux élèves s'entrainent">
+                <img src="{{ app.request.baseUrl }}/assets/home/accueil_5_2.jpg" alt="deux élèves s'entrainent">
                 <p>{% trans %}home.cenacle.ourmethod.text{% endtrans %}</p>
             </div>
 
             <div class="right">
-                <img src="/assets/home/accueil_5_1-2.jpg" alt="deux élèves s'affrontent en combat">
+                <img src="{{ app.request.baseUrl }}/assets/home/accueil_5_1-2.jpg" alt="deux élèves s'affrontent en combat">
             </div>
         </section>
 
@@ -144,7 +144,7 @@
                     {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#baby">
                         <h3>baby</h3>
-                        <img src="/assets/home/accueil_6_1.jpg">
+                        <img src="{{ app.request.baseUrl }}/assets/home/accueil_6_1.jpg">
                     </button>
                     
                     {# Modal #}
@@ -152,7 +152,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <img src="/assets/icons/baby-boy.svg">
+                                    <img src="{{ app.request.baseUrl }}/assets/icons/baby-boy.svg">
                                     <h5>baby</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
@@ -171,7 +171,7 @@
                     {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#kid">
                         <h3>enfant</h3>
-                        <img src="/assets/home/accueil_6_2.jpg">
+                        <img src="{{ app.request.baseUrl }}/assets/home/accueil_6_2.jpg">
                     </button>
                     
                     {# Modal #}
@@ -179,7 +179,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <img src="/assets/icons/children.svg">
+                                    <img src="{{ app.request.baseUrl }}/assets/icons/children.svg">
                                     <h5>enfant</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
@@ -198,7 +198,7 @@
                     {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adult">
                         <h3>adulte</h3>
-                        <img src="/assets/home/accueil_6_3.jpg">
+                        <img src="{{ app.request.baseUrl }}/assets/home/accueil_6_3.jpg">
                     </button>
                     
                     {# Modal #}
@@ -206,7 +206,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <img src="/assets/icons/adults.svg">
+                                    <img src="{{ app.request.baseUrl }}/assets/icons/adults.svg">
                                     <h5>adulte</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
@@ -225,7 +225,7 @@
                     {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#senior">
                         <h3>senior</h3>
-                        <img src="/assets/home/accueil_6_4.jpg">
+                        <img src="{{ app.request.baseUrl }}/assets/home/accueil_6_4.jpg">
                     </button>
                     
                     {# Modal #}
@@ -233,7 +233,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <img src="/assets/icons/couple.svg">
+                                    <img src="{{ app.request.baseUrl }}/assets/icons/couple.svg">
                                     <h5 class="modal-title" id="exampleModalLabel">senior</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
@@ -261,28 +261,28 @@
                 
                 <div class="case first">
                     <a href="https://taekwonkidotoulon.jimdofree.com/">
-                        <img src="/assets/home/logo.jpg">
+                        <img src="{{ app.request.baseUrl }}/assets/home/logo.jpg">
                         <h5>Cénacle Côte d'Azur<br>Réunion de clubs sur la Côte d'Azur sous la direction de Maître Laurent Rodier</h5>
                     </a>
                     <h6 class="under-title">Cénacle Côte d'Azur<br>Réunion de clubs sur la Côte d'Azur sous la direction de Maître Laurent Rodier</h6>
                 </div>
                 <div class="case second">
                     <a href="https://www.fftda.fr/">
-                        <img src="/assets/partners/fftda.jpg">
+                        <img src="{{ app.request.baseUrl }}/assets/partners/fftda.jpg">
                         <h5>Fédération Française de Taekwondo et disciplines associées</h5>
                     </a>
                     <h6 class="under-title">Fédération Française de Taekwondo et disciplines associées</h6>
                 </div>
                 <div class="case third">
                     <a href="http://www.taekwonkido.com/">
-                        <img src="/assets/partners/LogoTKKD_France.jpg">
+                        <img src="{{ app.request.baseUrl }}/assets/partners/LogoTKKD_France.jpg">
                         <h5>Union Fédérale de Taekwonkido</h5>
                     </a>
                     <h6 class="under-title">Union Fédérale de Taekwonkido</h6>
                 </div>
                 <div class="case fourth">
                     <a href="http://www.hoshinkidohapkido.com/">
-                        <img src="/assets/partners/hoshinkido_logo3.png">
+                        <img src="{{ app.request.baseUrl }}/assets/partners/hoshinkido_logo3.png">
                         <h5>Hoshinkido, écoles de Hapkido au Québec sous la direction de Me Serge Baubil</h5>
                     </a>
                     <h6 class="under-title">Hoshinkido, écoles de Hapkido au Québec sous la direction de Me Serge Baubil</h6>
@@ -295,7 +295,7 @@
 
         <section class="join">
             <div class="left">
-                <img src="/assets/home/accueil_7.jpg" alt="deux raquettes de frappe">
+                <img src="{{ app.request.baseUrl }}/assets/home/accueil_7.jpg" alt="deux raquettes de frappe">
             </div>
 
             <div class="right">

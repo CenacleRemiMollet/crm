@@ -11,22 +11,22 @@
     <div class="plan col-xl-3 col-lg-3">
         <h6>{% trans %}footer.siteplan.title{% endtrans %}</h6>
         <ul>
-            <a href="/"><li class="link">{% trans %}footer.siteplan.thecenacle{% endtrans %}</li></a> 
-            <a href="/master"><li class="link">{% trans %}footer.siteplan.themaster{% endtrans %}</li></a> 
+            <a href="{{ app.request.baseUrl }}/"><li class="link">{% trans %}footer.siteplan.thecenacle{% endtrans %}</li></a> 
+            <a href="{{ app.request.baseUrl }}/master"><li class="link">{% trans %}footer.siteplan.themaster{% endtrans %}</li></a> 
             <li class="link">{% trans %}footer.siteplan.thedisciplines{% endtrans %}</li>
-            <a href="/club"><li class="link">{% trans %}footer.siteplan.clublist{% endtrans %}</li></a> 
-            <a href="#"><li class="link">{% trans %}footer.siteplan.login{% endtrans %}</li></a> 
-            <a href="#"><li class="link">{% trans %}footer.siteplan.privacypolicy{% endtrans %}</li></a>
+            <a href="{{ app.request.baseUrl }}/club"><li class="link">{% trans %}footer.siteplan.clublist{% endtrans %}</li></a> 
+            <a href="{{ app.request.baseUrl }}/#"><li class="link">{% trans %}footer.siteplan.login{% endtrans %}</li></a> 
+            <a href="{{ app.request.baseUrl }}/#"><li class="link">{% trans %}footer.siteplan.privacypolicy{% endtrans %}</li></a>
         </ul>
     </div>
 
     <div class="courses col-xl-3 col-lg-3">
         <h6>{% trans %}footer.ourdisciplines.title{% endtrans %}</h6>
         <ul>
-            <a href="/taekwonkido"><li class="link">{% trans %}discipline.taekwonkido{% endtrans %}</li></a>
-            <a href="/taekwondo"><li class="link">{% trans %}discipline.taekwondo{% endtrans %}</li></a>
-            <a href="/hapkido"><li class="link">{% trans %}discipline.hapkido{% endtrans %}</li></a>
-            <a href="/sinkido"> <li class="link">{% trans %}discipline.sinkido{% endtrans %}</li></a>
+            <a href="{{ app.request.baseUrl }}/taekwonkido"><li class="link">{% trans %}discipline.taekwonkido{% endtrans %}</li></a>
+            <a href="{{ app.request.baseUrl }}/taekwondo"><li class="link">{% trans %}discipline.taekwondo{% endtrans %}</li></a>
+            <a href="{{ app.request.baseUrl }}/hapkido"><li class="link">{% trans %}discipline.hapkido{% endtrans %}</li></a>
+            <a href="{{ app.request.baseUrl }}/sinkido"> <li class="link">{% trans %}discipline.sinkido{% endtrans %}</li></a>
         </ul>
     </div>
 

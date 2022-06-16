@@ -14,7 +14,7 @@ class SwaggerController extends AbstractController
 	 */
 	public function index()
 	{
-		return $this->redirect('/swagger/index.html');
+		return $this->redirect('/crm/swagger/index.html');
 	}
 
 	/**
@@ -22,7 +22,7 @@ class SwaggerController extends AbstractController
 	 */
 	public function configJson()
 	{
-	   $openapi = Generator::scan(['../src']); // /Controller/Api
+	   $openapi = Generator::scan(['../../src']); // /Controller/Api
 		return new Response($openapi->toJson(), 200, array(
 			'Content-Type: application/json'
 		));
