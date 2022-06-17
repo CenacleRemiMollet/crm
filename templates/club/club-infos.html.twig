@@ -214,116 +214,48 @@
 
         <div class="cours">
 
-            <div class="tarifs">
-                <div class="id">
-                    <h3 class="discipline">Taekwondo</h3>
-                    <h4 class="age">enfants<br>(6 - 12 ans)</h4>
-                </div>
-
-                <div class="box">
-                    <div class="one case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">1er enfant</span>
+            {% for price in club.prices %}
+                <div class="tarifs">
+                    <div class="id">
+                        <h3 class="discipline">{{ price.discipline }}</h3>
+                        <h4 class="age">
+                            {% if price.category is defined %}{{ price.category }}{% endif %}
+                        	{% if price.description is defined and price.category is defined%}<br>{% endif %}
+                        	{% if price.description is defined %}{{ price.description }}{% endif %}
+                        </h4>
                     </div>
-
-                    <div class="two case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">2ème enfant</span>
-                    </div>
-
-                    <div class="three case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">3ème enfant</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tarifs">
-                <div class="id">
-                    <h3 class="discipline">Taekwondo -<br> Taekwonkido</h3>
-                    <h4 class="age">adultes<br>(13 ans et plus)</h4>
-                </div>
-
-                <div class="box">
-                    <div class="one case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">débutants <br><span class="subcaption">(1ère année)</span>
-                    </div>
-
-                    <div class="two case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">anciens <br><span class="subcaption">(2ème année ou +) <br>en septembre</span>
-                    </div>
-
-                    <div class="three case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">anciens <br><span class="subcaption">(2ème année ou +) <br>à partir d'octobre</span>
+                    <div class="box">
+                    	{% if price.child1 is defined %}
+                            <div class="{% if price.child2 is defined or price.child3 is defined or price.adult is defined %}one{% endif %} case">
+                                <span class="price">{{ price.child1 }}</span>
+                                <span class="euros">euros</span>
+                                <span class="caption">1er enfant</span>
+                            </div>
+                        {% endif %}
+                    	{% if price.child2 is defined %}
+                            <div class="{% if price.child3 is defined or price.adult is defined %}one{% endif %} case">
+                                <span class="price">{{ price.child2 }}</span>
+                                <span class="euros">euros</span>
+                                <span class="caption">2ème enfant</span>
+                            </div>
+                        {% endif %}
+                    	{% if price.child3 is defined %}
+                            <div class="{% if price.adult is defined %}one{% endif %} case">
+                                <span class="price">{{ price.child3 }}</span>
+                                <span class="euros">euros</span>
+                                <span class="caption">3ème enfant</span>
+                            </div>
+                        {% endif %}
+                    	{% if price.adult is defined %}
+                            <div class="case">
+                                <span class="price">{{ price.adult }}</span>
+                                <span class="euros">euros</span>
+                                <span class="caption">adultes</span>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
-            </div>
-
-            <div class="tarifs">
-                <div class="id">
-                    <h3 class="discipline">Hapkido</h3>
-                    <h6 class="discipline">self-défense coréenne</h6>
-                    <h4 class="age">enfants<br>(6 - 12 ans)</h4>
-                </div>
-
-                <div class="box">
-                    <div class="one case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">1er enfant</span>
-                    </div>
-
-                    <div class="two case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">2ème enfant</span>
-                    </div>
-
-                    <div class="three case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">3ème enfant</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tarifs">
-                <div class="id">
-                    <h3 class="discipline">Hapkido</h3>
-                    <h6 class="discipline">self-défense coréenne</h6>
-                    <h4 class="age">adultes<br>(13 ans et plus)</h4>
-                </div>
-
-                <div class="box">
-                    <div class="one case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">débutants <br><span class="subcaption">(1ère année)</span>
-                    </div>
-
-                    <div class="two case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">anciens <br><span class="subcaption">(2ème année ou +) <br>en septembre</span>
-                    </div>
-
-                    <div class="three case">
-                        <span class="price">000</span>
-                        <span class="euros">euros</span>
-                        <span class="caption">anciens <br><span class="subcaption">(2ème année ou +) <br>à partir d'octobre</span>
-                    </div>
-                </div>
-            </div>
-
+            {% endfor %}
         </div>
     </div>
 
