@@ -7,6 +7,7 @@ use App\Entity\ClubLocation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use App\Service\ClubService;
 
 /**
  * @method Club|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,14 +25,6 @@ class ClubRepository extends ServiceEntityRepository
 		$this->registry = $registry;
 	}
 
-
-	public function findAllActiveWithLocations()
-	{
-		$clubs = $this->findBy(['active' => true]);
-		return $this->registry->getManager()
-					->getRepository(ClubLocation::class)
-					->findByClubs($clubs);
-	}
 
 	public function findByClubLocationIds($clubLocationIds)
 	{

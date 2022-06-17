@@ -19,6 +19,7 @@ use App\Entity\ClubLesson;
 use App\Model\ClubLessonView;
 use App\Model\ClubCreate;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Service\ClubService;
 
 
 class ClubController extends AbstractController
@@ -46,12 +47,11 @@ class ClubController extends AbstractController
 	 */
 	public function listActive()
 	{
-		$clubs = $this->getDoctrine()->getManager()
-			->getRepository(Club::class)
-			->findAllActiveWithLocations();
+	    $clubService = new ClubService($this->getDoctrine());
+	    $clubViews = $clubService->convertAllActiveToView();
 
-		$hateoas = HateoasBuilder::create()->build();
-		$json = json_decode($hateoas->serialize($clubs, 'json'));
+	    $hateoas = HateoasBuilder::create()->build();
+	    $json = json_decode($hateoas->serialize($clubViews, 'json'));
 
 		return new Response(json_encode($json), 200, array(
 			'Content-Type' => 'application/hal+json'
@@ -91,18 +91,17 @@ class ClubController extends AbstractController
 		$clubs = $this->getDoctrine()->getManager()
 			->getRepository(Club::class)
 			->findBy(['uuid' => $uuid]);
-		$output = null;
+		$clubView = null;
 		if(count($clubs) > 0) {
-			$clubloc = $this->getDoctrine()->getManager()
-				->getRepository(ClubLocation::class)
-				->findByClubs([$clubs[0]]);
-			$output = $clubloc[0];
+		    $clubService = new ClubService($this->getDoctrine());
+		    $clubViews = $clubService->convertToView($clubs);
+			$clubView = $clubViews[0];
 		} else {
 			return new Response('Club not found: '.$uuid, 404);
 		}
 
 		$hateoas = HateoasBuilder::create()->build();
-		$json = json_decode($hateoas->serialize($output, 'json'));
+		$json = json_decode($hateoas->serialize($clubView, 'json'));
 
 		return new Response(json_encode($json), 200, array(
 			'Content-Type' => 'application/hal+json'

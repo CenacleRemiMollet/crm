@@ -20,6 +20,7 @@ use App\Model\ClubLocationView;
 use App\Entity\City;
 use App\Model\CityModel;
 use App\Controller\ControllerUtils;
+use App\Service\ClubService;
 
 
 class ClubSearchController extends AbstractController
@@ -117,9 +118,11 @@ class ClubSearchController extends AbstractController
 	    ->getRepository(Club::class)
 	    ->findByClubLocationIds($clubLocationIds);
 	    
-	    $clubViews = $this->getDoctrine()->getManager()
-	    ->getRepository(ClubLocation::class)
-	    ->findByClubs($clubs);
+	    $clubService = new ClubService($this->getDoctrine()->getManager());
+	    $clubViews = $clubService->convertWithLocationsAndPricesToView($clubs);
+// 	    $clubViews = $this->getDoctrine()->getManager()
+// 	    ->getRepository(ClubLocation::class)
+// 	    ->findByClubs($clubs);
 	    
 	    
 	    $hateoas = HateoasBuilder::create()->build();
@@ -128,82 +131,6 @@ class ClubSearchController extends AbstractController
 	    return new Response(json_encode($json), 200, array(
 	        'Content-Type' => 'application/hal+json'
 	    ));
-	}
-	    
-	/**
-	 * @Route("/api/clubsearch/zc/{zipcode}", name="api_club_search-zipcode", methods={"GET"}, requirements={"zipcode"="\d{4,6}"})
-	 * @OA\Get(
-	 *     operationId="searchClubAroundWithdistance",
-	 *     tags={"Club"},
-	 *     path="/api/clubsearch/zc/{zipcode}",
-	 *     summary="Search all clubs around a zipcode with a distance in kilometers",
-	 *     @OA\Parameter(
-     *         description="Zip code",
-     *         in="path",
-     *         name="zipcode",
-     *         required=true,
-     *         @OA\Schema(
-     *             format="string",
-     *             type="string",
-     *             pattern="\d{4,6}"
-     *         )
-     *     ),
-	 *     @OA\Parameter(
-     *         description="Distance in kilometers",
-     *         in="query",
-     *         name="d",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *             default=5
-     *         )
-     *     ),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(
-	 *                 type="array",
-	 *                 @OA\Items(ref="#/components/schemas/ClubLocation")
-	 *             )
-	 *         )
-	 *     )
-	 * )
-	 * @deprecated
-	 */
-	public function searchAroundWithdistance(Request $request, $zipcode)
-	{
-		$distance = $request->query->get('d', 5);
-
-		$clubLocations = $this->getDoctrine()->getManager()
-		->getRepository(ClubLocation::class)
-		->findByZipcodeAndDistance($zipcode, $distance);
-
-		$this->logger->debug('Search club around '.$zipcode.' in '.$distance.' km : '.count($clubLocations).' club(s)');
-
-		//$clubLocationByIds = array();
-		$clubLocationIds = array();
-		foreach ($clubLocations as &$clubLocation) {
-			//$clubLocationByIds[$clubLocation->getId()] = new ClubLocationView($clubLocation);
-			array_push($clubLocationIds, $clubLocation->getId());
-		}
-
-		$clubs = $clubLocations = $this->getDoctrine()->getManager()
-		->getRepository(Club::class)
-		->findByClubLocationIds($clubLocationIds);
-
-		$clubViews = $this->getDoctrine()->getManager()
-		->getRepository(ClubLocation::class)
-		->findByClubs($clubs);
-
-
-		$hateoas = HateoasBuilder::create()->build();
-		$json = json_decode($hateoas->serialize($clubViews, 'json'));
-
-		return new Response(json_encode($json), 200, array(
-			'Content-Type' => 'application/hal+json'
-		));
 	}
 	
 }

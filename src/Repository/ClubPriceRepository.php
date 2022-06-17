@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\ClubPrice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 /**
  * @extends ServiceEntityRepository<ClubPrice>
@@ -39,6 +40,21 @@ class ClubPriceRepository extends ServiceEntityRepository
         }
     }
 
+//     public function findByClubIds($clubIds) {
+//         $sql = "SELECT cp.club_id AS club_id, loc.*"
+//             ." FROM club_price cp"
+//             ."  JOIN club_location loc ON les.club_location_id = loc.id"
+//             ." WHERE les.club_id IN (:clubIds)"
+//             ." GROUP BY 1, 2";
+//         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+//         $rsm->addRootEntityFromClassMetadata('App\Entity\ClubLocation', 'l');
+//         $rsm->addScalarResult('club_id', 'c');
+//         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+//         $query->setParameter('clubIds', $clubIds);
+//         return $query->getResult();
+//     }
+    
+    
 //    /**
 //     * @return ClubPrice[] Returns an array of ClubPrice objects
 //     */

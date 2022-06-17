@@ -282,9 +282,9 @@ class MigrationCommand extends Command
 	private function deletePricesForAClub(Club $club)
 	{
 	    $manager = $this->doctrine->getManager();
-	    foreach($manager->getRepository(ClubPrice::class)->findBy(["club_id" => $club->getId()]) as $lesson)
+	    foreach($manager->getRepository(ClubPrice::class)->findBy(["club_id" => $club->getId()]) as $price)
 	    {
-	        $manager->remove($lesson);
+	        $manager->remove($price);
 	    }
 	    $manager->flush();
 	}

@@ -57,7 +57,12 @@ class ClubView
 	 */
 	private $locations;
 
-	public function __construct(Club $club, $locations)
+	/**
+	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/ClubPrice"))
+	 */
+	private $prices;
+	
+	public function __construct(Club $club, $locations, $prices)
 	{
 		$this->uuid = $club->getUuid();
 		$this->name = $club->getName();
@@ -66,6 +71,7 @@ class ClubView
 		$this->twitter_url = $club->getTwitterUrl();
 		$this->instagram_url = $club->getInstagramUrl();
 		$this->locations = $locations;
+		$this->prices = $prices;
 	}
 
 	public function getUuid(): ?string
@@ -103,4 +109,9 @@ class ClubView
 		return $this->locations;
 	}
 
+	public function getPrices()
+	{
+	    return $this->prices;
+	}
+	
 }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ClubPriceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Util\StringUtils;
 
 /**
  * @ORM\Entity(repositoryClass=ClubPriceRepository::class)
@@ -17,6 +18,11 @@ class ClubPrice
      */
     private $id;
 
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    private $uuid;
+    
     /**
      * @ORM\Column(type="integer")
      */
@@ -57,11 +63,28 @@ class ClubPrice
      */
     private $price_adult;
 
+    public function __construct()
+    {
+        $this->uuid = StringUtils::random_str(16);
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    public function getUuid(): ?string
+    {
+        return $this->uuid;
+    }
+    
+    public function setUuid(string $uuid): self
+    {
+        $this->uuid = $uuid;
+        
+        return $this;
+    }
+    
     public function getClubId(): ?int
     {
         return $this->club_id;
@@ -93,7 +116,7 @@ class ClubPrice
 
     public function setAgeLevelName(string $age_level_name): self
     {
-        $this->age_level_name = $age_level_name;
+        $this->age_level_name = empty($age_level_name) ? null : $age_level_name;
 
         return $this;
     }
@@ -105,7 +128,7 @@ class ClubPrice
 
     public function setAgeLevelDescription(string $age_level_description): self
     {
-        $this->age_level_description = $age_level_description;
+        $this->age_level_description = empty($age_level_description) ? null : $age_level_description;
 
         return $this;
     }
@@ -117,7 +140,7 @@ class ClubPrice
 
     public function setPriceChild1(float $price_child_1): self
     {
-        $this->price_child_1 = $price_child_1;
+        $this->price_child_1 = $price_child_1 == 0 ? null : $price_child_1;
 
         return $this;
     }
@@ -129,7 +152,7 @@ class ClubPrice
 
     public function setPriceChild2(?float $price_child_2): self
     {
-        $this->price_child_2 = $price_child_2;
+        $this->price_child_2 = $price_child_2 == 0 ? null : $price_child_2;
 
         return $this;
     }
@@ -141,7 +164,7 @@ class ClubPrice
 
     public function setPriceChild3(?float $price_child_3): self
     {
-        $this->price_child_3 = $price_child_3;
+        $this->price_child_3 = $price_child_3 == 0 ? null : $price_child_3;
 
         return $this;
     }
@@ -153,7 +176,7 @@ class ClubPrice
 
     public function setPriceAdult(?float $price_adult): self
     {
-        $this->price_adult = $price_adult;
+        $this->price_adult = $price_adult == 0 ? null : $price_adult;
 
         return $this;
     }

@@ -8,10 +8,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Util\DateIntervalUtils;
+use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\ClubPrice;
 
 class ClubController extends AbstractController
 {
 
+    private $logger;
+    
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+    
+    
 	/**
 	 * @Route("/club", name="web_club_list-active", methods={"GET"})
 	 */
@@ -66,6 +76,9 @@ class ClubController extends AbstractController
 		$response = $this->forward('App\Controller\Api\ClubController::getLessons', ['uuid' => $uuid]);
 		$lessons = json_decode($response->getContent());
 		$session->set('lessons-selected', $lessons);
+		
+		//$managerRegistry->getRepository(ClubPrice::class)->findBy(["club_id" => $club->getId()]);
+		//$price = $this->getDoctrine()->getManager()->getRepository(ClubPrice::class)->findBy(["club_id" => $club['id']]);
 
 		return $this->render('club/club-infos.html.twig', [
 			'club' => $club,
