@@ -7,7 +7,6 @@ use App\Entity\ClubLocation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
-use App\Service\ClubService;
 
 /**
  * @method Club|null find($id, $lockMode = null, $lockVersion = null)

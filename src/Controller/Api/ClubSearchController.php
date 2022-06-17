@@ -118,8 +118,8 @@ class ClubSearchController extends AbstractController
 	    ->getRepository(Club::class)
 	    ->findByClubLocationIds($clubLocationIds);
 	    
-	    $clubService = new ClubService($this->getDoctrine()->getManager());
-	    $clubViews = $clubService->convertWithLocationsAndPricesToView($clubs);
+	    $clubService = new ClubService($this->getDoctrine());
+	    $clubViews = $clubService->convertToView($clubs);
 // 	    $clubViews = $this->getDoctrine()->getManager()
 // 	    ->getRepository(ClubLocation::class)
 // 	    ->findByClubs($clubs);
