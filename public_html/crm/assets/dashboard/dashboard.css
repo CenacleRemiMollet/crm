@@ -948,11 +948,6 @@ main span {
 
 @media screen and (max-width: 1000px) {
 
-    nav .logo {
-        display: none;
-        visibility: hidden;
-    }
-
     .top-button{
         display: none;
         visibility: hidden;

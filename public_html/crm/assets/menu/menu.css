@@ -102,7 +102,7 @@ nav .dropdown-4 button li {
 nav .logo {
     width: 70px;
     margin-left: 25px;
-    margin-right: 25px;
+    /*margin-right: 25px;*/
 }
 
 nav .mobile {
@@ -270,8 +270,8 @@ nav .burger div {
     }
 
     nav .logo{
-        display: none;
-        visibility: hidden;
+        /*display: none;
+        visibility: hidden;*/
     }
 
     nav .mobile {

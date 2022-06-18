@@ -72,6 +72,10 @@
 
     {#-- Boutons disciplines --#}
     {% include 'club/disciplines-buttons.html.twig' %}
+    
+    <div class="buttons">
+    	<div class="btn"><a href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/infos">Horaires & tarifs</a></div>
+    </div>
 
     {% include 'modules/locale-button.html.twig' %}
 </section>
