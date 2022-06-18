@@ -46,16 +46,16 @@
                     {% else %}
                     	{% set disciplines = null %}
                     {% endif %}
-                    {% if disciplines is not null and 'taekwonkido' in disciplines %}
+                    {% if lessons is null or (disciplines is not null and 'taekwonkido' in disciplines) %}
                     	<a class="dropdown-item text-nowrap" href="{{ app.request.baseUrl }}/taekwonkido"><li class="link dropdown-item"> {% trans %}discipline.taekwonkido{% endtrans %}</li></a>
                     {% endif %}
-                    {% if disciplines is not null and 'taekwondo' in disciplines %}
+                    {% if lessons is null or (disciplines is not null and 'taekwondo' in disciplines) %}
                     	<a class="dropdown-item" href="{{ app.request.baseUrl }}/taekwondo"><li class="link dropdown-item"> {% trans %}discipline.taekwondo{% endtrans %}</li></a>
                    	{% endif %}
-                   	{% if disciplines is not null and 'hapkido' in disciplines %}
+                   	{% if lessons is null or (disciplines is not null and 'hapkido' in disciplines) %}
                     	<a class="dropdown-item" href="{{ app.request.baseUrl }}/hapkido"><li class="link dropdown-item"> {% trans %}discipline.hapkido{% endtrans %}</li></a>
                     {% endif %}
-                    {% if disciplines is not null and 'sinkido' in disciplines %}
+                    {% if lessons is null or (disciplines is not null and 'sinkido' in disciplines) %}
                     	<a class="dropdown-item" href="{{ app.request.baseUrl }}/sinkido"><li class="link dropdown-item"> {% trans %}discipline.sinkido self defense system 2 lines{% endtrans %}</li></a>
 					{% endif %}
                     {% if lessons %}
