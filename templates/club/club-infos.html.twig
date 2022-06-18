@@ -144,18 +144,18 @@
         <div class="price">
             <span class="number">29</span>
             <span class="euro">euros</span>
-            <span class="text">adhésion cénacle</span>
+            <span class="text">{% trans %}club.infos.pricesforall.membership{% endtrans %}</span>
         </div>
 
         <span class="plus">+</span>
 
         <!-- Button trigger modal -->
-        <button type="button" class="btnprice" data-toggle="modal" data-target="#exampleModal">
+        <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">
             <div class="price info">
                 <div class="front">
                     <span class="number">79</span>
                     <span class="euro">euros</span>
-                    <span class="text">inscription de base</span>
+                    <span class="text">{% trans %}club.infos.pricesforall.base.title{% endtrans %}</span>
                     <i class="fas fa-angle-down"></i>
                 </div>
             </div>
@@ -172,11 +172,10 @@
                     </div>
 
                     <div class="modal-body">
-                        <p>l'inscription de base comprend :
+                        <p>{% trans %}club.infos.pricesforall.base.contains{% endtrans %}
                             <ul>
-                                <li>droit d’entrée, affiliations fédérales & assurance</li> 
-                                <li>tenue du club avec ceinture pour les nouveaux élèves) : 79 € 
-                                (ou 59 € pour Hapkidoïstes adultes - tenue non comprise)</li> 
+                                <li>{% trans %}club.infos.pricesforall.base.right{% endtrans %}</li> 
+                                <li>{% trans %}club.infos.pricesforall.base.dobok{% endtrans %}</li> 
                             </ul>
                         </p>
                     </div>
@@ -184,20 +183,18 @@
             </div>
         </div>
 
-
         <div class="price info">
             <div class="front">
                 <span class="number">79</span>
                 <span class="euro">euros</span>
-                <span class="text">inscription de base</span>
+                <span class="text">{% trans %}club.infos.pricesforall.base.title{% endtrans %}</span>
                 <i class="fas fa-angle-down"></i>
             </div>
             <div class="infoHover">
-                <p>l'inscription de base comprend :
+                <p>{% trans %}club.infos.pricesforall.base.contains{% endtrans %}
                     <ul>
-                        <li>droit d’entrée, affiliations fédérales & assurance</li> 
-                        <li>tenue du club avec ceinture pour les nouveaux élèves) : 79 € 
-                        (ou 59 € pour Hapkidoïstes adultes - tenue non comprise)</li> 
+                        <li>{% trans %}club.infos.pricesforall.base.right{% endtrans %}</li> 
+                        <li>{% trans %}club.infos.pricesforall.base.dobok{% endtrans %}</li> 
                     </ul>
                 </p>
             </div>
@@ -208,7 +205,7 @@
     <div class="fifth section">
         <div class="midTitle">
             <span class="plus">+</span>
-            <h3>la ou les cotisation(s) au choix</h3>
+            <h3>{% trans %}club.infos.contribution.title{% endtrans %}</h3>
         </div>
 
         <div class="cours">
@@ -229,9 +226,9 @@
                                 <span class="price">{{ price.child1 }}</span>
                                 <span class="euros">euros</span>
                                 {% if price.child2 is defined or price.child3 is defined %}
-                                	<span class="caption">1er enfant</span>
+                                	<span class="caption">{% trans %}club.infos.contribution.firstchild{% endtrans %}</span>
                                 {% else %}
-                                	<span class="caption">enfant</span>
+                                	<span class="caption">{% trans %}club.infos.contribution.child{% endtrans %}</span>
                                 {% endif %}
                                 
                             </div>
@@ -240,21 +237,21 @@
                             <div class="{% if price.child3 is defined or price.adult is defined %}one{% endif %} case">
                                 <span class="price">{{ price.child2 }}</span>
                                 <span class="euros">euros</span>
-                                <span class="caption">2ème enfant</span>
+                                <span class="caption">{% trans %}club.infos.contribution.secondchild{% endtrans %}</span>
                             </div>
                         {% endif %}
                     	{% if price.child3 is defined %}
                             <div class="{% if price.adult is defined %}one{% endif %} case">
                                 <span class="price">{{ price.child3 }}</span>
                                 <span class="euros">euros</span>
-                                <span class="caption">3ème enfant</span>
+                                <span class="caption">{% trans %}club.infos.contribution.thirdchild{% endtrans %}</span>
                             </div>
                         {% endif %}
                     	{% if price.adult is defined %}
                             <div class="case">
                                 <span class="price">{{ price.adult }}</span>
                                 <span class="euros">euros</span>
-                                <span class="caption">adulte</span>
+                                <span class="caption">{% trans %}club.infos.contribution.adult{% endtrans %}</span>
                             </div>
                         {% endif %}
                     </div>
@@ -267,24 +264,24 @@
         <div class="bloc">
             <div class="title">
                 <div class="line"></div>
-                <h3>parrainage</h3>
+                <h3>{% trans %}club.infos.sponsorship.title{% endtrans %}</h3>
                 <div class="line"></div>
             </div>
 
             <div class="content">
                 <div class="step">
                     <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
-                    <p>Ces avantages ne sont pas valables pour des personnes appartenant à la même famille</p>
+                    <p>{% trans %}club.infos.sponsorship.advantages1{% endtrans %}</p>
                 </div>
                 <div class="step">
                     <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
-                    <p>Ces avantages concernent la cotisation et non le droit d’affiliation Cénacle (29€) et les droits d’inscription-assurance</p>
+                    <p>{% trans %}club.infos.sponsorship.advantages2{% endtrans %}</p>
                 </div>
-                <h4 class="caption2">Chaque élève "ramenant" au club des élèves aura les avantages suivants :</h4>
+                <h4 class="caption2">{% trans %}club.infos.sponsorship.eachstudent{% endtrans %}</h4>
 
                 <div class="board">
                     <div class="boardLeft">
-                        <h4>nombre<br> d'élèves ramenés</h4>
+                        <h4>{% trans %}club.infos.sponsorship.table.number{% endtrans %}</h4>
                         <ul>
                             <li>2</li>
                             <li>3</li>
@@ -294,13 +291,13 @@
                         </ul>
                     </div>
                     <div class="boardRight">
-                        <h4>rabais sur<br> la cotisation</h4>
+                        <h4>{% trans %}club.infos.sponsorship.table.advantages{% endtrans %}</h4>
                         <ul>
                             <li>20%</li>
                             <li>35%</li>
                             <li>50%</li>
                             <li>75%</li>
-                            <li>Gratuite</li>
+                            <li>{% trans %}club.infos.sponsorship.table.free{% endtrans %}</li>
                         </ul>
                     </div>
                 </div>
@@ -312,7 +309,7 @@
         <div class="bloc">
             <div class="title">
                 <div class="line"></div>
-                <h3 id="hours">horaires</h3>
+                <h3 id="hours">{% trans %}club.infos.hours.title{% endtrans %}</h3>
                 <div class="line"></div>
             </div>
         </div>
@@ -320,11 +317,11 @@
         <div class="content">
             <div class="step">
                 <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
-                <p>Le cours Taekwonkido est ouvert aux pratiquants de Taekwondo et de Hapkido</p>
+                <p>{% trans %}club.infos.hours.taekwonkidocours{% endtrans %}</p>
             </div>
             <div class="step">
                 <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
-                <p>Les protections (plastrons, casques, etc.) sont obligatoires pour le cours compétition</p>
+                <p>{% trans %}club.infos.hours.protects{% endtrans %}</p>
             </div>
             
             {% set days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] %}
@@ -368,7 +365,7 @@
                             <h4 class="jourName">{{ day|trans }}</h4>
                             {% if(lessons|filter(l => l.day_of_week == day)|length == 0) %}
                                 <div class="case empty">
-                                    <h5 class="coursName">pas de cours</h5>
+                                    <h5 class="coursName">{% trans %}club.infos.planning.nocours{% endtrans %}</h5>
                                 </div>
                             {% else %}
                             	{% for lesson in lessons|filter(l => l.day_of_week == day) %}

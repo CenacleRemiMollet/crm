@@ -144,9 +144,37 @@ club:
       afterexpensive: "Par ailleurs, une fois la période des inscriptions passée, les gradés auront une cotisation majorée"
       traineeship: "Les stages, passages de grades et autres activités organisées par le Cénacle ou une fédération sont la plupart du temps en sus"
       payment: "Le paiement de la cotisation permet de faire les cours à Bry et évidemment dans tous les autres clubs du Cénacle"
-      
-    
-   
+    pricesforall:
+      membership: "adhésion cénacle"
+      base:
+        title: "inscription de base"
+        contains: "l'inscription de base comprend :"
+        right: "droit d’entrée, affiliations fédérales & assurance"
+        dobok: "tenue du club avec ceinture pour les nouveaux élèves) : 79 € (ou 59 € pour Hapkidoïstes adultes - tenue non comprise)"
+    contribution:
+      title: "la ou les cotisation(s) au choix"
+      child: "enfant"
+      firstchild: "1er enfant"
+      secondchild: "2ème enfant"
+      thirdchild: "3ème enfant"
+      adult: "adulte"
+    sponsorship:
+      title: "parrainage"
+      advantages1: "Ces avantages ne sont pas valables pour des personnes appartenant à la même famille"
+      advantages2: "Ces avantages concernent la cotisation et non le droit d’affiliation Cénacle (29€) et les droits d’inscription-assurance"
+      eachstudent: "Chaque élève \"ramenant\" au club des élèves aura les avantages suivants :"
+      table:
+        number: "nombre<br>d'élèves ramenés"
+        advantages: "rabais sur<br> la cotisation"
+        free: "Gratuite"
+    hours:
+      title: "horaires"
+      taekwonkidocours: "Le cours Taekwonkido est ouvert aux pratiquants de Taekwondo et de Hapkido"
+      protects: "Les protections (plastrons, casques, etc.) sont obligatoires pour le cours compétition"
+    planning:
+      nocours: "pas de cours"
+
+
 # Footer
 
 footer:

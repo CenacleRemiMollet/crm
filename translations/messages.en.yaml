@@ -144,6 +144,35 @@ club:
       afterexpensive: 
       traineeship: 
       payment: 
+    pricesforall:
+      membership: ""
+      base:
+        title: ""
+        contains: ""
+        right: ""
+        dobok: ""
+    contribution:
+      title: ""
+      child: "child"
+      firstchild: "1st enfant"
+      secondchild: "2nd enfant"
+      thirdchild: "3rd enfant"
+      adult: "adult"
+    sponsorship:
+      title: "sponsorship"
+      advantages1: ""
+      advantages2: ""
+      eachstudent: ""
+      table:
+        number: ""
+        advantages: ""
+        free: "Free"
+    hours:
+      title: "hours"
+      taekwonkidocours: ""
+      protects: ""
+    planning:
+      nocours: ""
     
 
 # Footer

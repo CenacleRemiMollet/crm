@@ -299,8 +299,17 @@ nav .burger div {
         display: flex;
         align-items: center;
         width: 100%;
+        display: flex !important;
     }
-
+    
+    nav .dropdown-toggle{
+        display: inline;
+        width: 80%;
+        display: flex !important;
+        white-space: normal;
+	    overflow: hidden;
+    }
+	
     nav li{
         margin: 25px 0 0 0;
     }
