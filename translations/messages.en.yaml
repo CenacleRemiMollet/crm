@@ -113,6 +113,37 @@ club:
     martialarts: "martial arts"
   buttons:
     firstsessionfree : "A free trial lesson!"
+
+# Club / Infos
+  infos:
+    join: "join the club"
+    how:
+      question: "how to join the club?"
+      subscribe: "I'm registering"
+      masterconsent: "I have the consent of the master"
+      fillform: 
+      pay: 
+      docs: 
+    docs:
+      title: "documents to provide"
+      photos: 
+      certificate: 
+      envelopes: 
+      hkdguys: 
+    notes:
+      title: "to note"
+      access3: 
+      allcoursrequired: 
+      rules: 
+      askdocs: 
+      termsandcond: 
+    prices:
+      title: "prices"
+      dobok: 
+      norefund: 
+      afterexpensive: 
+      traineeship: 
+      payment: 
     
 
 # Footer

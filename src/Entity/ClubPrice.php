@@ -36,12 +36,12 @@ class ClubPrice
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $age_level_name;
+    private $category;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $age_level_description;
+    private $comment;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -109,26 +109,26 @@ class ClubPrice
         return $this;
     }
 
-    public function getAgeLevelName(): ?string
+    public function getCategory(): ?string
     {
-        return $this->age_level_name;
+        return $this->category;
     }
 
-    public function setAgeLevelName(string $age_level_name): self
+    public function setCategory(string $category): self
     {
-        $this->age_level_name = empty($age_level_name) ? null : $age_level_name;
+        $this->category = empty($category) ? null : $category;
 
         return $this;
     }
 
-    public function getAgeLevelDescription(): ?string
+    public function getComment(): ?string
     {
-        return $this->age_level_description;
+        return $this->comment;
     }
 
-    public function setAgeLevelDescription(string $age_level_description): self
+    public function setComment(string $comment): self
     {
-        $this->age_level_description = empty($age_level_description) ? null : $age_level_description;
+        $this->comment = empty($comment) ? null : $comment;
 
         return $this;
     }

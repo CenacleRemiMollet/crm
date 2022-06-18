@@ -265,8 +265,8 @@ class MigrationCommand extends Command
 	            $clubPrice = new ClubPrice();
 	            $clubPrice->setClubId($club->getId());
 	            $clubPrice->setDiscipline($line["discipline"]);
-	            $clubPrice->setAgeLevelName(isset($line["age_level_name"]) ? $line["age_level_name"] : '');
-	            $clubPrice->setAgeLevelDescription(isset($line["age_level_description"]) ? $line["age_level_description"] : '');
+	            $clubPrice->setCategory(isset($line["category"]) ? $line["category"] : '');
+	            $clubPrice->setComment(isset($line["comment"]) ? $line["comment"] : '');
 	            $clubPrice->setPriceChild1(isset($line["child_1"]) ? floatval($line["child_1"]) : null);
 	            $clubPrice->setPriceChild2(isset($line["child_2"]) ? floatval($line["child_2"]) : null);
 	            $clubPrice->setPriceChild3(isset($line["child_3"]) ? floatval($line["child_3"]) : null);

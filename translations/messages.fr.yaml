@@ -114,7 +114,39 @@ club:
   buttons:
     firstsessionfree : "Un cours d'essai gratuit !"
 
-
+# Club / Infos
+  infos:
+    join: "rejoindre le club"
+    how:
+      question: "Comment faire partie du club ?"
+      subscribe: "je m'inscris"
+      masterconsent: "J'ai l'accord du maître"
+      fillform: "Je remplis la fiche d’inscription (dans la brochure remise sur place) avec autorisation parentale (ou du tuteur légal pour les mineurs) et l’acceptation signée du règlement intérieur (\"Charte du Do-Jang\")"
+      pay: "Je paye l’adhésion Cénacle, les frais d’inscription-assurance et la cotisation"
+      docs: "Je fournis les documents demandés le plus rapidement possible et je donne tout en une seule fois"
+    docs:
+      title: "documents à fournir"
+      photos: "3 photos d’identité avec le nom derrière (1 seule photo pour les anciens du club)"
+      certificate: "Certificat médical d’aptitude à la pratique du TKD-TKKD/HKD en salle et en compétition : attention, il est conseillé que le médecin mentionne que l’élève est à jour de ses vaccinations diphtérie-tétanos-polio et hépatite"
+      envelopes: "10 enveloppes timbrées au tarif normal, autocollantes, format allongé (22 cm x 11 cm), sans rien inscrire dessus"
+      hkdguys: "Pour les Hapkidoïstes nouveaux venus, prendre la carte de grades (8 €) + 1 photo : coupon à remplir dans la brochure"
+    notes:
+      title: "à noter"
+      access3: "Au bout de trois séances, vous ne pourrez plus avoir accès au cours si vous n’êtes toujours pas en règle ! C'est une question de sérieux et d'assurance"
+      allcoursrequired: "La présence à tous les cours est absolument obligatoire. Pas de dilettantes! Nous n'avons pas de temps à perdre ! Nous garantissons les progrès de l'élève seulement s'il est assidu et sérieux. Toute absence au cours doit être excusée. Pour les mineurs, en cas d'absences répétées, les parents seront tenus au courant. Au bout de 3 absences non motivées, l'exclusion du club (sans remboursement de cotisation) sera immédiate."
+      rules: "Toute adhésion au Cénacle Rémi Mollet implique l'application des règles prescrites (Charte du Do-Jang)"
+      askdocs: "Vous pouvez demander tout document inhérent au club (statuts, règlement intérieur, etc.) au responsable du club"
+      termsandcond: "Si vous désirez les conditions générales de couverture de notre Mutuelle liée à l’inscription ou si vous voulez payer une couverture mutualiste complémentaire, veuillez contacter : Me Rémi Mollet, Parc des Sports, 3 rue du clos Ste Catherine, 94360 Bry/Marne"
+    prices:
+      title: "tarifs"
+      dobok: "La tenue d’entraînement du club + 1 ceinture : pour les nouveaux inscrits, les frais pour la tenue du club sont compris dans les frais d'inscription"
+      norefund: "Les cotisations ne sont pas remboursables"
+      afterexpensive: "Par ailleurs, une fois la période des inscriptions passée, les gradés auront une cotisation majorée"
+      traineeship: "Les stages, passages de grades et autres activités organisées par le Cénacle ou une fédération sont la plupart du temps en sus"
+      payment: "Le paiement de la cotisation permet de faire les cours à Bry et évidemment dans tous les autres clubs du Cénacle"
+      
+    
+   
 # Footer
 
 footer:

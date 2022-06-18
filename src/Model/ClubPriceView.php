@@ -31,7 +31,7 @@ class ClubPriceView
 	/**
 	 * @OA\Property(type="string", example="(4-6 ans)")
 	 */
-	private $description;
+	private $comment;
 
 	/**
 	 * @OA\Property(type="number", format="float", nullable="true", example="135")
@@ -57,8 +57,8 @@ class ClubPriceView
 	{
 	    $this->uuid = $price->getUuid();
 	    $this->discipline = $price->getDiscipline();
-	    $this->category = $price->getAgeLevelName();
-	    $this->description = $price->getAgeLevelDescription();
+	    $this->category = $price->getCategory();
+	    $this->comment = $price->getComment();
 	    $this->child1 = $price->getPriceChild1();
 	    $this->child2 = $price->getPriceChild2();
 	    $this->child3 = $price->getPriceChild3();
@@ -80,9 +80,9 @@ class ClubPriceView
 		return $this->category;
 	}
 
-	public function getDescription(): ?string
+	public function getComment(): ?string
 	{
-		return $this->description;
+		return $this->comment;
 	}
 
 	public function getChild1(): ?float

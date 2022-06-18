@@ -120,9 +120,6 @@ class ClubSearchController extends AbstractController
 	    
 	    $clubService = new ClubService($this->getDoctrine());
 	    $clubViews = $clubService->convertToView($clubs);
-// 	    $clubViews = $this->getDoctrine()->getManager()
-// 	    ->getRepository(ClubLocation::class)
-// 	    ->findByClubs($clubs);
 	    
 	    
 	    $hateoas = HateoasBuilder::create()->build();
