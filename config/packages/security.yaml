@@ -44,10 +44,10 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
-when@prod:
-    security:
-        access_control:
-            - { path: '^/', roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+#when@prod:
+#    security:
+#        access_control:
+#            - { path: '^/', roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
             
 when@test:
     security:

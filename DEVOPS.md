@@ -15,6 +15,8 @@ php bin/console crm:migration --domainname=<legacy-domain-name> --dump=dump_src.
 
 # To the production server
 
+!! WIP !!
+
 Ignore `chmod` modification :
 
 ```
@@ -46,3 +48,11 @@ php bin/console crm:migration --domainname=legacydomain.fr --dump=dump_src.sql
 ```
 
 Restore the `APP_ENV` to `prod` in the file `.env.local`.
+
+
+==== TODO
+
+https://symfony.com/doc/current/deployment.html#c-install-update-your-vendors
+
+composer install --no-dev --optimize-autoloader
+APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
