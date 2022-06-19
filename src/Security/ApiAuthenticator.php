@@ -49,7 +49,7 @@ class ApiAuthenticator extends AbstractAuthenticator
 
     public function start(Request $request, AuthenticationException $authException = null): Response
     {
-    	$this->logger->debug('ApiAuthenticator.start(...)'.$request->getRequestUri());
+    	$this->logger->debug('ApiAuthenticator.start(...) '.$request->getRequestUri());
     	$url = $this->getLoginUrl($request);
 
     	return new RedirectResponse($url);
@@ -58,7 +58,8 @@ class ApiAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): PassportInterface
     {
-    	$login = $request->request->get('login', '');
+        $this->logger->debug('ApiAuthenticator.authenticate() '.$request->getRequestUri());
+        $login = $request->request->get('login', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $login);
 
@@ -73,14 +74,15 @@ class ApiAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): bool
     {
-    	return false;
-    	$this->logger->debug('ApiAuthenticator.supports(...): '.str_starts_with($request->getRequestUri(), "/api"));
-   		return str_starts_with($request->getRequestUri(), "/api");
+        $supported = $request->getPathInfo() == '/api/login' && $request->isMethod('POST');
+        $this->logger->debug('ApiAuthenticator.supports('.$request->getMethod().' '.$request->getPathInfo().'): '.($supported ? 'yes' : 'no'));
+        return $supported;
     }
 
     public function getCredentials(Request $request)
     {
-    	$credentials = [
+        $this->logger->debug('ApiAuthenticator.getCredentials() '.$request->getRequestUri());
+        $credentials = [
     		'login' => $request->request->get('login'),
     		'password' => $request->request->get('password'),
     		'csrf_token' => $request->request->get('_csrf_token'),
@@ -95,13 +97,14 @@ class ApiAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        $this->logger->debug('ApiAuthenticator.onAuthenticationSuccess() '.$request->getRequestUri());
     	// on success, let the request continue
     	return null;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-
+        $this->logger->debug('ApiAuthenticator.onAuthenticationFailure() '.$request->getRequestUri());
     	$data = [
     		// you may want to customize or obfuscate the message first
     		'message' => strtr($exception->getMessageKey(), $exception->getMessageData())

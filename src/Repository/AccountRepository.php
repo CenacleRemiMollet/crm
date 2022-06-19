@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @method Account|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,9 +18,12 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class AccountRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    private LoggerInterface $logger;
+    
+    public function __construct(ManagerRegistry $registry, LoggerInterface $logger)
     {
         parent::__construct($registry, Account::class);
+        $this->logger = $logger;
     }
 
     /**
@@ -27,6 +31,7 @@ class AccountRepository extends ServiceEntityRepository implements PasswordUpgra
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
+        $this->logger->debug('upgradePassword '.$newHashedPassword);
         if (!$user instanceof Account) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }

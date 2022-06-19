@@ -27,10 +27,13 @@ class XClientIdEventSubscribe implements EventSubscriberInterface
 		if(in_array($method, array("GET", "HEAD", "OPTIONS", "TRACE", "CONNECT"))) {
 			return;
 		}
+		if('/login' == $request->getPathInfo() && 'POST' == $request->getMethod()) {
+		    return;
+		}
 		$clientId = $request->headers->get('x-clientid');
 		if(empty($clientId)) {
-			$this->logger->warning("X-ClientId not defined");
-			throw new AccessDeniedHttpException('Modification forbidden');
+		    $this->logger->warning('X-ClientId not defined: '.$request->getMethod().' '.$request->getPathInfo());
+		    throw new AccessDeniedHttpException('Modification forbidden');
 		}
 	}
 

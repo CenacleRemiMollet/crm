@@ -49,10 +49,15 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
 
     public function authenticate(Request $request): PassportInterface
     {
+        $this->logger->debug('authenticate');
         $login = $request->request->get('login', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $login);
 
+//         $pwd = $credentials['password'];
+//         if(substr($pwd, 0, 5) === 'sha1:') {
+//             $this->checkCredentialsLegacy(substr($pwd, 5), $credentials, $user);
+//         }
         return new Passport(
             new UserBadge($login),
             new PasswordCredentials($request->request->get('password', '')),
@@ -72,7 +77,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
 
     public function getCredentials(Request $request)
     {
-    	$credentials = [
+        $this->logger->debug('getCredentials');
+        $credentials = [
     		'login' => $request->request->get('login'),
     		'password' => $request->request->get('password'),
     		'csrf_token' => $request->request->get('_csrf_token'),
@@ -87,7 +93,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
 
     public function getUser($credentials, UserProviderInterface $userProvider): ?Account
     {
-    	$token = new CsrfToken('authenticate', $credentials['csrf_token']);
+        $this->logger->debug('getUser');
+        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
     	if (!$this->csrfTokenManager->isTokenValid($token)) {
     		throw new InvalidCsrfTokenException();
     	}
@@ -109,11 +116,13 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
 
     public function getPassword($credentials): ?string
     {
-    	$pwd = $credentials['password'];
+        $this->logger->debug('getPassword');
+        $pwd = $credentials['password'];
     	$user = $credentials['user'];
     	if(substr($pwd, 0, 5) === 'sha1:') {
     		return $this->checkCredentialsLegacy(substr($pwd, 5), $credentials, $user);
     	}
+    	$this->logger->debug('Credentails already migrated for '.$user);
     	return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
@@ -157,20 +166,20 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
     }
 
     //********************************************
-
-    private function checkCredentialsLegacy($sha1, $credentials, Account $user)
+    
+    private function checkCredentialsLegacy($sha1, $password, Account $user)
     {
     	$salt = 'gh(-#fgbVD56ù@iutyxc +tyu_75^rrtyè6';
-    	$input = sha1($credentials['password'].$salt);
+    	$input = sha1($password.$salt);
     	if($input === $sha1) {
     		$this->logger->info('Upgrade legacy password for user '.$user->getId());
-    		$newpwd = $this->passwordEncoder->encodePassword($user, $credentials['password']);
+    		$newpwd = $this->passwordEncoder->encodePassword($user, $password);
     		//$this->logger->info('newpwd '.$newpwd);
     		$user->setPassword($newpwd);
     		$user = $this->entityManager->flush();
     		return true;
     	}
-    	$newpwd = $this->passwordEncoder->encodePassword($user, $credentials['password']);
+    	$newpwd = $this->passwordEncoder->encodePassword($user, $password);
     	$this->logger->info('Bad legacy password for user '.$user->getId());
     	//$this->logger->info('newpwd2: '.$newpwd);
     	return false;

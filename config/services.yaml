@@ -23,6 +23,9 @@ services:
     App\EventSubscriber\LocaleSubscriber:
         arguments: ['%kernel.default_locale%']
     App\XClientIdEventSubscribe:
+#    club_access:
+#        class: App\Security\ClubAccess
+#        arguments: ["@security.context"]
         
     
     # add more service definitions when explicit configuration is needed

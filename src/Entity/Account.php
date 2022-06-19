@@ -6,11 +6,12 @@ use App\Repository\AccountRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 
 /**
  * @ORM\Entity(repositoryClass=AccountRepository::class)
  */
-class Account implements UserInterface, PasswordAuthenticatedUserInterface
+class Account implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface
 {
     /**
      * @ORM\Id
@@ -129,6 +130,10 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $password;
 
         return $this;
+    }
+    
+    public function getPasswordHasherName(): ?string {
+        return substr($this->password, 0, 5) === 'sha1:' ? 'legacy_hasher' : null;
     }
 
     /**

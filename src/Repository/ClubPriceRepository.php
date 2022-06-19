@@ -39,7 +39,7 @@ class ClubPriceRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
+    
 //     public function findByClubIds($clubIds) {
 //         $sql = "SELECT cp.club_id AS club_id, loc.*"
 //             ." FROM club_price cp"
