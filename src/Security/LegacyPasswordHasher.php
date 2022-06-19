@@ -38,6 +38,7 @@ class LegacyPasswordHasher implements PasswordHasherInterface
         }
         if($this->hash($plainPassword) === $hashedPassword) {
             $attributes = $this->requestStack->getCurrentRequest()->attributes;
+            // attribute use in AccountRepository
             $attributes->set('plainpwdforrehash', $plainPassword);
             return true;
         }

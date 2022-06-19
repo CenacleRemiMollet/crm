@@ -6,6 +6,7 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use App\Security\Roles;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -92,7 +93,7 @@ class UserRepository extends ServiceEntityRepository
 			  ."  JOIN user teacher ON act.user_id = teacher.id"
 			  ."  JOIN user_club_subscribe tsubsc ON ("
 			  ."        teacher.id = tsubsc.user_id"
-			  ."         AND (json_contains(tsubsc.roles, json_quote('".\Roles::ROLE_TEACHER."')) OR json_contains(tsubsc.roles, json_quote('".\Roles::ROLE_CLUB_MANAGER."')))"
+			  ."         AND (json_contains(tsubsc.roles, json_quote('".Roles::ROLE_TEACHER."')) OR json_contains(tsubsc.roles, json_quote('".Roles::ROLE_CLUB_MANAGER."')))"
 			  ."        )"
 			  ."  JOIN user_club_subscribe usubsc ON (tsubsc.club_id = usubsc.club_id OR tsubsc.id = usubsc.id)"
 			  ."  JOIN user u ON u.id = usubsc.user_id"

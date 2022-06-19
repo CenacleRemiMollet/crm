@@ -7,7 +7,7 @@ use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @Serializer\XmlRoot("searchResult")
- * @Hateoas\Relation("self", href = "expr('/api/' ~ object.getType() ~ '/' ~ object.getUuid())")
+ * @Hateoas\Relation("self", href = "expr('/crm/api/' ~ object.getType() ~ '/' ~ object.getUuid())")
  */
 class SearchResultView
 {

@@ -18,6 +18,14 @@ use App\Security\ClubAccess;
 
 class ClubPricesController extends AbstractController
 {
+    
+    private LoggerInterface $logger;
+    
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+    
 
 	/**
 	 * @Route("/api/club/{club_uuid}/prices", name="api_get_club_prices", methods={"GET"}, requirements={"club_uuid"="[a-z0-9_]{2,64}"})
@@ -172,7 +180,7 @@ class ClubPricesController extends AbstractController
 	    }
 	    
 	    $club = $clubs[0];
-	    $clubAccess = new ClubAccess($this->container);
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
 	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
 	        return new Response('', Response::HTTP_FORBIDDEN); // 403
 	    }
@@ -183,8 +191,8 @@ class ClubPricesController extends AbstractController
 	        return new Response('Price '.$price_uuid.' not found in club '.$club_uuid, Response::HTTP_NOT_FOUND); // 404
 	    }
 
-	    //$manager->remove($prices[0]);
-        //$manager->flush();
+	    $manager->remove($prices[0]);
+        $manager->flush();
 	    
         return new Response('', Response::HTTP_NO_CONTENT); // 204
 	}

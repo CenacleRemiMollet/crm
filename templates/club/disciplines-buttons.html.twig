@@ -1,17 +1,20 @@
-<div class="buttons">
-	{% set disciplines = lessons|map(l => l.discipline|lower) %}
-	
-	{% if 'taekwondo' in disciplines %}
-		<div class="btn"><a href="{{ app.request.baseUrl }}/taekwondo">{% trans %}discipline.taekwondo{% endtrans %}</a></div>
-	{% endif %}
-	{% if 'taekwonkido' in disciplines %}
-		<div class="btn"><a href="{{ app.request.baseUrl }}/taekwonkido">{% trans %}discipline.taekwonkido{% endtrans %}</a></div>
-	{% endif %}
-	{% if 'hapkido' in disciplines %}
-		<div class="btn"><a href="{{ app.request.baseUrl }}/hapkido">{% trans %}discipline.hapkido{% endtrans %}</a></div>
-	{% endif %}
-	{% if 'sinkido' in disciplines %}
-		<div class="btn sinkido"><a href="{{ app.request.baseUrl }}/sinkido">{% trans %}discipline.sinkido self defense system 2 lines upper lower{% endtrans %}</a></div>
-	{% endif %}
-	
+<div class="buttons">d
+	{% if lessons is defined %}
+    	{# {% set disciplines = lessons|map(l => l.discipline|lower) %}
+    	
+    	{% if 'taekwondo' in disciplines %}
+    		<div class="btn"><a href="{{ app.request.baseUrl }}/taekwondo">{% trans %}discipline.taekwondo{% endtrans %}</a></div>
+    	{% endif %}
+    	{% if 'taekwonkido' in disciplines %}
+    		<div class="btn"><a href="{{ app.request.baseUrl }}/taekwonkido">{% trans %}discipline.taekwonkido{% endtrans %}</a></div>
+    	{% endif %}
+    	{% if 'hapkido' in disciplines %}
+    		<div class="btn"><a href="{{ app.request.baseUrl }}/hapkido">{% trans %}discipline.hapkido{% endtrans %}</a></div>
+    	{% endif %}
+    	{% if 'sinkido' in disciplines %}
+    		<div class="btn sinkido"><a href="{{ app.request.baseUrl }}/sinkido">{% trans %}discipline.sinkido self defense system 2 lines upper lower{% endtrans %}</a></div>
+    	{% endif %} #}
+    {% else %}
+    	no lessons defined !
+   	{% endif %}
 </div>

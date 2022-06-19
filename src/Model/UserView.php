@@ -9,7 +9,7 @@ use OpenApi\Annotations as OA;
 
 /**
  * @Serializer\XmlRoot("user")
- * @Hateoas\Relation("self", href = "expr('/api/user/' ~ object.getUuid())")
+ * @Hateoas\Relation("self", href = "expr('/crm/api/user/' ~ object.getUuid())")
  * @OA\Schema(schema="User")
  */
 class UserView extends UserViewModel

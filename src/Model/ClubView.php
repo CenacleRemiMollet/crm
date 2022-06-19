@@ -17,8 +17,8 @@ use OpenApi\Annotations as OA;
  *     )
  * )
  * @Serializer\XmlRoot("club")
- * @Hateoas\Relation("self", href = "expr('/api/club/' ~ object.getUuid())")
- * @Hateoas\Relation("logo", href = "expr('/api/club/' ~ object.getUuid() ~ '/logo')")
+ * @Hateoas\Relation("self", href = "expr('/crm/api/club/' ~ object.getUuid())")
+ * @Hateoas\Relation("logo", href = "expr('/crm/api/club/' ~ object.getUuid() ~ '/logo')")
  */
 class ClubView
 {

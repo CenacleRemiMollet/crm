@@ -26,7 +26,7 @@ class ClubLogoController extends AbstractController
 {
 
 	/**
-	 * @Route("/api/club/{uuid}/logo", name="api_club_one_logo", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 * @Route("/api/club/{uuid}/logo", name="api_club_get_logo", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
 	 *     operationId="getClubLogo",
 	 *     tags={"Club"},

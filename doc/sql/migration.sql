@@ -177,11 +177,11 @@ INSERT INTO account(user_id, login, password, roles, has_access)
 INSERT INTO user_club_subscribe(user_id, club_id, roles)
  SELECT u.id AS user_id,
         c.id AS club_id,
-        concat('["', if(a.user_id IS NOT NULL AND role = 'CLUB_MANAGER', 'CLUB_MANAGER', 'STUDENT'), '"]') AS roles
+        concat('["', if(a.user_id IS NOT NULL AND role = 'ROLE_CLUB_MANAGER', 'ROLE_CLUB_MANAGER', 'ROLE_STUDENT'), '"]') AS roles
   FROM (
    SELECT *
     FROM (
-     SELECT Eleve_id, cast(ocid as signed) AS ocid, 'CLUB_MANAGER' AS role
+     SELECT Eleve_id, cast(ocid as signed) AS ocid, 'ROLE_CLUB_MANAGER' AS role
       FROM (
        SELECT Eleve_id, json_extract(concat('[', replace(Resp_club, ';', ','), ']'), '$[0]') AS ocid
         FROM develeve_site
@@ -205,7 +205,7 @@ INSERT INTO user_club_subscribe(user_id, club_id, roles)
        ) ut
      WHERE ocid IS NOT NULL
      UNION ALL
-     SELECT Eleve_id, club_id AS ocid, 'STUDENT' AS role
+     SELECT Eleve_id, club_id AS ocid, 'ROLE_STUDENT' AS role
       FROM develeve_cenacle
     ) fgb
     GROUP BY 1, 2, 3

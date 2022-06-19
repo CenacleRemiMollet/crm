@@ -7,7 +7,7 @@ use OpenApi\Annotations as OA;
 
 /**
  * @Serializer\XmlRoot("me")
- * @Hateoas\Relation("self", href = "/api/user/me")
+ * @Hateoas\Relation("self", href = "/crm/api/user/me")
  * @OA\Schema(schema="MeAnonymous")
  */
 class MeAnonymousView

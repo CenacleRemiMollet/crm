@@ -24,6 +24,7 @@ use App\Model\Pagination;
 use App\Util\Pager;
 use App\Model\UserMeView;
 use App\Model\MeAnonymousView;
+use App\Security\Roles;
 
 
 class UserController extends AbstractController
@@ -198,7 +199,7 @@ class UserController extends AbstractController
 	public function me()
 	{
 		$grantedRoles = array();
-		foreach (\Roles::ROLES as &$role) {
+		foreach (Roles::ROLES as &$role) {
 			if($this->isGranted($role)) {
 				array_push($grantedRoles, $role);
 			}

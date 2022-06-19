@@ -38,6 +38,7 @@ class AccountRepository extends ServiceEntityRepository implements PasswordUpgra
 
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
+        // attribute set in LegacyPasswordHasher
         $plainPassword = $this->requestStack->getCurrentRequest()->attributes->get('plainpwdforrehash');
         //$this->logger->debug('upgradePassword '.$newHashedPassword.' with '.$plainPassword);
         if($plainPassword == null) {

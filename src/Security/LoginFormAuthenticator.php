@@ -69,10 +69,9 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
 
     public function supports(Request $request): bool
     {
-//    	$this->logger->info('LoginFormAuthenticator.supports(): '.('app_login' === $request->attributes->get('_route')
-//    		 && $request->isMethod('POST')));
-    	return 'app_login' === $request->attributes->get('_route')
-    		&& $request->isMethod('POST');
+    	$supported = 'app_login' === $request->attributes->get('_route') && $request->isMethod('POST');
+        $this->logger->info('LoginFormAuthenticator.supports(): '.($supported ? 'yes':'no'));
+    	return $supported;
     }
 
     public function getCredentials(Request $request)
