@@ -92,12 +92,14 @@ CREATE TABLE zzmigr_club_lesson AS
    JOIN club_location ncl ON mcl.uuid = ncl.uuid;
 
 INSERT INTO club_lesson(club_location_id, club_id, uuid, point, discipline, age_level, day_of_week, start_time, end_time, description)
- SELECT club_location_id, club_id, uuid, point, discipline, age_level, day_of_week, start_time, end_time, NULL
+ SELECT club_location_id, club_id, uuid, point, discipline, age_level, day_of_week, start_time, end_time, ''
   FROM zzmigr_club_lesson;
 
 
 
 -- **** USER ****
+
+--DROP TABLE IF EXISTS zzmigr_user;
 
 CREATE TABLE zzmigr_user AS 
  SELECT eleve_id AS o_id,
