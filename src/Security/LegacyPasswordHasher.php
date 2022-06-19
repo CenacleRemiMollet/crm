@@ -4,6 +4,7 @@ namespace App\Security;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\PasswordHasher\Hasher\CheckPasswordLengthTrait;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class LegacyPasswordHasher implements PasswordHasherInterface
 {
@@ -12,9 +13,12 @@ class LegacyPasswordHasher implements PasswordHasherInterface
     
     private LoggerInterface $logger;
     
-    public function __construct(LoggerInterface $logger)
+    private RequestStack $requestStack;
+    
+    public function __construct(LoggerInterface $logger, RequestStack $requestStack)
     {
         $this->logger = $logger;
+        $this->requestStack = $requestStack;
     }
     
     public function hash(string $plainPassword): string
@@ -32,11 +36,17 @@ class LegacyPasswordHasher implements PasswordHasherInterface
         if ($this->isPasswordTooLong($plainPassword)) {
             return false;
         }
-        return $this->hash($plainPassword) === $hashedPassword;
+        if($this->hash($plainPassword) === $hashedPassword) {
+            $attributes = $this->requestStack->getCurrentRequest()->attributes;
+            $attributes->set('plainpwdforrehash', $plainPassword);
+            return true;
+        }
+        return false;
     }
     
     public function needsRehash(string $hashedPassword): bool
     {
+        $this->logger->debug('LegacyPasswordHasher.needsRehash()');
         return true;
     }
 }

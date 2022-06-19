@@ -9,6 +9,12 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Encoder\SodiumPasswordEncoder;
+use Symfony\Component\PasswordHasher\Hasher\SodiumPasswordHasher;
+use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 /**
  * @method Account|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,24 +25,32 @@ use Psr\Log\LoggerInterface;
 class AccountRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     private LoggerInterface $logger;
+    private PasswordHasherInterface $passwordEncoder;
+    private RequestStack $requestStack;
     
-    public function __construct(ManagerRegistry $registry, LoggerInterface $logger)
+    public function __construct(ManagerRegistry $registry, LoggerInterface $logger, RequestStack $requestStack)
     {
         parent::__construct($registry, Account::class);
+        $this->passwordEncoder = new NativePasswordHasher();
         $this->logger = $logger;
+        $this->requestStack = $requestStack;
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        $this->logger->debug('upgradePassword '.$newHashedPassword);
+        $plainPassword = $this->requestStack->getCurrentRequest()->attributes->get('plainpwdforrehash');
+        //$this->logger->debug('upgradePassword '.$newHashedPassword.' with '.$plainPassword);
+        if($plainPassword == null) {
+            return;
+        }
+        $this->requestStack->getCurrentRequest()->attributes->remove('plainpwdforrehash');
+        
         if (!$user instanceof Account) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
-
-        $user->setPassword($newHashedPassword);
+        $newHash = $this->passwordEncoder->hash($plainPassword);
+        //$this->logger->debug('upgradePassword new hash: '.$newHash.'  user_id: '.$user->getId());
+        $user->setPassword($newHash);
         $this->_em->persist($user);
         $this->_em->flush();
     }
