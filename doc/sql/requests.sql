@@ -1,3 +1,5 @@
+-- mariadb -u root -h localhost --column-type-info fagu1
+
 -- #################### SEARCH ####################
 
 -- USER (all)

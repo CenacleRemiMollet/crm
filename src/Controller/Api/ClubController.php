@@ -20,6 +20,11 @@ use App\Model\ClubLessonView;
 use App\Model\ClubCreate;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Service\ClubService;
+use App\Util\RequestUtil;
+use App\Exception\ViolationException;
+use App\Security\Roles;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class ClubController extends AbstractController
@@ -59,7 +64,7 @@ class ClubController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/club/{uuid}", name="api_club_one", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 * @Route("/api/club/{uuid}", name="api_get_club", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
 	 *     operationId="getClub",
 	 *     tags={"Club"},
@@ -83,7 +88,8 @@ class ClubController extends AbstractController
 	 *             mediaType="application/hal+json",
 	 *             @OA\Schema(ref="#/components/schemas/Club")
 	 *         )
-	 *     )
+	 *     ),
+	 *     @OA\Response(response="404", description="Club not found")
 	 * )
 	 */
 	public function one($uuid)
@@ -109,15 +115,15 @@ class ClubController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/club/", name="api_club_create", methods={"POST"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
-	 * @IsGranted({"ROLE_ADMIN", "ROLE_CLUB_MANAGER"})
+	 * @Route("/api/club", name="api_club_create", methods={"POST"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 * @IsGranted({"ROLE_ADMIN"})
 	 * @OA\Post(
 	 *     operationId="createClub",
 	 *     tags={"Club"},
 	 *     path="/api/club",
 	 *     summary="Create a club",
 	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
+	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
      *     @OA\RequestBody(
      *         description="User object that needs to be added",
      *         required=true,
@@ -141,11 +147,10 @@ class ClubController extends AbstractController
 
 		$account = $this->getUser();
 
-		if($this->isGranted(\Roles::ROLE_ADMIN)) {
+		if($this->isGranted(Roles::ROLE_ADMIN)) {
 			// ok
-		} elseif($this->isGranted(\Roles::ROLE_CLUB_MANAGER)) {
-			//$account
 		} else {
+		    // nok
 			return ShortResponse::error("role", "")
 				->setStatusCode(Response::HTTP_FORBIDDEN);
 		}
@@ -161,7 +166,7 @@ class ClubController extends AbstractController
 	 *     path="/api/club/{uuid}",
 	 *     summary="Update a club",
 	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
+	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
      *     @OA\RequestBody(
      *         description="User object that needs to be added",
      *         required=true,
@@ -170,7 +175,8 @@ class ClubController extends AbstractController
 	 *     @OA\Response(
 	 *         response="200",
 	 *         description="Successful"
-	 *     )
+	 *     ),
+	 *     @OA\Response(response="404", description="Club not found")
 	 * )
 	 */
 	public function update(Request $request, $uuid, SerializerInterface $serializer, TranslatorInterface $translator)

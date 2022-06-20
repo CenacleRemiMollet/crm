@@ -14,6 +14,9 @@ use App\Model\ClubPriceView;
 use App\Service\ClubPriceService;
 use App\Entity\Club;
 use App\Security\ClubAccess;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class ClubPricesController extends AbstractController
@@ -55,7 +58,8 @@ class ClubPricesController extends AbstractController
 	 *                 @OA\Items(ref="#/components/schemas/ClubPrice")
 	 *             )
 	 *         )
-	 *     )
+	 *     ),
+	 *     @OA\Response(response="404", description="Club not found")
 	 * )
 	 */
 	public function getPrices($club_uuid)
@@ -74,9 +78,9 @@ class ClubPricesController extends AbstractController
 		));
 	}
 
+	
 	/**
 	 * @Route("/api/club/{club_uuid}/prices/{price_uuid}", name="api_get_club_price", methods={"GET"}, requirements={"club_uuid"="[a-z0-9_]{2,64}","price_uuid"="[a-zA-Z0-9_]{2,64}"})
-     * @IsGranted("ROLE_TEACHER")
 	 * @OA\Get(
 	 *     operationId="getClubPrice",
 	 *     tags={"Club"},
@@ -111,7 +115,8 @@ class ClubPricesController extends AbstractController
 	 *             mediaType="application/hal+json",
 	 *             @OA\Items(ref="#/components/schemas/ClubPrice")
 	 *         )
-	 *     )
+	 *     ),
+	 *     @OA\Response(response="404", description="Club or price not found")
 	 * )
 	 */
 	public function getPrice($club_uuid, $price_uuid)
@@ -130,8 +135,50 @@ class ClubPricesController extends AbstractController
 	    ));
 	}
 	
+	
+	/**
+	 * @Route("/api/club/{club_uuid}/prices", name="api_create_club_prices", methods={"PUT"}, requirements={"club_uuid"="[a-z0-9_]{2,64}"})
+	 * @IsGranted({"ROLE_ADMIN", "ROLE_CLUB_MANAGER", "ROLE_TEACHER"})
+	 * @OA\Put(
+	 *     operationId="createClubPrices",
+	 *     tags={"Club"},
+	 *     path="/api/club/{club_uuid}/prices",
+	 *     summary="Create prices for a club",
+	 *     @OA\Parameter(
+	 *         description="UUID of club",
+	 *         in="path",
+	 *         name="club_uuid",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             format="string",
+	 *             type="string",
+	 *             pattern="[a-z0-9_]{2,64}"
+	 *         )
+	 *     ),
+	 *     @OA\Response(
+	 *         response="200",
+	 *         description="Successful",
+	 *         @OA\MediaType(
+	 *             mediaType="application/hal+json",
+	 *             @OA\Schema(
+	 *                 type="array",
+	 *                 @OA\Items(ref="#/components/schemas/ClubPrice")
+	 *             )
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="403", description="Forbidden"),
+	 *     @OA\Response(response="404", description="Club or price not found")
+	 * )
+	 */
+	public function create(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
+	{
+	    // TODO
+	}
+	
+	
 	/**
 	 * @Route("/api/club/{club_uuid}/prices/{price_uuid}", name="api_delete_club_price", methods={"DELETE"}, requirements={"club_uuid"="[a-z0-9_]{2,64}","price_uuid"="[a-zA-Z0-9_]{2,64}"})
+	 * @IsGranted({"ROLE_ADMIN", "ROLE_CLUB_MANAGER", "ROLE_TEACHER"})
 	 * @OA\Delete(
 	 *     operationId="deleteClubPrice",
 	 *     tags={"Club"},
@@ -160,14 +207,9 @@ class ClubPricesController extends AbstractController
 	 *         )
 	 *     ),
 	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Items(ref="#/components/schemas/ClubPrice")
-	 *         )
-	 *     )
+	 *     @OA\Response(response="204", description="Successful"),
+	 *     @OA\Response(response="403", description="Forbidden"),
+	 *     @OA\Response(response="404", description="Club or price not found")
 	 * )
 	 */
 	public function deletePrice($club_uuid, $price_uuid)

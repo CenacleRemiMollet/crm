@@ -23,6 +23,7 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            entry_point: App\Security\AuthenticationEntryPoint
             custom_authenticator:
                 - App\Security\ApiAuthenticator
                 - App\Security\LoginFormAuthenticator

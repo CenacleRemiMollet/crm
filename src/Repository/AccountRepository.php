@@ -15,6 +15,8 @@ use Symfony\Component\Security\Core\Encoder\SodiumPasswordEncoder;
 use Symfony\Component\PasswordHasher\Hasher\SodiumPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Security\Core\User\User;
 
 /**
  * @method Account|null find($id, $lockMode = null, $lockVersion = null)
@@ -55,6 +57,7 @@ class AccountRepository extends ServiceEntityRepository implements PasswordUpgra
         $this->_em->persist($user);
         $this->_em->flush();
     }
+
 
     // /**
     //  * @return Account[] Returns an array of Account objects

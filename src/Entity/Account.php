@@ -106,7 +106,11 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface, Pass
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
+        foreach ($this->user->getUserClubSubscribes() as &$userClubSubscribe) {
+            foreach($userClubSubscribe->getRoles() as &$role) {
+                $roles[] = $role;
+            }
+        }
         return array_unique($roles);
     }
 

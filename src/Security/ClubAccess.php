@@ -43,7 +43,7 @@ class ClubAccess
                         $granted = $this->authorizationChecker->isGranted($role);
                         $this->logger->debug('ClubAccess: verify access for current user ('.$account->getId().') in club '.$club->getId().' role '.$role.' => '.($granted ? 'accepted':'reject'));
                         if($granted) {
-                            $this->logger->debug('ClubAccess: access authorized for current user ('.$account->getId().') in club '.$club->getId().' with role '.$role);
+                            //$this->logger->debug('ClubAccess: access authorized for current user ('.$account->getId().') in club '.$club->getId().' with role '.$role);
                             return true;
                         }
                     }

@@ -123,15 +123,15 @@ class UserController extends AbstractController
 	}
 
 	/**
- 	 * @Route("/api/user", name="api_user_create-one", methods={"POST"})
+ 	 * @Route("/api/user", name="api_user_create-one", methods={"PUT"})
 	 * @IsGranted("ROLE_CLUB_MANAGER")
-	 * @OA\Post(
+	 * @OA\Put(
 	 *     operationId="getUser",
 	 *     path="/api/user",
 	 *     summary="Create an user",
 	 *     tags={"User"},
 	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
+	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
      *     @OA\RequestBody(
      *         description="User object that needs to be added",
      *         required=true,
