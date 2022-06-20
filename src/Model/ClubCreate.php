@@ -42,19 +42,19 @@ class ClubCreate
 	 * @Assert\Length(max = 512)
 	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
 	 */
-	private $contactEmails;
+	private $contact_emails;
 	
 	/**
 	 * @Assert\Length(max = 32)
 	 * @OA\Property(type="string", example="0 892 70 12 39")
 	 */
-	private $contactPhone;
+	private $contact_phone;
 	
 	/**
 	 * @Assert\Length(max = 512)
 	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
 	 */
-	private $mailingList;
+	private $mailing_list;
 	
 	/**
 	 * @Assert\Length(min = 1, max = 512)
@@ -117,50 +117,50 @@ class ClubCreate
 
 	public function getContactEmails(): ?string
 	{
-	    return $this->contactEmails;
+	    return $this->contact_emails;
 	}
 	
 	public function getContactEmailsToArray(): array
 	{
-	    if($this->contactEmails == null || '' === $this->contactEmails) {
+	    if($this->contact_emails == null || '' === $this->contact_emails) {
 	        return [];
 	    }
-	    return explode(',', str_replace(' ', '', $this->contactEmails));
+	    return explode(',', str_replace(' ', '', $this->contact_emails));
 	}
 	
 	public function setContactEmails(?string $contactEmails): self
 	{
-	    $this->contactEmails = $contactEmails;
+	    $this->contact_emails = $contactEmails;
 	    return $this;
 	}
 	
 	public function getContactPhone(): ?string
 	{
-	    return $this->contactPhone;
+	    return $this->contact_phone;
 	}
 	
 	public function setContactPhone(?string $contactPhone): self
 	{
-	    $this->contactPhone = $contactPhone;
+	    $this->contact_phone = $contactPhone;
 	    return $this;
 	}
 	
 	public function getMailingList(): ?string
 	{
-	    return $this->mailingList;
+	    return $this->mailing_list;
 	}
 	
 	public function getMailingListToArray(): array
 	{
-	    if($this->mailingList == null || '' === $this->mailingList) {
+	    if($this->mailing_list == null || '' === $this->mailing_list) {
 	        return [];
 	    }
-	    return explode(',', str_replace(' ', '', $this->mailingList));
+	    return explode(',', str_replace(' ', '', $this->mailing_list));
 	}
 	
 	public function setMailingList(?string $mailingList): self
 	{
-	    $this->mailingList = $mailingList;
+	    $this->mailing_list = $mailingList;
 	    return $this;
 	}
 	

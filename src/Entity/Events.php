@@ -7,9 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 class Events
 {
     public const CLUB_CREATED = 'CLUB_CREATED';
+    public const CLUB_UPDATED = 'CLUB_UPDATED';
     
     public const EVENTS = array(
-        self::CLUB_CREATED
+        self::CLUB_CREATED,
+        self::CLUB_UPDATED
     );
     
     public static function create(string $eventName, Account $account, Request $request, $data = null)

@@ -19,6 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Model\ClubView;
 use App\Util\StringUtils;
 use App\Entity\Events;
+use App\Model\ClubUpdate;
 
 
 class ClubController extends AbstractController
@@ -159,8 +160,6 @@ class ClubController extends AbstractController
 		        ));
 		}
 
-		$account = $this->getUser();
-
 		$name = $clubToCreate->getName();
 		$uuid = $clubToCreate->getUuid();
 		if($uuid == null || trim($uuid) === '') {
@@ -194,7 +193,7 @@ class ClubController extends AbstractController
 		$doctrine->getManager()->persist($club);
 		
 		$data = ['name' => $name, 'uuid' => $uuid, 'active' => $clubToCreate->isActive()];
-		Events::add($doctrine, Events::CLUB_CREATED, $account, $request, $data);
+		Events::add($doctrine, Events::CLUB_CREATED, $this->getUser(), $request, $data);
 		$this->logger->debug('Club created: '.json_encode($data));
 
 		$clubView = new ClubView($club, null, null);
@@ -209,14 +208,25 @@ class ClubController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/club/{uuid}", name="api_club_update", methods={"PUT"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
-	 * @OA\Put(
+	 * @Route("/api/club/{uuid}", name="api_club_update", methods={"PATCH"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 * @OA\Patch(
 	 *     operationId="updateClub",
 	 *     tags={"Club"},
 	 *     path="/api/club/{uuid}",
 	 *     summary="Update a club",
 	 *     security = {{"basicAuth": {}}},
 	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
+	 *     @OA\Parameter(
+     *         description="UUID of club",
+     *         in="path",
+     *         name="uuid",
+     *         required=true,
+     *         @OA\Schema(
+     *             format="string",
+     *             type="string",
+     *             pattern="[a-z0-9_]{2,64}"
+     *         )
+     *     ),
      *     @OA\RequestBody(
      *         description="User object that needs to be added",
      *         required=true,
@@ -226,12 +236,65 @@ class ClubController extends AbstractController
 	 *         response="200",
 	 *         description="Successful"
 	 *     ),
+	 *     @OA\Response(response="400", description="Request contains not valid field"),
+	 *     @OA\Response(response="403", description="Forbidden to update a club"),
 	 *     @OA\Response(response="404", description="Club not found")
 	 * )
 	 */
 	public function update(Request $request, $uuid, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
-		// 	TODO
+	    $this->denyAccessUnlessGranted("ROLE_ADMIN");
+	    
+	    $requestUtil = new RequestUtil($serializer, $translator);
+	    try {
+	        $clubToUpdate = $requestUtil->validate($request, ClubUpdate::class);
+	    } catch (ViolationException $e) {
+	        return new Response(
+	            json_encode($e->getErrors()),
+	            Response::HTTP_BAD_REQUEST, // 400
+	            array(
+	                'Content-Type' => 'application/hal+json'
+	            ));
+	    }
+	    
+	    $clubs = $this->container->get('doctrine')->getManager()
+    	    ->getRepository(Club::class)
+    	    ->findBy(['uuid' => $uuid]);
+	    if(empty($clubs)) {
+	        return  new Response('uuid already used: '.$uuid,
+	            Response::HTTP_NOT_FOUND // 404
+	            );
+	    }
+	    $club = $clubs[0];
+	    $data = array();
+	    $clubUpdate = function($d, string $fieldName, $updateValue, $currentValue, $updator) {
+	        if($updateValue != null && $currentValue != $updateValue) {
+	            $updator($updateValue);
+	            return array_merge($d, array($fieldName => $updateValue));
+	        }
+	        return $d;
+	    };
+	    
+	    $data = $clubUpdate($data, 'active', $clubToUpdate->isActive(), $club->getActive(), function($v) use($club) { $club->setActive($v); });
+	    $data = $clubUpdate($data, 'uuid', $clubToUpdate->getUuid(), $club->getUuid(), function($v) use($club) { $club->setUuid($v); });
+	    $data = $clubUpdate($data, 'name', $clubToUpdate->getName(), $club->getName(), function($v) use($club) { $club->setName($v); });
+	    $data = $clubUpdate($data, 'contactemails', $clubToUpdate->getContactEmails(), $club->getContactEmails(), function($v) use($club) { $club->getContactEmails($v); });
+	    $data = $clubUpdate($data, 'contactphone', $clubToUpdate->getContactPhone(), $club->getContactPhone(), function($v) use($club) { $club->getContactPhone($v); });
+	    $data = $clubUpdate($data, 'facebookurl', $clubToUpdate->getFacebookUrl(), $club->getFacebookUrl(), function($v) use($club) { $club->setFacebookUrl($v); });
+	    $data = $clubUpdate($data, 'instagramurl', $clubToUpdate->getInstagramUrl(), $club->getInstagramUrl(), function($v) use($club) { $club->setInstagramUrl($v); });
+	    $data = $clubUpdate($data, 'mailinglist', $clubToUpdate->getMailingList(), $club->getMailingList(), function($v) use($club) { $club->setMailingList($v); });
+	    $data = $clubUpdate($data, 'twitterurl', $clubToUpdate->getTwitterUrl(), $club->getTwitterUrl(), function($v) use($club) { $club->setTwitterUrl($v); });
+	    $data = $clubUpdate($data, 'websiteurl', $clubToUpdate->getWebsiteUrl(), $club->getWebsiteUrl(), function($v) use($club) { $club->setWebsiteUrl($v); });
+
+	    if(empty($data)) {
+	        return new Response('Nothing to update', Response::HTTP_NO_CONTENT); // 204
+	    }
+	    $doctrine = $this->container->get('doctrine');
+	    $doctrine->getManager()->persist($club);
+	    Events::add($doctrine, Events::CLUB_UPDATED, $this->getUser(), $request, $data);
+	    $this->logger->debug('Club '.$club->getId().' updated: '.json_encode($data));
+	    
+	    return new Response('Updated', Response::HTTP_NO_CONTENT); // 204
 	}
 
 }

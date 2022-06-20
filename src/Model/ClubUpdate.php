@@ -19,13 +19,41 @@ class ClubUpdate
 {
 
 	/**
-	 * @Assert\NotBlank
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
 	 * @OA\Property(type="string", example="Abc Club")
 	 */
 	private $name;
 
+	/**
+	 * @OA\Property(type="boolean", example="true")
+	 */
+	private $active;
+	
+	/**
+	 * @Assert\Length(max = 64)
+	 * @OA\Property(type="string", example="abc_club")
+	 */
+	private $uuid;
+	
+	/**
+	 * @Assert\Length(max = 512)
+	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
+	 */
+	private $contact_emails;
+	
+	/**
+	 * @Assert\Length(max = 32)
+	 * @OA\Property(type="string", example="0 892 70 12 39")
+	 */
+	private $contact_phone;
+	
+	/**
+	 * @Assert\Length(max = 512)
+	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
+	 */
+	private $mailing_list;
+	
 	/**
 	 * @Assert\Length(min = 1, max = 512)
 	 * @OA\Property(type="string", example="https://www.google.com")
@@ -60,6 +88,75 @@ class ClubUpdate
 		$this->name = $name;
 	}
 
+	public function isActive(): ?string
+	{
+	    return $this->active;
+	}
+	
+	public function setActive($active)
+	{
+	    $this->active = $active;
+	}
+	
+	public function getUuid(): ?string
+	{
+	    return $this->uuid;
+	}
+	
+	public function setUuid($uuid)
+	{
+	    $this->uuid = $uuid;
+	}
+	
+	public function getContactEmails(): ?string
+	{
+	    return $this->contact_emails;
+	}
+	
+	public function getContactEmailsToArray(): array
+	{
+	    if($this->contact_emails == null || '' === $this->contact_emails) {
+	        return [];
+	    }
+	    return explode(',', str_replace(' ', '', $this->contact_emails));
+	}
+	
+	public function setContactEmails(?string $contactEmails): self
+	{
+	    $this->contact_emails = $contactEmails;
+	    return $this;
+	}
+	
+	public function getContactPhone(): ?string
+	{
+	    return $this->contact_phone;
+	}
+	
+	public function setContactPhone(?string $contactPhone): self
+	{
+	    $this->contact_phone = $contactPhone;
+	    return $this;
+	}
+	
+	public function getMailingList(): ?string
+	{
+	    return $this->mailing_list;
+	}
+	
+	public function getMailingListToArray(): array
+	{
+	    if($this->mailing_list == null || '' === $this->mailing_list) {
+	        return [];
+	    }
+	    return explode(',', str_replace(' ', '', $this->mailing_list));
+	}
+	
+	public function setMailingList(?string $mailingList): self
+	{
+	    $this->mailing_list = $mailingList;
+	    return $this;
+	}
+	
 	public function getWebsiteUrl(): ?string
 	{
 		return $this->website_url;

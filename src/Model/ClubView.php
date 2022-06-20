@@ -31,7 +31,27 @@ class ClubView
 	 * @OA\Property(type="string", example="Abc Club")
 	 */
 	private $name;
+	
+	/**
+	 * @OA\Property(type="boolean", example="true")
+	 */
+	private $active;
 
+	/**
+	 * @OA\Property(type="string", example="foo@bar.com")
+	 */
+	private $mailing_list;
+	
+	/**
+	 * @OA\Property(type="string", example="foo@bar.com")
+	 */
+	private $contact_emails;
+	
+	/**
+	 * @OA\Property(type="string", example="0 892 70 12 39")
+	 */
+	private $contact_phone;
+	
 	/**
 	 * @OA\Property(type="string", example="https://www.google.com")
 	 */
@@ -66,6 +86,10 @@ class ClubView
 	{
 		$this->uuid = $club->getUuid();
 		$this->name = $club->getName();
+		$this->active = $club->getActive();
+		$this->mailing_list = $club->getMailingList();
+		$this->contact_emails = $club->getContactEmails();
+		$this->contact_phone = $club->getContactPhone();
 		$this->website_url = $club->getWebsiteUrl();
 		$this->facebook_url = $club->getFacebookUrl();
 		$this->twitter_url = $club->getTwitterUrl();
@@ -84,6 +108,16 @@ class ClubView
 		return $this->name;
 	}
 
+	public function getActive(): ?bool
+	{
+	    return $this->active;
+	}
+	
+	public function getMailingList(): ?string
+	{
+	    return $this->mailing_list;
+	}
+	
 	public function getWebsiteUrl(): ?string
 	{
 		return $this->website_url;
@@ -113,5 +147,16 @@ class ClubView
 	{
 	    return $this->prices;
 	}
+	
+	public function getContactPhone(): ?string
+	{
+	    return $this->contact_phone;
+	}
+	
+	public function getContactEmails(): ?string
+	{
+	    return $this->contact_emails;
+	}
+	
 	
 }
