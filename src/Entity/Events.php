@@ -9,10 +9,20 @@ class Events
     public const CLUB_CREATED = 'CLUB_CREATED';
     public const CLUB_UPDATED = 'CLUB_UPDATED';
     
+    public const CLUB_LOCATION_CREATED = 'CLUB_LOCATION_CREATED';
+    public const CLUB_LOCATION_UPDATED = 'CLUB_LOCATION_UPDATED';
+    public const CLUB_LOCATION_DELETED = 'CLUB_LOCATION_DELETED';
+    
+    
     public const EVENTS = array(
         self::CLUB_CREATED,
-        self::CLUB_UPDATED
+        self::CLUB_UPDATED,
+        
+        self::CLUB_LOCATION_CREATED,
+        self::CLUB_LOCATION_UPDATED,
+        self::CLUB_LOCATION_DELETED
     );
+    
     
     public static function create(string $eventName, Account $account, Request $request, $data = null)
     {

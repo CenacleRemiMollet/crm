@@ -105,7 +105,7 @@ class ClubPricesController extends AbstractController
 	 *         @OA\Schema(
 	 *             format="string",
 	 *             type="string",
-	 *             pattern="[a-z0-9_]{2,64}"
+	 *             pattern="[A-Za-z0-9_]{2,64}"
 	 *         )
 	 *     ),
 	 *     @OA\Response(
@@ -237,6 +237,8 @@ class ClubPricesController extends AbstractController
 
 	    $manager->remove($prices[0]);
         $manager->flush();
+        
+        // TODO Event
 	    
         return new Response('', Response::HTTP_NO_CONTENT); // 204
 	}

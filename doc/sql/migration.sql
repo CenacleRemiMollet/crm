@@ -54,7 +54,7 @@ INSERT INTO club(uuid, name, logo, website_url, facebook_url, mailing_list, acti
 
 -- **** CLUB_LOCATION ****
 
-CREATE TABLE zzmigr_club_location AS 
+/*CREATE TABLE zzmigr_club_location AS 
  SELECT oc.id AS o_id,
         nc.id AS n_id,
         concat(mc.uuid, '_0') AS uuid,
@@ -70,12 +70,12 @@ CREATE TABLE zzmigr_club_location AS
 
 INSERT INTO club_location(uuid, name, address, city, zipcode, county, country)
  SELECT uuid, name, address, city, zipcode, county, country
-  FROM zzmigr_club_location;
+  FROM zzmigr_club_location;*/
 
 
 -- **** CLUB_LESSON ****
 
-CREATE TABLE zzmigr_club_lesson AS 
+/*CREATE TABLE zzmigr_club_lesson AS 
  SELECT mcl.o_id AS o_id,
         ncl.id AS club_location_id,
         nc.id AS club_id,
@@ -93,7 +93,7 @@ CREATE TABLE zzmigr_club_lesson AS
 
 INSERT INTO club_lesson(club_location_id, club_id, uuid, point, discipline, age_level, day_of_week, start_time, end_time, description)
  SELECT club_location_id, club_id, uuid, point, discipline, age_level, day_of_week, start_time, end_time, ''
-  FROM zzmigr_club_lesson;
+  FROM zzmigr_club_lesson;*/
 
 
 
@@ -223,8 +223,8 @@ INSERT INTO user_club_subscribe(user_id, club_id, roles)
 -- **** << DROP temporary tables >> ****
 
 DROP TABLE zzmigr_club;
-DROP TABLE zzmigr_club_location;
-DROP TABLE zzmigr_club_lesson;
+--DROP TABLE zzmigr_club_location;
+--DROP TABLE zzmigr_club_lesson;
 DROP TABLE zzmigr_user;
 DROP TABLE zzmigr_account;
 

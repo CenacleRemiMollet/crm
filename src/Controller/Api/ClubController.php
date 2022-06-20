@@ -20,6 +20,7 @@ use App\Model\ClubView;
 use App\Util\StringUtils;
 use App\Entity\Events;
 use App\Model\ClubUpdate;
+use App\Security\Roles;
 
 
 class ClubController extends AbstractController
@@ -146,7 +147,7 @@ class ClubController extends AbstractController
 	 */
 	public function create(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
-		$this->denyAccessUnlessGranted("ROLE_ADMIN");
+		$this->denyAccessUnlessGranted(Roles::ROLE_ADMIN);
 		
 	    $requestUtil = new RequestUtil($serializer, $translator);
 		try {
@@ -232,10 +233,7 @@ class ClubController extends AbstractController
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/ClubUpdate"),
      *     ),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful"
-	 *     ),
+	 *     @OA\Response(response="204", description="Successful"),
 	 *     @OA\Response(response="400", description="Request contains not valid field"),
 	 *     @OA\Response(response="403", description="Forbidden to update a club"),
 	 *     @OA\Response(response="404", description="Club not found")

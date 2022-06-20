@@ -8,10 +8,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @OA\Schema(
  *     schema="ClubLocationCreate",
- *     required={"name"}
- * )
- *
- * @author f.agu
+ *     description="Create a club location",
+ *     title="ClubLocationCreate",
+ *     required={"name"},
+ *     @OA\Xml(
+ *         name="ClubLocationCreate"
+ *     )
  */
 class ClubLocationCreate
 {
@@ -24,6 +26,12 @@ class ClubLocationCreate
 	 */
 	private $name;
 
+	/**
+	 * @Assert\Length(max = 64)
+	 * @OA\Property(type="string", example="abcdef13245")
+	 */
+	private $uuid;
+	
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
@@ -69,6 +77,16 @@ class ClubLocationCreate
 		$this->name = $name;
 	}
 
+	public function getUuid(): ?string
+	{
+	    return $this->uuid;
+	}
+	
+	public function setUuid($uuid)
+	{
+	    $this->uuid = $uuid;
+	}
+	
 	public function getAddress(): ?string
 	{
 		return $this->address;

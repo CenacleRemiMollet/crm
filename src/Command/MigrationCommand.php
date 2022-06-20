@@ -133,9 +133,9 @@ class MigrationCommand extends Command
 				echo 'File not found: '.$csvFile.PHP_EOL;
 				continue;
 			}
-			echo 'Loading: '.$csvFile.PHP_EOL;
+			echo 'Loading: '.$csvFile.' (clubId: '.$club->getId().')'.PHP_EOL;
 			$data = $serializer->decode(file_get_contents($csvFile), 'csv');
-			foreach($this->saveOrUpdateLocation($data) as $location)
+			foreach($this->saveOrUpdateLocation($club, $data) as $location)
 			{
 				$locations[$location->getUuid()] = $location;
 			}
@@ -145,7 +145,7 @@ class MigrationCommand extends Command
 	}
 
 
-	private function saveOrUpdateLocation($data)
+	private function saveOrUpdateLocation(Club $club, $data)
 	{
 		$locations = array();
 		foreach ($data as $line) {
@@ -157,11 +157,11 @@ class MigrationCommand extends Command
 			if($location == NULL) {
 				echo '  Creating '.$uuid.PHP_EOL;
 				$location = new ClubLocation();
-				$this->populateLocation($location, $line);
+				$this->populateLocation($club, $location, $line);
 				$this->doctrine->getManager()->persist($location);
 			} else {
 				echo '  Updating '.$uuid.PHP_EOL;
-				$this->populateLocation($location, $line);
+				$this->populateLocation($club, $location, $line);
 			}
 			array_push($locations, $location);
 		}
@@ -169,8 +169,9 @@ class MigrationCommand extends Command
 		return $locations;
 	}
 
-	private function populateLocation(ClubLocation $location, $line) {
+	private function populateLocation(Club $club, ClubLocation $location, $line) {
 		$location->setUuid($line["uuid"]);
+		$location->setClub($club);
 		$location->setName($line["name"]);
 		$location->setAddress($line["address"]);
 		$location->setCity($line["city"]);

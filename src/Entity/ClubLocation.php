@@ -28,6 +28,12 @@ class ClubLocation
 	private $uuid;
 
 	/**
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Club")
+	 * @ORM\JoinColumn(nullable=false)
+	 */
+	private $club;
+	
+	/**
 	 * @ORM\Column(type="string", length=128)
 	 */
 	private $name;
@@ -81,10 +87,20 @@ class ClubLocation
 	public function setUuid(string $uuid): self
 	{
 		$this->uuid = $uuid;
-
 		return $this;
 	}
 
+	public function getClub(): ?Club
+	{
+	    return $this->club;
+	}
+	
+	public function setClub(Club $club): self
+	{
+	    $this->club = $club;
+	    return $this;
+	}
+	
 	public function getName(): ?string
 	{
 		return $this->name;

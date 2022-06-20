@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     schema="ClubCreate",
  *     description="Create a club",
  *     title="ClubCreate",
+ *     required={"name"},
  *     @OA\Xml(
  *         name="ClubCreate"
  *     )
