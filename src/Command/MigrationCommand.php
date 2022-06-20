@@ -177,7 +177,6 @@ class MigrationCommand extends Command
 		$location->setZipcode($line["zipcode"]);
 		$location->setCounty($line["county"]);
 		$location->setCountry($line["country"]);
-
 	}
 
 

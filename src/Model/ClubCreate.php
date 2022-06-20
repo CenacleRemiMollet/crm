@@ -27,6 +27,37 @@ class ClubCreate
 	private $name;
 
 	/**
+	 * @Assert\NotBlank
+	 * @Assert\Type("boolean")
+	 * @OA\Property(type="boolean", example="true")
+	 */
+	private $active = true;
+
+	/**
+	 * @Assert\Length(max = 64)
+	 * @OA\Property(type="string", example="abc_club")
+	 */
+	private $uuid;
+	
+	/**
+	 * @Assert\Length(max = 512)
+	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
+	 */
+	private $contactEmails;
+	
+	/**
+	 * @Assert\Length(max = 32)
+	 * @OA\Property(type="string", example="0 892 70 12 39")
+	 */
+	private $contactPhone;
+	
+	/**
+	 * @Assert\Length(max = 512)
+	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
+	 */
+	private $mailingList;
+	
+	/**
 	 * @Assert\Length(min = 1, max = 512)
 	 * @OA\Property(type="string", example="https://www.google.com")
 	 */
@@ -50,10 +81,10 @@ class ClubCreate
 	 */
 	private $instagram_url;
 
-	/**
-	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/ClubLocationCreate"))
-	 */
-	private $locations;
+// 	/**
+// 	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/ClubLocationCreate"))
+// 	 */
+// 	private $locations;
 
 	public function getName(): ?string
 	{
@@ -64,7 +95,76 @@ class ClubCreate
 	{
 		$this->name = $name;
 	}
+	
+	public function isActive(): ?string
+	{
+	    return $this->active;
+	}
+	
+	public function setActive($active)
+	{
+	    $this->active = $active;
+	}
+	
+	public function getUuid(): ?string
+	{
+	    return $this->uuid;
+	}
+	
+	public function setUuid($uuid)
+	{
+	    $this->uuid = $uuid;
+	}
 
+	public function getContactEmails(): ?string
+	{
+	    return $this->contactEmails;
+	}
+	
+	public function getContactEmailsToArray(): array
+	{
+	    if($this->contactEmails == null || '' === $this->contactEmails) {
+	        return [];
+	    }
+	    return explode(',', str_replace(' ', '', $this->contactEmails));
+	}
+	
+	public function setContactEmails(?string $contactEmails): self
+	{
+	    $this->contactEmails = $contactEmails;
+	    return $this;
+	}
+	
+	public function getContactPhone(): ?string
+	{
+	    return $this->contactPhone;
+	}
+	
+	public function setContactPhone(?string $contactPhone): self
+	{
+	    $this->contactPhone = $contactPhone;
+	    return $this;
+	}
+	
+	public function getMailingList(): ?string
+	{
+	    return $this->mailingList;
+	}
+	
+	public function getMailingListToArray(): array
+	{
+	    if($this->mailingList == null || '' === $this->mailingList) {
+	        return [];
+	    }
+	    return explode(',', str_replace(' ', '', $this->mailingList));
+	}
+	
+	public function setMailingList(?string $mailingList): self
+	{
+	    $this->mailingList = $mailingList;
+	    return $this;
+	}
+	
 	public function getWebsiteUrl(): ?string
 	{
 		return $this->website_url;
@@ -105,14 +205,14 @@ class ClubCreate
 		$this->instagram_url = $instagram_url;
 	}
 
-	public function getLocations()
-	{
-		return $this->locations;
-	}
+// 	public function getLocations()
+// 	{
+// 		return $this->locations;
+// 	}
 
-	public function setLocations(ClubLocationCreate... $locations)
-	{
-		$this->locations = $locations;
-	}
+// 	public function setLocations(ClubLocationCreate... $locations)
+// 	{
+// 		$this->locations = $locations;
+// 	}
 
 }

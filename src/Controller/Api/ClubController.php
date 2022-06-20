@@ -25,6 +25,8 @@ use App\Exception\ViolationException;
 use App\Security\Roles;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Model\ClubView;
+use App\Util\StringUtils;
 
 
 class ClubController extends AbstractController
@@ -116,7 +118,6 @@ class ClubController extends AbstractController
 
 	/**
 	 * @Route("/api/club", name="api_club_create", methods={"POST"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
-	 * @IsGranted({"ROLE_ADMIN"})
 	 * @OA\Post(
 	 *     operationId="createClub",
 	 *     tags={"Club"},
@@ -137,25 +138,50 @@ class ClubController extends AbstractController
 	 */
 	public function create(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
-		$requestUtil = new RequestUtil($serializer, $translator);
+		$this->denyAccessUnlessGranted("ROLE_ADMIN");
+		
+	    $requestUtil = new RequestUtil($serializer, $translator);
 		try {
 			$clubToCreate = $requestUtil->validate($request, ClubCreate::class);
 		} catch (ViolationException $e) {
-			return ShortResponse::error("data", $e->getErrors())
-				->setStatusCode(Response::HTTP_BAD_REQUEST);
+		    return new Response(
+		        json_encode($e->getErrors()),
+		        Response::HTTP_BAD_REQUEST,
+		        array(
+		            'Content-Type' => 'application/hal+json'
+		        ));
 		}
 
 		$account = $this->getUser();
 
-		if($this->isGranted(Roles::ROLE_ADMIN)) {
-			// ok
-		} else {
-		    // nok
-			return ShortResponse::error("role", "")
-				->setStatusCode(Response::HTTP_FORBIDDEN);
+		$name = $clubToCreate->getName();
+		$uuid = $clubToCreate->getUuid();
+		if($uuid == null || trim($uuid) === '') {
+		    $uuid = strtr(strtolower($name), ' ,-\'', '____');
+		    $uuid = StringUtils::stripAccents($uuid);
 		}
+		$club = new Club();
+		$club->setActive($clubToCreate->isActive());
+		$club->setUuid($uuid);
+        $club->setName($name);
+		$club->setContactEmail($clubToCreate->getContactEmails());
+		$club->setContactPhone($clubToCreate->getContactPhone());
+		$club->setFacebookUrl($clubToCreate->getFacebookUrl());
+		$club->setInstagramUrl($clubToCreate->getInstagramUrl());
+		$club->setMailingList($clubToCreate->getMailingList());
+		$club->setTwitterUrl($clubToCreate->getTwitterUrl());
+		$club->setWebsiteUrl($clubToCreate->getWebsiteUrl());
+		$this->container->get('doctrine')->getManager()->persist($club);
 
-		// 	TODO
+		$clubView = new ClubView($club, null, null);
+		
+		$hateoas = HateoasBuilder::create()->build();
+		return new Response(
+		    $hateoas->serialize($clubView, 'json'),
+		    Response::HTTP_CREATED,
+		    array(
+		      'Content-Type' => 'application/hal+json'
+		    ));
 	}
 
 	/**
