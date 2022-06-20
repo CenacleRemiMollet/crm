@@ -144,6 +144,7 @@ class ClubPricesController extends AbstractController
 	 *     tags={"Club"},
 	 *     path="/api/club/{club_uuid}/prices",
 	 *     summary="Create prices for a club",
+	 *     security = {{"basicAuth": {}}},
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
 	 *         in="path",
@@ -184,6 +185,7 @@ class ClubPricesController extends AbstractController
 	 *     tags={"Club"},
 	 *     path="/api/club/{club_uuid}/prices/{price_uuid}",
 	 *     summary="Delete a price for a club",
+	 *     security = {{"basicAuth": {}}},
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
 	 *         in="path",

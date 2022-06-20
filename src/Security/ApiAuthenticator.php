@@ -98,6 +98,15 @@ class ApiAuthenticator extends AbstractAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         $this->logger->debug('ApiAuthenticator.onAuthenticationSuccess() '.$request->getRequestUri());
+        
+        $sessionHst = new AccountSessionHistory();
+        $sessionHst->setAccount($token->getUser());
+        $sessionHst->setIp($request->getClientIp());
+        $sessionHst->setUserAgent($request->headers->get('User-Agent'));
+        $this->entityManager->persist($sessionHst);
+        $this->entityManager->flush();
+        $request->getSession()->set('AccountSessionHistory', $sessionHst);
+        
     	// on success, let the request continue
     	return null;
     }

@@ -25,8 +25,11 @@ use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\AccountSessionHistory;
 use App\Entity\Account;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements PasswordAuthenticatedInterface
+class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
@@ -113,17 +116,17 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
     	return $user;
     }
 
-    public function getPassword($credentials): ?string
-    {
-        $this->logger->debug('getPassword');
-        $pwd = $credentials['password'];
-    	$user = $credentials['user'];
-    	if(substr($pwd, 0, 5) === 'sha1:') {
-    		return $this->checkCredentialsLegacy(substr($pwd, 5), $credentials, $user);
-    	}
-    	$this->logger->debug('Credentails already migrated for '.$user);
-    	return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
-    }
+//     public function getPassword($credentials): ?string
+//     {
+//         $this->logger->debug('getPassword');
+//         $pwd = $credentials['password'];
+//     	$user = $credentials['user'];
+//     	if(substr($pwd, 0, 5) === 'sha1:') {
+//     		return $this->checkCredentialsLegacy(substr($pwd, 5), $credentials, $user);
+//     	}
+//     	$this->logger->debug('Credentails already migrated for '.$user);
+//     	return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+//     }
 
 //     public function checkCredentials($credentials, UserInterface $user): bool
 //     {
@@ -146,11 +149,9 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
         $sessionHst->setUserAgent($request->headers->get('User-Agent'));
         $this->entityManager->persist($sessionHst);
         $this->entityManager->flush();
+        $request->getSession()->set('AccountSessionHistory', $sessionHst);
 
         return new RedirectResponse($this->urlGenerator->generate('home'));
-        // For example:
-        //return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     //********************************************
@@ -166,22 +167,22 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements P
 
     //********************************************
     
-    private function checkCredentialsLegacy($sha1, $password, Account $user)
-    {
-    	$salt = 'gh(-#fgbVD56ù@iutyxc +tyu_75^rrtyè6';
-    	$input = sha1($password.$salt);
-    	if($input === $sha1) {
-    		$this->logger->info('Upgrade legacy password for user '.$user->getId());
-    		$newpwd = $this->passwordEncoder->encodePassword($user, $password);
-    		//$this->logger->info('newpwd '.$newpwd);
-    		$user->setPassword($newpwd);
-    		$user = $this->entityManager->flush();
-    		return true;
-    	}
-    	$newpwd = $this->passwordEncoder->encodePassword($user, $password);
-    	$this->logger->info('Bad legacy password for user '.$user->getId());
-    	//$this->logger->info('newpwd2: '.$newpwd);
-    	return false;
-    }
+//     private function checkCredentialsLegacy($sha1, $password, Account $user)
+//     {
+//     	$salt = 'gh(-#fgbVD56ù@iutyxc +tyu_75^rrtyè6';
+//     	$input = sha1($password.$salt);
+//     	if($input === $sha1) {
+//     		$this->logger->info('Upgrade legacy password for user '.$user->getId());
+//     		$newpwd = $this->passwordEncoder->encodePassword($user, $password);
+//     		//$this->logger->info('newpwd '.$newpwd);
+//     		$user->setPassword($newpwd);
+//     		$user = $this->entityManager->flush();
+//     		return true;
+//     	}
+//     	$newpwd = $this->passwordEncoder->encodePassword($user, $password);
+//     	$this->logger->info('Bad legacy password for user '.$user->getId());
+//     	//$this->logger->info('newpwd2: '.$newpwd);
+//     	return false;
+//     }
 
 }

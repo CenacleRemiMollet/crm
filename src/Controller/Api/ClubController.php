@@ -7,31 +7,30 @@ use Hateoas\HateoasBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\ClubLocation;
 use OpenApi\Annotations as OA;
-use App\Media\MediaManager;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use App\Entity\ClubLesson;
-use App\Model\ClubLessonView;
 use App\Model\ClubCreate;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Service\ClubService;
 use App\Util\RequestUtil;
 use App\Exception\ViolationException;
-use App\Security\Roles;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Model\ClubView;
 use App\Util\StringUtils;
+use App\Entity\Events;
 
 
 class ClubController extends AbstractController
 {
 
+    private LoggerInterface $logger;
+    
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+   
 	/**
 	 * @Route("/api/club", name="api_club_list-active", methods={"GET"})
 	 * @OA\Get(
@@ -56,13 +55,13 @@ class ClubController extends AbstractController
 	{
 	    $clubService = new ClubService($this->getDoctrine());
 	    $clubViews = $clubService->convertAllActiveToView();
-
 	    $hateoas = HateoasBuilder::create()->build();
-	    $json = json_decode($hateoas->serialize($clubViews, 'json'));
-
-		return new Response(json_encode($json), 200, array(
-			'Content-Type' => 'application/hal+json'
-		));
+		return new Response(
+		    $hateoas->serialize($clubViews, 'json'),
+		    Response::HTTP_OK,
+		    array(
+                'Content-Type' => 'application/hal+json'
+		    ));
 	}
 
 	/**
@@ -96,7 +95,7 @@ class ClubController extends AbstractController
 	 */
 	public function one($uuid)
 	{
-		$clubs = $this->getDoctrine()->getManager()
+		$clubs = $this->container->get('doctrine')->getManager()
 			->getRepository(Club::class)
 			->findBy(['uuid' => $uuid]);
 		$clubView = null;
@@ -109,11 +108,12 @@ class ClubController extends AbstractController
 		}
 
 		$hateoas = HateoasBuilder::create()->build();
-		$json = json_decode($hateoas->serialize($clubView, 'json'));
-
-		return new Response(json_encode($json), 200, array(
-			'Content-Type' => 'application/hal+json'
-		));
+		return new Response(
+		    $hateoas->serialize($clubView, 'json'),
+		    Response::HTTP_OK,
+		    array(
+                'Content-Type' => 'application/hal+json'
+            ));
 	}
 
 	/**
@@ -132,8 +132,15 @@ class ClubController extends AbstractController
      *     ),
 	 *     @OA\Response(
 	 *         response="200",
-	 *         description="Successful"
-	 *     )
+	 *         description="Successful",
+	 *         @OA\MediaType(
+	 *             mediaType="application/hal+json",
+	 *             @OA\Schema(ref="#/components/schemas/Club")
+	 *         )
+	 *     ),
+	 *     @OA\Response(response="400", description="Request contains not valid field"),
+	 *     @OA\Response(response="403", description="Forbidden to create a club"),
+	 *     @OA\Response(response="404", description="Club UUID already used")
 	 * )
 	 */
 	public function create(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
@@ -146,7 +153,7 @@ class ClubController extends AbstractController
 		} catch (ViolationException $e) {
 		    return new Response(
 		        json_encode($e->getErrors()),
-		        Response::HTTP_BAD_REQUEST,
+		        Response::HTTP_BAD_REQUEST, // 400
 		        array(
 		            'Content-Type' => 'application/hal+json'
 		        ));
@@ -160,10 +167,23 @@ class ClubController extends AbstractController
 		    $uuid = strtr(strtolower($name), ' ,-\'', '____');
 		    $uuid = StringUtils::stripAccents($uuid);
 		}
+		
+		$clubs = $this->container->get('doctrine')->getManager()
+		  ->getRepository(Club::class)
+		  ->findBy(['uuid' => $uuid]);
+	    if( ! empty($clubs)) {
+	        return  new Response('uuid already used: '.$uuid,
+	            Response::HTTP_METHOD_NOT_ALLOWED // 405
+	            );
+		}
+		
+		$doctrine = $this->container->get('doctrine');
+		
 		$club = new Club();
 		$club->setActive($clubToCreate->isActive());
 		$club->setUuid($uuid);
         $club->setName($name);
+        $club->setLogo('default.png');
 		$club->setContactEmail($clubToCreate->getContactEmails());
 		$club->setContactPhone($clubToCreate->getContactPhone());
 		$club->setFacebookUrl($clubToCreate->getFacebookUrl());
@@ -171,14 +191,18 @@ class ClubController extends AbstractController
 		$club->setMailingList($clubToCreate->getMailingList());
 		$club->setTwitterUrl($clubToCreate->getTwitterUrl());
 		$club->setWebsiteUrl($clubToCreate->getWebsiteUrl());
-		$this->container->get('doctrine')->getManager()->persist($club);
+		$doctrine->getManager()->persist($club);
+		
+		$data = ['name' => $name, 'uuid' => $uuid, 'active' => $clubToCreate->isActive()];
+		Events::add($doctrine, Events::CLUB_CREATED, $account, $request, $data);
+		$this->logger->debug('Club created: '.json_encode($data));
 
 		$clubView = new ClubView($club, null, null);
 		
 		$hateoas = HateoasBuilder::create()->build();
 		return new Response(
 		    $hateoas->serialize($clubView, 'json'),
-		    Response::HTTP_CREATED,
+		    Response::HTTP_CREATED, // 201
 		    array(
 		      'Content-Type' => 'application/hal+json'
 		    ));

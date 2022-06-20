@@ -28,7 +28,6 @@ class ClubCreate
 
 	/**
 	 * @Assert\NotBlank
-	 * @Assert\Type("boolean")
 	 * @OA\Property(type="boolean", example="true")
 	 */
 	private $active = true;
