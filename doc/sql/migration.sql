@@ -154,18 +154,20 @@ CREATE TABLE zzmigr_account AS
         u.id AS user_id,
         o_s.Email AS login,
         concat('sha1:', substr(Pwd, 1, 40)) AS password,
-        json_array(
-           if(Resp_Club IS NOT NULL AND Resp_Club <> '', 'ROLE_CLUB_MANAGER', 'ROLE_USER'),
-           if(Statut = 'Prof', 'ROLE_TEACHER', 'ROLE_USER'),
-           if(remove_accents(Statut) = 'Eleve', 'ROLE_STUDENT', 'ROLE_USER')
-        ) AS roles,
+        '[]' AS roles,
         Acces = 'O' AS has_access
   FROM develeve_site o_s
    JOIN zzmigr_user z_u ON o_s.eleve_id = z_u.o_id
    JOIN user u ON u.uuid = z_u.uuid;
 
+ALTER TABLE zzmigr_account CHANGE `roles` `roles` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL; 
+
 UPDATE zzmigr_account
- SET roles = replace(replace(replace(roles, ', "ROLE_USER"', ''), '["ROLE_USER", ', '['), ', "ROLE_USER"]', ']');
+ SET roles = '["ROLE_ADMIN"]'
+ WHERE login LIKE 'fagu%'
+  OR login LIKE 'stepht%'
+  OR login LIKE 'remi%'; 
+ 
 
 INSERT INTO account(user_id, login, password, roles, has_access)
  SELECT user_id, login, password, roles, has_access
