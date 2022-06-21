@@ -87,6 +87,8 @@ class ClubController extends AbstractController
 		]);
 	}
 	
+	//************************************************
+	
 	private function determineStartsOffsetByQuarter($lessons)
 	{
 	    $startTimeMinuteByDays = array();

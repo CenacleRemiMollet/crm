@@ -33,6 +33,34 @@ php bin/console db:dump backup
 
 # Push to production and database reinitialization
 
+See https://symfony.com/doc/current/deployment.html#c-install-update-your-vendors
+
+```
+rm .env.local.php
+composer install
+git pull  # or on a specific branch
+
+composer install --no-dev --optimize-autoloader
+APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
+composer dump-env prod
+```
+
+
+
+
+==
+
+==
+
+==
+
+==
+
+==
+
+==
+
+
 Edit `.env.local` to set `APP_ENV` to `dev`.
 
 ```
@@ -49,16 +77,3 @@ php bin/console crm:migration --domainname=legacydomain.fr --dump=dump_src.sql
 
 Restore the `APP_ENV` to `prod` in the file `.env.local`.
 
-
-==== TODO
-
-https://symfony.com/doc/current/deployment.html#c-install-update-your-vendors
-
--- update
-rm .env.local.php
-composer install
-
--- to prod mode
-composer install --no-dev --optimize-autoloader
-APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
-composer dump-env prod

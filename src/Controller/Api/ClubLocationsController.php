@@ -77,13 +77,13 @@ class ClubLocationsController extends AbstractController
 	 *     @OA\Response(response="404", description="Club not found")
 	 * )
 	 */
-	public function getLocations(string $uuid): Response
+	public function getLocations(string $club_uuid): Response
 	{
 		$doctrine = $this->container->get('doctrine');
 		
 		$clubs = $doctrine->getManager()
 		    ->getRepository(Club::class)
-		    ->findBy(['uuid' => $uuid]);
+		    ->findBy(['uuid' => $club_uuid]);
 	    if(empty($clubs)) {
 	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
 	    }
@@ -105,11 +105,10 @@ class ClubLocationsController extends AbstractController
 		return new Response(
 		    $hateoas->serialize($clubLocationViews, 'json'),
 		    Response::HTTP_OK, // 200
-		    array(
-			'Content-Type' => 'application/hal+json'
-		));
+		    array('Content-Type' => 'application/hal+json'));
 	}
 
+	
 	/**
 	 * @Route("/api/club/{club_uuid}/locations/{location_uuid}", name="api_get_club_location", methods={"GET"}, requirements={"club_uuid"="[a-z0-9_]{2,64}","location_uuid"="[a-zA-Z0-9_]{2,64}"})
 	 * @OA\Get(

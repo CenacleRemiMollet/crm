@@ -1,0 +1,80 @@
+{% extends 'dashboard.html.twig' %}
+
+
+{% block stylesheets2 %}
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+	<br>
+    <div class="table-content">
+    	<h3>{{ club.name }}</h3>
+        {% for location in locations %}
+        	<hr>
+        	<div>
+        	     <h5>{{ location.uuid }}</h5>
+                 <table class="table table-borded table-responsive table-striped" id="table-list" data-locationuuid="{{ location.uuid }}">
+                    <tbody>
+                        <tr data-type="uuid"><td>UUID</td><td>{{ location.uuid }}</td><td></td></tr>
+                        <tr data-type="name"><td>Nom</td><td>{{ location.name }}</td><td></td></tr>
+                        <tr data-type="address"><td>Adresse</td><td>{{ location.address }}</td><td></td></tr>
+                        <tr data-type="zipcode"><td>Code postal</td><td>{{ location.zipcode }}</td><td></td></tr>
+                        <tr data-type="city"><td>Ville</td><td>{{ location.city }}</td><td></td></tr>
+                        <tr data-type="county"><td>N° de département</td><td>{{ location.county }}</td><td></td></tr>
+                        <tr data-type="country"><td>Pays</td><td>{{ location.country }}</td><td></td></tr>
+                    </tbody>
+                </table>
+        	</div>
+        {% endfor %}
+        <!-- <button class="btn btn-info" id="add"><span class="glyphicon glyphicon-plus-sign"></span>Add New Members</button> -->
+        <br>
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts_end_body %}
+	<script src="{{ app.request.baseUrl }}/vendor/bootstable/bootstable.min.js"></script>
+    <script>
+        $(".table-responsive").SetEditable({
+        	columnsEd: "1",
+        	onEdit: function(row) {
+        		var locationUuid = row[0].parentNode.parentNode.getAttribute('data-locationuuid');
+        		var propKey = row[0].getAttribute('data-type');
+        		var propValue = row[0].childNodes[1].innerHTML;
+        		//console.log(locationUuid, propKey, propValue);
+        		$.ajax({
+        			type: 'PATCH',			
+        			url : '{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/locations/' + locationUuid,
+        			contentType: 'application/json',	
+        			data: JSON.stringify({[propKey]: propValue}),
+        			dataType: 'json',
+        			cache: false,			
+        			beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
+        			success: function (data) {
+                		if(propKey == 'uuid') {
+                			row[0].parentNode.parentNode.setAttribute('data-locationuuid', propValue);
+                		}
+        				//console.log('success', data);
+        			},
+        			error: function(data) {
+        				row[0].childNodes[5].innerHTML= 'error';
+        				console.log('error', data);
+        			}
+				});
+        	},
+        	//onDelete: function(row) { console.log('onDelete', row); },
+        	onBeforeDelete: function(row) {
+        		console.log('onBeforeDelete', row);
+        		throw new Exception(); // to ignore delete
+        	}, 
+        	//onAdd: function(row) { console.log('onAdd', row); }
+        });
+        /*$('#add').click(function() {
+            rowAddNewAndEdit('table-list', [1,2,3]);
+        });*/
+    </script>
+{% endblock %}
