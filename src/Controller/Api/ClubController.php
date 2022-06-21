@@ -133,7 +133,7 @@ class ClubController extends AbstractController
      *         @OA\JsonContent(ref="#/components/schemas/ClubCreate"),
      *     ),
 	 *     @OA\Response(
-	 *         response="200",
+	 *         response="201",
 	 *         description="Successful",
 	 *         @OA\MediaType(
 	 *             mediaType="application/hal+json",
@@ -156,25 +156,20 @@ class ClubController extends AbstractController
 		    return new Response(
 		        json_encode($e->getErrors()),
 		        Response::HTTP_BAD_REQUEST, // 400
-		        array(
-		            'Content-Type' => 'application/hal+json'
-		        ));
+		        array('Content-Type' => 'application/hal+json'));
 		}
 
 		$name = $clubToCreate->getName();
 		$uuid = $clubToCreate->getUuid();
 		if($uuid == null || trim($uuid) === '') {
-		    $uuid = strtr(strtolower($name), ' ,-\'', '____');
-		    $uuid = StringUtils::stripAccents($uuid);
+		    $uuid = StringUtils::nameToUuid($name);
 		}
 		
 		$clubs = $this->container->get('doctrine')->getManager()
 		  ->getRepository(Club::class)
 		  ->findBy(['uuid' => $uuid]);
 	    if( ! empty($clubs)) {
-	        return  new Response('uuid already used: '.$uuid,
-	            Response::HTTP_METHOD_NOT_ALLOWED // 405
-	            );
+	        return  new Response('uuid already used: '.$uuid, Response::HTTP_METHOD_NOT_ALLOWED); // 405
 		}
 		
 		$doctrine = $this->container->get('doctrine');
@@ -197,15 +192,11 @@ class ClubController extends AbstractController
 		Events::add($doctrine, Events::CLUB_CREATED, $this->getUser(), $request, $data);
 		$this->logger->debug('Club created: '.json_encode($data));
 
-		$clubView = new ClubView($club, null, null);
-		
 		$hateoas = HateoasBuilder::create()->build();
 		return new Response(
-		    $hateoas->serialize($clubView, 'json'),
+		    $hateoas->serialize(new ClubView($club, null, null), 'json'),
 		    Response::HTTP_CREATED, // 201
-		    array(
-		      'Content-Type' => 'application/hal+json'
-		    ));
+		    array('Content-Type' => 'application/hal+json'));
 	}
 
 	/**
@@ -250,49 +241,40 @@ class ClubController extends AbstractController
 	        return new Response(
 	            json_encode($e->getErrors()),
 	            Response::HTTP_BAD_REQUEST, // 400
-	            array(
-	                'Content-Type' => 'application/hal+json'
-	            ));
+	            array('Content-Type' => 'application/hal+json'));
 	    }
 	    
-	    $clubs = $this->container->get('doctrine')->getManager()
+	    $doctrine = $this->container->get('doctrine');
+	    $clubs = $doctrine->getManager()
     	    ->getRepository(Club::class)
     	    ->findBy(['uuid' => $uuid]);
 	    if(empty($clubs)) {
-	        return  new Response('uuid already used: '.$uuid,
-	            Response::HTTP_NOT_FOUND // 404
-	            );
+	        return  new Response('Club not found: '.$uuid, Response::HTTP_NOT_FOUND);// 404
 	    }
 	    $club = $clubs[0];
-	    $data = array();
-	    $clubUpdate = function($d, string $fieldName, $updateValue, $currentValue, $updator) {
-	        if($updateValue != null && $currentValue != $updateValue) {
-	            $updator($updateValue);
-	            return array_merge($d, array($fieldName => $updateValue));
+	    
+	    $uuid = $clubToUpdate->getUuid();
+	    if( ! empty($uuid) && $uuid !== $club->getUuid()) {
+	        $clubsUsed = $doctrine->getManager()
+    	        ->getRepository(Club::class)
+    	        ->findBy(['uuid' => $uuid]);
+    	    if(!empty($clubsUsed)) {
+	            return new Response('Club UUID already used', Response::HTTP_BAD_REQUEST); // 400
 	        }
-	        return $d;
-	    };
-	    
-	    $data = $clubUpdate($data, 'active', $clubToUpdate->isActive(), $club->getActive(), function($v) use($club) { $club->setActive($v); });
-	    $data = $clubUpdate($data, 'uuid', $clubToUpdate->getUuid(), $club->getUuid(), function($v) use($club) { $club->setUuid($v); });
-	    $data = $clubUpdate($data, 'name', $clubToUpdate->getName(), $club->getName(), function($v) use($club) { $club->setName($v); });
-	    $data = $clubUpdate($data, 'contactemails', $clubToUpdate->getContactEmails(), $club->getContactEmails(), function($v) use($club) { $club->getContactEmails($v); });
-	    $data = $clubUpdate($data, 'contactphone', $clubToUpdate->getContactPhone(), $club->getContactPhone(), function($v) use($club) { $club->getContactPhone($v); });
-	    $data = $clubUpdate($data, 'facebookurl', $clubToUpdate->getFacebookUrl(), $club->getFacebookUrl(), function($v) use($club) { $club->setFacebookUrl($v); });
-	    $data = $clubUpdate($data, 'instagramurl', $clubToUpdate->getInstagramUrl(), $club->getInstagramUrl(), function($v) use($club) { $club->setInstagramUrl($v); });
-	    $data = $clubUpdate($data, 'mailinglist', $clubToUpdate->getMailingList(), $club->getMailingList(), function($v) use($club) { $club->setMailingList($v); });
-	    $data = $clubUpdate($data, 'twitterurl', $clubToUpdate->getTwitterUrl(), $club->getTwitterUrl(), function($v) use($club) { $club->setTwitterUrl($v); });
-	    $data = $clubUpdate($data, 'websiteurl', $clubToUpdate->getWebsiteUrl(), $club->getWebsiteUrl(), function($v) use($club) { $club->setWebsiteUrl($v); });
-
-	    if(empty($data)) {
-	        return new Response('Nothing to update', Response::HTTP_NO_CONTENT); // 204
 	    }
-	    $doctrine = $this->container->get('doctrine');
-	    $doctrine->getManager()->persist($club);
-	    Events::add($doctrine, Events::CLUB_UPDATED, $this->getUser(), $request, $data);
-	    $this->logger->debug('Club '.$club->getId().' updated: '.json_encode($data));
 	    
-	    return new Response('Updated', Response::HTTP_NO_CONTENT); // 204
+	    $entityUpdater = new EntityUpdater($doctrine, $request, $this->getUser(), Events::CLUB_UPDATED, $this->logger);
+	    $entityUpdater->update('active', $clubToUpdate->isActive(), $club->getActive(), function($v) use($club) { $club->setActive($v); });
+	    $entityUpdater->update('uuid', $clubToUpdate->getUuid(), $club->getUuid(), function($v) use($club) { $club->setUuid($v); });
+	    $entityUpdater->update('name', $clubToUpdate->getName(), $club->getName(), function($v) use($club) { $club->setName($v); });
+	    $entityUpdater->update('contactemails', $clubToUpdate->getContactEmails(), $club->getContactEmails(), function($v) use($club) { $club->getContactEmails($v); });
+	    $entityUpdater->update('contactphone', $clubToUpdate->getContactPhone(), $club->getContactPhone(), function($v) use($club) { $club->getContactPhone($v); });
+	    $entityUpdater->update('facebookurl', $clubToUpdate->getFacebookUrl(), $club->getFacebookUrl(), function($v) use($club) { $club->setFacebookUrl($v); });
+	    $entityUpdater->update('instagramurl', $clubToUpdate->getInstagramUrl(), $club->getInstagramUrl(), function($v) use($club) { $club->setInstagramUrl($v); });
+	    $entityUpdater->update('mailinglist', $clubToUpdate->getMailingList(), $club->getMailingList(), function($v) use($club) { $club->setMailingList($v); });
+	    $entityUpdater->update('twitterurl', $clubToUpdate->getTwitterUrl(), $club->getTwitterUrl(), function($v) use($club) { $club->setTwitterUrl($v); });
+	    $entityUpdater->update('websiteurl', $clubToUpdate->getWebsiteUrl(), $club->getWebsiteUrl(), function($v) use($club) { $club->setWebsiteUrl($v); });
+	    return $entityUpdater->toResponse($club, 'Club updated', ['id' => $club->getId()]);
 	}
 
 }

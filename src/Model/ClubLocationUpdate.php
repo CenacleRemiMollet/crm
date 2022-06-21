@@ -7,20 +7,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @OA\Schema(
- *     schema="ClubLocationCreate",
- *     description="Create a club location",
- *     title="ClubLocationCreate",
+ *     schema="ClubLocationUpdate",
+ *     description="Update a club location",
+ *     title="ClubLocationUpdate",
  *     required={"name"},
  *     @OA\Xml(
- *         name="ClubLocationCreate"
+ *         name="ClubLocationUpdate"
  *     )
  * )
  */
-class ClubLocationCreate
+class ClubLocationUpdate
 {
 
 	/**
-	 * @Assert\NotBlank
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 128)
 	 * @OA\Property(type="string", example="Gymnase Abc")

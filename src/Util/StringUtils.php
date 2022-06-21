@@ -28,5 +28,13 @@ class StringUtils
     public static function stripAccents($str) {
         return strtr(utf8_decode($str), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'), 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
     }
+    
+    public static function defaultOrEmpty($str){
+        return $str === null || trim($str) === '' ? '' : $str;
+    }
+    
+    public static function nameToUuid($name){
+        return strtr(strtolower(StringUtils::stripAccents($name)), ' ,-\'', '____');
+    }
 }
 
