@@ -1,13 +1,10 @@
 <?php
 namespace App\Service;
 
-use App\Model\ClubLocationView;
-use App\Model\ClubView;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\ClubLocation;
+use App\Entity\Club;
 use App\Entity\ClubPrice;
 use App\Model\ClubPriceView;
-use App\Entity\Club;
 
 /**
  * @author f.agu

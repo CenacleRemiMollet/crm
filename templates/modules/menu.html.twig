@@ -92,27 +92,34 @@
         	<a class="btn link" href="#"><img src="{{ app.request.baseUrl }}/assets/img/question.png" class="icon">{% trans %}menu.contact{% endtrans %}</a>
         {% endif %} #}
  
-        {% if menuProperties["menu.signin.enabled"] == "true" %}
+        {% if menuProperties["menu.connection.enabled"] == "true" %}
         	<div class="dropdown btn-group">
         		{% if app.user is null %}
                     <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    	<img src="{{ app.request.baseUrl }}/assets/img/profile.png" class="icon">{% trans %}menu.signin signup{% endtrans %}
+                    	<img src="{{ app.request.baseUrl }}/assets/img/profile.png" class="icon">
+                    	{% if menuProperties["menu.connection.signin.enabled"] == "true" %}{% trans %}menu.connection.title-signin{% endtrans %}{% endif %}
+                    	{% if menuProperties["menu.connection.signin.enabled"] == "true" and menuProperties["menu.connection.signup.enabled"] == "true" %}/{% endif %}
+                    	{% if menuProperties["menu.connection.signup.enabled"] == "true" %}{% trans %}menu.connection.title-signup{% endtrans %}{% endif %}
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ app.request.baseUrl }}/login"><li class="link">{% trans %}menu.signin_signup.signin{% endtrans %}</li></a>
-                        <a class="dropdown-item" href="{{ app.request.baseUrl }}/#"><li class="link">{% trans %}menu.signin_signup.signup{% endtrans %}</li></a>
+                    	{% if menuProperties["menu.connection.signin.enabled"] == "true" %}
+                        	<a class="dropdown-item" href="{{ app.request.baseUrl }}/login"><li class="link">{% trans %}menu.connection.signin{% endtrans %}</li></a>
+                        {% endif %}
+                        {% if menuProperties["menu.connection.signup.enabled"] == "true" %}
+                        	<a class="dropdown-item" href="{{ app.request.baseUrl }}/#"><li class="link">{% trans %}menu.connection.signup{% endtrans %}</li></a>
+                       	{% endif %}
                     </div>
                 {% else %}
                     <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    	<img src="{{ app.request.baseUrl }}/assets/img/profile.png" class="icon">{% trans %}menu.signin signup.my account{% endtrans %}
+                    	<img src="{{ app.request.baseUrl }}/assets/img/profile.png" class="icon">{% trans %}menu.connection.my-account{% endtrans %}
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ app.request.baseUrl }}/#"><li class="link">{% trans %}menu.signin_signup.me{% endtrans %}</li></a>
+                        <a class="dropdown-item" href="{{ app.request.baseUrl }}/#"><li class="link">{{ app.user.user.lastname }} {{ app.user.user.firstname }}</li></a>
                         {% if is_granted('ROLE_ADMIN') %}
-                        	<a class="dropdown-item" href="{{ app.request.baseUrl }}/config"><li class="link">{% trans %}menu.signin_signup.config{% endtrans %}</li></a>
+                        	<a class="dropdown-item" href="{{ app.request.baseUrl }}/config"><li class="link">{% trans %}menu.connection.config{% endtrans %}</li></a>
                         {% endif %}
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ app.request.baseUrl }}/logout"><li class="link">{% trans %}menu.signin_signup.logout{% endtrans %}</li></a>
+                        <a class="dropdown-item" href="{{ app.request.baseUrl }}/logout"><li class="link">{% trans %}menu.connection.logout{% endtrans %}</li></a>
                     </div>
                 {% endif %}
             </div>

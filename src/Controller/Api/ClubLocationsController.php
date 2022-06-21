@@ -46,16 +46,16 @@ class ClubLocationsController extends AbstractController
     
     
     /**
-	 * @Route("/api/club/{uuid}/locations", name="api_get_club_locations", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 * @Route("/api/club/{club_uuid}/locations", name="api_get_club_locations", methods={"GET"}, requirements={"club_uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
 	 *     operationId="getClubLocations",
 	 *     tags={"Club"},
-	 *     path="/api/club/{uuid}/locations",
+	 *     path="/api/club/{club_uuid}/locations",
 	 *     summary="Give some locations",
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
 	 *         in="path",
-	 *         name="uuid",
+	 *         name="club_uuid",
 	 *         required=true,
 	 *         @OA\Schema(
 	 *             format="string",
@@ -229,6 +229,12 @@ class ClubLocationsController extends AbstractController
 	    if(empty($clubs)) {
 	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
 	    }
+	    $club = $clubs[0];
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
+	        return new Response('', Response::HTTP_FORBIDDEN); // 403
+	    }
 	    
 	    $requestUtil = new RequestUtil($serializer, $translator);
 	    try {
@@ -246,7 +252,6 @@ class ClubLocationsController extends AbstractController
 	        $uuid = StringUtils::nameToUuid($name).'_'.StringUtils::random_str(4);
 	    }
 	    
-	    $club = $clubs[0];
 	    $location = new ClubLocation();
 	    $location->setAddress(StringUtils::defaultOrEmpty($locationToCreate->getAddress()));
 	    $location->setCity(StringUtils::defaultOrEmpty($locationToCreate->getCity()));
@@ -331,9 +336,14 @@ class ClubLocationsController extends AbstractController
     	    ->findBy(['uuid' => $club_uuid]);
 	    if(empty($clubs)) {
 	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
+	    }   
+	    $club = $clubs[0];
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
+	        return new Response('', Response::HTTP_FORBIDDEN); // 403
 	    }
 	    
-	    $club = $clubs[0];
 	    $locations = $doctrine->getManager()
     	    ->getRepository(ClubLocation::class)
     	    ->findBy(['uuid' => $location_uuid, 'club' => $club]);
@@ -426,8 +436,6 @@ class ClubLocationsController extends AbstractController
 	    $clubLocation = $clubLocations[0];
 	    	    
 	    $doctrine->getManager()->remove($clubLocation);
-	    $doctrine->getManager()->flush();
-	    
 	    $data = ['club_uuid' => $club_uuid, 'location_uuid' => $location_uuid, 'name' => $clubLocation->getName()];
 	    Events::add($doctrine, Events::CLUB_LOCATION_DELETED, $this->getUser(), $request, $data);
 	    $this->logger->debug('Club location deleted: '.json_encode($data));

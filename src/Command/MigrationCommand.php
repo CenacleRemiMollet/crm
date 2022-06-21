@@ -263,7 +263,7 @@ class MigrationCommand extends Command
 	        }
 	        try {
 	            $clubPrice = new ClubPrice();
-	            $clubPrice->setClubId($club->getId());
+	            $clubPrice->setClub($club);
 	            $clubPrice->setDiscipline($line["discipline"]);
 	            $clubPrice->setCategory(isset($line["category"]) ? $line["category"] : '');
 	            $clubPrice->setComment(isset($line["comment"]) ? $line["comment"] : '');
@@ -282,7 +282,7 @@ class MigrationCommand extends Command
 	private function deletePricesForAClub(Club $club)
 	{
 	    $manager = $this->doctrine->getManager();
-	    foreach($manager->getRepository(ClubPrice::class)->findBy(["club_id" => $club->getId()]) as $price)
+	    foreach($manager->getRepository(ClubPrice::class)->findBy(["club" => $club]) as $price)
 	    {
 	        $manager->remove($price);
 	    }

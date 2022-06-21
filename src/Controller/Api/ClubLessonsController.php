@@ -22,6 +22,7 @@ use App\Util\StringUtils;
 use App\Entity\ClubLocation;
 use App\Entity\Events;
 use App\Model\ClubLessonUpdate;
+use App\Security\ClubAccess;
 
 
 class ClubLessonsController extends AbstractController
@@ -36,16 +37,16 @@ class ClubLessonsController extends AbstractController
     
     
     /**
-	 * @Route("/api/club/{uuid}/lessons", name="api_get_club_lessons", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 * @Route("/api/club/{club_uuid}/lessons", name="api_get_club_lessons", methods={"GET"}, requirements={"club_uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
 	 *     operationId="getClubLessons",
 	 *     tags={"Club"},
-	 *     path="/api/club/{uuid}/lessons",
+	 *     path="/api/club/{club_uuid}/lessons",
 	 *     summary="Give some hours",
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
 	 *         in="path",
-	 *         name="uuid",
+	 *         name="club_uuid",
 	 *         required=true,
 	 *         @OA\Schema(
 	 *             format="string",
@@ -208,6 +209,11 @@ class ClubLessonsController extends AbstractController
         }
         $club = $clubs[0];
         
+        $clubAccess = new ClubAccess($this->container, $this->logger);
+        if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
+            return new Response('', Response::HTTP_FORBIDDEN); // 403
+        }
+        
         $requestUtil = new RequestUtil($serializer, $translator);
         try {
             $lessonToCreate = $requestUtil->validate($request, ClubLessonCreate::class);
@@ -275,7 +281,7 @@ class ClubLessonsController extends AbstractController
 	/**
 	 * @Route("/api/club/{club_uuid}/lessons/{lesson_uuid}", name="api_update_club_lessons", methods={"PATCH"}, requirements={"club_uuid"="[a-z0-9_]{2,64}","lesson_uuid"="[a-zA-Z0-9_]{2,64}"})
 	 * @OA\Patch(
-	 *     operationId="updateClublesson",
+	 *     operationId="updateClubLesson",
 	 *     tags={"Club"},
 	 *     path="/api/club/{club_uuid}/lessons/{lesson_uuid}",
 	 *     summary="Update a lesson for a club",
@@ -334,8 +340,13 @@ class ClubLessonsController extends AbstractController
 	    if(empty($clubs)) {
 	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
 	    }
-	    
 	    $club = $clubs[0];
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
+	        return new Response('', Response::HTTP_FORBIDDEN); // 403
+	    }
+	    
 	    $lessons = $doctrine->getManager()
     	    ->getRepository(ClubLesson::class)
     	    ->findBy(['uuid' => $lesson_uuid, 'club' => $club]);
@@ -379,5 +390,75 @@ class ClubLessonsController extends AbstractController
 	    return $entityUpdater->toResponse($lesson, 'Club lesson updated', ['id' => $lesson->getId()]);
 	}
 	
-	
+
+	/**
+	 * @Route("/api/club/{club_uuid}/lessons/{lesson_uuid}", name="api_delete_club_lessons", methods={"DELETE"}, requirements={"club_uuid"="[a-z0-9_]{2,64}","lesson_uuid"="[a-zA-Z0-9_]{2,64}"})
+	 * @OA\Delete(
+	 *     operationId="deleteClubLesson",
+	 *     tags={"Club"},
+	 *     path="/api/club/{club_uuid}/lessons/{lesson_uuid}",
+	 *     summary="Delete a lesson for a club",
+	 *     security = {{"basicAuth": {}}},
+	 *     @OA\Parameter(
+	 *         description="UUID of club",
+	 *         in="path",
+	 *         name="club_uuid",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             format="string",
+	 *             type="string",
+	 *             pattern="[a-z0-9_]{2,64}"
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(
+	 *         description="UUID of lesson",
+	 *         in="path",
+	 *         name="lesson_uuid",
+	 *         required=true,
+	 *         @OA\Schema(
+	 *             format="string",
+	 *             type="string",
+	 *             pattern="[A-Za-z0-9_]{2,64}"
+	 *         )
+	 *     ),
+	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
+	 *     @OA\Response(response="204", description="Successful"),
+	 *     @OA\Response(response="403", description="Forbidden to delete a lesson"),
+	 *     @OA\Response(response="404", description="Club or lesson not found")
+	 * )
+	 */
+	public function deleteLesson(Request $request, string $club_uuid, string $lesson_uuid): Response
+	{
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $clubs = $doctrine->getManager()
+    	    ->getRepository(Club::class)
+    	    ->findBy(['uuid' => $club_uuid]);
+	    if(empty($clubs)) {
+	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
+	    }
+	    $club = $clubs[0];
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
+	        return new Response('', Response::HTTP_FORBIDDEN); // 403
+	    }
+	    
+	    $clubLessons = $doctrine->getManager()
+    	    ->getRepository(ClubLesson::class)
+    	    ->findBy(['uuid' => $lesson_uuid, 'club' => $club]);
+	    if(empty($clubLessons)) {
+	        return new Response('Lesson not found', Response::HTTP_NOT_FOUND); // 404
+	    }
+	    $clubLesson = $clubLessons[0];
+	    
+	    $doctrine->getManager()->remove($clubLesson);
+	    $doctrine->getManager()->flush();
+	    
+	    $data = ['club_uuid' => $club_uuid, 'lesson_uuid' => $lesson_uuid, 'day' => $clubLesson->getDayOfWeek(), 'start' => $clubLesson->getStartTime()];
+	    Events::add($doctrine, Events::CLUB_LESSON_DELETED, $this->getUser(), $request, $data);
+	    $this->logger->debug('Club lesson deleted: '.json_encode($data));
+	    
+	    return new Response('', Response::HTTP_NO_CONTENT); // 204
+	}
 }

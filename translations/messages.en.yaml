@@ -20,6 +20,7 @@ discipline:
   taekwonkido: "Taekwonkido"
   taekwondo: "Taekwondo"
   hapkido: "Hapkido"
+  sinkido: "Sinkido"
   sinkido self defense system: "Sinkido Self-Defense System"
   sinkido self defense system 2 lines: "Sinkido<br>Self-Defense System"
   sinkido self defense system 2 lines upper lower: "<span class=\"first\">sinkido</span><br><span class=\"second\">self-defense systeme</span>"
@@ -38,10 +39,19 @@ menu:
   club list: "club list"
   gallery: "gallery"
   contact: "contact"
-  signin signup: "sign in / sign up"
-  signin_signup:
+  connection:
+    title-signin: "sign in"
+    title-signup: "sign up"
     signin: "Sign in"
     signup: "Sign up"
+    my-account: "My account"
+    config: "Configure"
+    logout: "Logout"
+    
+
+# Login
+login.remember-me: "Remember me"
+
 
 
 # Home / Cenacle

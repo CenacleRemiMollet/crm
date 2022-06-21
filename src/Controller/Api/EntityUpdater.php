@@ -53,9 +53,13 @@ class EntityUpdater
     
     private function fieldUpdater(string $fieldName, $updateValue, $currentValue, $updator)
     {
-        if($updateValue != null && $currentValue != $updateValue) {
+        if($updateValue !== null && $currentValue !== $updateValue) {
             $updator($updateValue);
             $this->updatedFields = array_merge($this->updatedFields, array($fieldName => $updateValue));
+        } else if($updateValue === null) {
+            //$this->logger->debug('Field \''.$fieldName.'\' is null');
+        } else if($currentValue === $updateValue) {
+            //$this->logger->debug('Field \''.$fieldName.'\' has same value: '.$currentValue.' === '.$updateValue);
         }
     }
 }

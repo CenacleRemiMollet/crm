@@ -17,6 +17,10 @@ class Events
     public const CLUB_LOCATION_UPDATED = 'CLUB_LOCATION_UPDATED';
     public const CLUB_LOCATION_DELETED = 'CLUB_LOCATION_DELETED';
     
+    public const CLUB_PRICE_CREATED = 'CLUB_PRICE_CREATED';
+    public const CLUB_PRICE_UPDATED = 'CLUB_PRICE_UPDATED';
+    public const CLUB_PRICE_DELETED = 'CLUB_PRICE_DELETED';
+    
     public const CONFIG_PROPERTIES_SAVED = 'CONFIG_PROPERTIES_SAVED';
     
     
@@ -31,6 +35,10 @@ class Events
         self::CLUB_LOCATION_CREATED,
         self::CLUB_LOCATION_UPDATED,
         self::CLUB_LOCATION_DELETED,
+        
+        self::CLUB_PRICE_CREATED,
+        self::CLUB_PRICE_UPDATED,
+        self::CLUB_PRICE_DELETED,
         
         self::CONFIG_PROPERTIES_SAVED
     );
