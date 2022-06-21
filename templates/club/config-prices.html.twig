@@ -18,12 +18,13 @@
              <table class="table table-borded table-striped" style="max-width: 600px">
                 <tbody>
                     <tr><td>UUID</td><td><input class="form-control input-sm inputadd" name="uuid"></td></tr>
-                    <tr><td>Nom *</td><td><input class="form-control input-sm inputadd" name="name"></td></tr>
-                    <tr><td>Adresse</td><td><input class="form-control input-sm inputadd" name="address"></td></tr>
-                    <tr><td>Code postal</td><td><input class="form-control input-sm inputadd" name="zipcode"></td></tr>
-                    <tr><td>Ville</td><td><input class="form-control input-sm inputadd" name="city"></td></tr>
-                    <tr><td>N° de département</td><td><input class="form-control input-sm inputadd" name="county"></td></tr>
-                    <tr ><td>Pays</td><td><input class="form-control input-sm inputadd" name="country"></td></tr>
+                    <tr><td>Discipline/titre *</td><td><input class="form-control input-sm inputadd" name="discipline"></td></tr>
+                    <tr><td>Categorie</td><td><input class="form-control input-sm inputadd" name="category"></td></tr>
+                    <tr><td>Commentaire</td><td><input class="form-control input-sm inputadd" name="comment"></td></tr>
+                    <tr><td>1er enfant</td><td><input class="form-control input-sm inputadd" name="child1" data-format="float"></td></tr>
+                    <tr><td>2ème enfant</td><td><input class="form-control input-sm inputadd" name="child2" data-format="float"></td></tr>
+                    <tr><td>3ème enfant</td><td><input class="form-control input-sm inputadd" name="child3" data-format="float"></td></tr>
+                    <tr><td>Adulte</td><td><input class="form-control input-sm inputadd" name="adult" data-format="float"></td></tr>
                 </tbody>
             </table>
             <span id="add-message"></span>
@@ -71,6 +72,10 @@
         	$(".inputadd").each(function (index) {
         	    var value = $(this).val();
         	    if(value) {
+        	        var format = $(this).attr('data-format');
+            		if("float" == format) {
+            			value = value ? parseFloat(value) : 0;
+            		}
         			data[$(this).attr('name')] = value;
         			//console.log($(this).attr('name'), value);
         		}
@@ -85,7 +90,7 @@
     			beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
     			success: function (data) {
     				//console.log('success', data);
-    				//location.reload();
+    				location.reload();
     			},
     			error: function(data) {
     			$("#add-message").text('error');
