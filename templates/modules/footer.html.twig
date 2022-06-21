@@ -1,11 +1,68 @@
 <footer class="d-flex m-0">
     <div class="contact col-xl-4 col-lg-4 col-md-4">
         <h6>{% trans %}footer.contactus.title{% endtrans %}</h6>
-        <p>{% trans %}footer.contactus.text{% endtrans %}</p>
-        <div class="data-contact">
-            <a href="tel:+33695904408"><i class="fas fa-phone-alt"></i>+33 6 95 90 44 08</a>
-            <a href="mailto:remi.mollet@cenaclerm.fr"><i class="fas fa-envelope"></i>remi.mollet@cenaclerm.fr</a>
-        </div> 
+        
+        {% if club is defined and club.uuid is defined %}
+            <div class="data-contact">
+            	{% for location in club.locations %}
+            		<p>{{ location.name }}</p>
+            		{{ location.address }}<br>
+            		{{ location.zipcode }} {{ location.city }}<br>
+            		{{ location.country }}<br>
+            	{% endfor %}
+            	
+                {% if(club.contact_phone is defined and club.contact_phone != '') %}
+            		{% set phones = club.contact_phone %}
+            	{% elseif(clubProperties["club.contact.default.phones"] is defined) %}
+            	    {% set phones = clubProperties["club.contact.default.phones"] %}
+            	{% else %}
+            	    {% set phones = '' %}
+            	{% endif %}
+            	{%  for phone in phones|split('/') %}
+                	<a href="tel:{{ phone|trim|replace({' ':''}) }}"><i class="fas fa-phone-alt"></i>{{ phone|trim }}</a>
+               	{% endfor %}
+                
+                {% if(club.contact_emails is defined and club.contact_emails != '') %}
+            		{% set emails = club.contact_emails %}
+            	{% elseif(clubProperties["club.contact.default.emails"] is defined) %}
+            	    {% set emails = clubProperties["club.contact.default.emails"] %}
+            	{% else %}
+            	    {% set emails = '' %}
+            	{% endif %}
+             	{%  for email in emails|split(',') %}
+                	<a href="mailto:{{ email|trim }}"><i class="fas fa-envelope"></i>{{ email|trim }}</a>
+               	{% endfor %}
+            </div>
+        {% else %}
+        	{% if(cenacleProperties["cenacle.contact.name"] is defined) %}
+        		<p>{{ cenacleProperties["cenacle.contact.name"] }}</p>
+        	{% endif %}
+            {% if(cenacleProperties["cenacle.contact.address"] is defined) %}
+        	    {{ cenacleProperties["cenacle.contact.address"] }}<br>
+        	{% endif %}
+            {% if(cenacleProperties["cenacle.contact.city"] is defined) %}
+        	    {{ cenacleProperties["cenacle.contact.city"] }}<br>
+        	{% endif %}
+        	<div class="data-contact">
+        		{% if(cenacleProperties["cenacle.contact.phones"] is defined) %}
+            	    {% set phones = cenacleProperties["cenacle.contact.phones"] %}
+            	{% else %}
+            	    {% set phones = '' %}
+            	{% endif %}
+            	{%  for phone in phones|split('/') %}
+                	<a href="tel:{{ phone|trim|replace({' ':''}) }}"><i class="fas fa-phone-alt"></i>{{ phone|trim }}</a>
+               	{% endfor %}
+
+                {% if(cenacleProperties["cenacle.contact.emails"] is defined) %}
+            	    {% set emails = cenacleProperties["cenacle.contact.emails"] %}
+            	{% else %}
+            	    {% set emails = '' %}
+            	{% endif %}
+             	{%  for email in emails|split(',') %}
+                	<a href="mailto:{{ email|trim }}"><i class="fas fa-envelope"></i>{{ email|trim }}</a>
+               	{% endfor %}
+	       </div>
+        {% endif %} 
     </div>
 
     <div class="plan col-xl-3 col-lg-3">
@@ -15,8 +72,8 @@
             <a href="{{ app.request.baseUrl }}/master"><li class="link">{% trans %}footer.siteplan.themaster{% endtrans %}</li></a> 
             <li class="link">{% trans %}footer.siteplan.thedisciplines{% endtrans %}</li>
             <a href="{{ app.request.baseUrl }}/club"><li class="link">{% trans %}footer.siteplan.clublist{% endtrans %}</li></a> 
-            <a href="{{ app.request.baseUrl }}/#"><li class="link">{% trans %}footer.siteplan.login{% endtrans %}</li></a> 
-            <a href="{{ app.request.baseUrl }}/#"><li class="link">{% trans %}footer.siteplan.privacypolicy{% endtrans %}</li></a>
+            <a href="{{ app.request.baseUrl }}/login"><li class="link">{% trans %}footer.siteplan.login{% endtrans %}</li></a> 
+            {#<a href="{{ app.request.baseUrl }}/#"><li class="link">{% trans %}footer.siteplan.privacypolicy{% endtrans %}</li></a>#}
         </ul>
     </div>
 
@@ -31,12 +88,55 @@
     </div>
 
     <div class="social col-xl-2 col-lg-2">
-        <h6>{% trans %}footer.followus.title{% endtrans %}</h6>
-        <div class="icons d-flex flex-xl-row flex-lg-column flex-md-column align-items-center">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
-        </div>
+        {% set url = {} %}
+    	{% if club is defined and club.uuid is defined %}
+    		{% if club.facebook_url is defined and club.facebook_url is not empty %}
+    			{% set url = url|merge({'facebook': club.facebook_url }) %}
+    		{% endif %}
+    	{% elseif cenacleProperties["cenacle.contact.facebook.url"] is defined %}
+    		{% set url = url|merge({'facebook': cenacleProperties["cenacle.contact.facebook.url"] })%}
+    	{% endif %}
+    	
+    	{% if club is defined and club.uuid is defined %}
+    		{% if club.instagram_url is defined and club.instagram_url is not empty %}
+    			{% set url = url|merge({'instagram': club.instagram_url }) %}
+    		{% endif %}
+    	{% elseif cenacleProperties["cenacle.contact.instagram.url"] is defined %}
+    		{% set url = url|merge({'instagram': cenacleProperties["cenacle.contact.instagram.url"] })%}
+    	{% endif %}
+
+    	{% if club is defined and club.uuid is defined %}
+    		{% if club.twitter_url is defined and club.twitter_url is not empty %}
+    			{% set url = url|merge({'twitter': club.twitter_url }) %}
+    		{% endif %}
+    	{% elseif cenacleProperties["cenacle.contact.twitter.url"] is defined %}
+    		{% set url = url|merge({'twitter': cenacleProperties["cenacle.contact.twitter.url"] })%}
+    	{% endif %}
+
+    	{% if club is defined and club.uuid is defined %}
+    		{% if club.youtube_url is defined and club.youtube_url is not empty %}
+    			{% set url = url|merge({'youtube': club.youtube_url }) %}
+    		{% endif %}
+    	{% elseif cenacleProperties["cenacle.contact.youtube.url"] is defined %}
+    		{% set url = url|merge({'youtube': cenacleProperties["cenacle.contact.youtube.url"] })%}
+    	{% endif %}
+    	
+     	{% if club is defined and club.uuid is defined %}
+    		{% if club.dailymotion_url is defined and club.dailymotion_url is not empty %}
+    			{% set url = url|merge({'dailymotion': club.dailymotion_url }) %}
+    		{% endif %}
+    	{% elseif cenacleProperties["cenacle.contact.dailymotion.url"] is defined %}
+    		{% set url = url|merge({'dailymotion': cenacleProperties["cenacle.contact.dailymotion.url"] })%}
+    	{% endif %}
+    	
+    	{% if url is not empty %}
+    		<h6>{% trans %}footer.followus.title{% endtrans %}</h6>
+            <div class="icons flex-xl-row flex-lg-column flex-md-column align-items-center">
+    			{% for key,value in url %}
+    				<a href="{{ value }}"><i class="fab fa-{{ key }}"></i></a>
+    			{% endfor %}
+            </div>
+        {% endif %}
     </div>
 
 </footer>

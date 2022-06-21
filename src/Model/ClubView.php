@@ -73,6 +73,16 @@ class ClubView
 	private $instagram_url;
 
 	/**
+	 * @OA\Property(type="string", example="https://www.dailymotion.com/abc")
+	 */
+	private $dailymotion_url;
+	
+    /**
+	 * @OA\Property(type="string", example="https://www.youtube.com/abc")
+	 */
+	private $youtube_url;
+
+	/**
 	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/ClubLocation"))
 	 */
 	private $locations;
@@ -94,6 +104,8 @@ class ClubView
 		$this->facebook_url = $club->getFacebookUrl();
 		$this->twitter_url = $club->getTwitterUrl();
 		$this->instagram_url = $club->getInstagramUrl();
+		$this->dailymotion_url = $club->getDailymotionUrl();
+		$this->youtube_url = $club->getYoutubeUrl();
 		$this->locations = $locations;
 		$this->prices = $prices;
 	}
@@ -138,6 +150,16 @@ class ClubView
 		return $this->instagram_url;
 	}
 
+	public function getDailymotionUrl(): ?string
+	{
+	    return $this->dailymotion_url;
+	}
+	
+	public function getYoutubeUrl(): ?string
+	{
+	    return $this->youtube_url;
+	}
+	
 	public function getLocations()
 	{
 		return $this->locations;

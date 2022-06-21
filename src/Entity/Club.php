@@ -60,6 +60,16 @@ class Club
 	/**
 	 * @ORM\Column(type="string", length=512, nullable=true)
 	 */
+	private $dailymotion_url;
+	
+	/**
+	 * @ORM\Column(type="string", length=512, nullable=true)
+	 */
+	private $youtube_url;
+
+	/**
+	 * @ORM\Column(type="string", length=512, nullable=true)
+	 */
 	private $mailing_list;
 
 	/**
@@ -265,7 +275,6 @@ class Club
     public function setTwitterUrl(?string $twitter_url): self
     {
         $this->twitter_url = $twitter_url;
-
         return $this;
     }
 
@@ -277,7 +286,30 @@ class Club
     public function setInstagramUrl(?string $instagram_url): self
     {
         $this->instagram_url = $instagram_url;
-
         return $this;
     }
+    
+    public function getDailymotionUrl(): ?string
+    {
+        return $this->dailymotion_url;
+    }
+    
+    public function setDailymotionUrl(?string $dailymotion_url): self
+    {
+        $this->dailymotion_url = $dailymotion_url;
+        return $this;
+    }
+
+    public function getYoutubeUrl(): ?string
+    {
+        return $this->youtube_url;
+    }
+    
+    public function setYoutubeUrl(?string $youtube_url): self
+    {
+        $this->youtube_url = $youtube_url;
+        return $this;
+    }
+    
+  
 }

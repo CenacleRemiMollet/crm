@@ -81,10 +81,18 @@ class ClubCreate
 	 */
 	private $instagram_url;
 
-// 	/**
-// 	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/ClubLocationCreate"))
-// 	 */
-// 	private $locations;
+	/**
+	 * @Assert\Length(min = 1, max = 512)
+	 * @OA\Property(type="string", example="https://www.dailymotion.com/abc")
+	 */
+	private $dailymotion_url;
+	
+	/**
+	 * @Assert\Length(min = 1, max = 512)
+	 * @OA\Property(type="string", example="https://www.youtube.com/abc")
+	 */
+	private $youtube_url;
+	
 
 	public function getName(): ?string
 	{
@@ -205,14 +213,25 @@ class ClubCreate
 		$this->instagram_url = $instagram_url;
 	}
 
-// 	public function getLocations()
-// 	{
-// 		return $this->locations;
-// 	}
-
-// 	public function setLocations(ClubLocationCreate... $locations)
-// 	{
-// 		$this->locations = $locations;
-// 	}
+	public function getDailymotionUrl(): ?string
+	{
+	    return $this->dailymotion_url;
+	}
+	
+	public function setDailymotionUrl(?string $dailymotion_url)
+	{
+	    $this->dailymotion_url = $dailymotion_url;
+	}
+	
+	public function getYoutubeUrl(): ?string
+	{
+	    return $this->youtube_url;
+	}
+	
+	public function setYoutubeUrl(?string $youtube_url)
+	{
+	    $this->youtube_url = $youtube_url;
+	}
+	
 
 }
