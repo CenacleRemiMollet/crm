@@ -71,7 +71,7 @@ class ClubPricesController extends AbstractController
 	 */
 	public function getPrices($club_uuid)
 	{
-	    $clubPriceService = new ClubPriceService($this->getDoctrine());
+	    $clubPriceService = new ClubPriceService($this->container->get('doctrine'));
 	    $priceViews = $clubPriceService->convertByClubUuidToView($club_uuid);
 	    if($priceViews == null) {
 	        return new Response('Club not found: '.$club_uuid, 404);

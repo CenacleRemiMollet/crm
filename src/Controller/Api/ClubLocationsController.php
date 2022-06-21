@@ -87,18 +87,15 @@ class ClubLocationsController extends AbstractController
 	    if(empty($clubs)) {
 	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
 	    }
-	    $clubIds = array();
-	    foreach ($clubs as &$club) {
-	        $clubByIds[$club->getId()] = $club;
-	        array_push($clubIds, $club->getId());
-	    }
+	    $club = $clubs[0];
+	    
 	    $clubLocations = $doctrine->getManager()
 			->getRepository(ClubLocation::class)
-			->findByClubIds($clubByIds);
+			->findBy(['club' => $club]);
 
 		$clubLocationViews = array();
 	    foreach($clubLocations as &$clubLocation) {
-	        array_push($clubLocationViews, new ClubLocationView($clubLocation[0]));
+	        array_push($clubLocationViews, new ClubLocationView($clubLocation));
 	    }
 	    
 		$hateoas = HateoasBuilder::create()->build();

@@ -29,7 +29,7 @@ class ClubPriceService
         }
         $prices = $this->manager->getManager()
             ->getRepository(ClubPrice::class)
-            ->findBy(['club_id' => $clubs[0]->getId()]);
+            ->findBy(['club' => $clubs]);
         $output = array();
         foreach($prices as &$r) {
             array_push($output, new ClubPriceView($r));

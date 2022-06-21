@@ -33,19 +33,20 @@
     	{# UPDATE #}
     	<br>
     	<h3>{{ club.name }}</h3>
-        {% for location in locations %}
+        {% for price in prices %}
         	<hr>
         	<div>
-        	     <h5>{{ location.uuid }}</h5>
-                 <table class="table table-borded table-responsive table-striped" id="table-list" data-locationuuid="{{ location.uuid }}">
+        	     <h5>{{ price.uuid }}</h5>
+                 <table class="table table-borded table-responsive table-striped" id="table-list" data-priceuuid="{{ price.uuid }}">
                     <tbody>
-                        <tr data-type="uuid"><td>UUID</td><td>{{ location.uuid }}</td><td></td></tr>
-                        <tr data-type="name"><td>Nom</td><td>{{ location.name }}</td><td></td></tr>
-                        <tr data-type="address"><td>Adresse</td><td>{{ location.address }}</td><td></td></tr>
-                        <tr data-type="zipcode"><td>Code postal</td><td>{{ location.zipcode }}</td><td></td></tr>
-                        <tr data-type="city"><td>Ville</td><td>{{ location.city }}</td><td></td></tr>
-                        <tr data-type="county"><td>N° de département</td><td>{{ location.county }}</td><td></td></tr>
-                        <tr data-type="country"><td>Pays</td><td>{{ location.country }}</td><td></td></tr>
+                        <tr data-type="uuid"><td>UUID</td><td>{{ price.uuid }}</td><td></td></tr>
+                        <tr data-type="discipline"><td>Discipline</td><td>{{ price.discipline }}</td><td></td></tr>
+                        <tr data-type="category"><td>Categorie</td><td>{% if(price.category is defined) %}{{ price.category }}{% endif %}</td><td></td></tr>
+                        <tr data-type="comment"><td>Commentaire</td><td>{% if(price.comment is defined) %}{{ price.comment }}{% endif %}</td><td></td></tr>
+                        <tr data-type="child1" data-format="float"><td>1er enfant</td><td>{% if(price.child1 is defined) %}{{ price.child1 }}{% endif %}</td><td></td></tr>
+                        <tr data-type="child2" data-format="float"><td>2ème enfant</td><td>{% if(price.child2 is defined) %}{{ price.child2 }}{% endif %}</td><td></td></tr>
+                        <tr data-type="child3" data-format="float"><td>3ème enfant</td><td>{% if(price.child3 is defined) %}{{ price.child3 }}{% endif %}</td><td></td></tr>
+                        <tr data-type="adult" data-format="float"><td>Adulte</td><td>{% if(price.adult is defined) %}{{ price.adult }}{% endif %}</td><td></td></tr>
                     </tbody>
                 </table>
         	</div>
@@ -76,7 +77,7 @@
         	});
     		$.ajax({
     			type: 'POST',			
-    			url : '{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/locations',
+    			url : '{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/prices',
     			contentType: 'application/json',	
     			data: JSON.stringify(data),
     			dataType: 'json',
@@ -96,13 +97,17 @@
         $(".table-responsive").SetEditable({
         	columnsEd: "1",
         	onEdit: function(row) {
-        		var locationUuid = row[0].parentNode.parentNode.getAttribute('data-locationuuid');
+        		var priceUuid = row[0].parentNode.parentNode.getAttribute('data-priceuuid');
         		var propKey = row[0].getAttribute('data-type');
         		var propValue = row[0].childNodes[1].innerHTML;
-        		//console.log(locationUuid, propKey, propValue);
+        		var propFormat = row[0].getAttribute('data-format');
+        		if("float" == propFormat) {
+        			propValue = propValue ? parseFloat(propValue) : 0;
+        		}
+        		//console.log(priceUuid, propKey, propValue);
         		$.ajax({
         			type: 'PATCH',			
-        			url : '{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/locations/' + locationUuid,
+        			url : '{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/prices/' + priceUuid,
         			contentType: 'application/json',	
         			data: JSON.stringify({[propKey]: propValue}),
         			dataType: 'json',
@@ -110,7 +115,7 @@
         			beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
         			success: function (data) {
                 		if(propKey == 'uuid') {
-                			row[0].parentNode.parentNode.setAttribute('data-locationuuid', propValue);
+                			row[0].parentNode.parentNode.setAttribute('data-priceuuid', propValue);
                 		}
         				//console.log('success', data);
         			},
