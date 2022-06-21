@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\ClubLocation;
+use App\Service\ConfigurationPropertyService;
 
 class StaticPageController extends AbstractController
 {
@@ -17,8 +18,11 @@ class StaticPageController extends AbstractController
 	public function viewHome(): Response
 	{
 		$user = $this->getUser();
+		$propService = new ConfigurationPropertyService($this->container->get('doctrine')->getManager());
+		$properties = $propService->findStartsWithToMap('cenacle.');
 		return $this->render('home.html.twig', [
-			'connectedUser' => $user
+			'connectedUser' => $user,
+		    'cenacleProperties' => $properties
 		]);
 	}
 

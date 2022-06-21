@@ -115,12 +115,12 @@ class ClubLocationsController extends AbstractController
 	 * @OA\Get(
 	 *     operationId="getClubLocation",
 	 *     tags={"Club"},
-	 *     path="/api/club/{uuid}/locations/{location_uuid}",
+	 *     path="/api/club/{club_uuid}/locations/{location_uuid}",
 	 *     summary="Give a location for a club",
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
 	 *         in="path",
-	 *         name="uuid",
+	 *         name="club_uuid",
 	 *         required=true,
 	 *         @OA\Schema(
 	 *             format="string",
@@ -172,9 +172,7 @@ class ClubLocationsController extends AbstractController
 	    return new Response(
 	        $hateoas->serialize(new ClubLocationView($clubLocations[0]), 'json'),
 	        Response::HTTP_OK, // 200
-	        array(
-	            'Content-Type' => 'application/hal+json'
-	        ));
+	        array('Content-Type' => 'application/hal+json'));
 	}
 	
 	
@@ -183,13 +181,13 @@ class ClubLocationsController extends AbstractController
 	 * @OA\Post(
 	 *     operationId="createClubLocation",
 	 *     tags={"Club"},
-	 *     path="/api/club/{uuid}/locations",
+	 *     path="/api/club/{club_uuid}/locations",
 	 *     summary="Create a location for a club",
 	 *     security = {{"basicAuth": {}}},
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
 	 *         in="path",
-	 *         name="uuid",
+	 *         name="club_uuid",
 	 *         required=true,
 	 *         @OA\Schema(
 	 *             format="string",
@@ -277,14 +275,14 @@ class ClubLocationsController extends AbstractController
 	 * @OA\Patch(
 	 *     operationId="updateClubLocation",
 	 *     tags={"Club"},
-	 *     path="/api/club/{uuid}/locations/{location_uuid}",
+	 *     path="/api/club/{club_uuid}/locations/{location_uuid}",
 	 *     summary="Update a location for a club",
 	 *     security = {{"basicAuth": {}}},
 	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
 	 *         in="path",
-	 *         name="uuid",
+	 *         name="club_uuid",
 	 *         required=true,
 	 *         @OA\Schema(
 	 *             format="string",
@@ -309,7 +307,7 @@ class ClubLocationsController extends AbstractController
      *         @OA\JsonContent(ref="#/components/schemas/ClubLocationUpdate"),
      *     ),
 	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="403", description="Forbidden to delete a location"),
+	 *     @OA\Response(response="403", description="Forbidden to update a location"),
 	 *     @OA\Response(response="404", description="Club or location not found")
 	 * )
 	 */
@@ -371,13 +369,13 @@ class ClubLocationsController extends AbstractController
 	 * @OA\Delete(
 	 *     operationId="deleteClubLocation",
 	 *     tags={"Club"},
-	 *     path="/api/club/{uuid}/locations/{location_uuid}",
+	 *     path="/api/club/{club_uuid}/locations/{location_uuid}",
 	 *     summary="Delete a location for a club",
 	 *     security = {{"basicAuth": {}}},
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
 	 *         in="path",
-	 *         name="uuid",
+	 *         name="club_uuid",
 	 *         required=true,
 	 *         @OA\Schema(
 	 *             format="string",

@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Util\StringUtils;
 
@@ -76,8 +74,6 @@ class ClubLesson
 
 	public function __construct()
 	{
-		$this->clubLessonTimeSlots = new ArrayCollection();
-		$this->userClubSubscribes = new ArrayCollection();
 		$this->uuid = StringUtils::random_str(16);
 	}
 
@@ -147,10 +143,10 @@ class ClubLesson
 	}
 
 	public function setAgeLevel(?string $age_level): self
-         	{
-         		$this->age_level = $age_level;
-         		return $this;
-         	}
+ 	{
+ 		$this->age_level = $age_level;
+ 		return $this;
+ 	}
 
 	public function getDayOfWeek(): ?string
 	{
@@ -158,10 +154,10 @@ class ClubLesson
 	}
 
 	public function setDayOfWeek(string $day_of_week): self
-         	{
-         		$this->day_of_week = $day_of_week;
-         		return $this;
-         	}
+ 	{
+ 		$this->day_of_week = $day_of_week;
+ 		return $this;
+ 	}
 
 	public function getStartTime(): ?\DateTimeInterface
 	{
@@ -193,7 +189,6 @@ class ClubLesson
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
         return $this;
     }
 

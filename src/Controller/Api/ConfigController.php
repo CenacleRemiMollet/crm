@@ -20,6 +20,7 @@ use App\Entity\ConfigurationProperty;
 use App\Model\ConfigurationPropertyUpdate;
 use App\Model\ConfigurationPropertyView;
 use App\Service\ConfigurationPropertyService;
+use App\Entity\Events;
 
 class ConfigController extends AbstractController
 {
@@ -55,7 +56,7 @@ class ConfigController extends AbstractController
 	 */
 	public function getAllProperties(Request $request)
 	{
-		$properties = $this->getDoctrine()->getManager()
+		$properties = $this->container->get('doctrine')->getManager()
 			->getRepository(ConfigurationProperty::class)
 			->findAll();
 		$propModels = array();
@@ -64,30 +65,29 @@ class ConfigController extends AbstractController
 		}
 
 		$hateoas = HateoasBuilder::create()->build();
-		$json = json_decode($hateoas->serialize($propModels, 'json'));
-
-		return new Response(json_encode($json), 200, array(
-			'Content-Type' => 'application/json'
-		));
+		return new Response(
+		    $hateoas->serialize($propModels, 'json'),
+		    Response::HTTP_OK,
+		    array('Content-Type' => 'application/json'));
 	}
 
 
 	/**
-	 * @Route("/api/config/properties", methods={"POST"}, name="api_configuration_properties-update")
+	 * @Route("/api/config/properties", methods={"PATCH"}, name="api_configuration_properties-update")
 	 * @IsGranted("ROLE_ADMIN")
-	 * @OA\Post(
+	 * @OA\Patch(
 	 *     operationId="updateProperties",
 	 *     tags={"Configuration"},
 	 *     path="/api/config/properties",
 	 *     summary="Update some properties",
-	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
+	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
 	 *     security = {{"basicAuth": {}}},
 	 *     @OA\RequestBody(
 	 *         @OA\MediaType(
 	 *            mediaType="application/json",
 	 *            @OA\Schema(
-	 *               type="object",
-	 *               ref="#/components/schemas/ConfigurationPropertyUpdate"
+	 *               type="array",
+	 *               @OA\Items(ref="#/components/schemas/ConfigurationPropertyUpdate")
 	 *            )
 	 *        )
 	 *    ),
@@ -102,19 +102,24 @@ class ConfigController extends AbstractController
 			//$propertiesToUpdate = $requestUtil->validate($request, ConfigurationPropertyUpdate::class);
 			$propertiesToUpdate = $requestUtil->validate($request, 'App\Model\ConfigurationPropertyUpdate[]');
 		} catch (ViolationException $e) {
-			return ShortResponse::error("data", $e->getErrors())
-				->setStatusCode(Response::HTTP_BAD_REQUEST);
+		    return new Response(
+		        json_encode($e->getErrors()),
+		        Response::HTTP_BAD_REQUEST,
+		        array('Content-Type' => 'application/json'));
 		}
 
 		$account = $this->getUser();
-		$propService = new ConfigurationPropertyService($this->getDoctrine()->getManager());
+		$doctrine = $this->container->get('doctrine');
+        $propService = new ConfigurationPropertyService($doctrine->getManager());
+		$data = array();
 		foreach($propertiesToUpdate as &$propertyToUpdate) {
 			$propService->update($account, $propertyToUpdate);
+			$data[$propertyToUpdate->getKey()] = $propertyToUpdate->getValue();
 		}
+		
+		Events::add($doctrine, Events::CONFIG_PROPERTIES_SAVED, $this->getUser(), $request, $data);
 
-		return new Response('{}', 204, array(
-			'Content-Type' => 'application/json'
-		));
+		return new Response('', Response::HTTP_NO_CONTENT);
 	}
 
 

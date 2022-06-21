@@ -16,6 +16,7 @@
                 <tr>
                     <th>Key</th>
                     <th>Value</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -23,6 +24,7 @@
                     <tr>
                         <td>{{ property.key }}</td>
                         <td>{{ property.value }}</td>
+                        <td></td>
                     </tr>
             	{% endfor %}
             </tbody>
@@ -43,7 +45,7 @@
         		var propKey = row[0].childNodes[1].innerHTML;
         		var propValue = row[0].childNodes[3].innerHTML;
         		$.ajax({
-        			type: 'POST',			
+        			type: 'PATCH',			
         			url : '{{ app.request.baseUrl }}/api/config/properties',
         			contentType: 'application/json',	
         			data: JSON.stringify([{'key': propKey, 'value': propValue}]),
@@ -54,7 +56,8 @@
         				//console.log('success', data);
         			},
         			error: function(data) {
-        				//console.log('error', data);
+        				row[0].childNodes[5].innerHTML= 'error';
+        				console.log('error', data);
         			}
 				});
         	},

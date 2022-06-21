@@ -9,18 +9,30 @@ class Events
     public const CLUB_CREATED = 'CLUB_CREATED';
     public const CLUB_UPDATED = 'CLUB_UPDATED';
     
+    public const CLUB_LESSON_CREATED = 'CLUB_LESSON_CREATED';
+    public const CLUB_LESSON_UPDATED = 'CLUB_LESSON_UPDATED';
+    public const CLUB_LESSON_DELETED = 'CLUB_LESSON_DELETED';
+    
     public const CLUB_LOCATION_CREATED = 'CLUB_LOCATION_CREATED';
     public const CLUB_LOCATION_UPDATED = 'CLUB_LOCATION_UPDATED';
     public const CLUB_LOCATION_DELETED = 'CLUB_LOCATION_DELETED';
+    
+    public const CONFIG_PROPERTIES_SAVED = 'CONFIG_PROPERTIES_SAVED';
     
     
     public const EVENTS = array(
         self::CLUB_CREATED,
         self::CLUB_UPDATED,
         
+        self::CLUB_LESSON_CREATED,
+        self::CLUB_LESSON_UPDATED,
+        self::CLUB_LESSON_DELETED,
+        
         self::CLUB_LOCATION_CREATED,
         self::CLUB_LOCATION_UPDATED,
-        self::CLUB_LOCATION_DELETED
+        self::CLUB_LOCATION_DELETED,
+        
+        self::CONFIG_PROPERTIES_SAVED
     );
     
     

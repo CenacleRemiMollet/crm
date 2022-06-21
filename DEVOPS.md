@@ -54,5 +54,11 @@ Restore the `APP_ENV` to `prod` in the file `.env.local`.
 
 https://symfony.com/doc/current/deployment.html#c-install-update-your-vendors
 
+-- update
+rm .env.local.php
+composer install
+
+-- to prod mode
 composer install --no-dev --optimize-autoloader
 APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
+composer dump-env prod
