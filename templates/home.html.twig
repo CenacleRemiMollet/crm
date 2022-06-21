@@ -150,8 +150,8 @@
 
         <section class="cours-ages">
             <div class="title">
-                <h2>des cours accessibles à tous les âges</h2>
-                <p>Les cours prodigués au Cénacle conviennent à toutes les catégories d'élèves, des plus jeunes aux moins jeunes en passant par les férus de compétitions.</p>
+                <h2>{% trans %}home.cenacle.accessibility.title{% endtrans %}</h2>
+                <p>{% trans %}home.cenacle.accessibility.text{% endtrans %}</p>
             </div>
 
             <div class="categories">
@@ -159,7 +159,7 @@
                 <div id="age-baby" class="case">
                     {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#baby">
-                        <h3>baby</h3>
+                        <h3>{% trans %}home.cenacle.accessibility.baby.title{% endtrans %}</h3>
                         <img src="{{ app.request.baseUrl }}/assets/home/accueil_6_1.jpg">
                     </button>
                     
@@ -169,14 +169,14 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <img src="{{ app.request.baseUrl }}/assets/icons/baby-boy.svg">
-                                    <h5>baby</h5>
+                                    <h5>{% trans %}home.cenacle.accessibility.baby.title{% endtrans %}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
 
                                 <div class="modal-body">
-                                    <p>Certains clubs dispensent des cours de Baby-Taekwondo pour les 4-6 ans. Ces cours, adaptés aux plus jeunes enfants leur permet d'apprendre les bases du Taekwondo. Les enfants apprennent les valeurs du Taekwondo (respect, discipline) mais acquièrent aussi les bases techniques. Des passages de grades avec des "ceintures" spécialement conçues pour eux permettent de valider leurs connaissances.</p>
+                                    <p>{% trans %}home.cenacle.accessibility.baby.text{% endtrans %}</p>
                                 </div>
                             </div>
                         </div>
@@ -186,7 +186,7 @@
                 <div id="age-kid" class="case">
                     {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#kid">
-                        <h3>enfant</h3>
+                        <h3>{% trans %}home.cenacle.accessibility.child.title{% endtrans %}</h3>
                         <img src="{{ app.request.baseUrl }}/assets/home/accueil_6_2.jpg">
                     </button>
                     
@@ -196,14 +196,14 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <img src="{{ app.request.baseUrl }}/assets/icons/children.svg">
-                                    <h5>enfant</h5>
+                                    <h5>{% trans %}home.cenacle.accessibility.child.title{% endtrans %}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
 
                                 <div class="modal-body">
-                                    <p>A partir de 6 ans, et jusqu'à 12 ans, les cours accentuent plus le côté dynamique du Taekwondo. Les enfants continuent leur apprentissage de manière ludique et approfondissent leurs connaissances.</p>
+                                    <p>{% trans %}home.cenacle.accessibility.child.text{% endtrans %}</p>
                                 </div>
                             </div>
                         </div>
@@ -213,7 +213,7 @@
                 <div id="age-adult" class="case">
                     {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adult">
-                        <h3>adulte</h3>
+                        <h3>{% trans %}home.cenacle.accessibility.adult.title{% endtrans %}</h3>
                         <img src="{{ app.request.baseUrl }}/assets/home/accueil_6_3.jpg">
                     </button>
                     
@@ -223,14 +223,14 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <img src="{{ app.request.baseUrl }}/assets/icons/adults.svg">
-                                    <h5>adulte</h5>
+                                    <h5>{% trans %}home.cenacle.accessibility.adult.title{% endtrans %}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
 
                                 <div class="modal-body">
-                                    <p>A partir de 13 ans, on rentre dans le cours adulte. La particularité du Cénacle est que nous n'avons pas de spécialité. En effet, le professeur enseigne TOUS les aspects du Taekwondo (techniques de base, combat conventionnel, poomse, casse, self défense, ...). Rien n'est négligé. Les élèves seront donc polyvalents. Cependant, en fonction des préférences de l'élèves, différents cours supplémentaires peuvent être proposés. On a par exemple des cours spécifiques compétition (combat/technique).</p>
+                                    <p>{% trans %}home.cenacle.accessibility.adult.text{% endtrans %}</p>
                                 </div>
                             </div>
                         </div>
@@ -240,7 +240,7 @@
                 <div id="age-senior" class="case">
                     {# Button trigger modal #}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#senior">
-                        <h3>senior</h3>
+                        <h3>{% trans %}home.cenacle.accessibility.senior.title{% endtrans %}</h3>
                         <img src="{{ app.request.baseUrl }}/assets/home/accueil_6_4.jpg">
                     </button>
                     
@@ -250,58 +250,56 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <img src="{{ app.request.baseUrl }}/assets/icons/couple.svg">
-                                    <h5 class="modal-title" id="exampleModalLabel">senior</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">{% trans %}home.cenacle.accessibility.senior.title{% endtrans %}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
 
                                 <div class="modal-body">
-                                    <p>Enfin, à partir d'un certain âge, les élèves sont moins attirés par le côté compétition que par l'aspect purement self défense. Il existe donc dans certains clubs un cours "vétéran". Là, l'accent sera plutôt mis sur l'aspect self défense et maintien en bonne santé.</p>
+                                    <p>{% trans %}home.cenacle.accessibility.senior.text{% endtrans %}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </section>
 
         <section class="partenaires">
             <div class="title">
-                <h2>nos partenaires</h2>
+                <h2>{% trans %}home.cenacle.ourpartners.title{% endtrans %}</h2>
             </div>
 
             <div class="links">
                 
                 <div class="case first">
                     <a href="https://taekwonkidotoulon.jimdofree.com/">
-                        <img src="{{ app.request.baseUrl }}/assets/home/logo.jpg">
-                        <h5>Cénacle Côte d'Azur<br>Réunion de clubs sur la Côte d'Azur sous la direction de Maître Laurent Rodier</h5>
+                        <img src="{{ app.request.baseUrl }}/assets/home/logo.jpg" style="width: 175px;height: 175px">
+                        <h5>{{ "home.cenacle.ourpartners.azur"|trans|raw }}</h5>
                     </a>
-                    <h6 class="under-title">Cénacle Côte d'Azur<br>Réunion de clubs sur la Côte d'Azur sous la direction de Maître Laurent Rodier</h6>
+                    <h6 class="under-title">{{ "home.cenacle.ourpartners.azur"|trans|raw }}</h6>
                 </div>
                 <div class="case second">
                     <a href="https://www.fftda.fr/">
-                        <img src="{{ app.request.baseUrl }}/assets/partners/fftda.jpg">
-                        <h5>Fédération Française de Taekwondo et disciplines associées</h5>
+                        <img src="{{ app.request.baseUrl }}/assets/partners/fftda.jpg" style="width: 175px;height: 175px">
+                        <h5>{{ "home.cenacle.ourpartners.fftda"|trans|raw }}</h5>
                     </a>
-                    <h6 class="under-title">Fédération Française de Taekwondo et disciplines associées</h6>
+                    <h6 class="under-title">{{ "home.cenacle.ourpartners.fftda"|trans|raw }}</h6>
                 </div>
                 <div class="case third">
                     <a href="http://www.taekwonkido.com/">
-                        <img src="{{ app.request.baseUrl }}/assets/partners/LogoTKKD_France.jpg">
-                        <h5>Union Fédérale de Taekwonkido</h5>
+                        <img src="{{ app.request.baseUrl }}/assets/partners/LogoTKKD_France.jpg" style="width: 175px;height: 175px">
+                        <h5>{{ "home.cenacle.ourpartners.uft"|trans|raw }}</h5>
                     </a>
-                    <h6 class="under-title">Union Fédérale de Taekwonkido</h6>
+                    <h6 class="under-title">{{ "home.cenacle.ourpartners.uft"|trans|raw }}</h6>
                 </div>
                 <div class="case fourth">
                     <a href="http://www.hoshinkidohapkido.com/">
-                        <img src="{{ app.request.baseUrl }}/assets/partners/hoshinkido_logo3.png">
-                        <h5>Hoshinkido, écoles de Hapkido au Québec sous la direction de Me Serge Baubil</h5>
+                        <img src="{{ app.request.baseUrl }}/assets/partners/hoshinkido_logo3.png" style="width: 175px;height: 175px">
+                        <h5>{{ "home.cenacle.ourpartners.hoshinkido"|trans|raw }}</h5>
                     </a>
-                    <h6 class="under-title">Hoshinkido, écoles de Hapkido au Québec sous la direction de Me Serge Baubil</h6>
+                    <h6 class="under-title">{{ "home.cenacle.ourpartners.hoshinkido"|trans|raw }}</h6>
                 </div>
                 
             </div>
@@ -315,9 +313,9 @@
             </div>
 
             <div class="right">
-                <h2>rejoignez-nous !</h2>
-                <p>Il faut savoir que Maître Rémi Mollet insiste énormément sur le côté traditionnel de l'Art Martial. Nous enseignons non seulement les techniques de Taekwondo, mais aussi toutes les valeurs qui s'y rapportent. En effet, ne dit-on pas que l'Art Martial est un <span>art de vivre</span>.</p>
-                <div class="btn"><a href="#">créer un compte</a></div>
+                <h2>{% trans %}home.cenacle.joinus.title{% endtrans %}</h2>
+                <p>{% trans %}home.cenacle.joinus.text{% endtrans %}</p>
+                {#<div class="btn"><a href="#">{% trans %}home.cenacle.joinus.create{% endtrans %}</a></div>#}
             </div>
         </section>
 

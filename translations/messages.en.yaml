@@ -74,6 +74,31 @@ home:
     ourmethod:
       title: "our method"
       text: 
+    accessibility:
+      title: 
+      text: 
+      baby:
+        title: "baby"
+        text: 
+      child:
+        title: "child"
+        text: 
+      adult:
+        title: "adult"
+        text: 
+      senior:
+        title: "senior"
+        text: 
+    ourpartners:
+      title: "our partners"
+      azur: 
+      fftda: 
+      uft: 
+      hoshinkido: 
+    joinus:
+      title: "join us !"
+      text: 
+      create: 
  
  
 # ShowCase

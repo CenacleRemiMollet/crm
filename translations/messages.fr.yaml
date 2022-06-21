@@ -74,7 +74,33 @@ home:
     ourmethod:
       title: "notre méthode"
       text: "Après de très nombreuses années de pratique et d'enseignement, Maître Mollet et le docteur Taddeï ont décidé d'orienter leur pratique vers une méthode plus réaliste, axée sur <span>le combat réel et l'autodéfense</span>, synthétisant divers arts et notamment le Khido, discipline fondée par Maître Michel Morlon, créée en 1984. Le Taekwonkido est une <span>méthode pratique et réfléchie</span>, cherchant à produire le maximum de forces à partir de principes physiques et médicaux. Il est fondé sur l'utilisation naturelle du corps, avec des formes techniques allégées."
-
+    accessibility:
+      title: "des cours accessibles à tous les âges"
+      text: "Les cours prodigués au Cénacle conviennent à toutes les catégories d'élèves, des plus jeunes aux moins jeunes en passant par les férus de compétitions."
+      baby:
+        title: "baby"
+        text: "Certains clubs dispensent des cours de Baby-Taekwondo pour les 4-6 ans. Ces cours, adaptés aux plus jeunes enfants leur permet d'apprendre les bases du Taekwondo. Les enfants apprennent les valeurs du Taekwondo (respect, discipline) mais acquièrent aussi les bases techniques. Des passages de grades avec des \"ceintures\" spécialement conçues pour eux permettent de valider leurs connaissances."
+      child:
+        title: "enfant"
+        text: "A partir de 6 ans, et jusqu'à 12 ans, les cours accentuent plus le côté dynamique du Taekwondo. Les enfants continuent leur apprentissage de manière ludique et approfondissent leurs connaissances."
+      adult:
+        title: "adulte"
+        text: "A partir de 13 ans, on rentre dans le cours adulte. La particularité du Cénacle est que nous n'avons pas de spécialité. En effet, le professeur enseigne TOUS les aspects du Taekwondo (techniques de base, combat conventionnel, poomse, casse, self défense, ...). Rien n'est négligé. Les élèves seront donc polyvalents. Cependant, en fonction des préférences de l'élèves, différents cours supplémentaires peuvent être proposés. On a par exemple des cours spécifiques compétition (combat/technique)."
+      senior:
+        title: "senior"
+        text: "Enfin, à partir d'un certain âge, les élèves sont moins attirés par le côté compétition que par l'aspect purement self défense. Il existe donc dans certains clubs un cours \"vétéran\". Là, l'accent sera plutôt mis sur l'aspect self défense et maintien en bonne santé."
+    ourpartners:
+      title: "nos partenaires"
+      azur: "Cénacle Côte d'Azur<br>Réunion de clubs sur la Côte d'Azur sous la direction de Maître Laurent Rodier"
+      fftda: "Fédération Française de Taekwondo et disciplines associées"
+      uft: "Union Fédérale de Taekwonkido"
+      hoshinkido: "Hoshinkido, écoles de Hapkido au Québec sous la direction de Me Serge Baubil"
+    joinus:
+      title: "rejoignez-nous !"
+      text: "Il faut savoir que Maître Rémi Mollet insiste énormément sur le côté traditionnel de l'Art Martial. Nous enseignons non seulement les techniques de Taekwondo, mais aussi toutes les valeurs qui s'y rapportent. En effet, ne dit-on pas que l'Art Martial est un <span>art de vivre</span>"
+      create: "créer un compte"
+      
+      
 # ShowCase
 
 showcase: 
