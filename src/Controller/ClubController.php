@@ -51,7 +51,7 @@ class ClubController extends AbstractController
 		$club = json_decode($response->getContent());
 		$session->set('club-selected', $club);
 
-		$response = $this->forward('App\Controller\Api\ClubLessonsController::getLessons', ['uuid' => $uuid]);
+		$response = $this->forward('App\Controller\Api\ClubLessonsController::getLessons', ['club_uuid' => $uuid]);
 		$lessons = json_decode($response->getContent());
 		$session->set('lessons-selected', $lessons);
 
@@ -73,7 +73,7 @@ class ClubController extends AbstractController
 		$club = json_decode($response->getContent());
 		$session->set('club-selected', $club);
 
-		$response = $this->forward('App\Controller\Api\ClubLessonsController::getLessons', ['uuid' => $uuid]);
+		$response = $this->forward('App\Controller\Api\ClubLessonsController::getLessons', ['club_uuid' => $uuid]);
 		$lessons = json_decode($response->getContent());
 		$session->set('lessons-selected', $lessons);
 		

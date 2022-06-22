@@ -117,15 +117,28 @@
            
         </div>
 
+        {% set cz = [] %}
+        {% set unique = [] %}
+        {% for club in clubs %}
+        	{% for location in club.locations %}
+        		{% set k = location.city|remove_accent ~ location.zipcode %} 
+        		{%  if(unique[k] is not defined) %}
+        			{% set unique = unique|merge([k]) %}
+        			{% set cz = cz|merge([{key: k, data: {club: club, location: location}}]) %} 
+        		{%  endif %}
+           {% endfor %}
+        {% endfor %}
+
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-thumbnails" role="tabpanel" aria-labelledby="pills-thumbnails-tab">
-                {% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
-                	{% for location in club.locations %}
-                        <a href="{{ app.request.baseUrl }}/club/{{ club.uuid }}">
+				{% set unique = [] %}
+        	    {% for c in cz|sort((a, b) => a.key <=> b.key) %}
+        	    	{% if c.key not in unique %}
+                        <a href="{{ app.request.baseUrl }}/club/{{ c.data.club.uuid }}">
                             <div class="club noHover">
                                 <div class="name">
-                                    <img src="{{ club._links.logo.href }}">
-                                    <h3>{{ location.city }} ({{ location.county }})</h3>
+                                    <img src="{{ c.data.club._links.logo.href }}">
+                                    <h3>{{ c.data.location.city }} ({{ c.data.location.county }})</h3> 
                                 </div>
                                 <div class="choose">
                                     <h3>Choisir ce club</h3>
@@ -133,15 +146,18 @@
                                 </div>
                             </div
                         </a>
-                   {% endfor %}
+                        {% set unique = unique|merge([c.key]) %}
+                    {% endif %}
                 {% endfor %}
             </div>
+            
             <div class="tab-pane fade" id="pills-list" role="tabpanel" aria-labelledby="pills-list-tab">
-                 {% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
-                	{% for location in club.locations %}
-                         <a href="{{ app.request.baseUrl }}/club/{{ club.uuid }}">
+ 				{% set unique = [] %}
+        	    {% for c in cz|sort((a, b) => a.key <=> b.key) %}
+        	    	{% if c.key not in unique %}
+                         <a href="{{ app.request.baseUrl }}/club/{{ c.data.club.uuid }}">
                             <div class="club" style="border-radius: 10px 10px 0 0;">
-                                <h3>{{ location.city }} ({{ location.county }})</h3>
+                                <h3>{{ c.data.location.city }} ({{ c.data.location.county }})</h3>
                                 <div class="arrow">
                                     <h4>Choisir ce club</h4>
                                     <i class="fas fa-arrow-circle-right"></i>
@@ -149,7 +165,8 @@
                                 </div>
                             </div>
                         </a>
-                   {% endfor %}
+                        {% set unique = unique|merge([c.key]) %}
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

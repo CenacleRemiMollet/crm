@@ -62,7 +62,7 @@ class ClubLogoController extends AbstractController
 	{
 		$mediaManager = new MediaManager($appKernel, $this->logger);
 		$media = $mediaManager->find('club', $uuid);
-		return new BinaryFileResponse($media->getFileOrDefault('assets/clubs/defaultlogo.gif'));
+		return new BinaryFileResponse($media->getFileOrDefault('assets/club/defaultlogo.gif'));
 	}
 
 	/**

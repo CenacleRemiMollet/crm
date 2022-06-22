@@ -499,8 +499,12 @@ main .search-bar {
 }
 
 .tab-content #pills-thumbnails .club .name img {
-    height: 140px;
+    height: auto;
+    width: auto;
+    max-height: 140px;
+    max-width: 140px;
     padding-top: 15px;
+    display: block
 }
 
 .tab-content #pills-thumbnails .club .name h3 {
@@ -532,70 +536,6 @@ main .search-bar {
     opacity: 0;
 }
 
-/* specific changes per club */
-
-.tab-content #pills-thumbnails .compiegne .name img {
-    height: 75px;
-    padding: 20px 0 0 0;    
-}
-
-.tab-content #pills-thumbnails .compiegne .name h3 {
-    padding: 50px 0 0 0;
-}
-
-.tab-content #pills-thumbnails .crecy .name img {
-    height: 100px;
-}
-
-.tab-content #pills-thumbnails .crecy .name h3 {
-    padding-top: 30px;    
-}
-
-.tab-content #pills-thumbnails .fontenay .name h3 {
-    padding-top: 10px;    
-}
-
-.tab-content #pills-thumbnails .hyeres .name img,
-.tab-content #pills-thumbnails .kourou .name img,
-.tab-content #pills-thumbnails .meudon .name img,
-.tab-content #pills-thumbnails .montreal .name img,
-.tab-content #pills-thumbnails .sourdun .name img,
-.tab-content #pills-thumbnails .suisse .name img {
-    height: 100px;    
-}
-
-.tab-content #pills-thumbnails .hyeres .name h3,
-.tab-content #pills-thumbnails .kourou .name h3,
-.tab-content #pills-thumbnails .meudon .name h3,
-.tab-content #pills-thumbnails .montreal .name h3,
-.tab-content #pills-thumbnails .sourdun .name h3,
-.tab-content #pills-thumbnails .suisse .name h3 {
-    padding-top: 40px;    
-}
-
-.tab-content #pills-thumbnails .perreux .name h3 {
-    padding: 8px 0;
-}
-
-.tab-content #pills-thumbnails .plessis .name h3 {
-    padding: 15px 0;
-}
-
-.tab-content #pills-thumbnails .nogent .name img {
-    height: 120px;
-}
-
-.tab-content #pills-thumbnails .nogent .name h3 {
-    padding-top: 20px;    
-}
-
-.tab-content #pills-thumbnails .villeneuve .name h3 {
-    padding: 8px 0;    
-}
-
-.tab-content #pills-thumbnails .villiers .name h3 {
-    padding: 15px 0;    
-}
 
 /* PANEL 2 */
 
