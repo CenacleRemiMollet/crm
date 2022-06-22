@@ -319,11 +319,12 @@ class ClubLessonsController extends AbstractController
 	        // check if location exists
 	        $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $locationUuid]); // 404
 	    }
+	    $location = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $locationUuid]); // 404
 		    
 	    $entityUpdater = new EntityUpdater($doctrine, $request, $this->getUser(), Events::CLUB_LESSON_UPDATED, $this->logger);
 	    $entityUpdater->update('uuid', $uuid, $lesson->getUuid(), function($v) use($lesson) { $lesson->setUuid($v); });
 	    if(! empty($locationUuid)) {
-	        $entityUpdater->update('location', $locationUuid, $lesson->getClubLocation(), function($v) use($lesson) { $lesson->setClubLocation($v); });
+	        $entityUpdater->update('location', $location, $lesson->getClubLocation(), function($v) use($lesson) { $lesson->setClubLocation($v); });
 	    }
 	    $entityUpdater->update('point', $lessonToUpdate->getPoint(), $lesson->getPoint(), function($v) use($lesson) { $lesson->setPoint($v); });
 	    $entityUpdater->update('discipline', $lessonToUpdate->getDiscipline(), $lesson->getDiscipline(), function($v) use($lesson) { $lesson->setDiscipline($v); });
