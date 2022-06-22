@@ -38,7 +38,7 @@ class ClubLocationsController extends AbstractController
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
 	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-	        throw $this->createAccessDeniedException();
+	        throw $this->createAccessDeniedException(); // 403
 	    }
 	    
 	    $response = $this->forward('App\Controller\Api\ClubLocationsController::getLocations', ["club_uuid" => $uuid]);

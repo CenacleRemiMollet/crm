@@ -46,7 +46,7 @@ class ClubController extends AbstractController
 	{
 		$response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
 		if($response->getStatusCode() != 200) {
-			return $this->render('club/club-not-found.html.twig', []);
+			throw $this->createNotFoundException();
 		}
 		$club = json_decode($response->getContent());
 		$session->set('club-selected', $club);
@@ -68,7 +68,7 @@ class ClubController extends AbstractController
 	{
 		$response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
 		if($response->getStatusCode() != 200) {
-			return $this->render('club/club-not-found.html.twig', []);
+		    throw $this->createNotFoundException();
 		}
 		$club = json_decode($response->getContent());
 		$session->set('club-selected', $club);
