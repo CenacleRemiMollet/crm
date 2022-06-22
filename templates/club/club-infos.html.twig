@@ -209,7 +209,6 @@
         </div>
 
         <div class="cours">
-
             {% for price in club.prices %}
                 <div class="tarifs">
                     <div class="id">
@@ -327,29 +326,35 @@
             {% set days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] %}
             <div class="board">
             	{% for day in days %}
-                    <div class="jour mardi {% if(lessons|filter(l => l.day_of_week == day)|length == 0) %}empty{% endif %}">
+                    <div class="jour mardi {% if(lessons is defined and lessons|length > 0 and lessons|filter(l => l.day_of_week == day)|length == 0) %}empty{% endif %}">
                         <h4 class="jourName">{{ day|trans }}</h4>
                 		{% set rend = (day in startTimeByDays|keys) ? startTimeByDays[day] : 0 %}
                 	    {% for i in 0..rend %}
                 			<div class="quarter"></div>
                 		{% endfor %}
-                        {% for lesson in lessons|filter(l => l.day_of_week == day) %}
-                            <div class="case small {{ lesson.discipline|lower }}">
-                                <div class="frontCase">
-                                    <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
-                                    <h5 class="public">{% if(lesson.age_level is defined) %}{{ lesson.age_level }}{% endif %}</h5>
-                                    <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                		{% if(lessons is defined and lessons|length > 0) %}
+                            {% for lesson in lessons|filter(l => l.day_of_week == day) %}
+                                <div class="case small {{ lesson.discipline|lower }}">
+                                    <div class="frontCase">
+                                        <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                        <h5 class="public">{% if(lesson.age_level is defined) %}{{ lesson.age_level }}{% endif %}</h5>
+                                        <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                                    </div>
+                                    <h6 class="adresse">{{ lesson.location.name }}</h6>
                                 </div>
-                                <h6 class="adresse">{{ lesson.location.name }}</h6>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
 
             <div id="carouselExampleIndicators" class="carousel slide" data-interval="false">
                 <ol class="carousel-indicators">
-                  {% set firstactive = days|filter(d => lessons|filter(l => l.day_of_week == d))|first %}
+                  {% if(lessons is defined and lessons|length > 0) %}
+                      {% set firstactive = days|filter(d => lessons|filter(l => l.day_of_week == d))|first %}
+                  {% else %}
+                      {% set firstactive = 'monday' %}
+                  {% endif %}
                   <li data-target="#carouselExampleIndicators" data-slide-to="0" {% if(firstactive == 'monday') %}class="active"{% endif %}></li>
                   <li data-target="#carouselExampleIndicators" data-slide-to="1" {% if(firstactive == 'tuesday') %}class="active"{% endif %}></li>
                   <li data-target="#carouselExampleIndicators" data-slide-to="2" {% if(firstactive == 'wednesday') %}class="active"{% endif %}></li>
@@ -363,7 +368,7 @@
 					{% for day in days %}
                         <div class="carousel-item {% if(firstactive == day) %}active{% endif %}">
                             <h4 class="jourName">{{ day|trans }}</h4>
-                            {% if(lessons|filter(l => l.day_of_week == day)|length == 0) %}
+                            {% if(lessons is not defined or lessons|length == 0 or lessons|filter(l => l.day_of_week == day)|length == 0) %}
                                 <div class="case empty">
                                     <h5 class="coursName">{% trans %}club.infos.planning.nocours{% endtrans %}</h5>
                                 </div>

@@ -91,6 +91,9 @@ class ClubController extends AbstractController
 	
 	private function determineStartsOffsetByQuarter($lessons)
 	{
+	    if($lessons === null) {
+	        return array();
+	    }
 	    $startTimeMinuteByDays = array();
 	    foreach($lessons as &$lesson) {
 	        $startMinutes = DateIntervalUtils::getTotalMinutes(DateIntervalUtils::parseHourDoubleDotsMinute($lesson->start_time));
@@ -120,6 +123,5 @@ class ClubController extends AbstractController
 	        }
 	    }
 	    return $startOffsetByDays;
-	    
 	}
 }
