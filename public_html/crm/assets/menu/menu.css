@@ -144,6 +144,13 @@ nav .burger div {
     transition: all 0.3s ease;
 }
 
+.logoclubnav {
+    height: auto;
+    width: auto;
+    max-height: 55px;
+    max-width: 55px;
+    display: block
+}
 /* search bar */
 
 .search-box {

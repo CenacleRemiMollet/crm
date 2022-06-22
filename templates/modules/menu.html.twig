@@ -4,7 +4,14 @@
         <div class="line2"></div>
         <div class="line3"></div>
     </div>
-
+    {% if club is defined and club.uuid is defined %}
+    	<div style="padding-left: 40px">
+    		<a href="{{ app.request.baseUrl }}/club/{{ club.uuid }}">
+    			<img src="{{ club._links.logo.href }}" class="logoclubnav"/>
+    		</a>
+		</div>
+    	<div style="width:100%"></div>
+	{% endif %}
     <div class="logo">
         <a href="{{ app.request.baseUrl }}/"><img src="{{ app.request.baseUrl }}/assets/img/logo-taekwonkido.png" alt="logo du logo-taekwonkido"></a>
     </div>

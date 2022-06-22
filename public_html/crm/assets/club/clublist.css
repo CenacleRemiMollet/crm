@@ -769,7 +769,12 @@ main .search-bar {
     }
 
     .tab-content #pills-thumbnails .club .name img {
-        height: 100px;
+	    height: auto;
+	    width: auto;
+	    max-height: 100px;
+	    max-width: 100px;
+	    padding-top: 15px;
+	    display: block
     }
 
     .tab-content #pills-thumbnails .club .name h3 {
@@ -788,65 +793,6 @@ main .search-bar {
         width: 250px;
     }
 
-    /* specific changes per club */
-
-    .tab-content #pills-thumbnails .compiegne .name img {
-        height: 55px;   
-    }
-
-    .tab-content #pills-thumbnails .compiegne .name h3 {
-        padding: 35px 0 0 0;
-    }
-
-    .tab-content #pills-thumbnails .crecy .name img {
-        height: 70px;
-    }
-
-    .tab-content #pills-thumbnails .crecy .name h3 {
-        padding-top: 25px;    
-    }
-
-    .tab-content #pills-thumbnails .fontenay .name h3 {
-        padding-top: 10px;    
-    }
-
-    .tab-content #pills-thumbnails .hyeres .name img,
-    .tab-content #pills-thumbnails .kourou .name img,
-    .tab-content #pills-thumbnails .meudon .name img,
-    .tab-content #pills-thumbnails .montreal .name img,
-    .tab-content #pills-thumbnails .sourdun .name img,
-    .tab-content #pills-thumbnails .suisse .name img {
-        height: 70px;    
-    }
-
-    .tab-content #pills-thumbnails .hyeres .name h3,
-    .tab-content #pills-thumbnails .kourou .name h3,
-    .tab-content #pills-thumbnails .meudon .name h3,
-    .tab-content #pills-thumbnails .montreal .name h3,
-    .tab-content #pills-thumbnails .sourdun .name h3,
-    .tab-content #pills-thumbnails .suisse .name h3 {
-        padding-top: 25px;    
-    }
-
-    .tab-content #pills-thumbnails .perreux .name h3 {
-        padding: 8px 0;
-    }
-
-    .tab-content #pills-thumbnails .plessis .name h3 {
-        padding: 10px 5px;
-    }
-
-    .tab-content #pills-thumbnails .nogent .name img {
-        height: 80px;
-    }
-
-    .tab-content #pills-thumbnails .nogent .name h3 {
-        padding-top: 20px;    
-    }
-
-    .tab-content #pills-thumbnails .villiers .name h3 {
-        padding: 10px 0;    
-    }
 }
 
 
