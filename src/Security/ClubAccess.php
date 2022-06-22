@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Argument\ServiceLocator;
 use App\Entity\UserClubSubscribe;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ClubAccess
 {
@@ -24,6 +25,13 @@ class ClubAccess
         $this->authorizationChecker = $container->get('security.authorization_checker');
         $this->manager = $container->get('doctrine');
         $this->logger = $logger;
+    }
+    
+    public function checkAccessForUser(Club $club, $account)
+    {
+        if( ! $this->hasAccessForUser($club, $account)) {
+            throw new AccessDeniedException();
+        }
     }
     
     public function hasAccessForUser(Club $club, $account)

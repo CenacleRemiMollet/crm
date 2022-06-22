@@ -51,7 +51,7 @@ class ConfigController extends AbstractController
 	 *             )
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="401", description="You are not authorized")
+	 *     @OA\Response(response="401", description="You are not authorized", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function getAllProperties(Request $request)
@@ -90,23 +90,17 @@ class ConfigController extends AbstractController
 	 *               @OA\Items(ref="#/components/schemas/ConfigurationPropertyUpdate")
 	 *            )
 	 *        )
-	 *    ),
-	 *    @OA\Response(response="204", description="Successful"),
-	 *    @OA\Response(response="401", description="You are not authorized")
+	 *     ),
+	 *     @OA\Response(response="204", description="Successful"),
+	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="401", description="You are not authorized", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function updateProperties(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
 		$requestUtil = new RequestUtil($serializer, $translator);
-		try {
-			//$propertiesToUpdate = $requestUtil->validate($request, ConfigurationPropertyUpdate::class);
-			$propertiesToUpdate = $requestUtil->validate($request, 'App\Model\ConfigurationPropertyUpdate[]');
-		} catch (ViolationException $e) {
-		    return new Response(
-		        json_encode($e->getErrors()),
-		        Response::HTTP_BAD_REQUEST,
-		        array('Content-Type' => 'application/json'));
-		}
+    	//$propertiesToUpdate = $requestUtil->validate($request, ConfigurationPropertyUpdate::class);
+		$propertiesToUpdate = $requestUtil->validate($request, 'App\Model\ConfigurationPropertyUpdate[]');
 
 		$account = $this->getUser();
 		$doctrine = $this->container->get('doctrine');

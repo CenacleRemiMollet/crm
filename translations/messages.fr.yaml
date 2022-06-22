@@ -51,7 +51,12 @@ menu:
 
 
 # Login
-login.remember-me: "Se souvenir"
+login:
+  login: "Identifiant"
+  password: "Mot de passe"
+  remember-me: "Se souvenir"
+  pleasesignin: "Veuillez vous connecter"
+  signin: "Se connecter"
 
 
 # Home / Cenacle

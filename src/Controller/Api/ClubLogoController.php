@@ -20,12 +20,22 @@ use App\Model\ClubLessonView;
 use App\Model\ClubCreate;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Service\ClubService;
+use App\Entity\EntityFinder;
+use App\Security\ClubAccess;
+use App\Exception\CRMException;
 
 
 class ClubLogoController extends AbstractController
 {
 
-	/**
+    private LoggerInterface $logger;
+    
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+    
+    /**
 	 * @Route("/api/club/{uuid}/logo", name="api_club_get_logo", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 * @OA\Get(
 	 *     operationId="getClubLogo",
@@ -48,9 +58,9 @@ class ClubLogoController extends AbstractController
 	 *     )
 	 * )
 	 */
-	public function getLogo($uuid, KernelInterface $appKernel, LoggerInterface $logger)
+	public function getLogo($uuid, KernelInterface $appKernel)
 	{
-		$mediaManager = new MediaManager($appKernel, $logger);
+		$mediaManager = new MediaManager($appKernel, $this->logger);
 		$media = $mediaManager->find('club', $uuid);
 		return new BinaryFileResponse($media->getFileOrDefault('assets/clubs/defaultlogo.gif'));
 	}
@@ -63,7 +73,7 @@ class ClubLogoController extends AbstractController
 	 *     path="/api/club/{uuid}/logo",
 	 *     summary="Upload an image logo club",
 	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
+	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
 	 *     @OA\Parameter(
 	 *         description="UUID of club",
 	 *         in="path",
@@ -80,41 +90,40 @@ class ClubLogoController extends AbstractController
 	 *            @OA\Schema(@OA\Property(property="logo", type="string", format="binary"))
 	 *         )
 	 *     ),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful"
-	 *     )
+	 *     @OA\Response(response="200", description="Successful"),
+	 *     @OA\Response(response="403", description="Forbidden to update a club", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="422", description="Logo file not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
-	public function uploadLogo(Request $request, $uuid, KernelInterface $appKernel, LoggerInterface $logger)
+	public function uploadLogo(Request $request, $uuid, KernelInterface $appKernel)
 	{
-		$clubs = $this->getDoctrine()->getManager()
-			->getRepository(Club::class)
-			->findBy(['uuid' => $uuid]);
-		if(count($clubs) == 0) {
-			return new Response("Club not found",
-				Response::HTTP_NOT_FOUND, ['content-type' => 'text/plain']);
-		}
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
 
-
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+	    
 		$file = $request->files->get('logo');
 		if (empty($file)) {
-			return new Response("No file specified",
-				Response::HTTP_UNPROCESSABLE_ENTITY, ['content-type' => 'text/plain']);
+		    throw new CRMException(Response::HTTP_UNPROCESSABLE_ENTITY, 'No file specified');
 		}
 
-		$mediaManager = new MediaManager($appKernel, $logger);
+		$mediaManager = new MediaManager($appKernel, $this->logger);
 		$newFileName = $mediaManager->upload('club', $uuid, $file);
-		$club = $clubs[0];
 		if($newFileName !== $club->getLogo()) {
 			$previousFileName = $club->getLogo();
 			$club->setLogo($newFileName);
-			$this->getDoctrine()->getManager()->flush();
+			$doctrine->getManager()->flush();
 
 			$mediaManager->delete('club', $previousFileName);
 		}
 
-		return new Response("File uploaded",  Response::HTTP_OK,
+		return new Response(
+		    "File uploaded",
+		    Response::HTTP_OK,
 			['content-type' => 'text/plain']);
 	}
 

@@ -24,6 +24,8 @@ use App\Model\ClubPriceCreate;
 use App\Entity\Events;
 use App\Util\StringUtils;
 use App\Model\ClubPriceUpdate;
+use App\Entity\EntityFinder;
+use App\Exception\CRMException;
 
 
 class ClubPricesController extends AbstractController
@@ -66,7 +68,7 @@ class ClubPricesController extends AbstractController
 	 *             )
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="404", description="Club not found")
+	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function getPrices($club_uuid)
@@ -74,15 +76,14 @@ class ClubPricesController extends AbstractController
 	    $clubPriceService = new ClubPriceService($this->container->get('doctrine'));
 	    $priceViews = $clubPriceService->convertByClubUuidToView($club_uuid);
 	    if($priceViews == null) {
-	        return new Response('Club not found: '.$club_uuid, 404);
+	        throw $this->createNotFoundException('Club');
 	    }
 
 		$hateoas = HateoasBuilder::create()->build();
-		$json = json_decode($hateoas->serialize($priceViews, 'json'));
-
-		return new Response(json_encode($json), 200, array(
-			'Content-Type' => 'application/hal+json'
-		));
+		return new Response(
+		    $hateoas->serialize($priceViews, 'json'),
+		    Response::HTTP_OK,
+		    array('Content-Type' => 'application/hal+json'));
 	}
 
 	
@@ -123,7 +124,7 @@ class ClubPricesController extends AbstractController
 	 *             @OA\Items(ref="#/components/schemas/ClubPrice")
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="404", description="Club or price not found")
+	 *     @OA\Response(response="404", description="Club or price not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function getPrice($club_uuid, $price_uuid)
@@ -131,15 +132,14 @@ class ClubPricesController extends AbstractController
 	    $clubPriceService = new ClubPriceService($this->container->get('doctrine'));
 	    $priceView = $clubPriceService->convertByClubUuidAndPriceUuidToView($club_uuid, $price_uuid);
 	    if($priceView == null) {
-	        return new Response('Club '.$club_uuid.' or price '.$price_uuid.'not found', 404);
+	        throw $this->createNotFoundException('Club or price');
 	    }
 	    
 	    $hateoas = HateoasBuilder::create()->build();
-	    $json = json_decode($hateoas->serialize($priceView, 'json'));
-	    
-	    return new Response(json_encode($json), 200, array(
-	        'Content-Type' => 'application/hal+json'
-	    ));
+	    return new Response(
+	        $hateoas->serialize($priceView, 'json'),
+	        Response::HTTP_OK,
+	        array('Content-Type' => 'application/hal+json'));
 	}
 	
 	
@@ -179,42 +179,23 @@ class ClubPricesController extends AbstractController
 	 *             )
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="403", description="Forbidden"),
-	 *     @OA\Response(response="404", description="Club or price not found")
+	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="403", description="Forbidden", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club or price not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function createPrice(string $club_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
-	    if(! $this->isGranted(Roles::ROLE_SUPER_ADMIN)
-	        && ! $this->isGranted(Roles::ROLE_ADMIN)
-	        && ! $this->isGranted(Roles::ROLE_CLUB_MANAGER)) {
-	            throw $this->createAccessDeniedException('Access Denied');
-        }
-        
         $doctrine = $this->container->get('doctrine');
-        
-        $clubs = $doctrine->getManager()
-	        ->getRepository(Club::class)
-	        ->findBy(['uuid' => $club_uuid]);
-        if(empty($clubs)) {
-            return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
-        }
-        $club = $clubs[0];
+       
+        $entityFinder = new EntityFinder($doctrine);
+        $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
         
         $clubAccess = new ClubAccess($this->container, $this->logger);
-        if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-            return new Response('', Response::HTTP_FORBIDDEN); // 403
-        }
+        $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
         
         $requestUtil = new RequestUtil($serializer, $translator);
-        try {
-            $priceToCreate = $requestUtil->validate($request, ClubPriceCreate::class);
-        } catch (ViolationException $e) {
-            return new Response(
-                json_encode($e->getErrors()),
-                Response::HTTP_BAD_REQUEST, // 400
-                array('Content-Type' => 'application/hal+json'));
-        }
+        $priceToCreate = $requestUtil->validate($request, ClubPriceCreate::class); // 400
         
         $uuid = $priceToCreate->getUuid();
         if($uuid == null || trim($uuid) === '') {
@@ -282,8 +263,9 @@ class ClubPricesController extends AbstractController
 	 *         @OA\JsonContent(ref="#/components/schemas/ClubPriceUpdate"),
 	 *     ),
 	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="403", description="Forbidden to update a price"),
-	 *     @OA\Response(response="404", description="Club or price not found")
+	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="403", description="Forbidden to update a price", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club or price not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function updatePrice(string $club_uuid, string $price_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
@@ -291,45 +273,22 @@ class ClubPricesController extends AbstractController
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $requestUtil = new RequestUtil($serializer, $translator);
-	    try {
-	        $priceToUpdate = $requestUtil->validate($request, ClubPriceUpdate::class);
-	    } catch (ViolationException $e) {
-	        return new Response(
-	            json_encode($e->getErrors()),
-	            Response::HTTP_BAD_REQUEST, // 400
-	            array('Content-Type' => 'application/hal+json'));
-	    }
+	    $priceToUpdate = $requestUtil->validate($request, ClubPriceUpdate::class);
 	    
-	    
-	    $clubs = $doctrine->getManager()
-	    ->getRepository(Club::class)
-	    ->findBy(['uuid' => $club_uuid]);
-	    if(empty($clubs)) {
-	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $club = $clubs[0];
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
-	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-	        return new Response('', Response::HTTP_FORBIDDEN); // 403
-	    }
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
 	    
-	    $prices = $doctrine->getManager()
-    	    ->getRepository(ClubPrice::class)
-    	    ->findBy(['uuid' => $price_uuid, 'club' => $club]);
-    	if(empty($prices)) {
-	        return new Response('Price not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $price = $prices[0];
+	    $price = $entityFinder->findOneByOrThrow(ClubPrice::class, ['uuid' => $price_uuid, 'club' => $club]); // 404
 	    
 	    $uuid = $priceToUpdate->getUuid();
 	    if( ! empty($uuid) && $uuid !== $price->getUuid()) {
-	        $pricesUsed = $doctrine->getManager()
-    	        ->getRepository(ClubPrice::class)
-    	        ->findBy(['uuid' => $uuid]);
-    	    if(!empty($pricesUsed)) {
-	            return new Response('Price UUID already used', Response::HTTP_BAD_REQUEST); // 400
-	        }
+	        $entityFinder->findNoneByOrThrow(ClubPrice::class, ['uuid' => $uuid],
+	            function() use($uuid) {
+	                throw new CRMException(Response::HTTP_BAD_REQUEST, 'Price UUID already used: '.$uuid); // 400
+	            });
 	    }
 	    
 	    $entityUpdater = new EntityUpdater($doctrine, $request, $this->getUser(), Events::CLUB_PRICE_UPDATED, $this->logger);
@@ -377,35 +336,23 @@ class ClubPricesController extends AbstractController
 	 *     ),
 	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
 	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="403", description="Forbidden"),
-	 *     @OA\Response(response="404", description="Club or price not found")
+	 *     @OA\Response(response="403", description="Forbidden", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club or price not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function deletePrice(Request $request, string $club_uuid, string $price_uuid)
 	{
 	    $doctrine = $this->container->get('doctrine');
-        $manager = $doctrine->getManager();
-	    $clubs = $manager->getRepository(Club::class)
-    	    ->findBy(['uuid' => $club_uuid]);
-	    if(empty($clubs)) {
-	        return new Response('Club not found: '.$club_uuid, Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $club = $clubs[0];
-
-	    $clubAccess = new ClubAccess($this->container, $this->logger);
-	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-	        return new Response('', Response::HTTP_FORBIDDEN); // 403
-	    }
-
-	    $prices = $manager->getRepository(ClubPrice::class)
-    	    ->findBy(['club' => $club, 'uuid' => $price_uuid]);
-	    if(empty($prices)) {
-	        return new Response('Price '.$price_uuid.' not found in club '.$club_uuid, Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $price = $prices[0];
+	  
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
-	    //$doctrine->tr
-	    $manager->remove($price);
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+
+	    $price = $entityFinder->findOneByOrThrow(ClubPrice::class, ['club' => $club, 'uuid' => $price_uuid]); // 404
+	    
+	    $doctrine->getManager()->remove($price);
 	    
 	    $data = ['club_uuid' => $club_uuid, 'price_uuid' => $price_uuid, 'discipline' => $price->getDiscipline()];
 	    Events::add($doctrine, Events::CLUB_PRICE_DELETED, $this->getUser(), $request, $data);

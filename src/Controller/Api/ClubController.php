@@ -21,6 +21,8 @@ use App\Util\StringUtils;
 use App\Entity\Events;
 use App\Model\ClubUpdate;
 use App\Security\Roles;
+use App\Entity\EntityFinder;
+use App\Exception\CRMException;
 
 
 class ClubController extends AbstractController
@@ -55,15 +57,13 @@ class ClubController extends AbstractController
 	 */
 	public function listActive()
 	{
-	    $clubService = new ClubService($this->getDoctrine());
+	    $clubService = new ClubService($this->container->get('doctrine'));
 	    $clubViews = $clubService->convertAllActiveToView();
 	    $hateoas = HateoasBuilder::create()->build();
 		return new Response(
 		    $hateoas->serialize($clubViews, 'json'),
 		    Response::HTTP_OK,
-		    array(
-                'Content-Type' => 'application/hal+json'
-		    ));
+		    array('Content-Type' => 'application/hal+json'));
 	}
 
 	/**
@@ -92,30 +92,23 @@ class ClubController extends AbstractController
 	 *             @OA\Schema(ref="#/components/schemas/Club")
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="404", description="Club not found")
+	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function one($uuid)
 	{
-		$clubs = $this->container->get('doctrine')->getManager()
-			->getRepository(Club::class)
-			->findBy(['uuid' => $uuid]);
-		$clubView = null;
-		if(count($clubs) > 0) {
-		    $clubService = new ClubService($this->getDoctrine());
-		    $clubViews = $clubService->convertToView($clubs);
-			$clubView = $clubViews[0];
-		} else {
-			return new Response('Club not found: '.$uuid, 404);
-		}
-
+		$entityFinder = new EntityFinder($this->container->get('doctrine'));
+		$club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
+		
+		$clubService = new ClubService($this->container->get('doctrine'));
+		$clubViews = $clubService->convertToView($club);
+		$clubView = $clubViews[0];
+		
 		$hateoas = HateoasBuilder::create()->build();
 		return new Response(
 		    $hateoas->serialize($clubView, 'json'),
 		    Response::HTTP_OK,
-		    array(
-                'Content-Type' => 'application/hal+json'
-            ));
+		    array('Content-Type' => 'application/hal+json'));
 	}
 
 	/**
@@ -140,46 +133,37 @@ class ClubController extends AbstractController
 	 *             @OA\Schema(ref="#/components/schemas/Club")
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="400", description="Request contains not valid field"),
-	 *     @OA\Response(response="403", description="Forbidden to create a club"),
-	 *     @OA\Response(response="404", description="Club UUID already used")
+	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="403", description="Forbidden to create a club", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function create(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
-		$this->denyAccessUnlessGranted(Roles::ROLE_ADMIN);
+		$this->denyAccessUnlessGranted(Roles::ROLE_ADMIN); // 403
 		
 	    $requestUtil = new RequestUtil($serializer, $translator);
-		try {
-			$clubToCreate = $requestUtil->validate($request, ClubCreate::class);
-		} catch (ViolationException $e) {
-		    return new Response(
-		        json_encode($e->getErrors()),
-		        Response::HTTP_BAD_REQUEST, // 400
-		        array('Content-Type' => 'application/hal+json'));
-		}
-
+	    $clubToCreate = $requestUtil->validate($request, ClubCreate::class); // 400
+	    
 		$name = $clubToCreate->getName();
 		$uuid = $clubToCreate->getUuid();
 		if($uuid == null || trim($uuid) === '') {
 		    $uuid = StringUtils::nameToUuid($name);
 		}
 		
-		$clubs = $this->container->get('doctrine')->getManager()
-		  ->getRepository(Club::class)
-		  ->findBy(['uuid' => $uuid]);
-	    if( ! empty($clubs)) {
-	        return  new Response('uuid already used: '.$uuid, Response::HTTP_METHOD_NOT_ALLOWED); // 405
-		}
-		
 		$doctrine = $this->container->get('doctrine');
+		
+		$entityFinder = new EntityFinder($doctrine);
+		$entityFinder->findNoneByOrThrow(Club::class, ['uuid' => $uuid],
+		    function() use($uuid) {
+		        throw new CRMException(Response::HTTP_BAD_REQUEST, 'UUID already used: '.$uuid); // 400
+		    });
 		
 		$club = new Club();
 		$club->setActive($clubToCreate->isActive());
 		$club->setUuid($uuid);
         $club->setName($name);
         $club->setLogo('default.png');
-		$club->setContactEmail($clubToCreate->getContactEmails());
+		$club->setContactEmails($clubToCreate->getContactEmails());
 		$club->setContactPhone($clubToCreate->getContactPhone());
 		$club->setFacebookUrl($clubToCreate->getFacebookUrl());
 		$club->setInstagramUrl($clubToCreate->getInstagramUrl());
@@ -207,7 +191,7 @@ class ClubController extends AbstractController
 	 *     path="/api/club/{uuid}",
 	 *     summary="Update a club",
 	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
+	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
 	 *     @OA\Parameter(
      *         description="UUID of club",
      *         in="path",
@@ -225,50 +209,37 @@ class ClubController extends AbstractController
      *         @OA\JsonContent(ref="#/components/schemas/ClubUpdate"),
      *     ),
 	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="400", description="Request contains not valid field"),
-	 *     @OA\Response(response="403", description="Forbidden to update a club"),
-	 *     @OA\Response(response="404", description="Club not found")
+	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="403", description="Forbidden to update a club", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function update(Request $request, $uuid, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
-	    $this->denyAccessUnlessGranted("ROLE_ADMIN");
+	    $this->denyAccessUnlessGranted(Roles::ROLE_ADMIN); // 403
 	    
 	    $requestUtil = new RequestUtil($serializer, $translator);
-	    try {
-	        $clubToUpdate = $requestUtil->validate($request, ClubUpdate::class);
-	    } catch (ViolationException $e) {
-	        return new Response(
-	            json_encode($e->getErrors()),
-	            Response::HTTP_BAD_REQUEST, // 400
-	            array('Content-Type' => 'application/hal+json'));
-	    }
+	    $clubToUpdate = $requestUtil->validate($request, ClubUpdate::class); // 400
 	    
 	    $doctrine = $this->container->get('doctrine');
-	    $clubs = $doctrine->getManager()
-    	    ->getRepository(Club::class)
-    	    ->findBy(['uuid' => $uuid]);
-	    if(empty($clubs)) {
-	        return  new Response('Club not found: '.$uuid, Response::HTTP_NOT_FOUND);// 404
-	    }
-	    $club = $clubs[0];
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
 	    
 	    $uuid = $clubToUpdate->getUuid();
 	    if( ! empty($uuid) && $uuid !== $club->getUuid()) {
-	        $clubsUsed = $doctrine->getManager()
-    	        ->getRepository(Club::class)
-    	        ->findBy(['uuid' => $uuid]);
-    	    if(!empty($clubsUsed)) {
-	            return new Response('Club UUID already used', Response::HTTP_BAD_REQUEST); // 400
-	        }
+	        $entityFinder->findNoneByOrThrow(Club::class, ['uuid' => $uuid],
+	            function() use($uuid) {
+	                throw new CRMException(Response::HTTP_BAD_REQUEST, 'UUID already used: '.$uuid); // 400
+	            });
 	    }
 	    
 	    $entityUpdater = new EntityUpdater($doctrine, $request, $this->getUser(), Events::CLUB_UPDATED, $this->logger);
 	    $entityUpdater->update('active', $clubToUpdate->isActive(), $club->getActive(), function($v) use($club) { $club->setActive($v); });
 	    $entityUpdater->update('uuid', $clubToUpdate->getUuid(), $club->getUuid(), function($v) use($club) { $club->setUuid($v); });
 	    $entityUpdater->update('name', $clubToUpdate->getName(), $club->getName(), function($v) use($club) { $club->setName($v); });
-	    $entityUpdater->update('contactemails', $clubToUpdate->getContactEmails(), $club->getContactEmails(), function($v) use($club) { $club->getContactEmails($v); });
-	    $entityUpdater->update('contactphone', $clubToUpdate->getContactPhone(), $club->getContactPhone(), function($v) use($club) { $club->getContactPhone($v); });
+	    $entityUpdater->update('contactemails', $clubToUpdate->getContactEmails(), $club->getContactEmails(), function($v) use($club) { $club->setContactEmails($v); });
+	    $entityUpdater->update('contactphone', $clubToUpdate->getContactPhone(), $club->getContactPhone(), function($v) use($club) { $club->setContactPhone($v); });
 	    $entityUpdater->update('facebookurl', $clubToUpdate->getFacebookUrl(), $club->getFacebookUrl(), function($v) use($club) { $club->setFacebookUrl($v); });
 	    $entityUpdater->update('instagramurl', $clubToUpdate->getInstagramUrl(), $club->getInstagramUrl(), function($v) use($club) { $club->setInstagramUrl($v); });
 	    $entityUpdater->update('mailinglist', $clubToUpdate->getMailingList(), $club->getMailingList(), function($v) use($club) { $club->setMailingList($v); });

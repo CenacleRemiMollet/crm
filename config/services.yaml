@@ -19,7 +19,10 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
+    App\EventListener\ExceptionListener:
+#        arguments: ['@logger']
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }    
     App\EventSubscriber\LocaleSubscriber:
         arguments: ['%kernel.default_locale%']
     App\XClientIdEventSubscribe:

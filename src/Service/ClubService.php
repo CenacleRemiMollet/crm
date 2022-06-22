@@ -8,6 +8,7 @@ use App\Entity\ClubLocation;
 use App\Entity\ClubPrice;
 use App\Model\ClubPriceView;
 use App\Entity\Club;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author f.agu
@@ -31,6 +32,9 @@ class ClubService
     }
     
     public function convertToView($clubs) {
+        if($clubs instanceof Club) {
+            $clubs = [$clubs];
+        }
         $clubByIds = array();
         $clubIds = array();
         foreach ($clubs as &$club) {

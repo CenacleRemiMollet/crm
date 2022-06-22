@@ -50,7 +50,12 @@ menu:
     
 
 # Login
-login.remember-me: "Remember me"
+login:
+  login: "Login"
+  password: "Password"
+  remember-me: "Remember me"
+  pleasesignin: "Please sign in"
+  signin: "Sign in"
 
 
 

@@ -32,6 +32,8 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use App\Model\ClubLocationUpdate;
+use App\Entity\EntityFinder;
+use App\Exception\CRMException;
 
 
 class ClubLocationsController extends AbstractController
@@ -74,20 +76,15 @@ class ClubLocationsController extends AbstractController
 	 *             )
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="404", description="Club not found")
+	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function getLocations(string $club_uuid): Response
 	{
 		$doctrine = $this->container->get('doctrine');
 		
-		$clubs = $doctrine->getManager()
-		    ->getRepository(Club::class)
-		    ->findBy(['uuid' => $club_uuid]);
-	    if(empty($clubs)) {
-	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $club = $clubs[0];
+		$entityFinder = new EntityFinder($doctrine);
+		$club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubLocations = $doctrine->getManager()
 			->getRepository(ClubLocation::class)
@@ -143,30 +140,20 @@ class ClubLocationsController extends AbstractController
 	 *             @OA\Items(ref="#/components/schemas/ClubLocation")
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="404", description="Club or location not found")
+	 *     @OA\Response(response="404", description="Club or location not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function getLocation(string $club_uuid, string $location_uuid): Response
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    
-	    $clubs = $doctrine->getManager()
-    	    ->getRepository(Club::class)
-    	    ->findBy(['uuid' => $club_uuid]);
-	    if(empty($clubs)) {
-	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $club = $clubs[0];
-	    $clubLocations = $doctrine->getManager()
-    	    ->getRepository(ClubLocation::class)
-    	    ->findBy(['uuid' => $location_uuid, 'club' => $club]);
-    	if(empty($clubLocations)) {
-	        return new Response('Location not found', Response::HTTP_NOT_FOUND); // 404
-	    }
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
+	    $clubLocation = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $location_uuid, 'club' => $club]); // 404
 
 	    $hateoas = HateoasBuilder::create()->build();
 	    return new Response(
-	        $hateoas->serialize(new ClubLocationView($clubLocations[0]), 'json'),
+	        $hateoas->serialize(new ClubLocationView($clubLocation), 'json'),
 	        Response::HTTP_OK, // 200
 	        array('Content-Type' => 'application/hal+json'));
 	}
@@ -205,42 +192,23 @@ class ClubLocationsController extends AbstractController
 	 *             @OA\Schema(ref="#/components/schemas/ClubLocation")
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="403", description="Forbidden to create a location"),
-	 *     @OA\Response(response="404", description="Club not found")
+	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="403", description="Forbidden to create a location", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function createLocation(string $club_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
 	{
-	    if(! $this->isGranted(Roles::ROLE_SUPER_ADMIN)
-	        && ! $this->isGranted(Roles::ROLE_ADMIN)
-	        && ! $this->isGranted(Roles::ROLE_CLUB_MANAGER)) {
-	            throw $this->createAccessDeniedException('Access Denied');
-	    }
-	    
 	    $doctrine = $this->container->get('doctrine');
 	    
-	    $clubs = $doctrine->getManager()
-    	    ->getRepository(Club::class)
-    	    ->findBy(['uuid' => $club_uuid]);
-	    if(empty($clubs)) {
-	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $club = $clubs[0];
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
-	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-	        return new Response('', Response::HTTP_FORBIDDEN); // 403
-	    }
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
 	    
 	    $requestUtil = new RequestUtil($serializer, $translator);
-	    try {
-	        $locationToCreate = $requestUtil->validate($request, ClubLocationCreate::class);
-	    } catch (ViolationException $e) {
-	        return new Response(
-	            json_encode($e->getErrors()),
-	            Response::HTTP_BAD_REQUEST, // 400
-	            array('Content-Type' => 'application/hal+json'));
-	    }
+        $locationToCreate = $requestUtil->validate($request, ClubLocationCreate::class); // 400
 	    
 	    $name = $locationToCreate->getName();
 	    $uuid = $locationToCreate->getUuid();
@@ -308,8 +276,9 @@ class ClubLocationsController extends AbstractController
      *         @OA\JsonContent(ref="#/components/schemas/ClubLocationUpdate"),
      *     ),
 	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="403", description="Forbidden to update a location"),
-	 *     @OA\Response(response="404", description="Club or location not found")
+	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="403", description="Forbidden to update a location", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club or location not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function updateLocation(string $club_uuid, string $location_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
@@ -317,45 +286,22 @@ class ClubLocationsController extends AbstractController
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $requestUtil = new RequestUtil($serializer, $translator);
-	    try {
-	        $locationToUpdate = $requestUtil->validate($request, ClubLocationUpdate::class);
-	    } catch (ViolationException $e) {
-	        return new Response(
-	            json_encode($e->getErrors()),
-	            Response::HTTP_BAD_REQUEST, // 400
-	            array('Content-Type' => 'application/hal+json'));
-	    }
+        $locationToUpdate = $requestUtil->validate($request, ClubLocationUpdate::class); // 400
 	    
-	    
-	    $clubs = $doctrine->getManager()
-    	    ->getRepository(Club::class)
-    	    ->findBy(['uuid' => $club_uuid]);
-	    if(empty($clubs)) {
-	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
-	    }   
-	    $club = $clubs[0];
+        $entityFinder = new EntityFinder($doctrine);
+        $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
-	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-	        return new Response('', Response::HTTP_FORBIDDEN); // 403
-	    }
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
 	    
-	    $locations = $doctrine->getManager()
-    	    ->getRepository(ClubLocation::class)
-    	    ->findBy(['uuid' => $location_uuid, 'club' => $club]);
-	    if(empty($locations)) {
-	        return new Response('Location not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $location = $locations[0];
+	    $location = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $location_uuid, 'club' => $club]); // 404
 	    
 	    $uuid = $locationToUpdate->getUuid();
 	    if( ! empty($uuid) && $uuid !== $location->getUuid()) {
-    	    $locationsUsed = $doctrine->getManager()
-        	    ->getRepository(ClubLocation::class)
-        	    ->findBy(['uuid' => $uuid]);
-        	if(!empty($locationsUsed)) {
-        	    return new Response('Location UUID already used', Response::HTTP_BAD_REQUEST); // 400
-        	}
+	        $entityFinder->findNoneByOrThrow(ClubLocation::class, ['uuid' => $uuid],
+	            function() use($uuid) {
+	                throw new CRMException(Response::HTTP_BAD_REQUEST, 'Location UUID already used: '.$uuid); // 400
+	            });
 	    }
 	    
 	    $entityUpdater = new EntityUpdater($doctrine, $request, $this->getUser(), Events::CLUB_LOCATION_UPDATED, $this->logger);
@@ -402,36 +348,24 @@ class ClubLocationsController extends AbstractController
 	 *     ),
 	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
 	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="403", description="Forbidden to delete a location"),
-	 *     @OA\Response(response="404", description="Club or location not found")
+	 *     @OA\Response(response="403", description="Forbidden to delete a location", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club or location not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function deleteLocation(Request $request, string $club_uuid, string $location_uuid): Response
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    
-	    $clubs = $doctrine->getManager()
-    	    ->getRepository(Club::class)
-    	    ->findBy(['uuid' => $club_uuid]);
-	    if(empty($clubs)) {
-	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $club = $clubs[0];
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
-	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-	        return new Response('', Response::HTTP_FORBIDDEN); // 403
-	    }
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
 	   
-	    $clubLocations = $doctrine->getManager()
-    	    ->getRepository(ClubLocation::class)
-    	    ->findBy(['uuid' => $location_uuid, 'club' => $club]);
-	    if(empty($clubLocations)) {
-	        return new Response('Location not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $clubLocation = $clubLocations[0];
+	    $clubLocation = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $location_uuid, 'club' => $club]); // 404
 	    	    
 	    $doctrine->getManager()->remove($clubLocation);
+	    
 	    $data = ['club_uuid' => $club_uuid, 'location_uuid' => $location_uuid, 'name' => $clubLocation->getName()];
 	    Events::add($doctrine, Events::CLUB_LOCATION_DELETED, $this->getUser(), $request, $data);
 	    $this->logger->debug('Club location deleted: '.json_encode($data));

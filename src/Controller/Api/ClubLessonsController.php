@@ -23,6 +23,9 @@ use App\Entity\ClubLocation;
 use App\Entity\Events;
 use App\Model\ClubLessonUpdate;
 use App\Security\ClubAccess;
+use App\Entity\EntityFinder;
+use Symfony\Component\Config\Definition\Exception\ForbiddenOverwriteException;
+use App\Exception\CRMException;
 
 
 class ClubLessonsController extends AbstractController
@@ -64,16 +67,17 @@ class ClubLessonsController extends AbstractController
 	 *                 @OA\Items(ref="#/components/schemas/ClubLesson")
 	 *             )
 	 *         )
-	 *     )
+	 *     ),
+	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
-	public function getLessons($uuid)
+    public function getLessons($club_uuid)
 	{
-		$clubLessons = $this->container->get('doctrine')->getManager()
+	    $clubLessons = $this->container->get('doctrine')->getManager()
 			->getRepository(ClubLesson::class)
-			->findByClubUuid($uuid);
+			->findByClubUuid($club_uuid);
 		if(empty($clubLessons)) {
-		    return new Response('Club not found: '.$uuid, Response::HTTP_NOT_FOUND); // 404
+		    throw $this->createNotFoundException('Club not found: '.$club_uuid); // 404
 		}
 
 		$lessonList = array();
@@ -125,33 +129,24 @@ class ClubLessonsController extends AbstractController
 	 *             @OA\Items(ref="#/components/schemas/ClubLesson")
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="404", description="Club or lesson not found")
+	 *     @OA\Response(response="404", description="Club or lesson not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function getLesson(string $club_uuid, string $lesson_uuid): Response
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    
-	    $clubs = $doctrine->getManager()
-	    ->getRepository(Club::class)
-	    ->findBy(['uuid' => $club_uuid]);
-	    if(empty($clubs)) {
-	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $club = $clubs[0];
-	    $clubLessons = $doctrine->getManager()
-    	    ->getRepository(ClubLesson::class)
-    	    ->findBy(['uuid' => $lesson_uuid, 'club' => $club]);
-	    if(empty($clubLessons)) {
-	        return new Response('Lesson not found', Response::HTTP_NOT_FOUND); // 404
-	    }
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
+	    $clubLesson = $entityFinder->findOneByOrThrow(ClubLesson::class, ['uuid' => $lesson_uuid, 'club' => $club]); // 404
 	    
 	    $hateoas = HateoasBuilder::create()->build();
 	    return new Response(
-	        $hateoas->serialize(new ClubLessonView($clubLessons[0]), 'json'),
+	        $hateoas->serialize(new ClubLessonView($clubLesson), 'json'),
 	        Response::HTTP_OK, // 200
 	        array('Content-Type' => 'application/hal+json'));
 	}
+	
 	
 	/**
 	 * @Route("/api/club/{club_uuid}/lessons", name="api_create_club_lessons", methods={"POST"}, requirements={"club_uuid"="[a-z0-9_]{2,64}"})
@@ -186,43 +181,23 @@ class ClubLessonsController extends AbstractController
 	 *             @OA\Schema(ref="#/components/schemas/ClubLesson")
 	 *         )
 	 *     ),
-	 *     @OA\Response(response="400", description="Unvalid data"),
-	 *     @OA\Response(response="403", description="Forbidden to create a lesson"),
-	 *     @OA\Response(response="404", description="Club or location not found")
+	 *     @OA\Response(response="400", description="Unvalid data", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="403", description="Forbidden to create a lesson", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club or location not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function createLesson(string $club_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
 	{
-	    if(! $this->isGranted(Roles::ROLE_SUPER_ADMIN)
-	        && ! $this->isGranted(Roles::ROLE_ADMIN)
-	        && ! $this->isGranted(Roles::ROLE_CLUB_MANAGER)) {
-	            throw $this->createAccessDeniedException('Access Denied');
-        }
-        
         $doctrine = $this->container->get('doctrine');
         
-        $clubs = $doctrine->getManager()
-	        ->getRepository(Club::class)
-	        ->findBy(['uuid' => $club_uuid]);
-        if(empty($clubs)) {
-            return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
-        }
-        $club = $clubs[0];
-        
+        $entityFinder = new EntityFinder($doctrine);
+        $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
+         
         $clubAccess = new ClubAccess($this->container, $this->logger);
-        if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-            return new Response('', Response::HTTP_FORBIDDEN); // 403
-        }
+        $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
         
         $requestUtil = new RequestUtil($serializer, $translator);
-        try {
-            $lessonToCreate = $requestUtil->validate($request, ClubLessonCreate::class);
-        } catch (ViolationException $e) {
-            return new Response(
-                json_encode($e->getErrors()),
-                Response::HTTP_BAD_REQUEST, // 400
-                array('Content-Type' => 'application/hal+json'));
-        }
+        $lessonToCreate = $requestUtil->validate($request, ClubLessonCreate::class); // 400
         
         $uuid = $lessonToCreate->getUuid();
         if($uuid == null || trim($uuid) === '') {
@@ -235,27 +210,23 @@ class ClubLessonsController extends AbstractController
                ->getRepository(ClubLocation::class)
                ->findBy(['club' => $club]);
            if(empty($locations)) {
-               return new Response('Location not found', Response::HTTP_NOT_FOUND); // 404
+               throw $this->createNotFoundException('Location not found'); // 404
            }
            if(count($locations) > 1) {
-               return new Response('Too many locations found, set a \'location_uuid\'', Response::HTTP_BAD_REQUEST); // 404
+               throw new CRMException(Response::HTTP_BAD_REQUEST, 'Too many locations found, set a \'location_uuid\'');
            }
+           $location = $locations[0];
         } else {
-	        $locations = $doctrine->getManager()
-    	        ->getRepository(ClubLocation::class)
-    	        ->findBy(['uuid' => $locationUuid]);
-    	    if(empty($locations)) {
-	            return new Response('Location not found', Response::HTTP_NOT_FOUND); // 404
-	        }
+            $location = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $locationUuid]); // 404
         }
         
         if($lessonToCreate->getStartTime() > $lessonToCreate->getEndTime()) {
-            return new Response('start_time is over end_time !', Response::HTTP_BAD_REQUEST); // 400
+            throw new CRMException(Response::HTTP_BAD_REQUEST, 'start_time is over end_time !'); // 400
         }
         
         $lesson = new ClubLesson();
         $lesson->setUuid($uuid);
-        $lesson->setClubLocation($locations[0]);
+        $lesson->setClubLocation($location);
         $lesson->setClub($club);
         $lesson->setPoint($lessonToCreate->getPoint());
         $lesson->setDiscipline($lessonToCreate->getDiscipline());
@@ -315,8 +286,9 @@ class ClubLessonsController extends AbstractController
 	 *         @OA\JsonContent(ref="#/components/schemas/ClubLessonUpdate"),
 	 *     ),
 	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="403", description="Forbidden to update a lesson"),
-	 *     @OA\Response(response="404", description="Club or location or lesson not found")
+	 *     @OA\Response(response="400", description="Unvalid data", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="403", description="Forbidden to update a lesson", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club or location or lesson not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function updateLesson(string $club_uuid, string $lesson_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
@@ -324,55 +296,28 @@ class ClubLessonsController extends AbstractController
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $requestUtil = new RequestUtil($serializer, $translator);
-	    try {
-	        $lessonToUpdate = $requestUtil->validate($request, ClubLessonUpdate::class);
-	    } catch (ViolationException $e) {
-	        return new Response(
-	            json_encode($e->getErrors()),
-	            Response::HTTP_BAD_REQUEST, // 400
-	            array('Content-Type' => 'application/hal+json'));
-	    }
+        $lessonToUpdate = $requestUtil->validate($request, ClubLessonUpdate::class); // 400
 	    
-	    
-	    $clubs = $doctrine->getManager()
-    	    ->getRepository(Club::class)
-    	    ->findBy(['uuid' => $club_uuid]);
-	    if(empty($clubs)) {
-	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $club = $clubs[0];
+        $entityFinder = new EntityFinder($doctrine);
+        $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
-	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-	        return new Response('', Response::HTTP_FORBIDDEN); // 403
-	    }
+	    $clubAccess->checkAccessForUser($club, $this->getUser());
 	    
-	    $lessons = $doctrine->getManager()
-    	    ->getRepository(ClubLesson::class)
-    	    ->findBy(['uuid' => $lesson_uuid, 'club' => $club]);
-    	if(empty($lessons)) {
-	        return new Response('Lesson not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $lesson = $lessons[0];
+	    $lesson = $entityFinder->findOneByOrThrow(ClubLesson::class, ['uuid' => $lesson_uuid, 'club' => $club]); // 404
 	    
 	    $uuid = $lessonToUpdate->getUuid();
 	    if( ! empty($uuid) && $uuid !== $lesson->getUuid()) {
-	        $lessonsUsed = $doctrine->getManager()
-    	        ->getRepository(ClubLesson::class)
-    	        ->findBy(['uuid' => $uuid]);
-	        if(!empty($lessonsUsed)) {
-	            return new Response('Lesson UUID already used', Response::HTTP_BAD_REQUEST); // 400
-	        }
+	        $entityFinder->findNoneByOrThrow(ClubLesson::class, ['uuid' => $uuid],
+	            function() use($uuid) {
+	                throw new CRMException(Response::HTTP_BAD_REQUEST, 'Lesson UUID already used: '.$uuid); // 400
+	            });
 	    }
 	    
 	    $locationUuid = $lessonToUpdate->getLocationUuid();
 	    if(! empty($locationUuid)) {
-	        $locations = $doctrine->getManager()
-    	        ->getRepository(ClubLocation::class)
-    	        ->findBy(['uuid' => $locationUuid]);
-	        if(empty($locations)) {
-	            return new Response('Location not found', Response::HTTP_NOT_FOUND); // 404
-	        }
+	        // check if location exists
+	        $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $locationUuid]); // 404
 	    }
 		    
 	    $entityUpdater = new EntityUpdater($doctrine, $request, $this->getUser(), Events::CLUB_LESSON_UPDATED, $this->logger);
@@ -423,37 +368,23 @@ class ClubLessonsController extends AbstractController
 	 *     ),
 	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
 	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="403", description="Forbidden to delete a lesson"),
-	 *     @OA\Response(response="404", description="Club or lesson not found")
+	 *     @OA\Response(response="403", description="Forbidden to delete a lesson", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club or lesson not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function deleteLesson(Request $request, string $club_uuid, string $lesson_uuid): Response
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    
-	    $clubs = $doctrine->getManager()
-    	    ->getRepository(Club::class)
-    	    ->findBy(['uuid' => $club_uuid]);
-	    if(empty($clubs)) {
-	        return new Response('Club not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $club = $clubs[0];
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
-	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-	        return new Response('', Response::HTTP_FORBIDDEN); // 403
-	    }
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
 	    
-	    $clubLessons = $doctrine->getManager()
-    	    ->getRepository(ClubLesson::class)
-    	    ->findBy(['uuid' => $lesson_uuid, 'club' => $club]);
-	    if(empty($clubLessons)) {
-	        return new Response('Lesson not found', Response::HTTP_NOT_FOUND); // 404
-	    }
-	    $clubLesson = $clubLessons[0];
+	    $clubLesson = $entityFinder->findOneByOrThrow(ClubLesson::class, ['uuid' => $lesson_uuid, 'club' => $club]); // 404
 	    
 	    $doctrine->getManager()->remove($clubLesson);
-	    $doctrine->getManager()->flush();
 	    
 	    $data = ['club_uuid' => $club_uuid, 'lesson_uuid' => $lesson_uuid, 'day' => $clubLesson->getDayOfWeek(), 'start' => $clubLesson->getStartTime()];
 	    Events::add($doctrine, Events::CLUB_LESSON_DELETED, $this->getUser(), $request, $data);
