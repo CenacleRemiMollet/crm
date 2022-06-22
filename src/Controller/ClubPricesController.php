@@ -25,7 +25,7 @@ class ClubPricesController extends AbstractController
 
     
 	/**
-	 * @Route("/club/{uuid}/prices", name="web_view_club_locations", methods={"GET"})
+	 * @Route("/club/{uuid}/prices", name="web_view_club_prices", methods={"GET"})
 	 */
     public function getPrices(string $uuid, Request $request, SessionInterface $session)
 	{

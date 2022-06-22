@@ -26,7 +26,10 @@ class ExceptionListener
     
     public function onKernelException(ExceptionEvent $event)
     {
-        // You get the exception object from the received event
+        $request = $event->getRequest();
+        if(! str_starts_with($request->getPathInfo(), '/api')) {
+            return;
+        }
         $exception = $event->getThrowable();
 
         $errorView = new ErrorView();

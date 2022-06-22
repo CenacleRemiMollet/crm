@@ -12,6 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\ClubPrice;
 use App\Entity\Club;
 use App\Security\ClubAccess;
+use Symfony\Component\HttpFoundation\Response;
 
 class ClubLocationsController extends AbstractController
 {

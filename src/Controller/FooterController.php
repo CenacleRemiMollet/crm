@@ -17,11 +17,10 @@ class FooterController extends AbstractController
 	    $clubProperties = $propService->findStartsWithToMap('club.');
 	    $club = $session->get('club-selected');
 	    
-	    return $this->render(
-			'modules/footer.html.twig',
-	        ['cenacleProperties' => $cenacleProperties,
-	         'clubProperties' => $clubProperties,
-	         'club' => $club]
-		);
+	    return $this->render('modules/footer.html.twig', [
+	        'cenacleProperties' => $cenacleProperties,
+	        'clubProperties' => $clubProperties,
+	        'club' => $club
+	    ]);
 	}
 }

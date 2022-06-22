@@ -3,44 +3,47 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Entity\MenuItem;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use App\Entity\ConfigurationProperty;
 use App\Service\ConfigurationPropertyService;
+use App\Security\ClubAccess;
+use App\Entity\EntityFinder;
+use App\Entity\Club;
 
 
 class MenuController extends AbstractController
-{
-
-	public function viewMenu(SessionInterface $session)
+{      
+    
+    private LoggerInterface $logger;
+    
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+    
+    public function viewMenu(SessionInterface $session)
 	{
-		$propService = new ConfigurationPropertyService($this->getDoctrine()->getManager());
+		$doctrine = $this->container->get('doctrine');
+        $propService = new ConfigurationPropertyService($doctrine->getManager());
 		$menuProperties = $propService->findStartsWithToMap('menu.');
 
 		$club = $session->get('club-selected');
 		$lessons = $session->get('lessons-selected');
-// 		$menuItems = $this->getDoctrine()->getManager()
-// 				->getRepository(MenuItem::class)
-// 				->findBy([], ['priority' => 'ASC']);
 
-		// filter
-// 		$filteredMenuItems = array();
-// 		foreach($menuItems as $menuItem) {
-// 			foreach($menuItem->getAvailableForRoles() as $role) {
-// 				if($this->get('security.authorization_checker')->isGranted($role)) {
-// 					array_push($filteredMenuItems, $menuItem);
-// 					break;
-// 				}
-// 			}
-// 		}
-
-		return $this->render(
-			'modules/menu.html.twig',
-			[
-				'club' => $club,
-				'lessons' => $lessons,
-				'menuProperties' => $menuProperties
-			]
-		);
+		$canConfigure = false;
+		if($club !== null) {
+		    $entityFinder = new EntityFinder($doctrine);
+		    $clubObj = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club->uuid]); // 404, never happen !
+		    
+		    $clubAccess = new ClubAccess($this->container, $this->logger);
+		    $canConfigure = $clubAccess->hasAccessForUser($clubObj, $this->getUser());
+		}
+		
+		return $this->render('modules/menu.html.twig', [
+			'club' => $club,
+			'lessons' => $lessons,
+            'menuProperties' => $menuProperties,
+		    'canConfigure' => $canConfigure
+		]);
 	}
 }

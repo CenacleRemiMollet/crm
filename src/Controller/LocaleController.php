@@ -30,9 +30,10 @@ class LocaleController extends AbstractController
 	public function getLocale(Request $request)
 	{
 		$locale = $request->getLocale();
-		return new Response('{"locale": "'.$locale.'"}', 200, array(
-			'Content-Type' => 'application/json'
-		));
+		return new Response(
+		    '{"locale": "'.$locale.'"}',
+		    Response::HTTP_OK,
+		    array('Content-Type' => 'application/json'));
 	}
 
 	/**
@@ -41,22 +42,18 @@ class LocaleController extends AbstractController
 	public function putLocale(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
 		$requestUtil = new RequestUtil($serializer, $translator);
-		try {
-			$localeModel = $requestUtil->validate($request, LocaleModel::class);
-		} catch (ViolationException $e) {
-			return ShortResponse::error("data", $e->getErrors())
-				->setStatusCode(Response::HTTP_BAD_REQUEST);
-		}
+		$localeModel = $requestUtil->validate($request, LocaleModel::class);
+
 		$locale = $localeModel->getLocale();
 		//$this->logger->debug('Set locale to "'.$locale.'"');
 		$request->setLocale($locale);
 		$request->getSession()->set('_locale', $locale);
 		$request->getSession()->set('_locale2', $locale);
 		//$this->logger->debug('Setted locale to "'.$request->getLocale().'"');
-		$json = $serializer->serialize($localeModel, 'json');
-		return new Response($json, 200, array(
-			'Content-Type' => 'application/json'
-		));
+		return new Response(
+		    $serializer->serialize($localeModel, 'json'),
+		    Response::HTTP_OK,
+		    array('Content-Type' => 'application/json'));
 	}
 
 
