@@ -43,15 +43,15 @@
                         <tr data-type="discipline"><td>Discipline / titre</td><td>{{ lesson.discipline }}</td><td></td></tr>
                         <tr data-type="category"><td>Categorie / age</td><td>{% if(lesson.age_level is defined) %}{{ lesson.age_level }}{% endif %}</td><td></td></tr>
                         <tr data-type="location_uuid"><td>Lieu</td>
-                        	<td><select name="location_uuid" onchange="updateLocation(this)" data-lessonuuid="{{ lesson.uuid }}">
+                        	<td><select name="location_uuid" class="selectlocationupdate" data-lessonuuid="{{ lesson.uuid }}">
                         			{% for location in locations %}
-                        				<option value="{{ location.uuid }}">{{ location.name}} - {{ location.city}}</option>
+                        				<option value="{{ location.uuid }}" {% if(lesson.location.uuid == location.uuid) %}selected{% endif %}>{{ location.name}} - {{ location.city}}</option>
                         			{% endfor %}
                         		</select></td>
                         	<td></td>
                         </tr>
                         <tr data-type="day_of_week"><td>Jour</td>
-                        	<td><select name="day_of_week" onchange="updateDay(this)" data-lessonuuid="{{ lesson.uuid }}">
+                        	<td><select name="day_of_week" class="selectdayupdate" data-lessonuuid="{{ lesson.uuid }}">
                         			<option value="monday" {% if(lesson.day_of_week == 'monday') %}selected{% endif %}>Lundi</option>
                         			<option value="tuesday" {% if(lesson.day_of_week == 'tuesday') %}selected{% endif %}>Mardi</option>
                         			<option value="wednesday" {% if(lesson.day_of_week == 'wednesday') %}selected{% endif %}>Mercredi</option>
@@ -156,11 +156,43 @@
             rowAddNewAndEdit('table-list', [1,2,3]);
         });*/
         
-        function updateLocation(e) {
-        	console.log(e);
-        }
-        function updateDay(e) {
-        	console.log(e);
+        $('.selectdayupdate').on('change', function() {
+			var lessonUuid = $(this).attr('data-lessonuuid');
+			update(lessonUuid, 'day_of_week', this.value,
+				function (data) {
+        			console.log('success', data);
+        		},
+        		function(data) {
+        			//row[0].childNodes[5].innerHTML= 'error';
+        			console.log('error', data);
+        		}
+			 );
+        });
+        $('.selectlocationupdate').on('change', function() {
+			var lessonUuid = $(this).attr('data-lessonuuid');
+			update(lessonUuid, 'location_uuid', this.value,
+				function (data) {
+        			console.log('success', data);
+        		},
+        		function(data) {
+        			//row[0].childNodes[5].innerHTML= 'error';
+        			console.log('error', data);
+        		}
+			 );
+        });
+        
+        function update(lessonUuid, propKey, propValue, onsuccess, onerror) {
+     		$.ajax({
+    			type: 'PATCH',			
+    			url : '{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/lessons/' + lessonUuid,
+    			contentType: 'application/json',	
+    			data: JSON.stringify({[propKey]: propValue}),
+    			dataType: 'json',
+    			cache: false,			
+    			beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
+    			success: onsuccess,
+    			error: onerror
+			});
         }
     </script>
 {% endblock %}
