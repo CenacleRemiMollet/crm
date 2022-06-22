@@ -13,6 +13,7 @@ use App\Entity\ClubPrice;
 use App\Entity\Club;
 use App\Security\ClubAccess;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\EntityFinder;
 
 class ClubLocationsController extends AbstractController
 {
@@ -30,17 +31,14 @@ class ClubLocationsController extends AbstractController
 	 */
     public function getLocations(string $uuid, Request $request, SessionInterface $session)
 	{
-	    $clubs = $this->container->get('doctrine')->getManager()
-    	    ->getRepository(Club::class)
-    	    ->findBy(['uuid' => $uuid]);
-	    if(empty($clubs)) {
-	        return $this->render('club/club-not-found.html.twig', []);
-	    }
-	    $club = $clubs[0];
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
 	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-	        return $this->render('security/unauthorized.html.twig', []);
+	        throw $this->createAccessDeniedException();
 	    }
 	    
 	    $response = $this->forward('App\Controller\Api\ClubLocationsController::getLocations', ["club_uuid" => $uuid]);
