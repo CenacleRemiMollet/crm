@@ -36,9 +36,7 @@ class ClubPricesController extends AbstractController
 	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
-	    if(! $clubAccess->hasAccessForUser($club, $this->getUser())) {
-	        throw $this->createAccessDeniedException(); // 403
-	    }
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
 	    
 	    $response = $this->forward('App\Controller\Api\ClubPricesController::getPrices', ["club_uuid" => $uuid]);
 		$json = json_decode($response->getContent());

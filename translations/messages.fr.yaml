@@ -34,6 +34,9 @@ menu:
     sign up conditions: "Conditions d'inscription"
     prices: "Tarifs"
     hours: "Horaires"
+    configure-locations: "Gérer les adresses"
+    configure-prices: "Gérer les tarifs"
+    configure-lessons: "Gérer les horaires"
   the master: "le maître"
   disciplines: "les disciplines"
   club list: "liste des clubs"
@@ -213,6 +216,13 @@ club:
       protects: "Les protections (plastrons, casques, etc.) sont obligatoires pour le cours compétition"
     planning:
       nocours: "pas de cours"
+
+
+# Club / List
+
+  list:
+    title: "tous nos clubs"
+    choosethisclub: "Choisir ce club"
 
 
 # Footer

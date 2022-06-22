@@ -10,6 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Util\DateIntervalUtils;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\ClubPrice;
+use App\Entity\EntityFinder;
+use App\Entity\Club;
+use App\Security\ClubAccess;
 
 class ClubController extends AbstractController
 {
@@ -77,13 +80,19 @@ class ClubController extends AbstractController
 		$lessons = json_decode($response->getContent());
 		$session->set('lessons-selected', $lessons);
 		
-		//$managerRegistry->getRepository(ClubPrice::class)->findBy(["club_id" => $club->getId()]);
-		//$price = $this->getDoctrine()->getManager()->getRepository(ClubPrice::class)->findBy(["club_id" => $club['id']]);
-
+		$canConfigure = false;
+	    $doctrine = $this->container->get('doctrine');
+	    $entityFinder = new EntityFinder($doctrine);
+	    $clubObj = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404, never happen !
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $canConfigure = $clubAccess->hasAccessForUser($clubObj, $this->getUser());
+		
 		return $this->render('club/club-infos.html.twig', [
 			'club' => $club,
 			'lessons' => $lessons,
-		    'startTimeByDays' => $this->determineStartsOffsetByQuarter($lessons)
+		    'startTimeByDays' => $this->determineStartsOffsetByQuarter($lessons),
+		    'canConfigure' => $canConfigure
 		]);
 	}
 	

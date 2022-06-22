@@ -34,6 +34,9 @@ menu:
     sign up conditions: "Sign up conditions"
     prices: "Prices"
     hours: "Hours"
+    configure-locations: 
+    configure-prices: 
+    configure-lessons: 
   the master: "the master"
   disciplines: "disciplines"
   club list: "club list"
@@ -214,6 +217,13 @@ club:
     planning:
       nocours: ""
     
+
+# Club / List
+
+  list:
+    title: 
+    choosethisclub: 
+
 
 # Footer
 

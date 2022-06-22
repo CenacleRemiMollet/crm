@@ -206,6 +206,9 @@
         <div class="midTitle">
             <span class="plus">+</span>
             <h3>{% trans %}club.infos.contribution.title{% endtrans %}</h3>
+            {% if canConfigure == 'true' %}
+            	<span><a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/prices" role="button">Modifier les tarifs</a></span>
+            {% endif %}
         </div>
 
         <div class="cours">
@@ -311,6 +314,10 @@
                 <h3 id="hours">{% trans %}club.infos.hours.title{% endtrans %}</h3>
                 <div class="line"></div>
             </div>
+            {% if canConfigure == 'true' %}
+            	<span><a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/locations" role="button">Modifier les adresses</a></span>
+             	<span><a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons" role="button">Modifier les horaires</a></span>
+            {% endif %}
         </div>
 
         <div class="content">

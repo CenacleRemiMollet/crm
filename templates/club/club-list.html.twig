@@ -12,7 +12,7 @@
  
         <div class="settings">
 
-                <p>tous nos clubs</p>
+                <p>{% trans %}club.list.title{% endtrans %}</p>
 
                 <div class="second-line">
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
@@ -141,7 +141,7 @@
                                     <h3>{{ c.data.location.city }} ({{ c.data.location.county }})</h3> 
                                 </div>
                                 <div class="choose">
-                                    <h3>Choisir ce club</h3>
+                                    <h3>{% trans %}club.list.choosethisclub{% endtrans %}</h3>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div
@@ -159,7 +159,7 @@
                             <div class="club" style="border-radius: 10px 10px 0 0;">
                                 <h3>{{ c.data.location.city }} ({{ c.data.location.county }})</h3>
                                 <div class="arrow">
-                                    <h4>Choisir ce club</h4>
+                                    <h4>{% trans %}club.list.choosethisclub{% endtrans %}</h4>
                                     <i class="fas fa-arrow-circle-right"></i>
                                     <div class="back"></div>
                                 </div>

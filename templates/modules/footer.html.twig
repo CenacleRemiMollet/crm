@@ -4,7 +4,8 @@
         
         {% if club is defined and club.uuid is defined %}
             <div class="data-contact">
-            	{% for location in club.locations %}
+            	<span><a href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/locations"><i class="fas fa-pencil-alt" style="color: #ffc107"></i></a></span>
+                {% for location in club.locations %}
             		<p>{{ location.name }}</p>
             		{{ location.address }}<br>
             		{{ location.zipcode }} {{ location.city }}<br>

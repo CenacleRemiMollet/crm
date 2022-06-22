@@ -139,9 +139,9 @@ class ClubLessonUpdate
 	    $this->day_of_week = $day_of_week;
 	}
 
-	public function getStartTime(): \DateTimeInterface
+	public function getStartTime():? \DateTimeInterface
 	{
-	    return new \DateTime($this->start_time);
+	    return $this->start_time !== null ? new \DateTime($this->start_time) : null;
 	}
 
 	public function setStartTime($start_time)
@@ -149,9 +149,9 @@ class ClubLessonUpdate
 	    $this->start_time = $start_time;
 	}
 
-	public function getEndTime(): \DateTimeInterface
+	public function getEndTime():? \DateTimeInterface
 	{
-	    return new \DateTime($this->end_time);
+	    return $this->end_time !== null ? new \DateTime($this->end_time) : null;
 	}
 	
 	public function setEndTime($end_time)

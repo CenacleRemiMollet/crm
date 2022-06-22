@@ -12,10 +12,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\ClubPrice;
 use App\Entity\Club;
 use App\Security\ClubAccess;
-use Symfony\Component\HttpFoundation\Response;
 use App\Entity\EntityFinder;
 
-class ClubLocationsController extends AbstractController
+class ClubLessonsController extends AbstractController
 {
 
     private LoggerInterface $logger;
@@ -27,9 +26,9 @@ class ClubLocationsController extends AbstractController
 
     
 	/**
-	 * @Route("/club/{uuid}/locations", name="web_view_club_locations", methods={"GET"})
+	 * @Route("/club/{uuid}/lessons", name="web_view_club_lessons", methods={"GET"})
 	 */
-    public function getLocations(string $uuid, Request $request, SessionInterface $session)
+    public function getPrices(string $uuid, Request $request, SessionInterface $session)
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    
@@ -39,11 +38,12 @@ class ClubLocationsController extends AbstractController
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
 	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
 	    
-	    $response = $this->forward('App\Controller\Api\ClubLocationsController::getLocations', ["club_uuid" => $uuid]);
-		$json = json_decode($response->getContent());
-		return $this->render('club/config-locations.html.twig', [
+	    $lessonsResponse = $this->forward('App\Controller\Api\ClubLessonsController::getLessons', ["club_uuid" => $uuid]);
+	    $locationsResponse = $this->forward('App\Controller\Api\ClubLocationsController::getLocations', ["club_uuid" => $uuid]);
+		return $this->render('club/config-lessons.html.twig', [
 		    'club' => $club,
-		    'locations' => $json
+		    'lessons' => json_decode($lessonsResponse->getContent()),
+		    'locations' => json_decode($locationsResponse->getContent())
 		]);
 	}
 
