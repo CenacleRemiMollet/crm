@@ -23,8 +23,9 @@ deny from 182.50.135.85
 deny from 51.68.11.231
 
 <IfModule mod_headers.c>
-		Header unset Server
+		Header always unset Server
 		Header always unset X-Powered-By
+		Header unset Server
 		Header unset X-Powered-By
 		Header unset X-CF-Powered-By
 		Header unset X-Mod-Pagespeed
