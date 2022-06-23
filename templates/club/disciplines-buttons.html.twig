@@ -1,6 +1,6 @@
-<div class="buttons">d
+<div class="buttons">
 	{% if lessons is defined %}
-    	{# {% set disciplines = lessons|map(l => l.discipline|lower) %}
+    	{% set disciplines = lessons|map(l => l.discipline|lower) %}
     	
     	{% if 'taekwondo' in disciplines %}
     		<div class="btn"><a href="{{ app.request.baseUrl }}/taekwondo">{% trans %}discipline.taekwondo{% endtrans %}</a></div>
@@ -13,7 +13,7 @@
     	{% endif %}
     	{% if 'sinkido' in disciplines %}
     		<div class="btn sinkido"><a href="{{ app.request.baseUrl }}/sinkido">{% trans %}discipline.sinkido self defense system 2 lines upper lower{% endtrans %}</a></div>
-    	{% endif %} #}
+    	{% endif %}
     {% else %}
     	no lessons defined !
    	{% endif %}

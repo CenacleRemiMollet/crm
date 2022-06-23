@@ -16,7 +16,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Entity\ClubLesson;
-use App\Model\ClubLessonView;
 use App\Model\ClubCreate;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Service\ClubService;

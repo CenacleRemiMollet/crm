@@ -92,7 +92,7 @@ class ClubLocationsController extends AbstractController
 
 		$clubLocationViews = array();
 	    foreach($clubLocations as &$clubLocation) {
-	        array_push($clubLocationViews, new ClubLocationView($clubLocation));
+	        array_push($clubLocationViews, new ClubLocationView($club, $clubLocation));
 	    }
 	    
 		$hateoas = HateoasBuilder::create()->build();
@@ -153,7 +153,7 @@ class ClubLocationsController extends AbstractController
 
 	    $hateoas = HateoasBuilder::create()->build();
 	    return new Response(
-	        $hateoas->serialize(new ClubLocationView($clubLocation), 'json'),
+	        $hateoas->serialize(new ClubLocationView($club, $clubLocation), 'json'),
 	        Response::HTTP_OK, // 200
 	        array('Content-Type' => 'application/hal+json'));
 	}
@@ -233,7 +233,7 @@ class ClubLocationsController extends AbstractController
 	    
 	    $hateoas = HateoasBuilder::create()->build();
 	    return new Response(
-	        $hateoas->serialize(new ClubLocationView($location), 'json'),
+	        $hateoas->serialize(new ClubLocationView($club, $location), 'json'),
 	        Response::HTTP_CREATED, // 201
 	        array('Content-Type' => 'application/hal+json'));
 	}

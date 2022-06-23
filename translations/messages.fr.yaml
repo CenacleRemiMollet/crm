@@ -14,6 +14,10 @@ sunday: "dimanche"
 
 cenaclerm: "Cénacle Rémi Mollet"
 
+baby: "baby"
+child: "enfant"
+adult: "adulte"
+
 
 # Common / Disciplines
 discipline:
@@ -236,6 +240,7 @@ footer:
     themaster: "Le maître"
     thedisciplines: "Les disciplines"
     clublist: "Liste des clubs"
+    clubselected: "Changer de club"
     login: "Connexion"
     privacypolicy: "Politique de confidentialité"
   ourdisciplines.title: "nos disciplines"

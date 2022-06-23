@@ -90,35 +90,6 @@ class ClubLocationRepository extends ServiceEntityRepository
 	}
 
 
-	public function findByClubs($clubs) {
-		$clubByIds = array();
-		$clubIds = array();
-		foreach ($clubs as &$club) {
-			$clubByIds[$club->getId()] = $club;
-			array_push($clubIds, $club->getId());
-		}
-
-		$result = $this::findByClubIds($clubIds);
-
-		$loclist = array();
-		foreach($result as &$r) {
-			$cid = $r['c'];
-			$loc = new ClubLocationView($r[0]);
-			if(! array_key_exists($cid, $loclist)) {
-				$loclist[$cid] = [$loc];
-			} else {
-				array_push($loclist[$cid], $loc);
-			}
-		}
-		$output = array();
-		foreach($clubByIds as $cid => $club) {
-			$locs = array_key_exists($cid, $loclist) ? $loclist[$cid] : [];
-			array_push($output, new ClubView($club, $locs));
-		}
-
-		return $output;
-	}
-
 
 	// /**
 	//  * @return ClubLocation[] Returns an array of ClubLocation objects

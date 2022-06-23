@@ -2,17 +2,26 @@
 
 namespace App\Model;
 
-use App\Entity\ClubLocation;
 use OpenApi\Annotations as OA;
 use App\Entity\ClubPrice;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
+use App\Entity\Club;
 
 /**
  * @OA\Schema(schema="ClubPrice")
+ * @Serializer\XmlRoot("club")
+ * @Hateoas\Relation("self", href = "expr('/crm/api/club/' ~ object.getClubUuid() ~ '/locations/' ~ object.getUuid())")
  *
  * @author f.agu
  */
 class ClubPriceView
 {
+    /**
+     * @OA\Property(type="string", example="abcd-xyz")
+     */
+    private $club_uuid;
+    
     /**
      * @OA\Property(type="string", example="abcd-xyz")
      */
@@ -53,8 +62,9 @@ class ClubPriceView
 	 */
 	private $adult;
 	
-	public function __construct(ClubPrice $price)
+	public function __construct(Club $club, ClubPrice $price)
 	{
+	    $this->club_uuid = $club === null ? $price->getClub()->getUuid() : $club->getUuid();
 	    $this->uuid = $price->getUuid();
 	    $this->discipline = $price->getDiscipline();
 	    $this->category = $price->getCategory();
@@ -65,6 +75,11 @@ class ClubPriceView
 	    $this->adult = $price->getPriceAdult();
 	}
 
+	public function getClubUuid(): ?string
+	{
+	    return $this->club_uuid;
+	}
+	
 	public function getUuid(): ?string
 	{
 		return $this->uuid;

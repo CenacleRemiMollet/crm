@@ -11,7 +11,6 @@ use OpenApi\Annotations as OA;
 use Psr\Log\LoggerInterface;
 use App\Entity\ClubPrice;
 use App\Model\ClubPriceView;
-use App\Service\ClubPriceService;
 use App\Entity\Club;
 use App\Security\ClubAccess;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,10 +72,17 @@ class ClubPricesController extends AbstractController
 	 */
 	public function getPrices($club_uuid)
 	{
-	    $clubPriceService = new ClubPriceService($this->container->get('doctrine'));
-	    $priceViews = $clubPriceService->convertByClubUuidToView($club_uuid);
-	    if($priceViews == null) {
-	        throw $this->createNotFoundException('Club');
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
+	    
+	    $prices = $doctrine->getManager()
+    	    ->getRepository(ClubPrice::class)
+    	    ->findBy(['club' => $club]);
+    	    $priceViews = array();
+	    foreach($prices as &$price) {
+	        array_push($priceViews, new ClubPriceView($club, $price));
 	    }
 
 		$hateoas = HateoasBuilder::create()->build();
@@ -129,15 +135,15 @@ class ClubPricesController extends AbstractController
 	 */
 	public function getPrice($club_uuid, $price_uuid)
 	{
-	    $clubPriceService = new ClubPriceService($this->container->get('doctrine'));
-	    $priceView = $clubPriceService->convertByClubUuidAndPriceUuidToView($club_uuid, $price_uuid);
-	    if($priceView == null) {
-	        throw $this->createNotFoundException('Club or price');
-	    }
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
+	    $price = $entityFinder->findOneByOrThrow(ClubPrice::class, ['club' => $club, 'uuid' => $price_uuid]); // 404
 	    
 	    $hateoas = HateoasBuilder::create()->build();
 	    return new Response(
-	        $hateoas->serialize($priceView, 'json'),
+	        $hateoas->serialize(new ClubPrice($club, $price), 'json'),
 	        Response::HTTP_OK,
 	        array('Content-Type' => 'application/hal+json'));
 	}
@@ -220,7 +226,7 @@ class ClubPricesController extends AbstractController
         
         $hateoas = HateoasBuilder::create()->build();
         return new Response(
-            $hateoas->serialize(new ClubPriceView($price), 'json'),
+            $hateoas->serialize(new ClubPriceView($club, $price), 'json'),
             Response::HTTP_CREATED, // 201
             array('Content-Type' => 'application/hal+json'));
 	}

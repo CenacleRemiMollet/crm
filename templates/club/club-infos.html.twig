@@ -344,7 +344,7 @@
                                 <div class="case small {{ lesson.discipline|lower }}">
                                     <div class="frontCase">
                                         <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
-                                        <h5 class="public">{% if(lesson.age_level is defined) %}{{ lesson.age_level }}{% endif %}</h5>
+                                        <h5 class="public">{% if(lesson.age_level is defined) %}{{ lesson.age_level|trans }}{% endif %}</h5>
                                         <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
                                     </div>
                                     <h6 class="adresse">{{ lesson.location.name }}</h6>
@@ -384,7 +384,7 @@
                                 	<div class="case {{ lesson.discipline|lower }}">
                                         <div class="frontCase">
                                             <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
-                                            <h5 class="public">{% if(lesson.age_level is defined) %}{{ lesson.age_level }}{% endif %}</h5>
+                                            <h5 class="public">{% if(lesson.age_level is defined) %}{{ lesson.age_level|trans }}{% endif %}</h5>
                                             <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
                                         </div>
                                         <h6 class="adresse">{{ lesson.location.name }}</h6>

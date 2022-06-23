@@ -15,7 +15,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Entity\ClubLesson;
-use App\Model\ClubLessonView;
 use App\Model\ClubLocationView;
 use App\Entity\City;
 use App\Model\CityModel;

@@ -49,7 +49,7 @@ class ClubService
         $loclist = array();
         foreach($locations as &$r) {
             $cid = $r['c'];
-            $loc = new ClubLocationView($r[0]);
+            $loc = new ClubLocationView($clubByIds[$cid], $r[0]);
             if(! array_key_exists($cid, $loclist)) {
                 $loclist[$cid] = [$loc];
             } else {
@@ -64,7 +64,7 @@ class ClubService
         $pricelist = array();
         foreach($prices as &$r) {
             $cid = $r->getClub()->getId();
-            $price = new ClubPriceView($r);
+            $price = new ClubPriceView($clubByIds[$cid], $r);
             if(! array_key_exists($cid, $pricelist)) {
                 $pricelist[$cid] = [$price];
             } else {

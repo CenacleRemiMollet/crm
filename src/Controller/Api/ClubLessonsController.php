@@ -73,16 +73,18 @@ class ClubLessonsController extends AbstractController
 	 */
     public function getLessons($club_uuid)
 	{
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
+	    
 	    $clubLessons = $this->container->get('doctrine')->getManager()
 			->getRepository(ClubLesson::class)
-			->findByClubUuid($club_uuid);
-		if(empty($clubLessons)) {
-		    throw $this->createNotFoundException('Club not found: '.$club_uuid); // 404
-		}
+			->findBy(['club' => $club]);
 
 		$lessonList = array();
 		foreach($clubLessons as &$clubLesson) {
-			array_push($lessonList, new ClubLessonView($clubLesson));
+		    array_push($lessonList, new ClubLessonView($club, $clubLesson));
 		}
 
 		$hateoas = HateoasBuilder::create()->build();
@@ -142,7 +144,7 @@ class ClubLessonsController extends AbstractController
 	    
 	    $hateoas = HateoasBuilder::create()->build();
 	    return new Response(
-	        $hateoas->serialize(new ClubLessonView($clubLesson), 'json'),
+	        $hateoas->serialize(new ClubLessonView($club, $clubLesson), 'json'),
 	        Response::HTTP_OK, // 200
 	        array('Content-Type' => 'application/hal+json'));
 	}
@@ -243,7 +245,7 @@ class ClubLessonsController extends AbstractController
         
         $hateoas = HateoasBuilder::create()->build();
         return new Response(
-            $hateoas->serialize(new ClubLessonView($lesson), 'json'),
+            $hateoas->serialize(new ClubLessonView($club, $lesson), 'json'),
             Response::HTTP_CREATED, // 201
             array('Content-Type' => 'application/hal+json'));
 	}

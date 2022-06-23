@@ -75,9 +75,14 @@
             <a href="{{ app.request.baseUrl }}/"><li class="link">{% trans %}footer.siteplan.thecenacle{% endtrans %}</li></a> 
             <a href="{{ app.request.baseUrl }}/master"><li class="link">{% trans %}footer.siteplan.themaster{% endtrans %}</li></a> 
             <li class="link">{% trans %}footer.siteplan.thedisciplines{% endtrans %}</li>
-            <a href="{{ app.request.baseUrl }}/club"><li class="link">{% trans %}footer.siteplan.clublist{% endtrans %}</li></a> 
+            {% if club is defined and club.uuid is defined %}
+            	<a href="{{ app.request.baseUrl }}/club?select=clear"><li class="link">{% trans %}footer.siteplan.clubselected{% endtrans %}</li></a>
+            {% else %}
+            	<a href="{{ app.request.baseUrl }}/club"><li class="link">{% trans %}footer.siteplan.clublist{% endtrans %}</li></a>
+            {% endif %}
             <a href="{{ app.request.baseUrl }}/login"><li class="link">{% trans %}footer.siteplan.login{% endtrans %}</li></a> 
             {#<a href="{{ app.request.baseUrl }}/#"><li class="link">{% trans %}footer.siteplan.privacypolicy{% endtrans %}</li></a>#}
+            <a href="{{ app.request.baseUrl }}/swagger"><li class="link">API</li></a>
         </ul>
     </div>
 
@@ -131,6 +136,10 @@
     		{% endif %}
     	{% elseif cenacleProperties["cenacle.contact.dailymotion.url"] is defined %}
     		{% set url = url|merge({'dailymotion': cenacleProperties["cenacle.contact.dailymotion.url"] })%}
+    	{% endif %}
+    	
+    	{% if (club is not defined or club.uuid is not defined) and cenacleProperties["cenacle.contact.github.url"] is defined %}
+    		{% set url = url|merge({'github': cenacleProperties["cenacle.contact.github.url"] })%}
     	{% endif %}
     	
     	{% if url is not empty %}

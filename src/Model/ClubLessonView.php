@@ -5,15 +5,24 @@ namespace App\Model;
 use App\Entity\ClubLesson;
 use App\Entity\ClubLocation;
 use OpenApi\Annotations as OA;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
+use App\Entity\Club;
 
 /**
  * @OA\Schema(schema="ClubLesson")
+ * @Serializer\XmlRoot("club")
+ * @Hateoas\Relation("self", href = "expr('/crm/api/club/' ~ object.getClubUuid() ~ '/lessons/' ~ object.getUuid())")
  *
  * @author f.agu
  */
 class ClubLessonView
 {
-
+    /**
+     * @OA\Property(type="string", example="abcd-xyz")
+     */
+    private $club_uuid;
+    
 	/**
 	 * @OA\Property(type="string", example="abcd-xyz")
 	 */
@@ -59,8 +68,9 @@ class ClubLessonView
 	 */
 	private $location;
 
-	public function __construct(ClubLesson $clubLesson)
+	public function __construct(Club $club, ClubLesson $clubLesson)
 	{
+		$this->club_uuid = $club->getUuid();
 		$this->uuid = $clubLesson->getUuid();
 		$this->point = $clubLesson->getPoint();
 		$this->discipline = $clubLesson->getDiscipline();
@@ -72,6 +82,11 @@ class ClubLessonView
 		$this->location = new ClubLocationView($clubLesson->getClubLocation());
 	}
 
+	public function getClubUuid(): ?string
+	{
+	    return $this->club_uuid;
+	}
+	
 	public function getUuid(): ?string
 	{
 		return $this->uuid;

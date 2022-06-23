@@ -14,6 +14,10 @@ sunday: "sunday"
 
 cenaclerm: "Rémi Mollet cenacle"
 
+baby: "baby"
+child: "child"
+adult: "adult"
+
 
 # Common / Disciplines
 discipline:
@@ -40,6 +44,7 @@ menu:
   the master: "the master"
   disciplines: "disciplines"
   club list: "club list"
+  club list selected: 
   gallery: "gallery"
   contact: "contact"
   connection:
@@ -229,14 +234,15 @@ club:
 
 footer:
   contactus:
-    title: ""
+    title: 
   siteplan:
-    title: ""
-    thecenacle: ""
+    title: 
+    thecenacle: 
     themaster: "The master"
-    thedisciplines: ""
+    thedisciplines: 
     clublist: "List of clubs"
+    clubselected: 
     login: "Login"
-    privacypolicy: ""
-  ourdisciplines.title: ""
-  followus.title: ""
+    privacypolicy: 
+  ourdisciplines.title: 
+  followus.title: 
