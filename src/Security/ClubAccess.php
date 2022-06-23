@@ -29,12 +29,12 @@ class ClubAccess
     
     public function checkAccessForUser(Club $club, $account)
     {
-        if( ! $this->hasAccessForUser($club, $account)) {
-            throw new AccessDeniedException();
-        }
+        $this->hasAccessForUser($club, $account, function($msg) {
+            throw new AccessDeniedException($msg);
+        });
     }
     
-    public function hasAccessForUser(Club $club, $account)
+    public function hasAccessForUser(Club $club, $account, ?object $ifDenied = null)
     {
         if($this->authorizationChecker->isGranted(Roles::ROLE_ADMIN) || $this->authorizationChecker->isGranted(Roles::ROLE_SUPER_ADMIN)) {
             $this->logger->debug('ClubAccess: current user ('.$account->getId().') is an admin');
@@ -57,8 +57,24 @@ class ClubAccess
                     }
                 }
             }
+            if($ifDenied !== null) {
+                $msg = 'Access denied for a ';
+                if($this->authorizationChecker->isGranted(Roles::ROLE_CLUB_MANAGER) && $this->authorizationChecker->isGranted(Roles::ROLE_TEACHER)) {
+                    $msg = $msg.'manager and teacher';
+                } elseif($this->authorizationChecker->isGranted(Roles::ROLE_CLUB_MANAGER)) {
+                    $msg = $msg.'manager';
+                } elseif($this->authorizationChecker->isGranted(Roles::ROLE_TEACHER)) {
+                    $msg = $msg.'teacher';
+                }
+                if($ifDenied !== null) {
+                    $ifDenied($msg.' in the club \''.$club->getName().'\'');
+                }
+            }
             $this->logger->debug('ClubAccess: access denied for current user ('.$account->getId().') in club '.$club->getId());
             return false;
+        }
+        if($ifDenied !== null) {
+            $ifDenied('Access denied for anonymous');
         }
         $this->logger->debug('ClubAccess: current user is anonymous');
         return false;

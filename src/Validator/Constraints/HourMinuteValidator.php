@@ -10,7 +10,7 @@ class HourMinuteValidator extends ConstraintValidator
 {
 	public function validate($value, Constraint $constraint)
 	{
-		if (!$constraint instanceof HourMinute) {
+	    if (!$constraint instanceof HourMinute) {
 		    throw new UnexpectedTypeException($constraint, HourMinute::class);
 		}
 		if (null === $value || '' === $value) {
@@ -19,16 +19,16 @@ class HourMinuteValidator extends ConstraintValidator
 		if (!is_string($value)) {
 			throw new UnexpectedValueException($value, 'string');
 		}
-		if (preg_match("/([0-9]{1,2})\:([0-9]{1,2})/", $value, $matches)) {
-			if (! $this->checkTime($matches[1], $matches[2])) {
+		if (preg_match("/^([0-9]{1,2})\:([0-9]{1,2})$/", $value, $matches)) {
+		    if (! $this->checkTime($matches[1], $matches[2])) {
 				$this->context->buildViolation($constraint->unvalidValueMessage)
 					->setParameter('{{ string }}', $value)
 					->addViolation();
-			}
+		    }
 		} else {
 			$this->context->buildViolation($constraint->validFormatMessage)
-			->setParameter('{{ string }}', $value)
-				->addViolation();
+    			->setParameter('{{ string }}', $value)
+    			->addViolation();
 		}
 	}
 

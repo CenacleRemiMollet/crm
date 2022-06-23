@@ -223,7 +223,7 @@ class ClubLessonsController extends AbstractController
         }
         
         if($lessonToCreate->getStartTime() > $lessonToCreate->getEndTime()) {
-            throw new CRMException(Response::HTTP_BAD_REQUEST, 'start_time is over end_time !'); // 400
+            throw new CRMException(Response::HTTP_BAD_REQUEST, 'start_time is after end_time !', ['start_time' => 'start_time is after end_time']); // 400
         }
         
         $lesson = new ClubLesson();
@@ -304,7 +304,7 @@ class ClubLessonsController extends AbstractController
         $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
-	    $clubAccess->checkAccessForUser($club, $this->getUser());
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
 	    
 	    $lesson = $entityFinder->findOneByOrThrow(ClubLesson::class, ['uuid' => $lesson_uuid, 'club' => $club]); // 404
 	    

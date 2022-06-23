@@ -48,7 +48,7 @@ class ClubLessonUpdate
 
 	/**
 	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
 	 * @OA\Property(type="string", example="baby")
 	 */
 	private $age_level;

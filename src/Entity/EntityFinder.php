@@ -14,7 +14,7 @@ class EntityFinder
         $this->manager = $manager;
     }
     
-    public function findOneByOrThrow($className, array $criteria)
+    public function findOneByOrThrow($className, array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
     {
         $entities = $this->manager->getManager()
             ->getRepository($className)

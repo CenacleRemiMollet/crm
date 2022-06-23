@@ -1,0 +1,141 @@
+{% extends 'dashboard.html.twig' %}
+
+
+{% block stylesheets2 %}
+	<link rel="stylesheet" href="{{ app.request.baseUrl }}/assets/tools/modif.css">
+	<script src="{{ app.request.baseUrl }}/assets/tools/modif.js"></script>
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+	<br>
+    <div class="table-content" style="padding: 20px">
+    	<h5>Horaires / {{ club.name }}</h5>
+		<form id="myForm">
+            <div class="form-group row slimmargin">
+                <label for="input-discipline" class="col-sm-1 col-form-label">Discipline</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-discipline" list="disciplineName" name="discipline" value="{{ lesson.discipline }}" />
+                    <datalist id="disciplineName">
+                        <option value="Taekwondo">Taekwondo</option>
+                        <option value="Taekwonkido">Taekwonkido</option>
+                        <option value="Hapkido">Hapkido</option>
+                        <option value="Sinkido">Sinkido</option>
+                        <option value="Gumdo">Gumdo</option>
+                    </datalist>
+                    <div class="invalid-feedback" id="txtvalid-discipline"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-category" class="col-sm-1 col-form-label">Catégorie</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-category" list="categoryName" name="age_level" value="{% if(lesson.age_level is defined) %}{{ lesson.age_level }}{% endif %}">
+					<datalist id="categoryName">
+                        <option value="adult">adult</option>
+                        <option value="adult">adulte</option>
+                        <option value="child">enfant</option>
+                        <option value="child">child</option>
+                        <option value="baby">baby</option>
+                    </datalist>       	
+                    <div class="invalid-feedback" id="txtvalid-age_level"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-location" class="col-sm-1 col-form-label">Lieu</label>
+                <div class="col-sm-10">
+                	<select class="custom-select" id="input-location" name="location_uuid">
+            			{% for location in locations %}
+            				<option value="{{ location.uuid }}" {% if(lesson.location.uuid == location.uuid) %}selected{% endif %}>{{ location.name}} - {{ location.city}}</option>
+            			{% endfor %}
+                	</select>
+                    <div class="invalid-feedback" id="txtvalid-location_uuid"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="staticDay" class="col-sm-1 col-form-label">Jour</label>
+                <div class="col-sm-10">
+                	<select name="day_of_week" class="custom-select" id="input-day_of_week">
+            			<option value="monday" {% if(lesson.day_of_week == 'monday') %}selected{% endif %}>Lundi</option>
+            			<option value="tuesday" {% if(lesson.day_of_week == 'tuesday') %}selected{% endif %}>Mardi</option>
+            			<option value="wednesday" {% if(lesson.day_of_week == 'wednesday') %}selected{% endif %}>Mercredi</option>
+            			<option value="thursday" {% if(lesson.day_of_week == 'thursday') %}selected{% endif %}>Jeudi</option>
+            			<option value="friday" {% if(lesson.day_of_week == 'friday') %}selected{% endif %}>Vendredi</option>
+            			<option value="saturday" {% if(lesson.day_of_week == 'saturday') %}selected{% endif %}>Samedi</option>
+            			<option value="sunday" {% if(lesson.day_of_week == 'sunday') %}selected{% endif %}>Dimanche</option>
+            		</select>
+                    <div class="invalid-feedback" id="txtvalid-day_of_week"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label class="col-sm-1 col-form-label">Horaires</label>
+                <div class="col-sm-1">
+                	<input type="text" class="form-control" id="input-start_time" name="start_time" value="{{ lesson.start_time }}">
+                    <div class="invalid-feedback" id="txtvalid-start_time"></div>       	
+                </div><label class="col-form-label">à</label>
+                <div class="col-sm-1">
+                	<input type="text" class="form-control" id="input-end_time" name="end_time" value="{{ lesson.end_time }}">
+                    <div class="invalid-feedback" id="txtvalid-end_time"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="staticUUID" class="col-sm-1 col-form-label">UUID</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-uuid" name="uuid" value="{{ lesson.uuid }}">
+                    <div class="invalid-feedback" id="txtvalid-uuid"></div>       	
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10">
+                	<a href="javascript:history.back()" class="btn btn-secondary">Annuler</a>
+                </div>
+                <div>
+                	<button type="button" class="btn btn-primary btnmodify">Modifier</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts_end_body %}
+    <script>
+    	$(document).ready(function(){	
+        	$('.btnmodify').click(function(event){
+        		$('*').each(function( index ) {
+                  $(this).removeClass('is-invalid');
+                  if($(this).hasClass('invalid-feedback')) {
+                  	$(this).text('');
+                  }
+                });
+        	
+        		$.ajax({
+            		type: 'PATCH',
+            		url: '{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/lessons/{{ lesson.uuid }}',
+            		contentType: 'application/json',
+            		data: JSON.stringify(convertFormToJSON($('form#myForm'))),
+            		cache: false,
+            		dataType: 'json',
+            		beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
+            		success: function(response){
+            			location.assign('{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons');
+            		},
+            		error: function(data) {
+            			var details = data.responseJSON.details;
+            			if(details) {
+            				Object.keys(details).forEach(key => {
+								console.log(key, details[key]);
+								var valido = $('#txtvalid-' + key);
+								valido.show();
+								valido.text(details[key]);
+								$('#input-' + key).addClass('is-invalid');
+							});
+            			}
+            		}
+            	});
+        	});
+        });
+    </script>
+{% endblock %}

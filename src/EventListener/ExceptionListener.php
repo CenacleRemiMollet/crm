@@ -49,6 +49,7 @@ class ExceptionListener
         } elseif($exception instanceof CRMException) {
             $errorView->setStatus($exception->getStatusCode());
             $errorView->setMessage($exception->getMessage());
+            $errorView->setDetails($exception->getDetails());
             
         } else {
             return;

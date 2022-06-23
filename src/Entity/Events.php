@@ -44,13 +44,18 @@ class Events
     );
     
     
-    public static function create(string $eventName, Account $account, Request $request, $data = null)
+    public static function create(ManagerRegistry $manager, string $eventName, Account $account, Request $request, $data = null)
     {
+        // attrbute set in ApiAuthenticator & LoginFormAuthenticator
         $accountSessionHistory = $request->getSession()->get('AccountSessionHistory');
+        if($accountSessionHistory == null) {
+            $entityFinder = new EntityFinder($manager);
+            $accountSessionHistory = $entityFinder->findOneByOrThrow(AccountSessionHistory::class, ['account' => $account], ['start_datetime' => 'DESC'], 1);
+        }
         if($accountSessionHistory == null) {
             throw new \ErrorException('AccountSessionHistory not found in session');
         }
-        
+            
         $eventTrackingHistory = new EventTrackingHistory();
         $eventTrackingHistory->setAccountId($account->getId());
         $eventTrackingHistory->setAccountSessionHistoryId($accountSessionHistory->getId());
@@ -63,7 +68,7 @@ class Events
     
     public static function add(ManagerRegistry $manager, string $eventName, Account $account, Request $request, $data = null)
      {
-         $event = Events::create($eventName, $account, $request, $data);
+         $event = Events::create($manager, $eventName, $account, $request, $data);
          $manager->getManager()->persist($event);
          $manager->getManager()->flush();
      }

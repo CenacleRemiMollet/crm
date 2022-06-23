@@ -13,6 +13,7 @@ use App\Entity\ClubPrice;
 use App\Entity\Club;
 use App\Security\ClubAccess;
 use App\Entity\EntityFinder;
+use App\Entity\ClubLesson;
 
 class ClubLessonsController extends AbstractController
 {
@@ -26,20 +27,20 @@ class ClubLessonsController extends AbstractController
 
     
 	/**
-	 * @Route("/club/{uuid}/lessons", name="web_view_club_lessons", methods={"GET"})
+	 * @Route("/club/{club_uuid}/lessons", name="web_view_club_lessons", methods={"GET"})
 	 */
-    public function getPrices(string $uuid, Request $request, SessionInterface $session)
+    public function getLessons(string $club_uuid, Request $request, SessionInterface $session)
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $entityFinder = new EntityFinder($doctrine);
-	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
 	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
 	    
-	    $lessonsResponse = $this->forward('App\Controller\Api\ClubLessonsController::getLessons', ["club_uuid" => $uuid]);
-	    $locationsResponse = $this->forward('App\Controller\Api\ClubLocationsController::getLocations', ["club_uuid" => $uuid]);
+	    $lessonsResponse = $this->forward('App\Controller\Api\ClubLessonsController::getLessons', ["club_uuid" => $club_uuid]);
+	    $locationsResponse = $this->forward('App\Controller\Api\ClubLocationsController::getLocations', ["club_uuid" => $club_uuid]);
 		return $this->render('club/config-lessons.html.twig', [
 		    'club' => $club,
 		    'lessons' => json_decode($lessonsResponse->getContent()),
@@ -47,4 +48,28 @@ class ClubLessonsController extends AbstractController
 		]);
 	}
 
+	/**
+	 * @Route("/club/{club_uuid}/lessons/{lesson_uuid}", name="web_view_club_lesson", methods={"GET"})
+	 */
+	public function getLesson(string $club_uuid, string $lesson_uuid, Request $request, SessionInterface $session)
+	{
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+	    
+	    $lessonResponse = $this->forward('App\Controller\Api\ClubLessonsController::getLesson', ["club_uuid" => $club_uuid, "lesson_uuid" => $lesson_uuid]);
+	    $locationsResponse = $this->forward('App\Controller\Api\ClubLocationsController::getLocations', ["club_uuid" => $club_uuid]);
+	    $this->logger->debug('getLesson response: '.$lessonResponse->getStatusCode().'  '.$lessonResponse->getContent());
+	    
+	    return $this->render('club/config-lesson.html.twig', [
+	        'club' => $club,
+	        'lesson' => json_decode($lessonResponse->getContent()),
+	        'locations' => json_decode($locationsResponse->getContent())
+	    ]);
+	}
+	
 }
