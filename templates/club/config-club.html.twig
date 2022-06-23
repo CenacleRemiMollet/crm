@@ -18,24 +18,12 @@
              <table class="table table-borded table-striped" style="max-width: 600px">
                 <tbody>
                     <tr><td>UUID</td><td><input class="form-control input-sm inputadd" name="uuid"></td></tr>
-                    <tr><td>Discipline/titre *</td><td><input class="form-control input-sm inputadd" name="discipline" value="Taekwondo"></td></tr>
+                    <tr><td>Discipline/titre *</td><td><input class="form-control input-sm inputadd" name="discipline"></td></tr>
                     <tr><td>Categorie / age</td><td><input class="form-control input-sm inputadd" name="category"></td></tr>
-                    <tr><td>Lieu *</td><td><select name="location_uuid" class="inputadd">
-                        			{% for location in locations %}
-                        				<option value="{{ location.uuid }}">{{ location.name}} - {{ location.city}}</option>
-                        			{% endfor %}
-                        		</select></td></tr>
-                    <tr><td>Jour *</td><td><select name="day_of_week" class="inputadd">
-                        			<option value="monday" selected>Lundi</option>
-                        			<option value="tuesday">Mardi</option>
-                        			<option value="wednesday">Mercredi</option>
-                        			<option value="thursday">Jeudi</option>
-                        			<option value="friday">Vendredi</option>
-                        			<option value="saturday">Samedi</option>
-                        			<option value="sunday">Dimanche</option>
-                        		</select></td></tr>
-                    <tr><td>Début *</td><td><input class="form-control input-sm inputadd" name="start_time" value="20:00"></td></tr>
-                    <tr><td>Fin *</td><td><input class="form-control input-sm inputadd" name="end_time" value="21:00"></td></tr>
+                    <tr><td>Lieu *</td><td><input class="form-control input-sm inputadd" name="adult" data-format="float"></td></tr>
+                    <tr><td>Jour *</td><td><input class="form-control input-sm inputadd" name="comment"></td></tr>
+                    <tr><td>Début *</td><td><input class="form-control input-sm inputadd" name="child1" data-format="float"></td></tr>
+                    <tr><td>Fin *</td><td><input class="form-control input-sm inputadd" name="child2" data-format="float"></td></tr>
                 </tbody>
             </table>
             <span id="add-message"></span>
@@ -99,8 +87,13 @@
         	$(".inputadd").each(function (index) {
         	    var value = $(this).val();
         	    if(value) {
-        	    	data[$(this).attr('name')] = value;
-        	    }
+        	        var format = $(this).attr('data-format');
+            		if("float" == format) {
+            			value = value ? parseFloat(value) : 0;
+            		}
+        			data[$(this).attr('name')] = value;
+        			//console.log($(this).attr('name'), value);
+        		}
         	});
     		$.ajax({
     			type: 'POST',			

@@ -340,7 +340,7 @@
                 			<div class="quarter"></div>
                 		{% endfor %}
                 		{% if(lessons is defined and lessons|length > 0) %}
-                            {% for lesson in lessons|filter(l => l.day_of_week == day) %}
+                            {% for lesson in lessons|filter(l => l.day_of_week == day)|sort((a,b) => a.start_time|replace({':':''})|integer <=> b.start_time|replace({':':''})|integer) %}
                                 <div class="case small {{ lesson.discipline|lower }}">
                                     <div class="frontCase">
                                         <h5 class="coursName">{{ lesson.discipline|lower }}</h5>

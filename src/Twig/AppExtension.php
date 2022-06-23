@@ -11,6 +11,7 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFilter('remove_accent', [$this, 'removeAccent']),
+            new TwigFilter('integer', [$this, 'toInteger']),
         ];
     }
     
@@ -18,5 +19,11 @@ class AppExtension extends AbstractExtension
     {
         return StringUtils::stripAccents($str);
     }
+    
+    public function toInteger(string $str): int
+    {
+        return intval($str);
+    }
+    
 }
 
