@@ -70,7 +70,7 @@ class ClubLessonView
 
 	public function __construct(Club $club, ClubLesson $clubLesson)
 	{
-		$this->club_uuid = $club->getUuid();
+	    $this->club_uuid = $club->getUuid();
 		$this->uuid = $clubLesson->getUuid();
 		$this->point = $clubLesson->getPoint();
 		$this->discipline = $clubLesson->getDiscipline();
@@ -79,7 +79,7 @@ class ClubLessonView
 		$this->start_time = $clubLesson->getStartTime()->format('H:i');
 		$this->end_time = $clubLesson->getEndTime()->format('H:i');
 		$this->duration = $clubLesson->getStartTime()->diff($clubLesson->getEndTime());
-		$this->location = new ClubLocationView($clubLesson->getClubLocation());
+		$this->location = new ClubLocationView($club, $clubLesson->getClubLocation());
 	}
 
 	public function getClubUuid(): ?string
