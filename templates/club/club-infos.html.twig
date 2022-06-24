@@ -215,6 +215,9 @@
             {% for price in club.prices %}
                 <div class="tarifs">
                     <div class="id">
+                    	{% if canConfigure == 'true' %}
+                    		<span><a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/prices/{{ price.uuid }}" role="button" style="margin: 10px"><i class="fas fa-pencil-alt"></i></a></span>
+                    	{% endif %}
                         <h3 class="discipline">{{ price.discipline }}</h3>
                         <h4 class="age">
                             {% if price.category is defined %}{{ price.category }}{% endif %}
@@ -347,7 +350,11 @@
                                         <h5 class="public">{% if(lesson.age_level is defined) %}{{ lesson.age_level|trans }}{% endif %}</h5>
                                         <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
                                     </div>
-                                    <h6 class="adresse">{{ lesson.location.name }}</h6>
+                                    <h6 class="adresse">{{ lesson.location.name }}
+                                        {% if canConfigure == 'true' %}
+                    						<a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons/{{ lesson.uuid }}" role="button" style="margin: 10px"><i class="fas fa-pencil-alt"></i></a>
+                    	                {% endif %}
+                    				</h6>
                                 </div>
                             {% endfor %}
                         {% endif %}
@@ -382,10 +389,15 @@
                             {% else %}
                             	{% for lesson in lessons|filter(l => l.day_of_week == day) %}
                                 	<div class="case {{ lesson.discipline|lower }}">
-                                        <div class="frontCase">
-                                            <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
-                                            <h5 class="public">{% if(lesson.age_level is defined) %}{{ lesson.age_level|trans }}{% endif %}</h5>
-                                            <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                                        <div class="frontCase row">
+                                        	<div>
+                                                <h5 class="coursName">{{ lesson.discipline|lower }}</h5>
+                                                <h5 class="public">{% if(lesson.age_level is defined) %}{{ lesson.age_level|trans }}{% endif %}</h5>
+                                                <h5 class="heure">{{ lesson.start_time }} - {{ lesson.end_time }}</h5>
+                                            </div>
+                                            {% if canConfigure == 'true' %}
+                        						<a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons/{{ lesson.uuid }}" role="button" style="margin: 10px"><i class="fas fa-pencil-alt"></i></a>
+                        	                {% endif %}
                                         </div>
                                         <h6 class="adresse">{{ lesson.location.name }}</h6>
                                     </div>
@@ -420,5 +432,5 @@
 
 
 {% block javascripts_end_body %}
-	<script src="/assets/js/infos_club.js"></script>
+	<script src="{{ app.request.baseUrl }}/assets/club/infos_club.js"></script>
 {% endblock %}
