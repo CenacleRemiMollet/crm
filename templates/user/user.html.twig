@@ -1,0 +1,173 @@
+{% extends 'dashboard.html.twig' %}
+
+
+{% block stylesheets2 %}
+	<link rel="stylesheet" href="{{ app.request.baseUrl }}/assets/tools/modif.css">
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+	<br>
+    <div class="table-content" style="padding: 20px">
+    	<h5>{{ user.lastname }} {{ user.firstname }}</h5>
+		<form id="myForm">
+            <div class="form-group row slimmargin">
+                <label for="input-lastname" class="col-sm-10 col-form-label">Créé le {{ user.created.date_fr }} à {{ user.created.time }}</label>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-lastname" class="col-sm-1 col-form-label">Nom</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-lastname" name="lastname" value="{{ user.lastname }}" required/>
+                    <div class="invalid-feedback" id="txtvalid-lastname"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-firstname" class="col-sm-1 col-form-label">Prénom</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-firstname" name="firstname" value="{{ user.firstname }}" required/>
+                    <div class="invalid-feedback" id="txtvalid-firstname"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-sex" class="col-sm-1 col-form-label">Sexe</label>
+                <div class="col-sm-2" style="margin-right: 20px">
+                	<div class="custom-control custom-radio" style="">
+                        <input type="radio" id="input-sexf" name="sex" class="custom-control-input" value="F" {% if(user.sex == "F") %}checked{% endif %}>
+                        <label class="custom-control-label" for="input-sexf"><i class="fas fa-venus"></i> féminin</label>
+                    </div>
+                	<div class="custom-control custom-radio">
+                        <input type="radio" id="input-sexm" name="sex" class="custom-control-input" value="M" {% if(user.sex == "M") %}checked{% endif %}>
+                        <label class="custom-control-label" for="input-sexm"><i class="fas fa-mars"></i> masculin</label>
+                    </div>
+                </div>
+                <div class="invalid-feedback" id="txtvalid-address"></div>       	
+            </div>
+
+            <div class="form-group row slimmargin">
+                <label for="input-address" class="col-sm-1 col-form-label">Adresse</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-address" name="address" value="{% if(user.address is defined) %}{{ user.address }}{% endif %}"/>
+                    <div class="invalid-feedback" id="txtvalid-address"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-zipcode" class="col-sm-1 col-form-label">Code postal</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-zipcode" name="zipcode" value="{% if(user.zipcode is defined) %}{{ user.zipcode }}{% endif %}"/>
+                    <div class="invalid-feedback" id="txtvalid-zipcode"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-city" class="col-sm-1 col-form-label">Ville</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-city" name="city" value="{% if(user.city is defined) %}{{ user.city }}{% endif %}"/>
+                    <div class="invalid-feedback" id="txtvalid-city"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-phone" class="col-sm-1 col-form-label">Téléphone</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-phone" name="phone" value="{% if(user.phone is defined) %}{{ user.phone }}{% endif %}"/>
+                    <div class="invalid-feedback" id="txtvalid-phone"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-phone_emergency" class="col-sm-1 col-form-label">Téléphone d'urgence</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-phone_emergency" name="phone_emergency" value="{% if(user.phone_emergency is defined) %}{{ user.phone_emergency }}{% endif %}"/>
+                    <div class="invalid-feedback" id="txtvalid-phone_emergency"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-mails" class="col-sm-1 col-form-label">Emails</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-mails" name="mails" value="{% if(user.mails is defined) %}{{ user.mails }}{% endif %}"/>
+                    <div class="invalid-feedback" id="txtvalid-mails"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-nationality" class="col-sm-1 col-form-label">Nationalité</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-nationality" list="nationalityName" name="nationality" value="{% if(user.nationality is defined) %}{{ user.nationality }}{% endif %}"/>
+                    <datalist id="nationalityName">
+                        <option value="Afghane">Afghane</option>
+                        <option value="Algérienne">Algérienne</option>
+                        <option value="Allemand">Allemand</option>
+                        <option value="Allemande">Allemande</option>
+                        <option value="Anglais">Anglais</option>
+                        <option value="Anglaise">Anglaise</option>
+                        <option value="Belge">Belge</option>
+                        <option value="Bresilien">Brésilien</option>
+                        <option value="Bresilienne">Brésilienne</option>
+                        <option value="Centrafricain">Centrafricain</option>
+                        <option value="Centrafricaine">Centrafricaine</option>
+                        <option value="Chinois">Chinois</option>
+                        <option value="Chinoise">Chinoise</option>
+                        <option value="Congolais">Congolais</option>
+                        <option value="Congolaise">Congolaise</option>
+                        <option value="Danois">Danois</option>
+                        <option value="Danoise">Danoise</option>
+                        <option value="Espagnol">Espagnol</option>
+                        <option value="Espagnole">Espagnole</option>
+                        <option value="Français">Français</option>
+                        <option value="Française">Française</option>
+                        <option value="Guinéen">Guinéen</option>
+                        <option value="Guinéenne">Guinéenne</option>
+                        <option value="Inconnue">Inconnue</option>
+                        <option value="Irlandais">Irlandais</option>
+                        <option value="Irlandaise">Irlandaise</option>
+                        <option value="Italien">Italien</option>
+                        <option value="Italienne">Italienne</option>
+                        <option value="Ivoirien">Ivoirien</option>
+                        <option value="Ivoirienne">Ivoirienne</option>
+                        <option value="Malgache">Malgache</option>
+                        <option value="Malien">Malien</option>
+                        <option value="Malienne">Malienne</option>
+                        <option value="Marocain">Marocain</option>
+                        <option value="Marocaine">Marocaine</option>
+                        <option value="Moldave">Moldave</option>
+                        <option value="Néerlandais">Néerlandais</option>
+                        <option value="Néerlandaise">Néerlandaise</option>
+                        <option value="Polonais">Polonais</option>
+                        <option value="Polonaise">Polonaise</option>
+                        <option value="Portugais">Portugais</option>
+                        <option value="Portugaise">Portugaise</option>
+                        <option value="Roumain">Roumain</option>
+                        <option value="Roumaine">Roumaine</option>
+                        <option value="Russe">Russe</option>
+                        <option value="Suisse">Suisse</option>
+                        <option value="Tunisien">Tunisien</option>
+                        <option value="Tunisienne">Tunisienne</option>
+                        <option value="Turc">Turc</option>
+                    </datalist>
+                    <div class="invalid-feedback" id="txtvalid-nationality"></div>       	
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-uuid" class="col-sm-1 col-form-label">UUID</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-uuid" name="uuid" value="{{ user.uuid }}" disabled/>
+                    <div class="invalid-feedback" id="txtvalid-uuid"></div>       	
+                </div>
+            </div>
+
+
+            <div class="row" style="flex-wrap: nowrap;">
+                <div class="col-sm-10">
+                	<a href="javascript:history.back()" class="btn btn-secondary">Annuler</a>
+                </div>
+                <div class="col-sm-1">
+                	<button type="button" class="btn btn-warning btnmodify" data-url-update="{{ app.request.baseUrl }}/api/users/{{ user.uuid }}" data-url-onsuccess="{{ app.request.baseUrl }}/users">Modifier</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts_end_body %}
+	<script src="{{ app.request.baseUrl }}/assets/tools/modif.js"></script>
+{% endblock %}

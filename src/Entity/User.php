@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Exception\ViolationException;
 
 
 /**
@@ -255,8 +256,15 @@ class User
 		return $this->mails;
 	}
 
-	public function setMails(array $mails): self
+	public function setMails($mails): self
 	{
+	    if(! is_array($mails)) {
+	        if(is_string($mails)) {
+	            $mails = explode(',', $mails);
+	        } else {
+	           throw new ViolationException(['mails' => 'bad format']);
+	        }
+	    }
 		$this->mails = $mails;
 		return $this;
 	}

@@ -6,10 +6,11 @@ use Hateoas\Configuration\Annotation as Hateoas;
 use App\Entity\User;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Annotations as OA;
+use Hateoas\Helper\LinkHelper;
 
 /**
  * @Serializer\XmlRoot("user")
- * @Hateoas\Relation("self", href = "expr('/crm/api/user/' ~ object.getUuid())")
+ * @Hateoas\Relation("self", href = "expr('/crm/api/users/' ~ object.getUuid())")
  * @OA\Schema(schema="User")
  */
 class UserView extends UserViewModel

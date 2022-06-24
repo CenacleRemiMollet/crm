@@ -1,0 +1,85 @@
+{% extends 'dashboard.html.twig' %}
+
+
+{% block stylesheets2 %}
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+	<br>
+    <div class="table-content" style="padding: 20px">
+    	<div class="row">
+    		<div class="col-sm-10"><h5>Utilisateurs</h5></div>
+    		<div><a class="btn btn-success" href="{{ app.request.baseUrl }}/user-new" role="button" style="margin: 10px"><i class="fas fa-plus"></i></a></div>
+    	</div>
+		<table class="table">
+			<thead>
+				<th scope="col" class="col-sm-1" style="width: 0% !important;"></th>
+				<th scope="col" class="col-sm-1">Nom</th>
+				<th scope="col" class="col-sm-1">Naissance</th>
+				<th scope="col" class="col-sm-1"></th>
+			</thead>
+			<tbody>
+				{% for user in users._embedded %}
+					<tr>
+						<td>
+						    {% if(user.sex == 'F') %}
+						    	<i class="fas fa-venus"></i>
+						    {% elseif(user.sex == 'M') %}
+						    	<i class="fas fa-mars"></i>
+						    {% endif %}
+						    {% if(user.roles is defined and "ROLE_ADMIN" in user.roles) %}<i class="fas fa-user-cog"></i>{% endif %}
+						    {% if(user.roles is defined and "ROLE_TEACHER" in user.roles) %}<i class="fas fa-chalkboard-teacher"></i>{% endif %}
+						    {% if(user.roles is defined and "ROLE_CLUB_MANAGER" in user.roles) %}<i class="fas fa-cube"></i>{% endif %}
+						    {% if(user.login is defined) %}<i class="fas fa-key"></i>{% endif %}
+						</td>
+						<td scope="row" class="deletetext-{{ user.uuid }}">
+						    {{ user.lastname }} {{ user.firstname }}
+						</td>
+						<td>{{ user.birthday.date_fr }} <i>({{ user.birthday.age_in_year }})</i></td>
+						<td>
+							<a class="btn btn-warning" href="{{ app.request.baseUrl }}/users/{{ user.uuid }}" role="button" style="margin: 10px"><i class="fas fa-pencil-alt"></i></a>
+							<button class="btn btn-danger btndelete" type="button" data-toggle="modal" data-target="#myModal" data-uuid="{{ user.uuid }}" style="margin: 10px"><i class="fas fa-trash"></i></button>
+						</td>
+					</tr>
+   				{% endfor %}
+			</tbody>
+		</table>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+   			        <div class="modal-header">
+           				<h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+			            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        			    	<span aria-hidden="true">&times;</span>
+            			</button>
+            		</div>
+            		<div class="modal-body"></div>
+            		<div class="invalid-feedback" id="txtvalid-delete"></div>
+            		<div class="modal-footer">
+            			<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            			<button type="button" class="btn btn-danger btnconfirmdelete" data-url-prefix="{{ app.request.baseUrl }}/api/users">Supprimer</button>
+            		</div>
+            	</div>
+            </div>
+        </div> 
+               
+        <div class="row" style="flex-wrap: nowrap;">
+            <div class="col-sm-10">
+            	<a href="javascript:history.back()" class="btn btn-secondary">Annuler</a>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts_end_body %}
+	<script src="{{ app.request.baseUrl }}/assets/tools/modif-list.js"></script>
+
+{% endblock %}

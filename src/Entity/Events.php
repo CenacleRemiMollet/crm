@@ -23,6 +23,9 @@ class Events
     
     public const CONFIG_PROPERTIES_SAVED = 'CONFIG_PROPERTIES_SAVED';
     
+    public const USER_CREATED = 'USER_CREATED';
+    public const USER_UPDATED = 'USER_UPDATED';
+    public const USER_DELETED = 'USER_DELETED';
     
     public const EVENTS = array(
         self::CLUB_CREATED,

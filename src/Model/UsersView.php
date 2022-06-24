@@ -17,14 +17,14 @@ class UsersView
 	private $pagination;
 
 	/**
-	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/User"))
+	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/Account"))
 	 */
-	private $users;
+	private $accounts;
 
-	public function __construct($pagination, $users)
+	public function __construct($pagination, $accounts)
 	{
 		$this->pagination = $pagination;
-		$this->users = $users;
+		$this->accounts = $accounts;
 	}
 
 	public function getPagination()
@@ -32,8 +32,8 @@ class UsersView
 		return $this->pagination;
 	}
 
-	public function getUsers()
+	public function getAccounts()
 	{
-		return $this->users;
+		return $this->accounts;
 	}
 }

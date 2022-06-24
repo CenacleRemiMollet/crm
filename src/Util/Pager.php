@@ -9,19 +9,21 @@ class Pager
 	const MAX_COUNT_ELEMENTS = 100;
 
 	private $page;
-	private $elementbypage;
+
+	private $elementByPage;
+
 	private $offset;
 
 	public function __construct(Request $request)
 	{
-		$this->page = max(intval($request->query->get('page', 0)), 0);
-		$this->elementbypage = min(intval($request->query->get('n', self::DEFAULT_COUNT_ELEMENTS)), self::MAX_COUNT_ELEMENTS);
-		$this->offset = $this->page * $this->elementbypage;
+		$this->page = max(intval($request->query->get('page', 1)), 1);
+		$this->elementByPage = max(min(intval($request->query->get('n', self::DEFAULT_COUNT_ELEMENTS)), self::MAX_COUNT_ELEMENTS), 1);
+		$this->offset = ($this->page - 1) * $this->elementByPage;
 	}
 
 	public function isValid(): ?bool
 	{
-		return $this->page >= 0 && $this->elementbypage >= 0;
+		return $this->page >= 1 && $this->elementByPage >= 1;
 	}
 
 	public function getPage(): ?int
@@ -31,7 +33,7 @@ class Pager
 
 	public function getElementByPage(): ?int
 	{
-		return $this->elementbypage;
+		return $this->elementByPage;
 	}
 
 	public function getOffset(): ?int
