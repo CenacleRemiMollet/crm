@@ -45,6 +45,7 @@ class ClubLessonUpdate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Taekwondo")
 	 */
 	private $discipline;
@@ -52,6 +53,7 @@ class ClubLessonUpdate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(max = 512)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="baby")
 	 */
 	private $age_level;
@@ -59,6 +61,7 @@ class ClubLessonUpdate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 20)
+	 * @AcmeAssert\DayOfWeek
 	 * @OA\Property(type="string", example="monday", enum={"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"})
 	 */
 	private $day_of_week;
@@ -78,6 +81,7 @@ class ClubLessonUpdate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string")
 	 */
 	private $description;

@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Validator\Constraints as AcmeAssert;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,6 +24,7 @@ class ClubLocationCreate
 	 * @Assert\NotBlank
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 128)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Gymnase Abc")
 	 */
 	private $name;
@@ -38,6 +40,7 @@ class ClubLocationCreate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="120 avenue des Champs-Elysées")
 	 */
 	private $address;
@@ -45,6 +48,7 @@ class ClubLocationCreate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Paris")
 	 */
 	private $city;
@@ -52,6 +56,7 @@ class ClubLocationCreate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 20)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="75008")
 	 */
 	private $zipcode;
@@ -59,6 +64,7 @@ class ClubLocationCreate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Ile de France")
 	 */
 	private $county;
@@ -66,6 +72,7 @@ class ClubLocationCreate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="France")
 	 */
 	private $country;

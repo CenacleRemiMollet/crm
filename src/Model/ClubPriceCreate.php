@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Validator\Constraints as AcmeAssert;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,6 +31,7 @@ class ClubPriceCreate
 	 * @Assert\NotBlank
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Baby Taekwondo")
 	 */
 	private $discipline;
@@ -37,6 +39,7 @@ class ClubPriceCreate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Baby")
 	 */
 	private $category;
@@ -44,6 +47,7 @@ class ClubPriceCreate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="(4-6 ans)")
 	 */
 	private $comment;
