@@ -31,8 +31,10 @@ class ClubUpdate
 	private $active;
 	
 	/**
-	 * @Assert\Length(max = 64)
-	 * @OA\Property(type="string", example="abc_club")
+	 * @Assert\Type("string")
+	 * @Assert\Length(min=2, max = 64)
+	 * @Assert\Regex(pattern="/[a-z0-9_]{2,64}/")
+	 * @OA\Property(type="string", example="abcdef13245", pattern="^[a-z0-9_]{2,64}$")
 	 */
 	private $uuid;
 	

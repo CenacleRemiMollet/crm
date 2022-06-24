@@ -312,7 +312,7 @@ class ClubLessonsController extends AbstractController
 	    if( ! empty($uuid) && $uuid !== $lesson->getUuid()) {
 	        $entityFinder->findNoneByOrThrow(ClubLesson::class, ['uuid' => $uuid],
 	            function() use($uuid) {
-	                throw new CRMException(Response::HTTP_BAD_REQUEST, 'Lesson UUID already used: '.$uuid); // 400
+	                throw new CRMException(Response::HTTP_BAD_REQUEST, 'Lesson UUID already used: '.$uuid, ['uuid' => 'UUID already used']); // 400
 	            });
 	    }
 	    
@@ -321,6 +321,11 @@ class ClubLessonsController extends AbstractController
 	        // check if location exists
 	        $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $locationUuid]); // 404
 	    }
+	    
+	    if($lessonToUpdate->getStartTime() !== null && $lessonToUpdate->getEndTime() != null && $lessonToUpdate->getStartTime() > $lessonToUpdate->getEndTime()) {
+	        throw new CRMException(Response::HTTP_BAD_REQUEST, 'start_time is after end_time !', ['start_time' => 'start_time is after end_time']); // 400
+	    }
+	    
 	    $location = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $locationUuid]); // 404
 		    
 	    $entityUpdater = new EntityUpdater($doctrine, $request, $this->getUser(), Events::CLUB_LESSON_UPDATED, $this->logger);

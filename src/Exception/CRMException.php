@@ -8,7 +8,7 @@ class CRMException extends HttpException
 {
 	private $details;
     
-    public function __construct(int $statusCode, $message, ?object $details)
+    public function __construct(int $statusCode, $message, ?array $details = null)
 	{
 	    parent::__construct($statusCode, $message);
 	    $this->details = $details;

@@ -19,8 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ClubPriceCreate
 {
 	/**
-	 * @Assert\Length(max = 64)
-	 * @OA\Property(type="string", example="abcdef13245")
+	 * @Assert\Type("string")
+	 * @Assert\Length(min=2, max = 64)
+	 * @Assert\Regex(pattern="/[A-Za-z0-9_]{2,64}/")
+	 * @OA\Property(type="string", example="abcdef13245", pattern="^[A-Za-z0-9_]{2,64}$")
 	 */
 	private $uuid;
 
