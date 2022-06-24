@@ -61,13 +61,36 @@ class ClubLessonsController extends AbstractController
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
 	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
 	    
+	    $entityFinder->findOneByOrThrow(ClubLesson::class, ['uuid' => $lesson_uuid, 'club' => $club]); // 404
+	    
 	    $lessonResponse = $this->forward('App\Controller\Api\ClubLessonsController::getLesson', ["club_uuid" => $club_uuid, "lesson_uuid" => $lesson_uuid]);
 	    $locationsResponse = $this->forward('App\Controller\Api\ClubLocationsController::getLocations', ["club_uuid" => $club_uuid]);
-	    $this->logger->debug('getLesson response: '.$lessonResponse->getStatusCode().'  '.$lessonResponse->getContent());
+	    //$this->logger->debug('getLesson response: '.$lessonResponse->getStatusCode().'  '.$lessonResponse->getContent());
 	    
 	    return $this->render('club/config-lesson.html.twig', [
 	        'club' => $club,
 	        'lesson' => json_decode($lessonResponse->getContent()),
+	        'locations' => json_decode($locationsResponse->getContent())
+	    ]);
+	}
+
+	/**
+	 * @Route("/club/{club_uuid}/lesson-new", name="web_new_club_lesson", methods={"GET"})
+	 */
+	public function getLessonNew(string $club_uuid, Request $request, SessionInterface $session)
+	{
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+	    
+	    $locationsResponse = $this->forward('App\Controller\Api\ClubLocationsController::getLocations', ["club_uuid" => $club_uuid]);
+	    
+	    return $this->render('club/config-lesson-new.html.twig', [
+	        'club' => $club,
 	        'locations' => json_decode($locationsResponse->getContent())
 	    ]);
 	}

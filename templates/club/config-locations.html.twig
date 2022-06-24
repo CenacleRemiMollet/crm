@@ -2,133 +2,64 @@
 
 
 {% block stylesheets2 %}
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 {% endblock %}
 
 
 {% block dashboardcontent %}
 
 	<br>
-    <div class="table-content">
-
-    	{# CREATE #}
-        <button type="button" class="btn btn-primary btn-lg" id="btn-add">Ajouter</button>
-    	<div id="div-add" class="d-none">
-             <table class="table table-borded table-striped" style="max-width: 600px">
-                <tbody>
-                    <tr><td>UUID</td><td><input class="form-control input-sm inputadd" name="uuid"></td></tr>
-                    <tr><td>Nom *</td><td><input class="form-control input-sm inputadd" name="name"></td></tr>
-                    <tr><td>Adresse</td><td><input class="form-control input-sm inputadd" name="address"></td></tr>
-                    <tr><td>Code postal</td><td><input class="form-control input-sm inputadd" name="zipcode"></td></tr>
-                    <tr><td>Ville</td><td><input class="form-control input-sm inputadd" name="city"></td></tr>
-                    <tr><td>N° de département</td><td><input class="form-control input-sm inputadd" name="county"></td></tr>
-                    <tr ><td>Pays</td><td><input class="form-control input-sm inputadd" name="country"></td></tr>
-                </tbody>
-            </table>
-            <span id="add-message"></span>
-            <button type="button" class="btn btn-primary btn-lg" id="btn-create">Créer</button>
+    <div class="table-content" style="padding: 20px">
+    	<div class="row">
+    		<div class="col-sm-10"><h5>Lieu / {{ club.name }}</h5></div>
+    		<div><a class="btn btn-success" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/location-new" role="button" style="margin: 10px"><i class="fas fa-plus"></i></a></div>
     	</div>
-		
-    	{# UPDATE #}
-    	<br>
-    	<h3>{{ club.name }}</h3>
-        {% for location in locations %}
-        	<hr>
-        	<div>
-        	     <h5>{{ location.uuid }}</h5>
-                 <table class="table table-borded table-responsive table-striped" id="table-list" data-locationuuid="{{ location.uuid }}">
-                    <tbody>
-                        <tr data-type="uuid"><td>UUID</td><td>{{ location.uuid }}</td><td></td></tr>
-                        <tr data-type="name"><td>Nom</td><td>{{ location.name }}</td><td></td></tr>
-                        <tr data-type="address"><td>Adresse</td><td>{{ location.address }}</td><td></td></tr>
-                        <tr data-type="zipcode"><td>Code postal</td><td>{{ location.zipcode }}</td><td></td></tr>
-                        <tr data-type="city"><td>Ville</td><td>{{ location.city }}</td><td></td></tr>
-                        <tr data-type="county"><td>N° de département</td><td>{{ location.county }}</td><td></td></tr>
-                        <tr data-type="country"><td>Pays</td><td>{{ location.country }}</td><td></td></tr>
-                    </tbody>
-                </table>
-        	</div>
-        {% endfor %}
-        <br>
-        
+		<table class="table">
+			<thead>
+				<th scope="col" class="col-sm-1">Nom</th>
+				<th scope="col" class="col-sm-1">Ville</th>
+				<th scope="col" class="col-sm-1"></th>
+			</thead>
+			<tbody>
+				{% for location in locations|sort((a,b) => a.name <=> b.name) %}
+					<tr>
+						<td scope="row" class="deletetext-{{ location.uuid }}">{{ location.name }}</td>
+						<td class="deletetext-{{ location.uuid }}">{{ location.city }}<br>{{ location.zipcode }}</td>
+						<td>
+							<a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/locations/{{ location.uuid }}" role="button" style="margin: 10px"><i class="fas fa-pencil-alt"></i></a>
+							<button class="btn btn-danger btndelete" type="button" data-toggle="modal" data-target="#myModal" data-uuid="{{ location.uuid }}" style="margin: 10px"><i class="fas fa-trash"></i></button>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+   			        <div class="modal-header">
+           				<h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+			            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        			    	<span aria-hidden="true">&times;</span>
+            			</button>
+            		</div>
+            		<div class="modal-body"></div>
+            		<div class="invalid-feedback" id="txtvalid-delete"></div>
+            		<div class="modal-footer">
+            			<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            			<button type="button" class="btn btn-danger btnconfirmdelete" data-url-prefix="{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/locations">Supprimer</button>
+            		</div>
+            	</div>
+            </div>
+        </div>        
+
     </div>
 
 {% endblock %}
 
 
 {% block javascripts_end_body %}
-	<script src="{{ app.request.baseUrl }}/vendor/bootstable/bootstable.min.js"></script>
-    <script>
-        $("#btn-add").click(function() {
-        	$("#btn-add").hide();
-        	$("#div-add").removeClass('d-none');
-        });
-        
-        $("#btn-create").click(function() {
-        	data = {};
-        	$(".inputadd").each(function (index) {
-        	    var value = $(this).val();
-        	    if(value) {
-        			data[$(this).attr('name')] = value;
-        			//console.log($(this).attr('name'), value);
-        		}
-        	});
-    		$.ajax({
-    			type: 'POST',			
-    			url : '{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/locations',
-    			contentType: 'application/json',	
-    			data: JSON.stringify(data),
-    			dataType: 'json',
-    			cache: false,			
-    			beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
-    			success: function (data) {
-    				//console.log('success', data);
-    				location.reload();
-    			},
-    			error: function(data) {
-    			$("#add-message").text('error');
-    				console.log('error', data);
-    			}
-			});
-        });
-        
-        $(".table-responsive").SetEditable({
-        	columnsEd: "1",
-        	onEdit: function(row) {
-        		var locationUuid = row[0].parentNode.parentNode.getAttribute('data-locationuuid');
-        		var propKey = row[0].getAttribute('data-type');
-        		var propValue = row[0].childNodes[1].innerHTML;
-        		//console.log(locationUuid, propKey, propValue);
-        		$.ajax({
-        			type: 'PATCH',			
-        			url : '{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/locations/' + locationUuid,
-        			contentType: 'application/json',	
-        			data: JSON.stringify({[propKey]: propValue}),
-        			dataType: 'json',
-        			cache: false,			
-        			beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
-        			success: function (data) {
-                		if(propKey == 'uuid') {
-                			row[0].parentNode.parentNode.setAttribute('data-locationuuid', propValue);
-                		}
-        				//console.log('success', data);
-        			},
-        			error: function(data) {
-        				row[0].childNodes[5].innerHTML= 'error';
-        				console.log('error', data);
-        			}
-				});
-        	},
-        	//onDelete: function(row) { console.log('onDelete', row); },
-        	onBeforeDelete: function(row) {
-        		console.log('onBeforeDelete', row);
-        		throw new Exception(); // to ignore delete
-        	}, 
-        	//onAdd: function(row) { console.log('onAdd', row); }
-        });
-        /*$('#add').click(function() {
-            rowAddNewAndEdit('table-list', [1,2,3]);
-        });*/
-    </script>
+	<script src="{{ app.request.baseUrl }}/assets/tools/modif-list.js"></script>
+
 {% endblock %}

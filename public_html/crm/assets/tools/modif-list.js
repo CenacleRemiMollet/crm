@@ -37,7 +37,7 @@ $(document).ready(function(){
     		},
     		error: function(data) {
     			$('#txtvalid-delete').show();
-				$('#txtvalid-delete').text(data.responseJSON.message);
+				$('#txtvalid-delete').text(data.responseJSON.error + ' : ' + data.responseJSON.message);
 				confirmDeleteButton.prop('disabled', false);
     		}
     	});

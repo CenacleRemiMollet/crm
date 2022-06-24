@@ -29,9 +29,9 @@ class ClubLessonUpdate
 
 	/**
 	 * @Assert\Type("string")
-	 * @Assert\Length(min=2, max = 16)
-	 * @Assert\Regex(pattern="/[A-Za-z0-9_]{2,16}/")
-	 * @OA\Property(type="string", example="abcdef13245", pattern="^[A-Za-z0-9_]{2,16}$")
+	 * @Assert\Length(min=2, max = 64)
+	 * @Assert\Regex(pattern="/[A-Za-z0-9_]{2,64}/")
+	 * @OA\Property(type="string", example="abcdef13245", pattern="^[A-Za-z0-9_]{2,64}$")
 	 */
 	private $uuid;
 	

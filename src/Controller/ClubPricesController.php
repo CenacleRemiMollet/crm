@@ -46,4 +46,44 @@ class ClubPricesController extends AbstractController
 		]);
 	}
 
+	/**
+	 * @Route("/club/{club_uuid}/prices/{price_uuid}", name="web_view_club_price", methods={"GET"})
+	 */
+	public function getPrice(string $club_uuid, string $price_uuid, Request $request, SessionInterface $session)
+	{
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+	    
+	    $entityFinder->findOneByOrThrow(ClubPrice::class, ['uuid' => $price_uuid, 'club' => $club]); // 404
+	    
+	    $priceResponse = $this->forward('App\Controller\Api\ClubPricesController::getPrice', ["club_uuid" => $club_uuid, "price_uuid" => $price_uuid]);
+	    return $this->render('club/config-price.html.twig', [
+	        'club' => $club,
+	        'price' => json_decode($priceResponse->getContent())
+	    ]);
+	}
+	
+	/**
+	 * @Route("/club/{club_uuid}/price-new", name="web_new_club_price", methods={"GET"})
+	 */
+	public function getLocationNew(string $club_uuid, Request $request, SessionInterface $session)
+	{
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+	    
+	    return $this->render('club/config-price-new.html.twig', [
+	        'club' => $club
+	    ]);
+	}
+	
 }

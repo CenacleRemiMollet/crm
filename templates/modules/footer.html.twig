@@ -5,7 +5,7 @@
         {% if club is defined and club.uuid is defined %}
             <div class="data-contact">
                 {% if canConfigure == 'true' %}
-            		<span><a href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/locations"><i class="fas fa-pencil-alt" style="color: #ffc107"></i></a></span>
+                	<span><a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/locations" role="button" style="margin: 10px"><i class="fas fa-pencil-alt"></i></a></span>
                 {% endif %}
                 {% for location in club.locations %}
             		<p>{{ location.name }}</p>

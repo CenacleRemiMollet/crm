@@ -143,7 +143,7 @@ class ClubPricesController extends AbstractController
 	    
 	    $hateoas = HateoasBuilder::create()->build();
 	    return new Response(
-	        $hateoas->serialize(new ClubPrice($club, $price), 'json'),
+	        $hateoas->serialize(new ClubPriceView($club, $price), 'json'),
 	        Response::HTTP_OK,
 	        array('Content-Type' => 'application/hal+json'));
 	}
@@ -214,10 +214,18 @@ class ClubPricesController extends AbstractController
         $price->setDiscipline($priceToCreate->getDiscipline());
         $price->setCategory($priceToCreate->getCategory());
         $price->setComment($priceToCreate->getComment());
-        $price->setPriceChild1($priceToCreate->getChild1());
+        if($priceToCreate->getChild1() !== null) {
+            $price->setPriceChild1($priceToCreate->getChild1());
+        }
+        if($priceToCreate->getChild2() !== null) {
         $price->setPriceChild2($priceToCreate->getChild2());
-        $price->setPriceChild3($priceToCreate->getChild3());
-        $price->setPriceAdult($priceToCreate->getAdult());
+        }
+        if($priceToCreate->getChild3() !== null) {
+            $price->setPriceChild3($priceToCreate->getChild3());
+        }
+        if($priceToCreate->getAdult() !== null) {
+            $price->setPriceAdult($priceToCreate->getAdult());
+        }
         $doctrine->getManager()->persist($price);
         
         $data = ['discipline' => $price->getDiscipline(), 'uuid' => $price->getUuid()];

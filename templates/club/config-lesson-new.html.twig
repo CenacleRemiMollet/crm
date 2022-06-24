@@ -10,12 +10,12 @@
 
 	<br>
     <div class="table-content" style="padding: 20px">
-    	<h5>Horaires / {{ club.name }}</h5>
+    	<h5>Lieu / {{ club.name }}</h5>
 		<form id="myForm">
             <div class="form-group row slimmargin">
                 <label for="input-discipline" class="col-sm-1 col-form-label">Discipline</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-discipline" list="disciplineName" name="discipline" value="{{ lesson.discipline }}" />
+                	<input type="text" class="form-control" id="input-discipline" list="disciplineName" name="discipline" value="Taekwondo" />
                     <datalist id="disciplineName">
                         <option value="Taekwondo">Taekwondo</option>
                         <option value="Taekwonkido">Taekwonkido</option>
@@ -27,9 +27,9 @@
                 </div>
             </div>
             <div class="form-group row slimmargin">
-                <label for="input-age_level" class="col-sm-1 col-form-label">Catégorie</label>
+                <label for="input-category" class="col-sm-1 col-form-label">Catégorie</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-age_level" list="categoryName" name="age_level" value="{% if(lesson.age_level is defined) %}{{ lesson.age_level }}{% endif %}">
+                	<input type="text" class="form-control" id="input-category" list="categoryName" name="age_level" value="">
 					<datalist id="categoryName">
                         <option value="adult">adult</option>
                         <option value="adult">adulte</option>
@@ -45,7 +45,7 @@
                 <div class="col-sm-10">
                 	<select class="custom-select" id="input-location" name="location_uuid">
             			{% for location in locations %}
-            				<option value="{{ location.uuid }}" {% if(lesson.location.uuid == location.uuid) %}selected{% endif %}>{{ location.name}} - {{ location.city}}</option>
+            				<option value="{{ location.uuid }}">{{ location.name}} - {{ location.city}}</option>
             			{% endfor %}
                 	</select>
                     <div class="invalid-feedback" id="txtvalid-location_uuid"></div>       	
@@ -55,13 +55,13 @@
                 <label for="staticDay" class="col-sm-1 col-form-label">Jour</label>
                 <div class="col-sm-10">
                 	<select name="day_of_week" class="custom-select" id="input-day_of_week">
-            			<option value="monday" {% if(lesson.day_of_week == 'monday') %}selected{% endif %}>Lundi</option>
-            			<option value="tuesday" {% if(lesson.day_of_week == 'tuesday') %}selected{% endif %}>Mardi</option>
-            			<option value="wednesday" {% if(lesson.day_of_week == 'wednesday') %}selected{% endif %}>Mercredi</option>
-            			<option value="thursday" {% if(lesson.day_of_week == 'thursday') %}selected{% endif %}>Jeudi</option>
-            			<option value="friday" {% if(lesson.day_of_week == 'friday') %}selected{% endif %}>Vendredi</option>
-            			<option value="saturday" {% if(lesson.day_of_week == 'saturday') %}selected{% endif %}>Samedi</option>
-            			<option value="sunday" {% if(lesson.day_of_week == 'sunday') %}selected{% endif %}>Dimanche</option>
+            			<option value="monday" selected>Lundi</option>
+            			<option value="tuesday">Mardi</option>
+            			<option value="wednesday">Mercredi</option>
+            			<option value="thursday">Jeudi</option>
+            			<option value="friday">Vendredi</option>
+            			<option value="saturday">Samedi</option>
+            			<option value="sunday">Dimanche</option>
             		</select>
                     <div class="invalid-feedback" id="txtvalid-day_of_week"></div>
                 </div>
@@ -69,27 +69,20 @@
             <div class="form-group row slimmargin">
                 <label class="col-sm-1 col-form-label">Horaires</label>
                 <div class="col-sm-1">
-                	<input type="text" class="form-control" id="input-start_time" name="start_time" value="{{ lesson.start_time }}">
+                	<input type="text" class="form-control" id="input-start_time" name="start_time" value="20:00">
                     <div class="invalid-feedback" id="txtvalid-start_time"></div>       	
                 </div><label class="col-form-label">à</label>
                 <div class="col-sm-1">
-                	<input type="text" class="form-control" id="input-end_time" name="end_time" value="{{ lesson.end_time }}">
+                	<input type="text" class="form-control" id="input-end_time" name="end_time" value="21:00">
                     <div class="invalid-feedback" id="txtvalid-end_time"></div>       	
                 </div>
             </div>
-            <div class="form-group row slimmargin">
-                <label for="staticUUID" class="col-sm-1 col-form-label">UUID</label>
-                <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-uuid" name="uuid" value="{{ lesson.uuid }}">
-                    <div class="invalid-feedback" id="txtvalid-uuid"></div>       	
-                </div>
-            </div>
-            <div class="row" style="flex-wrap: nowrap;">
+            <div class="row">
                 <div class="col-sm-10">
                 	<a href="javascript:history.back()" class="btn btn-secondary">Annuler</a>
                 </div>
-                <div class="col-sm-1">
-                	<button type="button" class="btn btn-warning btnmodify" data-url-update="{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/lessons/{{ lesson.uuid }}" data-url-onsuccess="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons">Modifier</button>
+                <div>
+                	<button type="button" class="btn btn-success btncreate" data-url-create="{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/lessons" data-url-onsuccess="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons">Créer</button>
                 </div>
             </div>
         </form>

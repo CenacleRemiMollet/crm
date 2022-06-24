@@ -34,14 +34,14 @@ class ClubPriceUpdate
 
 	/**
 	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 255)
+	 * @Assert\Length(max = 255)
 	 * @OA\Property(type="string", example="Baby")
 	 */
 	private $category;
 
 	/**
 	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 255)
+	 * @Assert\Length(max = 255)
 	 * @OA\Property(type="string", example="(4-6 ans)")
 	 */
 	private $comment;
