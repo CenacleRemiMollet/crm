@@ -11,8 +11,38 @@
     <div class="table-content" style="padding: 20px">
     	<div class="row">
     		<div class="col-sm-10"><h5>Utilisateurs</h5></div>
-    		<div><a class="btn btn-success" href="{{ app.request.baseUrl }}/user-new" role="button" style="margin: 10px"><i class="fas fa-plus"></i></a></div>
+    		<div><a class="btn btn-success" href="{{ app.request.baseUrl }}/user-new" role="button" style="margin: 10px" title="Ajouter un utilisateur"><i class="fas fa-plus"></i></a></div>
     	</div>
+		<div class="row">
+			<div class="col-6 row" style="flex-wrap: nowrap;">
+        		<label style="margin: 10px">Afficher</label>
+        		{% set numbers = [10, 20, 30, 40, 50, 100]|merge([users.size]) %}
+        		<select name="pagesize" class="selectpagesize">
+        			{% for number in numbers|sort|reduce((unique, item) => item in unique ? unique : unique|merge([item]), []) %}
+        				<option value="{{ number }}" {% if(number == users.size) %}selected{% endif %}>{{ number }}</option>
+        			{%  endfor %}
+        		</select>
+			</div>
+			<div class="col-6 row" style="flex-wrap: nowrap;">
+            	<label style="margin: 10px">Page</label>
+            	{% if(users._links.previous.href is defined) %}
+            		<button class="btn btn-info btnpagenextorprevious" type="button" style="margin: 10px" data-url="{{ users._links.previous.href|replace({'/api': ''}) }}"><i class="fas fa-angle-left"></i></button>
+            	{% endif %}
+            	<label style="margin: 10px">{{ users.page }}</label>
+            	{% if(users._links.next.href is defined) %}
+            		<button class="btn btn-info btnpagenextorprevious" type="button" style="margin: 10px" data-url="{{ users._links.next.href|replace({'/api': ''}) }}"><i class="fas fa-angle-right"></i></button>
+            	{% endif %}
+			</div>
+		</div>
+    	<div class="row" style="flex-wrap: nowrap;">
+    		<div class="input-group mb-3">
+                <input type="text" class="form-control" id="input-search" placeholder="Rechercher" aria-label="Rechercher" aria-describedby="search" value="{% if(app.request.get('q') != null) %}{{ app.request.get('q') }}{% endif %}">
+                    <div class="input-group-append">
+                    <span class="input-group-text" id="search"><button class="btn btnsearch" type="button" style="padding: 0px"><i class="fas fa-search"></i></button></span>
+                </div>
+            </div>
+    	</div>
+    	<br>
 		<table class="table">
 			<thead>
 				<th scope="col" class="col-sm-1" style="width: 0% !important;"></th>
@@ -24,15 +54,15 @@
 				{% for user in users._embedded %}
 					<tr>
 						<td>
-						    {% if(user.sex == 'F') %}
-						    	<i class="fas fa-venus"></i>
-						    {% elseif(user.sex == 'M') %}
-						    	<i class="fas fa-mars"></i>
+						    {% if(user.sex|lower == 'f') %}
+						    	<i class="fas fa-venus" style="color: #ff00fc"></i>
+						    {% elseif(user.sex|lower == 'm') %}
+						    	<i class="fas fa-mars" style="color: #0022ff"></i>
 						    {% endif %}
-						    {% if(user.roles is defined and "ROLE_ADMIN" in user.roles) %}<i class="fas fa-user-cog"></i>{% endif %}
-						    {% if(user.roles is defined and "ROLE_TEACHER" in user.roles) %}<i class="fas fa-chalkboard-teacher"></i>{% endif %}
-						    {% if(user.roles is defined and "ROLE_CLUB_MANAGER" in user.roles) %}<i class="fas fa-cube"></i>{% endif %}
-						    {% if(user.login is defined) %}<i class="fas fa-key"></i>{% endif %}
+						    {% if(user.roles is defined and "ROLE_ADMIN" in user.roles) %}<i class="fas fa-user-cog" title="Administrateur"></i>{% endif %}
+						    {% if(user.roles is defined and "ROLE_TEACHER" in user.roles) %}<i class="fas fa-chalkboard-teacher" title="Professeur"></i>{% endif %}
+						    {% if(user.roles is defined and "ROLE_CLUB_MANAGER" in user.roles) %}<i class="fas fa-cube" title="Gestionnaire de club"></i>{% endif %}
+						    {% if(user.login is defined) %}<i class="fas fa-key" title="Peut s'authentifier"></i>{% endif %}
 						</td>
 						<td scope="row" class="deletetext-{{ user.uuid }}">
 						    {{ user.lastname }} {{ user.firstname }}
@@ -67,6 +97,19 @@
             	</div>
             </div>
         </div> 
+        
+        <div class="row" style="flex-wrap: nowrap;">
+        	<div class="col-6 row" style="flex-wrap: nowrap;">
+            	<label style="margin: 10px">Page</label>
+            	{% if(users._links.previous.href is defined) %}
+            		<button class="btn btn-info btnpagenextorprevious" type="button" style="margin: 10px" data-url="{{ users._links.previous.href|replace({'/api': ''}) }}"><i class="fas fa-angle-left"></i></button>
+            	{% endif %}
+            	<label style="margin: 10px">{{ users.page }}</label>
+            	{% if(users._links.next.href is defined) %}
+            		<button class="btn btn-info btnpagenextorprevious" type="button" style="margin: 10px" data-url="{{ users._links.next.href|replace({'/api': ''}) }}"><i class="fas fa-angle-right"></i></button>
+            	{% endif %}
+			</div>
+        </div>
                
         <div class="row" style="flex-wrap: nowrap;">
             <div class="col-sm-10">

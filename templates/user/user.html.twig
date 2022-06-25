@@ -43,7 +43,13 @@
                 </div>
                 <div class="invalid-feedback" id="txtvalid-address"></div>       	
             </div>
-
+            <div class="form-group row slimmargin">
+                <label for="input-birthday" class="col-sm-1 col-form-label">Naissance</label>
+                <div class="col-sm-10">
+                	<input type="text" class="form-control" id="input-birthday" name="birthday" value="{% if(user.birthday is defined) %}{{ user.birthday.date_fr }}{% endif %}"/>
+                    <div class="invalid-feedback" id="txtvalid-birthday"></div>       	
+                </div>
+            </div>
             <div class="form-group row slimmargin">
                 <label for="input-address" class="col-sm-1 col-form-label">Adresse</label>
                 <div class="col-sm-10">
@@ -151,6 +157,15 @@
                     <div class="invalid-feedback" id="txtvalid-uuid"></div>       	
                 </div>
             </div>
+            {% if(user.login is defined) %}
+                <div class="form-group row slimmargin">
+                    <label for="input-login" class="col-sm-1 col-form-label">Identifiant</label>
+                    <div class="col-sm-10">
+                    	<input type="text" class="form-control" id="input-login" name="login" value="{{ user.login }}"/>
+                        <div class="invalid-feedback" id="txtvalid-login"></div>       	
+                    </div>
+                </div>
+            {% endif %}
 
 
             <div class="row" style="flex-wrap: nowrap;">

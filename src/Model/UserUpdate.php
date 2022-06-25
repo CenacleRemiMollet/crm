@@ -106,10 +106,23 @@ class UserUpdate
     {
         $this->firstname = $firstname;
     }
-    
+ 
     public function getBirthday()
     {
         return $this->birthday;
+    }
+        
+    public function getBirthdayDateTime():? \DateTimeInterface
+    {
+        if($this->birthday === null) {
+            return null;
+        }
+        $date = new \DateTime();
+        if (preg_match("/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/", $this->birthday, $matches)) {
+            $date->setDate(intval($matches[3]), intval($matches[2]), intval($matches[1]));
+            return $date;
+        }
+        throw new \Exception("Never happen !");
     }
     
     public function setBirthday($birthday)

@@ -70,6 +70,16 @@ class UserController extends AbstractController
      *             type="string"
      *         )
      *     ),
+	 *     @OA\Parameter(
+     *         description="pattern filter",
+     *         in="query",
+     *         name="q",
+     *         required=false,
+     *         @OA\Schema(
+     *             format="string",
+     *             type="string"
+     *         )
+     *     ),
 	 *     @OA\Response(
 	 *         response="200",
 	 *         description="Successful",
@@ -85,20 +95,18 @@ class UserController extends AbstractController
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $pager = new Pager($request);
+	    $q = $request->query->get('q');
 
 		$account = $this->getUser();
 		$users = array();
 		if($this->isGranted(Roles::ROLE_ADMIN)) {
 		    $users = $doctrine->getManager()
 				->getRepository(User::class)
-				->findBy([], [
-					'lastname' => 'ASC',
-					'firstname' => 'ASC'
-				], $pager->getElementByPage() + 1, $pager->getOffset());
+				->findInAll(null, $q, $pager->getOffset(), $pager->getElementByPage() + 1);
 		} elseif($this->isGranted(Roles::ROLE_CLUB_MANAGER) || $this->isGranted(Roles::ROLE_TEACHER)) {
 		    $users = $doctrine->getManager()
 				->getRepository(User::class)
-				->findInMyClubs($account->getId(), null, $pager->getOffset(), $pager->getElementByPage() + 1);
+				->findInMyClubs($account->getId(), null, $q, $pager->getOffset(), $pager->getElementByPage() + 1);
 		} elseif($account !== null) {
 		    $users = array($account->getUser());
 		} else {
@@ -307,6 +315,7 @@ class UserController extends AbstractController
 	    $entityUpdater->update('lastname', $userToUpdate->getLastname(), $user->getLastname(), function($v) use($user) { $user->setName($v); });
 	    $entityUpdater->update('firstname', $userToUpdate->getFirstname(), $user->getFirstname(), function($v) use($user) { $user->setFirstname($v); });
 	    $entityUpdater->update('sex', $userToUpdate->getSex(), $user->getSex(), function($v) use($user) { $user->setSex($v); });
+	    $entityUpdater->update('birthday', $userToUpdate->getBirthdayDateTime(), $user->getBirthday(), function($v) use($user) { $user->setBirthday($v); });
  	    $entityUpdater->update('address', $userToUpdate->getAddress(), $user->getAddress(), function($v) use($user) { $user->setAddress($v); });
  	    $entityUpdater->update('city', $userToUpdate->getCity(), $user->getCity(), function($v) use($user) { $user->setCity($v); });
  	    $entityUpdater->update('zipcode', $userToUpdate->getZipcode(), $user->getZipcode(), function($v) use($user) { $user->setZipcode($v); });

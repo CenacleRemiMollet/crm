@@ -29,8 +29,9 @@ class BirthdayValidator extends ConstraintValidator
 			$maxDate->sub(new \DateInterval('P2Y'));
 			$minDate = new \DateTime("now");
 			$minDate->sub(new \DateInterval('P100Y'));
-			$dateLocalizedEN = $matches[2].'/'.$matches[1].'/'.$matches[3];
-			$date = new \DateTime($dateLocalizedEN);
+			//$dateLocalizedEN = $matches[2].'/'.$matches[1].'/'.$matches[3];
+			$date = new \DateTime();
+			$date->setDate(intval($matches[3]), intval($matches[2]), intval($matches[1]));
 			if($maxDate < $date) {
 				$this->context->buildViolation($constraint->tooYoungMessage)
 				->setParameter('{{ string }}', $maxDate->format('d/m/Y'))

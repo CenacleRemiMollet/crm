@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use App\Security\Roles;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,39 +16,58 @@ use App\Security\Roles;
  * @method User[]	findAll()
  * @method User[]	findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository
+class UserRepository extends ServiceEntityRepository implements LoggerAwareInterface
 {
-	public function __construct(ManagerRegistry $registry)
+	
+    private LoggerInterface $logger;
+    
+    public function __construct(ManagerRegistry $registry)
 	{
 		parent::__construct($registry, User::class);
 	}
 
-	public function findInAll($uuid = null, $offset = 0, $limit = 20)
+	public function setLogger(LoggerInterface $logger): void
+	{
+	    $this->logger = $logger;
+	}
+	
+	public function findInAll($uuid = null, $q = null, $offset = 0, $limit = 20)
 	{
 		$sql = $this->prepareUserAccountSelect()
 			  ." FROM user u"
 			  ."  LEFT JOIN account a ON a.user_id = u.id";
-		if($uuid) {
-			$sql .= " WHERE u.uuid = :uuid";
-		}
+	    if($uuid !== null && $q !== null) {
+	        $sql .= " WHERE u.uuid = :uuid AND ".$this->appendFilter();
+	    } elseif($uuid !== null) {
+	        $sql .= " WHERE u.uuid = :uuid";
+	    } elseif($q !== null) {
+	        $sql .= " WHERE ".$this->appendFilter();
+	    }
 		$sql .= " ORDER BY lastname ASC, firstname ASC";
 		$sql .= " LIMIT ".$offset.", ".$limit;
+		//$this->logger->debug($sql);
 
 		$rsm = $this->prepareUserAccountMapping();
 		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
 		if($uuid) {
 			$query->setParameter('uuid', $uuid);
 		}
+		if($q) {
+		    $query->setParameter('query', '%'.$q.'%');
+		}
 		return $query->getResult();
 	}
 
-	public function findInMyClubs($accountId, $uuid = null, $offset = 0, $limit = 20)
+	public function findInMyClubs($accountId, ?string $uuid = null, ?string $q = null, $offset = 0, $limit = 20)
 	{
 		$sql = $this->prepareUserAccountSelect()
 			  .$this->joinInMyClubs()
 			  ." WHERE act.id = :accountId";
 		if($uuid) {
 			$sql = $sql." AND u.uuid = :uuid";
+		}
+		if($q) {
+		    $sql = $sql." AND ".$this->appendFilter();
 		}
 		$sql .= " ORDER BY lastname ASC, firstname ASC";
 		$sql .= " LIMIT ".$offset.", ".$limit;
@@ -56,6 +77,9 @@ class UserRepository extends ServiceEntityRepository
 		$query->setParameter('accountId', $accountId);
 		if($uuid) {
 			$query->setParameter('uuid', $uuid);
+		}
+		if($q) {
+		    $query->setParameter('query', '%'.$q.'%');
 		}
 		return $query->getResult();
 	}
@@ -135,6 +159,17 @@ class UserRepository extends ServiceEntityRepository
 		$rsm->addFieldResult('a', 'roles', 'roles');
 		$rsm->addFieldResult('a', 'has_access', 'has_access');
 		return $rsm;
+	}
+	
+	private function appendFilter(): string
+	{
+	   return "(remove_accents(lower(lastname)) LIKE :query"
+	        ."    OR remove_accents(lower(firstname)) LIKE :query"
+	        ."    OR remove_accents(lower(mails)) LIKE :query"
+	        ."    OR remove_accents(lower(address)) LIKE :query"
+            ."    OR remove_accents(lower(city)) LIKE :query"
+            ."    OR remove_accents(lower(nationality)) LIKE :query"
+            ."    OR remove_accents(lower(login)) LIKE :query)";
 	}
 
 }
