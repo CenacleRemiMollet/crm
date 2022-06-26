@@ -176,8 +176,9 @@ INSERT INTO account(user_id, login, password, roles, has_access)
 
 -- **** USER_LESSON_SUBSCRIBE ****
 
-INSERT INTO user_club_subscribe(user_id, club_id, roles)
- SELECT u.id AS user_id,
+INSERT INTO user_club_subscribe(uuid, user_id, club_id, roles)
+ SELECT concat(lower(lpad(conv(floor(rand()*pow(36,8)), 10, 36), 8, 0)), lower(lpad(conv(floor(rand()*pow(36,8)), 10, 36), 8, 0))) AS uuid,
+        u.id AS user_id,
         c.id AS club_id,
         concat('["', if(a.user_id IS NOT NULL AND role = 'ROLE_CLUB_MANAGER', 'ROLE_CLUB_MANAGER', 'ROLE_STUDENT'), '"]') AS roles
   FROM (
@@ -222,11 +223,11 @@ INSERT INTO user_club_subscribe(user_id, club_id, roles)
   
 -- **** << DROP temporary tables >> ****
 
-DROP TABLE zzmigr_club;
---DROP TABLE zzmigr_club_location;
---DROP TABLE zzmigr_club_lesson;
-DROP TABLE zzmigr_user;
-DROP TABLE zzmigr_account;
+--DROP TABLE zzmigr_club;
+-- xx DROP TABLE zzmigr_club_location;
+-- xx DROP TABLE zzmigr_club_lesson;
+--DROP TABLE zzmigr_user;
+--DROP TABLE zzmigr_account;
 
 
 

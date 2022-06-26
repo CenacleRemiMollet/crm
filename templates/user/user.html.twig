@@ -157,6 +157,37 @@
                     <div class="invalid-feedback" id="txtvalid-uuid"></div>       	
                 </div>
             </div>
+            {% if user.subscribes is defined %}
+            	{% for subscribe in user.subscribes %}
+                    <div class="form-group row slimmargin border" style="flex-wrap: nowrap;">
+                     	<div class="col-sm-2">
+                     		<div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="subscribe-{{ subscribe.uuid }}-role_student" value="" id="input-role_student-{{ subscribe.uuid }}" {% if('ROLE_STUDENT' in subscribe.roles) %}checked{% endif %}>
+                                <label class="form-check-label" for="input-role_student-{{ subscribe.uuid }}">élève</label>
+                            </div>
+                     		<div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="subscribe-{{ subscribe.uuid }}-role_teacher" value="" id="input-role_teacher-{{ subscribe.uuid }}" {% if('ROLE_TEACHER' in subscribe.roles) %}checked{% endif %}>
+                                <label class="form-check-label" for="input-role_teacher-{{ subscribe.uuid }}">professeur</label>
+                            </div>
+                     		<div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="subscribe-{{ subscribe.uuid }}-role_club_manager" value="" id="input-club_manager-{{ subscribe.uuid }}" {% if('ROLE_CLUB_MANAGER' in subscribe.roles) %}checked{% endif %}>
+                                <label class="form-check-label" for="input-club_manager-{{ subscribe.uuid }}">gestionnaire de club</label>
+                            </div>
+                      	</div>
+                      	<div class="col-sm-10">
+                        	<select class="custom-select" id="input-club_uuid-{{ subscribe.uuid }}" name="subscribe-{{ subscribe.uuid }}-club_uuid">
+                    			{% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
+                    				<option value="{{ club.uuid }}" {% if(subscribe.club.uuid == club.uuid) %}selected{% endif %}>{% for location in club.locations %}{{ location.city }}{% if not loop.last %}, {% endif %}{% endfor %} ({{ club.name }})</option>
+                    			{% endfor %}
+                        	</select>
+                            <div class="invalid-feedback" id="txtvalid-club_uuid"></div>       	
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="form-group row slimmargin border" style="flex-wrap: nowrap;">
+            	<button class="btn btn-info" type="button" style="margin: 10px"><i class="fas fa-plus"></i> Ajouter un club</button>
+            </div>
             {% if(user.login is defined) %}
                 <div class="form-group row slimmargin">
                     <label for="input-login" class="col-sm-1 col-form-label">Identifiant</label>
@@ -165,8 +196,16 @@
                         <div class="invalid-feedback" id="txtvalid-login"></div>       	
                     </div>
                 </div>
+                <div class="form-group row slimmargin">
+                    <label class="col-sm-1 col-form-label" for="input_admin">Administrateur</label>
+                    <div class="col-sm-10">
+	                    <input class="form-check-input" type="checkbox" name="admin" id="input_admin" style="margin-left: 0px" {% if('ROLE_ADMIN' in user.roles) %}checked{% endif %}>
+                        <div class="invalid-feedback" id="txtvalid-admin"></div>       	
+                    </div>
+                </div>
             {% endif %}
-
+            
+			<br><br>
 
             <div class="row" style="flex-wrap: nowrap;">
                 <div class="col-sm-10">

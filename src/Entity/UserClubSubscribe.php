@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Util\StringUtils;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserClubSubscribeRepository")
@@ -17,11 +18,22 @@ class UserClubSubscribe
 	private $id;
 
 	/**
+	 * @ORM\Column(type="string", length=64)
+	 */
+	private $uuid;
+	
+	/**
 	 * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="userClubSubscribes")
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $user;
-
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Club", inversedBy="userClubSubscribes")
+	 * @ORM\JoinColumn(nullable=false)
+	 */
+	private $club;
+	
 	/**
 	 * @ORM\Column(type="json")
 	 */
@@ -37,17 +49,27 @@ class UserClubSubscribe
 	 */
 	private $unsubscribe_date;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Club", inversedBy="userClubSubscribes")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $club;
-
-	public function getId(): ?int
+    public function __construct()
+    {
+        $this->uuid = StringUtils::random_str(16);
+     }
+    
+    public function getId(): ?int
 	{
 		return $this->id;
 	}
 
+	public function getUuid(): ?string
+	{
+	    return $this->uuid;
+	}
+	
+	public function setUuid(string $uuid): self
+	{
+	    $this->uuid = $uuid;
+	    return $this;
+	}
+	
 	public function getUser(): ?User
 	{
 		return $this->user;

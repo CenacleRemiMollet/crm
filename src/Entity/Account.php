@@ -76,7 +76,6 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface, Pass
     public function setLogin(string $login): self
     {
         $this->login = $login;
-
         return $this;
     }
 
@@ -114,10 +113,14 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface, Pass
         return array_unique($roles);
     }
 
+    public function getDeclaredRoles(): array
+    {
+        return array_unique($this->roles);
+    }
+    
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
     }
 
@@ -132,7 +135,6 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface, Pass
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
     

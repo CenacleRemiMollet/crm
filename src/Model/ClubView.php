@@ -92,7 +92,7 @@ class ClubView
 	 */
 	private $prices;
 	
-	public function __construct(Club $club, $locations, $prices)
+	public function __construct(Club $club, $locations = null, $prices = null)
 	{
 		$this->uuid = $club->getUuid();
 		$this->name = $club->getName();

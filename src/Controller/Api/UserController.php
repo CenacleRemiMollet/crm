@@ -102,7 +102,7 @@ class UserController extends AbstractController
 		if($this->isGranted(Roles::ROLE_ADMIN)) {
 		    $users = $doctrine->getManager()
 				->getRepository(User::class)
-				->findInAll(null, $q, $pager->getOffset(), $pager->getElementByPage() + 1);
+				->findInAll(null, $q, $pager->getOffset(), $pager->getElementByPage() + 2);
 		} elseif($this->isGranted(Roles::ROLE_CLUB_MANAGER) || $this->isGranted(Roles::ROLE_TEACHER)) {
 		    $users = $doctrine->getManager()
 				->getRepository(User::class)
@@ -112,6 +112,7 @@ class UserController extends AbstractController
 		} else {
 			throw $this->createAccessDeniedException();
 		}
+		//$this->logger->debug('count('.count($users).') > pager.getElementByPage('.$pager->getElementByPage().')');
 		
 		$pagination = new Pagination(
 		    $this->generateUrl('api_get_users'),
@@ -163,10 +164,9 @@ class UserController extends AbstractController
 	public function getAUser(string $user_uuid): Response
 	{
 	    $user = $this->findUserOrAccessDenied($user_uuid);
-	    
 	    $hateoas = HateoasBuilder::create()->build();
 	    return new Response(
-	        $hateoas->serialize(new UserView($user), 'json'),
+	        $hateoas->serialize(new UserView($user, true), 'json'),
 	        Response::HTTP_OK,
 	        array('Content-Type' => 'application/hal+json'));
 	}

@@ -41,6 +41,11 @@ class Pagination
 	private $size;
 
 	/**
+	 * @OA\Property(type="integer", format="int32", example="20")
+	 */
+	private $count_elements;
+	
+	/**
 	 * @Serializer\Exclude
 	 */
 	private $hasNext;
@@ -69,6 +74,7 @@ class Pagination
 	    $this->page = $pager->getPage();
 	    $this->size = $pager->getElementByPage();
 	    $this->hasNext = count($data) > $pager->getElementByPage();
+	    $this->count_elements = count($this->_embedded);
 	    $this->hasPrevious = $this->page > 1;
 		$this->queryParameters = $queryParameters;
 	}

@@ -14,6 +14,7 @@ use App\Entity\Club;
 use App\Security\ClubAccess;
 use App\Entity\EntityFinder;
 use Symfony\Component\HttpFoundation\Response;
+use App\Security\Roles;
 
 class UserController extends AbstractController
 {
@@ -43,16 +44,18 @@ class UserController extends AbstractController
 	 */
 	public function getAUser(string $user_uuid)
 	{
-	    $response = $this->forward('App\Controller\Api\UserController::getAUser', ["user_uuid" => $user_uuid]);
-	    if($response->getStatusCode() != 200) {
+	    $userResponse = $this->forward('App\Controller\Api\UserController::getAUser', ["user_uuid" => $user_uuid]);
+	    if($userResponse->getStatusCode() != 200) {
 	        return new Response(
-	            $response->getContent(),
-	            $response->getStatusCode(),
-	            $response->headers->all()
-	            );
+	            $userResponse->getContent(),
+	            $userResponse->getStatusCode(),
+	            $userResponse->headers->all());
 	    }
+	    $clubsResponse = $this->forward('App\Controller\Api\ClubController::listActive');
 	    return $this->render('user/user.html.twig', [
-	        'user' => json_decode($response->getContent())
+	        'user' => json_decode($userResponse->getContent()),
+	        'clubs' => json_decode($clubsResponse->getContent()),
+	        'roles' => Roles::ROLES
 	    ]);
 	}
 	

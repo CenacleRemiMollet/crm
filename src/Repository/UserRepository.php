@@ -45,7 +45,6 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 	    }
 		$sql .= " ORDER BY lastname ASC, firstname ASC";
 		$sql .= " LIMIT ".$offset.", ".$limit;
-		//$this->logger->debug($sql);
 
 		$rsm = $this->prepareUserAccountMapping();
 		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
@@ -55,6 +54,8 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 		if($q) {
 		    $query->setParameter('query', '%'.$q.'%');
 		}
+		
+		//$this->logger->debug($query->getSQL());
 		return $query->getResult();
 	}
 

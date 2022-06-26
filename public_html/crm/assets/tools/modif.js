@@ -11,6 +11,9 @@ $(document).ready(function(){
 		var urlUpdate = updateButton.attr('data-url-update');
 		var urlOnSuccess = updateButton.attr('data-url-onsuccess');
 		
+		//console.log(JSON.stringify(convertFormToJSON($('form#myForm'))));
+		//return;
+		
 		$.ajax({
     		type: 'PATCH',
     		url: urlUpdate,
