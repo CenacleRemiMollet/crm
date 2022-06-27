@@ -158,8 +158,9 @@
                 </div>
             </div>
             {% if user.subscribes is defined %}
+            	<label for="input-uuid" class="col-sm-12 col-form-label">Lié(e) au(x) club(s) :</label>
             	{% for subscribe in user.subscribes %}
-                    <div class="form-group row slimmargin border" style="flex-wrap: nowrap;">
+                    <div class="form-group row slimmargin border divsubscribe" style="flex-wrap: nowrap;" >
                      	<div class="col-sm-2">
                      		<div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="subscribe-{{ subscribe.uuid }}-role_student" value="" id="input-role_student-{{ subscribe.uuid }}" {% if('ROLE_STUDENT' in subscribe.roles) %}checked{% endif %}>
@@ -180,13 +181,43 @@
                     				<option value="{{ club.uuid }}" {% if(subscribe.club.uuid == club.uuid) %}selected{% endif %}>{% for location in club.locations %}{{ location.city }}{% if not loop.last %}, {% endif %}{% endfor %} ({{ club.name }})</option>
                     			{% endfor %}
                         	</select>
-                            <div class="invalid-feedback" id="txtvalid-club_uuid"></div>       	
+                            <div class="invalid-feedback" id="txtvalid-club_uuid"></div>
+                            <div style="float: right;">
+                            	<button class="btn btn-danger btnremovesubscribe" type="button" style="margin: 5px"><i class="fas fa-trash"></i></button>
+                            </div>	
                         </div>
                     </div>
                 {% endfor %}
             {% endif %}
+            <div class="form-group row slimmargin border divsubscribereference divsubscribe" style="flex-wrap: nowrap; display: none; visibility: hidden" >
+             	<div class="col-sm-2">
+             		<div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="subscribe-${subscid}-role_student" value="" id="input-role_student-${subscid}">
+                        <label class="form-check-label" for="input-role_student-${subscid}">élève</label>
+                    </div>
+             		<div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="subscribe-${subscid}-role_teacher" value="" id="input-role_teacher-${subscid}">
+                        <label class="form-check-label" for="input-role_teacher-${subscid}">professeur</label>
+                    </div>
+             		<div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="subscribe-${subscid}-role_club_manager" value="" id="input-club_manager-${subscid}">
+                        <label class="form-check-label" for="input-club_manager-${subscid}">gestionnaire de club</label>
+                    </div>
+              	</div>
+              	<div class="col-sm-10">
+                	<select class="custom-select" id="input-club_uuid-${subscid}" name="subscribe-${subscid}-club_uuid">
+            			{% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
+            				<option value="{{ club.uuid }}">{% for location in club.locations %}{{ location.city }}{% if not loop.last %}, {% endif %}{% endfor %} ({{ club.name }})</option>
+            			{% endfor %}
+                	</select>
+                    <div class="invalid-feedback" id="txtvalid-club_uuid"></div>
+                    <div style="float: right;">
+                    	<button class="btn btn-danger btnremovesubscribe" type="button" style="margin: 5px"><i class="fas fa-trash"></i></button>
+                    </div>	
+                </div>
+            </div>
             <div class="form-group row slimmargin border" style="flex-wrap: nowrap;">
-            	<button class="btn btn-info" type="button" style="margin: 10px"><i class="fas fa-plus"></i> Ajouter un club</button>
+            	<button class="btn btn-info btnaddsubscribe" type="button" style="margin: 10px"><i class="fas fa-plus"></i> Ajouter un club</button>
             </div>
             {% if(user.login is defined) %}
                 <div class="form-group row slimmargin">
@@ -224,4 +255,9 @@
 
 {% block javascripts_end_body %}
 	<script src="{{ app.request.baseUrl }}/assets/tools/modif.js"></script>
+	<script src="{{ app.request.baseUrl }}/assets/user/modif.js"></script>
+	<script>
+		//var modifyDebug = true; // used by tools/modif.js
+		//var modifyRequestDebug = true; // used by tools/modif.js
+	</script>
 {% endblock %}

@@ -41,6 +41,7 @@ menu:
     configure-locations: 
     configure-prices: 
     configure-lessons: 
+    configure-users: 
   the master: "the master"
   disciplines: "disciplines"
   club list: "club list"

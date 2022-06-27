@@ -41,6 +41,7 @@ menu:
     configure-locations: "Gérer les adresses"
     configure-prices: "Gérer les tarifs"
     configure-lessons: "Gérer les horaires"
+    configure-users: "Gérer les utilisateurs de ce club"
   the master: "le maître"
   disciplines: "les disciplines"
   club list: "liste des clubs"

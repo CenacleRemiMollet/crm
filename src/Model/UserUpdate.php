@@ -4,6 +4,11 @@ namespace App\Model;
 use App\Validator\Constraints as AcmeAssert;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Util\RequestUtil;
+use Symfony\Component\HttpFoundation\Request;
+use App\Util\NestedValidation;
+use App\Entity\UserClubSubscribe;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * @OA\Schema(
@@ -15,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     )
  * )
  */
-class UserUpdate
+class UserUpdate implements NestedValidation
 {
 
     /**
@@ -86,6 +91,20 @@ class UserUpdate
      * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
      */
     private $mails;
+    
+    /**
+ 	 * @Assert\Type("string")
+	 * @Assert\Length(min=3, max = 180)
+	 * @Assert\Regex(pattern="/[A-Za-z0-9_@\\.]{3,64}/")
+	 * @OA\Property(type="string", example="j.doe", pattern="^[A-Za-z0-9_@\\.]{3,64}$")
+     */
+    private $login;
+    
+    /**
+     * @var UserClubSubscribeUpdate[]
+     * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/UserClubSubscribeUpdate"))
+     */
+    private $subscribes;
     
     public function getLastname()
     {
@@ -226,6 +245,35 @@ class UserUpdate
         $this->mails = $mails;
         return $this;
     }
-	
+
+    public function getLogin()
+    {
+        return $this->login;
+    }
+    
+    public function setLogin($login)
+    {
+        $this->login = $login;
+    }
+    
+    public function getSubscribes()
+    {
+        return $this->subscribes;
+    }
+    
+    public function setSubscribes($subscribes)
+    {
+        $this->subscribes = $subscribes;
+    }
+ 
+    public function validateNested(RequestUtil $requestUtil): ConstraintViolationListInterface
+    {
+        // subscribes
+        if(empty($this->subscribes)) {
+            return null;
+        }
+        return $requestUtil->findErrors($this->subscribes); // 400
+    }
+    
 }
 

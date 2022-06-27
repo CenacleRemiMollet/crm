@@ -35,6 +35,7 @@
                     	<a class="dropdown-item" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/locations"><li class="link">{% trans %}menu.club.configure-locations{% endtrans %}</li></a>
                     	<a class="dropdown-item" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/prices"><li class="link">{% trans %}menu.club.configure-prices{% endtrans %}</li></a>
                     	<a class="dropdown-item" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons"><li class="link">{% trans %}menu.club.configure-lessons{% endtrans %}</li></a>
+                    	<a class="dropdown-item" href="{{ app.request.baseUrl }}/users?club={{ club.uuid }}"><li class="link">{% trans %}menu.club.configure-users{% endtrans %}</li></a>
                     	{#<a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.configure-ui{% endtrans %}</li></a>
                     	<a class="dropdown-item" href="#"><li class="link">{% trans %}menu.club.configure-details{% endtrans %}</li></a>#}
                     {% endif %}

@@ -10,19 +10,28 @@ $(document).ready(function(){
 		var updateButton = $('.btnmodify');
 		var urlUpdate = updateButton.attr('data-url-update');
 		var urlOnSuccess = updateButton.attr('data-url-onsuccess');
+		var data = convertFormToJSON($('form#myForm'));
 		
-		//console.log(JSON.stringify(convertFormToJSON($('form#myForm'))));
-		//return;
+		if(typeof modifyJsonReformat === "function"){
+			data = modifyJsonReformat(data);
+		}
+		if(typeof modifyDebug === "boolean" && modifyDebug){
+			console.log(data);
+			return;
+		}
 		
 		$.ajax({
     		type: 'PATCH',
     		url: urlUpdate,
     		contentType: 'application/json',
-    		data: JSON.stringify(convertFormToJSON($('form#myForm'))),
+    		data: JSON.stringify(data),
     		cache: false,
     		dataType: 'json',
     		beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
-    		success: function(response){
+    		success: function(response) {
+				if(typeof modifyRequestDebug === "boolean" && modifyRequestDebug){
+					return;
+				}
     			location.assign(urlOnSuccess);
     		},
     		error: function(data) {
@@ -84,12 +93,14 @@ function convertFormToJSON(form) {
 	return form
 			.serializeArray()
 			.reduce(function (json, { name, value }) {
-		var format = $('input[name=' + name + ']').attr('data-format');
-		if('float' == format) {
-			value = value ? parseFloat(value) : null;
-		}
-		if(value != null) {
-			Object.assign(json, {[name]: value});
+		if(name.indexOf('$') < 0) {
+			var format = $('input[name=' + name + ']').attr('data-format');
+			if('float' == format) {
+				value = value ? parseFloat(value) : null;
+			}
+			if(value != null) {
+				Object.assign(json, {[name]: value});
+			}
 		}
 		return json;
     }, {});

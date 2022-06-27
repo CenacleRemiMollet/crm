@@ -29,6 +29,10 @@ use App\Model\UserUpdate;
 use App\Entity\Events;
 use App\Entity\Account;
 use App\Model\AccountView;
+use App\Entity\UserClubSubscribe;
+use App\Util\StringUtils;
+use App\Entity\Club;
+use App\Model\UserClubSubscribeUpdate;
 
 
 class UserController extends AbstractController
@@ -96,13 +100,14 @@ class UserController extends AbstractController
 	    
 	    $pager = new Pager($request);
 	    $q = $request->query->get('q');
+	    $club_uuid = $request->query->get('club');
 
 		$account = $this->getUser();
 		$users = array();
 		if($this->isGranted(Roles::ROLE_ADMIN)) {
 		    $users = $doctrine->getManager()
 				->getRepository(User::class)
-				->findInAll(null, $q, $pager->getOffset(), $pager->getElementByPage() + 2);
+				->findInAll(null, $club_uuid, $q, $pager->getOffset(), $pager->getElementByPage() + 2);
 		} elseif($this->isGranted(Roles::ROLE_CLUB_MANAGER) || $this->isGranted(Roles::ROLE_TEACHER)) {
 		    $users = $doctrine->getManager()
 				->getRepository(User::class)
@@ -114,6 +119,10 @@ class UserController extends AbstractController
 		}
 		//$this->logger->debug('count('.count($users).') > pager.getElementByPage('.$pager->getElementByPage().')');
 		
+		$queryParameters = [];
+		if($club_uuid != null) {
+		    $queryParameters['club'] = $club_uuid;
+		}
 		$pagination = new Pagination(
 		    $this->generateUrl('api_get_users'),
 		    $pager,
@@ -121,7 +130,7 @@ class UserController extends AbstractController
 		    function($u) {
 		      return new UserView($u);
 		    },
-		    []);
+		    $queryParameters);
 		
 		$hateoas = HateoasBuilder::create()->build();
 		return new Response(
@@ -323,10 +332,69 @@ class UserController extends AbstractController
  	    $entityUpdater->update('phone_emergency', $userToUpdate->getPhoneEmergency(), $user->getPhoneEmergency(), function($v) use($user) { $user->setPhoneEmergency($v); });
  	    $entityUpdater->update('nationality', $userToUpdate->getNationality(), $user->getNationality(), function($v) use($user) { $user->setNationality($v); });
  	    $entityUpdater->update('mails', $userToUpdate->getMails(), $user->getMails(), function($v) use($user) { $user->setMails($v); });
-	    return $entityUpdater->toResponse($user, 'User updated', ['id' => $user->getId()]);
+ 	    
+ 	    $this->updateSubscribes($user, $userToUpdate->getSubscribes(), $entityUpdater);
+ 	   
+ 	    return $entityUpdater->toResponse($user, 'User updated', ['id' => $user->getId()]);
 	}
 	
-
+	
+	private function updateSubscribes(User $user, $subscribes, EntityUpdater $entityUpdater)
+	{
+	    if(empty($subscribes)) {
+	        return;
+	    }
+	    $doctrine = $this->container->get('doctrine');
+	    $entityFinder = new EntityFinder($doctrine);
+	    
+	    $subscMap = array();
+	    foreach($subscribes as &$subscribe) { // map from request
+	        $uuid = $subscribe->getUuid();
+	        if(empty($uuid) || strlen(trim($uuid)) < 4) {
+	            $uuid = StringUtils::random_str(16);
+	        }
+	        $subscMap[$uuid] = $subscribe;
+	    }
+	    
+	    foreach($user->getUserClubSubscribes() as &$userClubSubscribe) {
+	        $this->logger->debug('Update user : '.$userClubSubscribe->getUuid());
+	        if( ! array_key_exists($userClubSubscribe->getUuid(), $subscMap)) { // to delete
+	            $this->logger->debug('Update user : remove UserClubSubscribe('.$userClubSubscribe->getId().')');
+	            $user->removeUserClubSubscribe($userClubSubscribe);
+	            continue;
+	        }
+	        $userSubscUpdate = $subscMap[$userClubSubscribe->getUuid()];
+	        unset($subscMap[$userClubSubscribe->getUuid()]);
+	        $this->updateSubscribeEntity($entityFinder, $entityUpdater, $userClubSubscribe, $userSubscUpdate);
+	    }
+	    $this->logger->debug('Update user : add '.count($subscMap).' UserClubSubscribe');
+	    foreach($subscMap as $uuid => $userClubSubscribeUpdate) {
+	        $this->logger->debug('Update user : add UserClubSubscribe '.$uuid);
+	        $userClubSubscribe = new UserClubSubscribe();
+	        $userClubSubscribe->setUuid($uuid);
+	        $this->updateSubscribeEntity($entityFinder, $entityUpdater, $userClubSubscribe, $userClubSubscribeUpdate);
+	        $user->addUserClubSubscribe($userClubSubscribe);
+	    }
+	}
+	
+	
+	private function updateSubscribeEntity(EntityFinder $entityFinder, EntityUpdater $entityUpdater, UserClubSubscribe $userClubSubscribe, UserClubSubscribeUpdate $userClubSubscribeUpdate)
+	{
+	    $entityUpdater->update(
+	        'subsc-'.$userClubSubscribe->getUuid().'-club',
+	        $userClubSubscribeUpdate->getClubUuid(),
+	        $userClubSubscribe->getClub() !== null ? $userClubSubscribe->getClub()->getUuid() : null,
+	        function($v) use($userClubSubscribe, $entityFinder, $userClubSubscribeUpdate) {
+	            $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $userClubSubscribeUpdate->getClubUuid()]); // 404
+	            $userClubSubscribe->setClub($club);
+	        });
+	    $entityUpdater->update(
+	        'subsc-'.$userClubSubscribe->getUuid().'-roles',
+	        $userClubSubscribeUpdate->getRoles(),
+	        $userClubSubscribe->getRoles(),
+	        function($v) use($userClubSubscribe) { $userClubSubscribe->setRoles($v); });
+	}
+	
 	
 	private function findUserOrAccessDenied($user_uuid): User
 	{

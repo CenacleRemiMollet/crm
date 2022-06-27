@@ -112,7 +112,7 @@ class User
 	private $accounts;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\UserClubSubscribe", mappedBy="user", orphanRemoval=true)
+	 * @ORM\OneToMany(targetEntity="App\Entity\UserClubSubscribe", mappedBy="user", orphanRemoval=true, cascade={"persist"})
 	 */
 	private $userClubSubscribes;
 

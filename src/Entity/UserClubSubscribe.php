@@ -29,7 +29,7 @@ class UserClubSubscribe
 	private $user;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\Club", inversedBy="userClubSubscribes")
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Club", inversedBy="userClubSubscribes", cascade={"persist"})
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $club;
@@ -52,6 +52,7 @@ class UserClubSubscribe
     public function __construct()
     {
         $this->uuid = StringUtils::random_str(16);
+        $this->subscribe_date = new \DateTime();
      }
     
     public function getId(): ?int
@@ -83,7 +84,7 @@ class UserClubSubscribe
 
 	public function getRoles(): ?array
 	{
-		return array_unique($this->roles);
+	    return $this->roles !== null ? array_unique($this->roles) : null;
 	}
 
 	public function setRoles(array $roles): self

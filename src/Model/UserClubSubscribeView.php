@@ -22,7 +22,7 @@ class UserClubSubscribeView
     private $uuid;
     
     /**
-	 * @OA\Property(type="array", example="abcDEF654", @OA\Items(type="string"))
+	 * @OA\Property(type="array", example="ROLE_STUDENT", @OA\Items(type="string"))
 	 */
 	private $roles;
 	

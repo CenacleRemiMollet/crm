@@ -27,17 +27,49 @@ class RequestUtil
 
 	public function validate(Request $request, string $model)
 	{
-		$data = $request->getContent();
+	    $data = $request->getContent();
 		if ( ! $data) {
 			throw new BadRequestHttpException('Empty body.');
 		}
-
 		try {
-			$object = $this->serializer->deserialize($data, $model, 'json');
+		    $object = $this->serializer->deserialize($data, $model, 'json');
 		} catch (Exception $e) {
-			throw new BadRequestHttpException('Invalid body, '.$e->getMessage().' - '.$data);
+		    throw new BadRequestHttpException('Invalid body, '.$e->getMessage().' - '.$data);
 		}
+		
+		return $this->validateObject($object, $model);
+	}
 
+	public function validateObject($object, string $model)
+	{
+	    if(is_array($object)) {
+	        foreach($object as &$obj) {
+	            $this->valid($obj);
+	        }
+	    } else {
+	        $this->validOne($object);
+	    }
+	    
+	    return $object;
+	}
+	
+	public function findErrors($object)
+	{
+	    $errors = $this->validator->validate($object);
+	    if(is_array($object) || $object instanceof \Traversable) {
+	        foreach($object as &$o) {
+	            $this->nested($o, $errors);
+	        }
+	    } else {
+	        $this->nested($object, $errors);
+	    }
+	    return $errors;
+	}
+	
+	//*************************************************
+	
+	private function valid($object)
+	{
 		if(is_array($object)) {
 			foreach($object as &$obj) {
 				$this->valid($obj);
@@ -45,24 +77,27 @@ class RequestUtil
 		} else {
 			$this->validOne($object);
 		}
-
-		return $object;
 	}
 
-	private function valid($object) {
-		if(is_array($object)) {
-			foreach($object as &$obj) {
-				$this->valid($obj);
-			}
-		} else {
-			$this->validOne($object);
-		}
-	}
-
-	private function validOne($object) {
-		$errors = $this->validator->validate($object);
+	private function validOne($object)
+	{
+	    $errors = $this->findErrors($object);
 		if ($errors->count()) {
 			throw new ViolationException($this->violator->build($errors));
 		}
 	}
+
+	private function nested($object, $errors)
+	{
+	    if($object instanceof NestedValidation)
+	    {
+	        $nestedErrors = $object->validateNested($this);
+	        if( ! empty($nestedErrors)) {
+	            foreach ($nestedErrors as &$nestedError) {
+	                $errors->add($nestedError);
+	            }
+	        }
+	    }
+	}
+	
 }

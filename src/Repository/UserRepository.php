@@ -31,17 +31,25 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 	    $this->logger = $logger;
 	}
 	
-	public function findInAll($uuid = null, $q = null, $offset = 0, $limit = 20)
+	public function findInAll($uuid = null, $club_uuid = null, $q = null, $offset = 0, $limit = 20)
 	{
-		$sql = $this->prepareUserAccountSelect()
+	    $clauses = array();
+	    $sql = $this->prepareUserAccountSelect()
 			  ." FROM user u"
 			  ."  LEFT JOIN account a ON a.user_id = u.id";
-	    if($uuid !== null && $q !== null) {
-	        $sql .= " WHERE u.uuid = :uuid AND ".$this->appendFilter();
-	    } elseif($uuid !== null) {
-	        $sql .= " WHERE u.uuid = :uuid";
-	    } elseif($q !== null) {
-	        $sql .= " WHERE ".$this->appendFilter();
+		if($club_uuid !== null) {
+		    $sql .= "  JOIN user_club_subscribe ucs ON (ucs.user_id = u.id)"
+		           ."  JOIN club c ON c.id = ucs.club_id";
+		    array_push($clauses, "c.uuid = :club_uuid");
+		}
+	    if($uuid !== null) {
+	        array_push($clauses, "u.uuid = :uuid");
+	    }
+	    if($q !== null) {
+	        array_push($clauses, $this->appendFilter());
+	    }
+	    if( ! empty($clauses)) {
+	        $sql .= " WHERE ".implode(' AND ', $clauses);
 	    }
 		$sql .= " ORDER BY lastname ASC, firstname ASC";
 		$sql .= " LIMIT ".$offset.", ".$limit;
@@ -53,6 +61,9 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 		}
 		if($q) {
 		    $query->setParameter('query', '%'.$q.'%');
+		}
+		if($club_uuid) {
+		    $query->setParameter('club_uuid', $club_uuid);
 		}
 		
 		//$this->logger->debug($query->getSQL());
