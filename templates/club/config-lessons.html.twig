@@ -2,6 +2,7 @@
 
 
 {% block stylesheets2 %}
+	<link rel="stylesheet" href="{{ app.request.baseUrl }}/assets/tools/modif-list.css">
 {% endblock %}
 
 
@@ -26,9 +27,9 @@
     					<tr>
     						<td scope="row" class="deletetext-{{ lesson.uuid }}">{{ lesson.discipline }}{% if(lesson.age_level is defined) %}<br><i>{{ lesson.age_level }}</i>{% endif %}</td>
     						<td class="deletetext-{{ lesson.uuid }}">{{ lesson.day_of_week|trans }}<br>{{ lesson.start_time }} - {{ lesson.end_time }}</td>
-    						<td>
-    							<a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons/{{ lesson.uuid }}" role="button" style="margin: 10px" title="Modifier"><i class="fas fa-pencil-alt"></i></a>
-    							<button class="btn btn-danger btndelete" type="button" data-toggle="modal" data-target="#myModal" data-uuid="{{ lesson.uuid }}" style="margin: 10px" title="Supprimer"><i class="fas fa-trash"></i></button>
+    						<td class="row" style="flex-wrap: nowrap;">
+    							<a class="btn btn-warning btnupdel" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons/{{ lesson.uuid }}" role="button" style="margin: 10px" title="Modifier"><i class="fas fa-pencil-alt"></i></a>
+    							<button class="btn btn-danger btndelete btnupdel" type="button" data-toggle="modal" data-target="#myModal" data-uuid="{{ lesson.uuid }}" style="margin: 10px" title="Supprimer"><i class="fas fa-trash"></i></button>
     						</td>
     					</tr>
     				{% endfor %}

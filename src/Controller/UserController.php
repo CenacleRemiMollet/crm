@@ -34,8 +34,12 @@ class UserController extends AbstractController
 	{
 	    $response = $this->forward('App\Controller\Api\UserController::getUsers', ['request' => $request]);
 		$json = json_decode($response->getContent());
+		$clubsResponse = $this->forward('App\Controller\Api\ClubController::listActive');
+		// TODO get club by session
 		return $this->render('user/users.html.twig', [
-		    'users' => $json
+		    'users' => $json,
+		    'clubs' => json_decode($clubsResponse->getContent()),
+		    'roles' => Roles::ROLES,
 		]);
 	}
 

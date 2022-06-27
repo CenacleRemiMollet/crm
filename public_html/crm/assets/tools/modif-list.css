@@ -1,0 +1,11 @@
+
+.btnupdel{
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+@media screen and (max-width: 582px) {
+	.btnupdel{
+		margin: 3px;
+	}
+}

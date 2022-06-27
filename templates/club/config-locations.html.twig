@@ -2,6 +2,7 @@
 
 
 {% block stylesheets2 %}
+	<link rel="stylesheet" href="{{ app.request.baseUrl }}/assets/tools/modif-list.css">
 {% endblock %}
 
 
@@ -24,9 +25,9 @@
 					<tr>
 						<td scope="row" class="deletetext-{{ location.uuid }}">{{ location.name }}</td>
 						<td class="deletetext-{{ location.uuid }}">{{ location.city }}<br>{{ location.zipcode }}</td>
-						<td>
-							<a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/locations/{{ location.uuid }}" role="button" style="margin: 10px" title="Modifier"><i class="fas fa-pencil-alt"></i></a>
-							<button class="btn btn-danger btndelete" type="button" data-toggle="modal" data-target="#myModal" data-uuid="{{ location.uuid }}" style="margin: 10px" title="Supprimer"><i class="fas fa-trash"></i></button>
+						<td class="row" style="flex-wrap: nowrap;">
+							<a class="btn btn-warning btnupdel" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/locations/{{ location.uuid }}" role="button" style="margin: 10px" title="Modifier"><i class="fas fa-pencil-alt"></i></a>
+							<button class="btn btn-danger btndelete btnupdel" type="button" data-toggle="modal" data-target="#myModal" data-uuid="{{ location.uuid }}" style="margin: 10px" title="Supprimer"><i class="fas fa-trash"></i></button>
 						</td>
 					</tr>
 				{% endfor %}

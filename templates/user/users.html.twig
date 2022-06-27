@@ -2,6 +2,7 @@
 
 
 {% block stylesheets2 %}
+	<link rel="stylesheet" href="{{ app.request.baseUrl }}/assets/tools/modif-list.css">
 {% endblock %}
 
 
@@ -13,6 +14,27 @@
     		<div class="col-sm-10"><h5>Utilisateurs</h5></div>
     		<div><a class="btn btn-success" href="{{ app.request.baseUrl }}/user-new" role="button" style="margin: 10px" title="Ajouter un utilisateur"><i class="fas fa-plus"></i></a></div>
     	</div>
+    	<div class="row" style="flex-wrap: nowrap;">
+    		<div class="input-group mb-3">
+                <input type="text" class="form-control" id="input-search" placeholder="Rechercher" aria-label="Rechercher" aria-describedby="search" value="{% if(app.request.get('q') != null) %}{{ app.request.get('q') }}{% endif %}">
+                    <div class="input-group-append">
+                    <span class="input-group-text" id="search"><button class="btn btnsearch" type="button" style="padding: 0px"><i class="fas fa-search"></i></button></span>
+                </div>
+            </div>
+    	</div>
+    	{% if clubs|length > 2 %}
+            <div class="form-group row slimmargin">
+                <label for="filter-by-club" class="col-sm-2 col-form-label">Filtrer par club : </label>
+                <div class="col-sm-10">
+            	<select class="custom-select" id="filter-by-club" name="filter-by-club">
+            		<option value="" {% if app.request.get('club') == null %}selected{% endif %}><i>(tous)</i></option>
+        			{% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
+        				<option value="{{ club.uuid }}" {% if app.request.get('club') == club.uuid %}selected{% endif %}>{% for location in club.locations %}{{ location.city }}{% if not loop.last %}, {% endif %}{% endfor %} ({{ club.name }})</option>
+        			{% endfor %}
+            	</select>
+                </div>
+            </div>
+        {% endif %}
 		<div class="row">
 			<div class="col-6 row" style="flex-wrap: nowrap;">
         		<label style="margin: 10px">Afficher</label>
@@ -34,14 +56,6 @@
             	{% endif %}
 			</div>
 		</div>
-    	<div class="row" style="flex-wrap: nowrap;">
-    		<div class="input-group mb-3">
-                <input type="text" class="form-control" id="input-search" placeholder="Rechercher" aria-label="Rechercher" aria-describedby="search" value="{% if(app.request.get('q') != null) %}{{ app.request.get('q') }}{% endif %}">
-                    <div class="input-group-append">
-                    <span class="input-group-text" id="search"><button class="btn btnsearch" type="button" style="padding: 0px"><i class="fas fa-search"></i></button></span>
-                </div>
-            </div>
-    	</div>
     	<br>
 		<table class="table">
 			<thead>
@@ -68,9 +82,9 @@
 						    {{ user.lastname }} {{ user.firstname }}
 						</td>
 						<td>{{ user.birthday.date_fr }} <i>({{ user.birthday.age_in_year }})</i></td>
-						<td>
-							<a class="btn btn-warning" href="{{ app.request.baseUrl }}/users/{{ user.uuid }}" role="button" style="margin: 10px"><i class="fas fa-pencil-alt"></i></a>
-							<button class="btn btn-danger btndelete" type="button" data-toggle="modal" data-target="#myModal" data-uuid="{{ user.uuid }}" style="margin: 10px"><i class="fas fa-trash"></i></button>
+						<td class="row" style="flex-wrap: nowrap;">
+							<a class="btn btn-warning btnupdel" href="{{ app.request.baseUrl }}/users/{{ user.uuid }}" role="button"><i class="fas fa-pencil-alt"></i></a>
+							<button class="btn btn-danger btndelete btnupdel" type="button" data-toggle="modal" data-target="#myModal" data-uuid="{{ user.uuid }}"><i class="fas fa-trash"></i></button>
 						</td>
 					</tr>
    				{% endfor %}
