@@ -84,12 +84,12 @@ class UserClubSubscribe
 
 	public function getRoles(): ?array
 	{
-	    return $this->roles !== null ? array_unique($this->roles) : null;
+	    return $this->roles !== null ? array_unique(array_map('strtoupper', $this->roles)) : null;
 	}
 
 	public function setRoles(array $roles): self
 	{
-		$this->roles = $roles;
+	    $this->roles = $roles !== null ? array_unique(array_map('strtoupper', $roles)) : [];
 		return $this;
 	}
 

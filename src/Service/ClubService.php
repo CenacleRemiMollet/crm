@@ -23,6 +23,13 @@ class ClubService
         $this->manager = $manager;
     }
     
+    public function getAllActive()
+    {
+        return $this->manager->getManager()
+            ->getRepository(Club::class)
+            ->findBy(['active' => true]);
+    }
+    
     public function convertAllActiveToView()
     {
         $clubs = $this->manager->getManager()
@@ -32,7 +39,9 @@ class ClubService
     }
     
     public function convertToView($clubs) {
+        $inputSingle = false;
         if($clubs instanceof Club) {
+            $inputSingle = true;
             $clubs = [$clubs];
         }
         $clubByIds = array();
@@ -80,7 +89,7 @@ class ClubService
             array_push($output, new ClubView($club, $locs, $prices));
         }
         
-        return $output;
+        return $inputSingle ? $output[0] : $output;
     }
     
 }

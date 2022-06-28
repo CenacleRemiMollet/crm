@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\Argument\ServiceLocator;
 use App\Entity\UserClubSubscribe;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use App\Service\ClubService;
 
 class ClubAccess
 {
@@ -37,11 +38,11 @@ class ClubAccess
     public function hasAccessForUser(Club $club, $account, ?object $ifDenied = null)
     {
         if($this->authorizationChecker->isGranted(Roles::ROLE_ADMIN) || $this->authorizationChecker->isGranted(Roles::ROLE_SUPER_ADMIN)) {
-            $this->logger->debug('ClubAccess: current user ('.$account->getId().') is an admin');
+            $this->logger->debug('ClubAccess.hasAccessForUser(): current user ('.$account->getId().') is an admin');
             return true;
         }
         if(($this->authorizationChecker->isGranted(Roles::ROLE_CLUB_MANAGER) || $this->authorizationChecker->isGranted(Roles::ROLE_TEACHER)) && $account != null) {
-            $this->logger->debug('ClubAccess: current user ('.$account->getId().') is a teacher or a manager');
+            $this->logger->debug('ClubAccess.hasAccessForUser(): current user ('.$account->getId().') is a teacher or a manager');
             $userClubSubscribes = $this->manager
                 ->getRepository(UserClubSubscribe::class)
                 ->findBy(['club' => $club, 'user' => $account->getUser()]);
@@ -49,7 +50,7 @@ class ClubAccess
                 foreach ($userClubSubscribes as &$userClubSubscribe) {
                     foreach ($userClubSubscribe->getRoles() as &$role) {
                         $granted = $this->authorizationChecker->isGranted($role);
-                        $this->logger->debug('ClubAccess: verify access for current user ('.$account->getId().') in club '.$club->getId().' role '.$role.' => '.($granted ? 'accepted':'reject'));
+                        $this->logger->debug('ClubAccess.hasAccessForUser(): verify access for current user ('.$account->getId().') in club '.$club->getId().' role '.$role.' => '.($granted ? 'accepted':'reject'));
                         if($granted) {
                             //$this->logger->debug('ClubAccess: access authorized for current user ('.$account->getId().') in club '.$club->getId().' with role '.$role);
                             return true;
@@ -70,14 +71,34 @@ class ClubAccess
                     $ifDenied($msg.' in the club \''.$club->getName().'\'');
                 }
             }
-            $this->logger->debug('ClubAccess: access denied for current user ('.$account->getId().') in club '.$club->getId());
+            $this->logger->debug('ClubAccess.hasAccessForUser(): access denied for current user ('.$account->getId().') in club '.$club->getId().' ('.$club->getName().')');
             return false;
         }
         if($ifDenied !== null) {
             $ifDenied('Access denied for anonymous');
         }
-        $this->logger->debug('ClubAccess: current user is anonymous');
+        $this->logger->debug('ClubAccess.hasAccessForUser(): current user is anonymous');
         return false;
     }
+    
+    public function getClubsForAccount($account): ?array
+    {
+        if($this->authorizationChecker->isGranted(Roles::ROLE_ADMIN) || $this->authorizationChecker->isGranted(Roles::ROLE_SUPER_ADMIN)) {
+            $this->logger->debug('ClubAccess.getClubsForAccount(): current user ('.$account->getId().') is an admin');
+            $clubService = new ClubService( $this->manager);
+            return $clubService->getAllActive();
+        }
+        if(($this->authorizationChecker->isGranted(Roles::ROLE_CLUB_MANAGER) || $this->authorizationChecker->isGranted(Roles::ROLE_TEACHER)) && $account != null) {
+            $this->logger->debug('ClubAccess: current user ('.$account->getId().') is a teacher or a manager');
+            $clubs = $this->manager
+                ->getRepository(Club::class)
+                ->findAllForUser($account->getUser()->getUuid());
+                $this->logger->debug('ClubAccess.getClubsForAccount(): current user ('.$account->getId().') is a teacher or a manager, count '.count($clubs).' clubs');
+            // TODO maybe filter with roles
+            return $clubs;
+        }
+        return [];
+    }
+    
 }
 

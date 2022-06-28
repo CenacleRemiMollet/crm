@@ -43,30 +43,18 @@ class ClubRepository extends ServiceEntityRepository
 
 	public function findAllForUser($user_uuid)
 	{
-	    $sql = $this->prepareUserAccountSelect()
-	    ." FROM user u"
-	        ."  LEFT JOIN account a ON a.user_id = u.id";
-	        if($uuid !== null && $q !== null) {
-	            $sql .= " WHERE u.uuid = :uuid AND ".$this->appendFilter();
-	        } elseif($uuid !== null) {
-	            $sql .= " WHERE u.uuid = :uuid";
-	        } elseif($q !== null) {
-	            $sql .= " WHERE ".$this->appendFilter();
-	        }
-	        $sql .= " ORDER BY lastname ASC, firstname ASC";
-	        $sql .= " LIMIT ".$offset.", ".$limit;
-	        
-	        $rsm = $this->prepareUserAccountMapping();
-	        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
-	        if($uuid) {
-	            $query->setParameter('uuid', $uuid);
-	        }
-	        if($q) {
-	            $query->setParameter('query', '%'.$q.'%');
-	        }
-	        
-	        //$this->logger->debug($query->getSQL());
-	        return $query->getResult();
+	    $sql = "SELECT c.*"
+	        ." FROM club c JOIN (SELECT c.*"
+	        ."        FROM club c"
+            ."         JOIN user_club_subscribe ucs ON c.id = ucs.club_id"
+            ."         JOIN user u ON u.id = ucs.user_id"
+            ."        WHERE u.uuid IN (:user_uuid)"
+            ."        GROUP BY c.id) cs ON c.id = cs.id";
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Club', 'c');
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameter('user_uuid', $user_uuid);
+        return $query->getResult();
 	}
 	
 	

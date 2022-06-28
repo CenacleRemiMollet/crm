@@ -102,7 +102,7 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface, Pass
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles = $this->getDeclaredRoles() !== null ? $this->roles : [];
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
         foreach ($this->user->getUserClubSubscribes() as &$userClubSubscribe) {
@@ -110,17 +110,17 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface, Pass
                 $roles[] = $role;
             }
         }
-        return array_unique($roles);
+        return array_unique(array_map('strtoupper', $roles));
     }
 
     public function getDeclaredRoles(): array
     {
-        return array_unique($this->roles);
+        return $this->roles !== null ? array_unique(array_map('strtoupper', $this->roles)) : [];
     }
     
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
+        $this->roles = $roles !== null ? array_unique(array_map('strtoupper', $roles)) : [];
         return $this;
     }
 

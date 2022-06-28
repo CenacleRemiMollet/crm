@@ -101,8 +101,7 @@ class ClubController extends AbstractController
 		$club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
 		
 		$clubService = new ClubService($this->container->get('doctrine'));
-		$clubViews = $clubService->convertToView($club);
-		$clubView = $clubViews[0];
+		$clubView = $clubService->convertToView($club);
 		
 		$hateoas = HateoasBuilder::create()->build();
 		return new Response(

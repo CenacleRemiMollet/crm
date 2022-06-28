@@ -70,13 +70,16 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 		return $query->getResult();
 	}
 
-	public function findInMyClubs($accountId, ?string $uuid = null, ?string $q = null, $offset = 0, $limit = 20)
+	public function findInMyClubs($accountId, ?string $user_uuid = null, ?string $club_uuid = null, ?string $q = null, $offset = 0, $limit = 20)
 	{
 		$sql = $this->prepareUserAccountSelect()
 			  .$this->joinInMyClubs()
 			  ." WHERE act.id = :accountId";
-		if($uuid) {
-			$sql = $sql." AND u.uuid = :uuid";
+		if($user_uuid) {
+			$sql = $sql." AND u.uuid = :user_uuid";
+		}
+		if($club_uuid) {
+		    $sql = $sql." AND c.uuid = :club_uuid";
 		}
 		if($q) {
 		    $sql = $sql." AND ".$this->appendFilter();
@@ -87,8 +90,11 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 		$rsm = $this->prepareUserAccountMapping();
 		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
 		$query->setParameter('accountId', $accountId);
-		if($uuid) {
-			$query->setParameter('uuid', $uuid);
+		if($user_uuid) {
+			$query->setParameter('user_uuid', $user_uuid);
+		}
+		if($club_uuid) {
+		    $query->setParameter('club_uuid', $club_uuid);
 		}
 		if($q) {
 		    $query->setParameter('query', '%'.$q.'%');
@@ -132,6 +138,7 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 			  ."         AND (json_contains(tsubsc.roles, json_quote('".Roles::ROLE_TEACHER."')) OR json_contains(tsubsc.roles, json_quote('".Roles::ROLE_CLUB_MANAGER."')))"
 			  ."        )"
 			  ."  JOIN user_club_subscribe usubsc ON (tsubsc.club_id = usubsc.club_id OR tsubsc.id = usubsc.id)"
+			  ."  JOIN club c ON c.id = usubsc.club_id"
 			  ."  JOIN user u ON u.id = usubsc.user_id"
 			  ."  LEFT JOIN account a ON a.user_id = u.id";
 	}

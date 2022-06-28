@@ -33,6 +33,7 @@ use App\Entity\UserClubSubscribe;
 use App\Util\StringUtils;
 use App\Entity\Club;
 use App\Model\UserClubSubscribeUpdate;
+use App\Security\ClubAccess;
 
 
 class UserController extends AbstractController
@@ -109,9 +110,18 @@ class UserController extends AbstractController
 				->getRepository(User::class)
 				->findInAll(null, $club_uuid, $q, $pager->getOffset(), $pager->getElementByPage() + 2);
 		} elseif($this->isGranted(Roles::ROLE_CLUB_MANAGER) || $this->isGranted(Roles::ROLE_TEACHER)) {
+		    if($club_uuid !== null) {
+		        $entityFinder = new EntityFinder($doctrine);
+		        $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]);
+                $clubAccess = new ClubAccess($this->container, $this->logger);
+                if( ! $clubAccess->hasAccessForUser($club, $account)) {
+                    throw $this->createAccessDeniedException();
+                }
+                
+		    }
 		    $users = $doctrine->getManager()
 				->getRepository(User::class)
-				->findInMyClubs($account->getId(), null, $q, $pager->getOffset(), $pager->getElementByPage() + 1);
+				->findInMyClubs($account->getId(), null, $club_uuid, $q, $pager->getOffset(), $pager->getElementByPage() + 1);
 		} elseif($account !== null) {
 		    $users = array($account->getUser());
 		} else {
@@ -209,7 +219,7 @@ class UserController extends AbstractController
 	    
 	    $account = $this->getUser();
 	    if($account) {
-	        $me = new UserMeView($account->getUser(), $grantedRoles);
+	        $me = new UserView($account->getUser());
 	    } else {
 	        $me = new MeAnonymousView($grantedRoles);
 	    }

@@ -54,12 +54,12 @@ class UserClubSubscribeUpdate
 
 	public function getRoles(): ?array
 	{
-	    return $this->roles === null ? null : array_map('strtoupper', $this->roles);
+	    return $this->roles === null ? null : array_unique(array_map('strtoupper', $this->roles));
 	}
 	
 	public function setRoles($roles)
 	{
-	    $this->roles = $roles;
+	    $this->roles = $roles !== null ? array_unique(array_map('strtoupper', $roles)) : [];
 	}
 	
 	public function getClubUuid(): ?string

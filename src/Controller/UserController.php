@@ -15,6 +15,8 @@ use App\Security\ClubAccess;
 use App\Entity\EntityFinder;
 use Symfony\Component\HttpFoundation\Response;
 use App\Security\Roles;
+use App\Service\ClubService;
+use Hateoas\HateoasBuilder;
 
 class UserController extends AbstractController
 {
@@ -33,12 +35,20 @@ class UserController extends AbstractController
     public function getUsers(Request $request, SessionInterface $session)
 	{
 	    $response = $this->forward('App\Controller\Api\UserController::getUsers', ['request' => $request]);
-		$json = json_decode($response->getContent());
-		$clubsResponse = $this->forward('App\Controller\Api\ClubController::listActive');
-		// TODO get club by session
+	    if($response->getStatusCode() != 200) {
+	        return new Response(
+	            $response->getContent(),
+	            $response->getStatusCode(),
+	            $response->headers->all());
+	    }
+	    $json = json_decode($response->getContent());
+		$clubAccess = new ClubAccess($this->container, $this->logger);
+		$clubs = $clubAccess->getClubsForAccount($this->getUser());
+		$clubService = new ClubService($this->container->get('doctrine'));
+		$clubViews = $clubService->convertToView($clubs);
 		return $this->render('user/users.html.twig', [
 		    'users' => $json,
-		    'clubs' => json_decode($clubsResponse->getContent()),
+		    'clubs' => $clubViews,
 		    'roles' => Roles::ROLES,
 		]);
 	}
