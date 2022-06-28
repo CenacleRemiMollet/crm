@@ -50,6 +50,7 @@ class UserController extends AbstractController
 		    'users' => $json,
 		    'clubs' => $clubViews,
 		    'roles' => Roles::ROLES,
+		    
 		]);
 	}
 
@@ -66,10 +67,14 @@ class UserController extends AbstractController
 	            $userResponse->headers->all());
 	    }
 	    $clubsResponse = $this->forward('App\Controller\Api\ClubController::listActive');
+	    $account = $this->getUser();
+	    $itisme = $account->getUser()->getUuid() !== $user_uuid;
 	    return $this->render('user/user.html.twig', [
 	        'user' => json_decode($userResponse->getContent()),
 	        'clubs' => json_decode($clubsResponse->getContent()),
-	        'roles' => Roles::ROLES
+	        'roles' => Roles::ROLES,
+	        'itisme' => $itisme ? 'true' : 'false',
+	        'canupdatesubscribes' => ($itisme || $this->isGranted(Roles::ROLE_ADMIN)) ? 'true' : 'false'
 	    ]);
 	}
 	

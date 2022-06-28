@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Util\NestedValidation;
 use App\Entity\UserClubSubscribe;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
  * @OA\Schema(
@@ -105,6 +106,13 @@ class UserUpdate implements NestedValidation
      * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/UserClubSubscribeUpdate"))
      */
     private $subscribes;
+    
+    /**
+     * @var string[]
+     * @AcmeAssert\Roles
+     * @OA\Property(type="array", example="ROLE_ADMIN", @OA\Items(type="string"))
+     */
+    private $roles;
     
     public function getLastname()
     {
@@ -270,10 +278,21 @@ class UserUpdate implements NestedValidation
     {
         // subscribes
         if(empty($this->subscribes)) {
-            return null;
+            return new ConstraintViolationList();
         }
         return $requestUtil->findErrors($this->subscribes); // 400
     }
+ 
+    public function getRoles(): ?array
+    {
+        return $this->roles === null ? null : array_unique(array_map('strtoupper', $this->roles));
+    }
+    
+    public function setRoles($roles)
+    {
+        $this->roles = $roles !== null ? array_unique(array_map('strtoupper', $roles)) : [];
+    }
+    
     
 }
 

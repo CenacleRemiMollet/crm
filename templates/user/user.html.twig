@@ -163,62 +163,72 @@
                     <div class="form-group row slimmargin border divsubscribe" style="flex-wrap: nowrap;" >
                      	<div class="col-sm-2">
                      		<div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="subscribe-{{ subscribe.uuid }}-role_student" value="" id="input-role_student-{{ subscribe.uuid }}" {% if('ROLE_STUDENT' in subscribe.roles) %}checked{% endif %}>
+                                <input class="form-check-input" type="checkbox" {% if canupdatesubscribes == 'true' %}name="subscribe-{{ subscribe.uuid }}-role_student"{% endif %} value="" id="input-role_student-{{ subscribe.uuid }}" {% if('ROLE_STUDENT' in subscribe.roles) %}checked{% endif %} {% if canupdatesubscribes == 'false' %}disabled{% endif %}>
                                 <label class="form-check-label" for="input-role_student-{{ subscribe.uuid }}">élève</label>
                             </div>
                      		<div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="subscribe-{{ subscribe.uuid }}-role_teacher" value="" id="input-role_teacher-{{ subscribe.uuid }}" {% if('ROLE_TEACHER' in subscribe.roles) %}checked{% endif %}>
+                                <input class="form-check-input" type="checkbox" {% if canupdatesubscribes == 'true' %}name="subscribe-{{ subscribe.uuid }}-role_teacher"{% endif %} value="" id="input-role_teacher-{{ subscribe.uuid }}" {% if('ROLE_TEACHER' in subscribe.roles) %}checked{% endif %} {% if canupdatesubscribes == 'false' %}disabled{% endif %}>
                                 <label class="form-check-label" for="input-role_teacher-{{ subscribe.uuid }}">professeur</label>
                             </div>
                      		<div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="subscribe-{{ subscribe.uuid }}-role_club_manager" value="" id="input-club_manager-{{ subscribe.uuid }}" {% if('ROLE_CLUB_MANAGER' in subscribe.roles) %}checked{% endif %}>
+                                <input class="form-check-input" type="checkbox" {% if canupdatesubscribes == 'true' %}name="subscribe-{{ subscribe.uuid }}-role_club_manager"{% endif %} value="" id="input-club_manager-{{ subscribe.uuid }}" {% if('ROLE_CLUB_MANAGER' in subscribe.roles) %}checked{% endif %} {% if canupdatesubscribes == 'false' %}disabled{% endif %}>
                                 <label class="form-check-label" for="input-club_manager-{{ subscribe.uuid }}">gestionnaire de club</label>
                             </div>
                       	</div>
                       	<div class="col-sm-10">
-                        	<select class="custom-select" id="input-club_uuid-{{ subscribe.uuid }}" name="subscribe-{{ subscribe.uuid }}-club_uuid">
-                    			{% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
-                    				<option value="{{ club.uuid }}" {% if(subscribe.club.uuid == club.uuid) %}selected{% endif %}>{% for location in club.locations %}{{ location.city }}{% if not loop.last %}, {% endif %}{% endfor %} ({{ club.name }})</option>
-                    			{% endfor %}
-                        	</select>
-                            <div class="invalid-feedback" id="txtvalid-club_uuid"></div>
-                            <div style="float: right;">
-                            	<button class="btn btn-danger btnremovesubscribe" type="button" style="margin: 5px"><i class="fas fa-trash"></i></button>
-                            </div>	
+                      		{% if canupdatesubscribes == 'true' %}
+                            	<select class="custom-select" id="input-club_uuid-{{ subscribe.uuid }}" {% if canupdatesubscribes == 'true' %}name="subscribe-{{ subscribe.uuid }}-club_uuid"{% endif %} >
+                        			{% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
+                        				<option value="{{ club.uuid }}" {% if(subscribe.club.uuid == club.uuid) %}selected{% endif %}>{% for location in club.locations %}{{ location.city }}{% if not loop.last %}, {% endif %}{% endfor %} ({{ club.name }})</option>
+                        			{% endfor %}
+                            	</select>
+                                <div class="invalid-feedback" id="txtvalid-club_uuid"></div>
+                                <div style="float: right;">
+                                	<button class="btn btn-danger btnremovesubscribe" type="button" style="margin: 5px"><i class="fas fa-trash"></i></button>
+                                </div>	
+                      		{% else %}
+                      			<label for="input-uuid" class="col-sm-10 col-form-label">
+                        			{% for club in clubs|filter(c => subscribe.club.uuid == c.uuid) %}
+                        				{% for location in club.locations %}{{ location.city }}{% if not loop.last %}, {% endif %}{% endfor %} ({{ club.name }})
+                        			{% endfor %}
+								</label>
+                      		{% endif %}
                         </div>
                     </div>
                 {% endfor %}
             {% endif %}
-            <div class="form-group row slimmargin border divsubscribereference divsubscribe" style="flex-wrap: nowrap; display: none; visibility: hidden" >
-             	<div class="col-sm-2">
-             		<div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="subscribe-${subscid}-role_student" value="" id="input-role_student-${subscid}">
-                        <label class="form-check-label" for="input-role_student-${subscid}">élève</label>
+            {% if canupdatesubscribes == 'true' %}
+                <div class="form-group row slimmargin border divsubscribereference divsubscribe" style="flex-wrap: nowrap; display: none; visibility: hidden" >
+                 	<div class="col-sm-2">
+                 		<div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="subscribe-${subscid}-role_student" value="" id="input-role_student-${subscid}">
+                            <label class="form-check-label" for="input-role_student-${subscid}">élève</label>
+                        </div>
+                 		<div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="subscribe-${subscid}-role_teacher" value="" id="input-role_teacher-${subscid}">
+                            <label class="form-check-label" for="input-role_teacher-${subscid}">professeur</label>
+                        </div>
+                 		<div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="subscribe-${subscid}-role_club_manager" value="" id="input-club_manager-${subscid}">
+                            <label class="form-check-label" for="input-club_manager-${subscid}">gestionnaire de club</label>
+                        </div>
+                  	</div>
+                  	<div class="col-sm-10">
+                    	<select class="custom-select" id="input-club_uuid-${subscid}" name="subscribe-${subscid}-club_uuid">
+                			{% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
+                				<option value="{{ club.uuid }}">{% for location in club.locations %}{{ location.city }}{% if not loop.last %}, {% endif %}{% endfor %} ({{ club.name }})</option>
+                			{% endfor %}
+                    	</select>
+                        <div class="invalid-feedback" id="txtvalid-club_uuid"></div>
+                        <div style="float: right;">
+                        	<button class="btn btn-danger btnremovesubscribe" type="button" style="margin: 5px"><i class="fas fa-trash"></i></button>
+                        </div>	
                     </div>
-             		<div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="subscribe-${subscid}-role_teacher" value="" id="input-role_teacher-${subscid}">
-                        <label class="form-check-label" for="input-role_teacher-${subscid}">professeur</label>
-                    </div>
-             		<div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="subscribe-${subscid}-role_club_manager" value="" id="input-club_manager-${subscid}">
-                        <label class="form-check-label" for="input-club_manager-${subscid}">gestionnaire de club</label>
-                    </div>
-              	</div>
-              	<div class="col-sm-10">
-                	<select class="custom-select" id="input-club_uuid-${subscid}" name="subscribe-${subscid}-club_uuid">
-            			{% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
-            				<option value="{{ club.uuid }}">{% for location in club.locations %}{{ location.city }}{% if not loop.last %}, {% endif %}{% endfor %} ({{ club.name }})</option>
-            			{% endfor %}
-                	</select>
-                    <div class="invalid-feedback" id="txtvalid-club_uuid"></div>
-                    <div style="float: right;">
-                    	<button class="btn btn-danger btnremovesubscribe" type="button" style="margin: 5px"><i class="fas fa-trash"></i></button>
-                    </div>	
                 </div>
-            </div>
-            <div class="form-group row slimmargin border" style="flex-wrap: nowrap;">
-            	<button class="btn btn-info btnaddsubscribe" type="button" style="margin: 10px"><i class="fas fa-plus"></i> Ajouter un club</button>
-            </div>
+                <div class="form-group row slimmargin border" style="flex-wrap: nowrap;">
+                	<button class="btn btn-info btnaddsubscribe" type="button" style="margin: 10px"><i class="fas fa-plus"></i> Ajouter un club</button>
+                </div>
+            {% endif %}
             {% if(user.login is defined) %}
                 <div class="form-group row slimmargin">
                     <label for="input-login" class="col-sm-1 col-form-label">Identifiant</label>
@@ -227,13 +237,15 @@
                         <div class="invalid-feedback" id="txtvalid-login"></div>       	
                     </div>
                 </div>
-                <div class="form-group row slimmargin">
-                    <label class="col-sm-1 col-form-label" for="input_admin">Administrateur</label>
-                    <div class="col-sm-10">
-	                    <input class="form-check-input" type="checkbox" name="admin" id="input_admin" style="margin-left: 0px" {% if('ROLE_ADMIN' in user.roles) %}checked{% endif %}>
-                        <div class="invalid-feedback" id="txtvalid-admin"></div>       	
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="form-group row slimmargin">
+                        <label class="col-sm-1 col-form-label" for="input_admin">Administrateur</label>
+                        <div class="col-sm-10">
+    	                    <input class="form-check-input" type="checkbox" name="admin" id="input_admin" value="true" style="margin-left: 0px" {% if user.roles['ROLE_ADMIN'] is defined %}checked{% endif %}{% if user.myself is defined %}disabled{% endif %}>
+                            <div class="invalid-feedback" id="txtvalid-admin"></div>       	
+                        </div>
                     </div>
-                </div>
+                {% endif %}
             {% endif %}
             
 			<br><br>
@@ -243,7 +255,7 @@
                 	<a href="javascript:history.back()" class="btn btn-secondary">Annuler</a>
                 </div>
                 <div class="col-sm-1">
-                	<button type="button" class="btn btn-warning btnmodify" data-url-update="{{ app.request.baseUrl }}/api/users/{{ user.uuid }}" data-url-onsuccess="{{ app.request.baseUrl }}/users">Modifier</button>
+                	<button type="button" class="btn btn-warning btnmodify" data-url-update="{{ app.request.baseUrl }}/api/users/{{ user.uuid }}" data-url-onsuccess="{% if app.request.headers.get('referer') is defined %}{{ app.request.headers.get('referer') ~ '#' ~ user.uuid }}{% else %}{{ app.request.baseUrl }}/users{% endif %}">Modifier</button>
                 </div>
             </div>
         </form>
@@ -258,6 +270,6 @@
 	<script src="{{ app.request.baseUrl }}/assets/user/modif.js"></script>
 	<script>
 		//var modifyDebug = true; // used by tools/modif.js
-		//var modifyRequestDebug = true; // used by tools/modif.js
+		var modifyRequestDebug = true; // used by tools/modif.js
 	</script>
 {% endblock %}

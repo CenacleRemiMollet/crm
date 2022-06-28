@@ -66,7 +66,7 @@
 			</thead>
 			<tbody>
 				{% for user in users._embedded %}
-					<tr>
+					<tr id="{{ user.uuid }}">
 						<td>
 						    {% if(user.sex|lower == 'f') %}
 						    	<i class="fas fa-venus" style="color: #ff00fc"></i>

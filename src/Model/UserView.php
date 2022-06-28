@@ -8,6 +8,7 @@ use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Annotations as OA;
 use Hateoas\Helper\LinkHelper;
 use App\Entity\UserClubSubscribe;
+use App\Entity\Account;
 
 /**
  * @Serializer\XmlRoot("user")
@@ -36,7 +37,12 @@ class UserView extends UserViewModel
 	 */
 	private $subscribes;
 
-	public function __construct(User $user, ?bool $attachClubSubscribe = false)
+	/**
+	 * @OA\Property(type="boolean")
+	 */
+	private $myself;
+	
+	public function __construct(User $user, $myself = null, ?bool $attachClubSubscribe = false)
 	{
 		parent::__construct($user);
 		$account = $user->getAccount();
@@ -50,6 +56,10 @@ class UserView extends UserViewModel
 		    foreach($user->getUserClubSubscribes() as &$ucs) {
 		        array_push($this->subscribes, new UserClubSubscribeView($ucs));
 		    }
+		}
+		if(($myself instanceof Account && $myself->getUser()->getUuid() == $this->getUuid())
+		    || (gettype($myself) === 'boolean' && $myself)){
+		    $this->myself = true;
 		}
 	}
 

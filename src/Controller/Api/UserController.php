@@ -138,7 +138,7 @@ class UserController extends AbstractController
 		    $pager,
 		    $users,
 		    function($u) {
-		      return new UserView($u);
+		        return new UserView($u, $this->getUser());
 		    },
 		    $queryParameters);
 		
@@ -185,7 +185,7 @@ class UserController extends AbstractController
 	    $user = $this->findUserOrAccessDenied($user_uuid);
 	    $hateoas = HateoasBuilder::create()->build();
 	    return new Response(
-	        $hateoas->serialize(new UserView($user, true), 'json'),
+	        $hateoas->serialize(new UserView($user, $this->getUser(), true), 'json'),
 	        Response::HTTP_OK,
 	        array('Content-Type' => 'application/hal+json'));
 	}
@@ -219,7 +219,7 @@ class UserController extends AbstractController
 	    
 	    $account = $this->getUser();
 	    if($account) {
-	        $me = new UserView($account->getUser());
+	        $me = new UserView($account->getUser(), $this->getUser());
 	    } else {
 	        $me = new MeAnonymousView($grantedRoles);
 	    }
@@ -280,7 +280,7 @@ class UserController extends AbstractController
 			return ShortResponse::exception('Query failed, please try again shortly ('.$e->getMessage().')');
 		}
 
-		$output = array('user' => new UserView($user));
+		$output = array('user' => new UserView($user, $this->getUser()));
 		$hateoas = HateoasBuilder::create()->build();
 		$json = json_decode($hateoas->serialize($output, 'json'));
 
@@ -343,7 +343,13 @@ class UserController extends AbstractController
  	    $entityUpdater->update('nationality', $userToUpdate->getNationality(), $user->getNationality(), function($v) use($user) { $user->setNationality($v); });
  	    $entityUpdater->update('mails', $userToUpdate->getMails(), $user->getMails(), function($v) use($user) { $user->setMails($v); });
  	    
- 	    $this->updateSubscribes($user, $userToUpdate->getSubscribes(), $entityUpdater);
+ 	    $account = $this->getUser();
+ 	    if($account->getUser()->getId() !== $user->getId() || $this->isGranted(Roles::ROLE_ADMIN)) { // can't update myself except admin
+ 	      $this->updateSubscribes($user, $userToUpdate->getSubscribes(), $entityUpdater);
+//  	      if($userToUpdate->getAdmin() === 'true') {
+//  	          $entityUpdater->update('mails', $userToUpdate->getMails(), $user->getMails(), function($v) use($user) { $user->setMails($v); });
+//  	      }
+ 	    }
  	   
  	    return $entityUpdater->toResponse($user, 'User updated', ['id' => $user->getId()]);
 	}
