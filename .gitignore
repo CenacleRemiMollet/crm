@@ -58,4 +58,5 @@ yarn-error.log
 /web/
 /www/
 /dump_src.sql
+/dump*.*
 /recreate-full.bat
