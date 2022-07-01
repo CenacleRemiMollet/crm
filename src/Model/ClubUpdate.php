@@ -57,37 +57,43 @@ class ClubUpdate
 	private $mailing_list;
 	
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://www.google.com")
 	 */
 	private $website_url;
 
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://facebook.com/pages/category/Local-Business/Taekwonkido-Cenacle-Rémi-Mollet-158619684187704/")
 	 */
 	private $facebook_url;
 
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://twitter.com/abc")
 	 */
 	private $twitter_url;
 
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://www.instagram.com/abc")
 	 */
 	private $instagram_url;
 
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://www.dailymotion.com/abc")
 	 */
 	private $dailymotion_url;
 	
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://www.youtube.com/abc")
 	 */
 	private $youtube_url;

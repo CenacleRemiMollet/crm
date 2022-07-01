@@ -4,7 +4,7 @@ $(document).ready(function() {
 			var club = $('#filter-by-club').val();
 			var href = getURLForSearch(); // in tools/modif-list.js
 			if(club == "") {
-				href.searchParams.remove('club');
+				href.searchParams.delete('club');
 			} else {
 				href.searchParams.set('club', club);
 			}

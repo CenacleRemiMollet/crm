@@ -23,6 +23,7 @@ use App\Model\ClubUpdate;
 use App\Security\Roles;
 use App\Entity\EntityFinder;
 use App\Exception\CRMException;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 class ClubController extends AbstractController
@@ -213,7 +214,7 @@ class ClubController extends AbstractController
 	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
-	public function update(Request $request, $uuid, SerializerInterface $serializer, TranslatorInterface $translator)
+	public function update(Request $request, $uuid, SerializerInterface $serializer, TranslatorInterface $translator, SessionInterface $session)
 	{
 	    $this->denyAccessUnlessGranted(Roles::ROLE_ADMIN); // 403
 	    
@@ -225,17 +226,17 @@ class ClubController extends AbstractController
 	    $entityFinder = new EntityFinder($doctrine);
 	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
 	    
-	    $uuid = $clubToUpdate->getUuid();
-	    if( ! empty($uuid) && $uuid !== $club->getUuid()) {
-	        $entityFinder->findNoneByOrThrow(Club::class, ['uuid' => $uuid],
-	            function() use($uuid) {
-	                throw new CRMException(Response::HTTP_BAD_REQUEST, 'UUID already used: '.$uuid); // 400
+	    $newuuid = $clubToUpdate->getUuid();
+	    if( ! empty($newuuid) && $newuuid !== $club->getUuid()) {
+	        $entityFinder->findNoneByOrThrow(Club::class, ['uuid' => $newuuid],
+	            function() use($newuuid) {
+	                throw new CRMException(Response::HTTP_BAD_REQUEST, 'UUID already used: '.$newuuid); // 400
 	            });
 	    }
 	    
 	    $entityUpdater = new EntityUpdater($doctrine, $request, $this->getUser(), Events::CLUB_UPDATED, $this->logger);
 	    $entityUpdater->update('active', $clubToUpdate->isActive(), $club->getActive(), function($v) use($club) { $club->setActive($v); });
-	    $entityUpdater->update('uuid', $clubToUpdate->getUuid(), $club->getUuid(), function($v) use($club) { $club->setUuid($v); });
+	    //$entityUpdater->update('uuid', $newuuid, $club->getUuid(), function($v) use($club) { $club->setUuid($v); });
 	    $entityUpdater->update('name', $clubToUpdate->getName(), $club->getName(), function($v) use($club) { $club->setName($v); });
 	    $entityUpdater->update('contactemails', $clubToUpdate->getContactEmails(), $club->getContactEmails(), function($v) use($club) { $club->setContactEmails($v); });
 	    $entityUpdater->update('contactphone', $clubToUpdate->getContactPhone(), $club->getContactPhone(), function($v) use($club) { $club->setContactPhone($v); });
@@ -244,7 +245,16 @@ class ClubController extends AbstractController
 	    $entityUpdater->update('mailinglist', $clubToUpdate->getMailingList(), $club->getMailingList(), function($v) use($club) { $club->setMailingList($v); });
 	    $entityUpdater->update('twitterurl', $clubToUpdate->getTwitterUrl(), $club->getTwitterUrl(), function($v) use($club) { $club->setTwitterUrl($v); });
 	    $entityUpdater->update('websiteurl', $clubToUpdate->getWebsiteUrl(), $club->getWebsiteUrl(), function($v) use($club) { $club->setWebsiteUrl($v); });
-	    return $entityUpdater->toResponse($club, 'Club updated', ['id' => $club->getId()]);
+	    $updatedResponse = $entityUpdater->toResponse($club, 'Club updated', ['id' => $club->getId()]);
+	    
+	    $selectedClub = $session->get('club-selected');
+	    if($selectedClub !== null && $selectedClub->uuid === $uuid) {
+	        $u = $newuuid !== null ? $newuuid : $uuid;
+	        $clubResponse = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $u]);
+	        $session->set('club-selected', json_decode($clubResponse->getContent()));
+	    }
+	    
+	    return $updatedResponse;
 	}
 
 }

@@ -60,10 +60,28 @@ class ClubController extends AbstractController
 
 		return $this->render('club/club.html.twig', [
 			'club' => $club,
-			'lessons' => $lessons
+			'lessons' => $lessons,
+		    'canConfigure' => $this->canConfigure($uuid)
 		]);
 	}
 
+	/**
+	 * @Route("/club/{uuid}/modify", name="web_modify_club", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 */
+	public function modifyOne($uuid, LoggerInterface $logger, SessionInterface $session)
+	{
+	    $response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
+	    if($response->getStatusCode() != 200) {
+	        throw $this->createNotFoundException();
+	    }
+	    $club = json_decode($response->getContent());
+	    $session->set('club-selected', $club);
+	    
+	    return $this->render('club/club-modify.html.twig', [
+	        'club' => $club
+	    ]);
+	}
+	
 	/**
 	 * @Route("/club/{uuid}/infos", name="web_club_infos", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 */
@@ -80,19 +98,11 @@ class ClubController extends AbstractController
 		$lessons = json_decode($response->getContent());
 		$session->set('lessons-selected', $lessons);
 		
-		$canConfigure = false;
-	    $doctrine = $this->container->get('doctrine');
-	    $entityFinder = new EntityFinder($doctrine);
-	    $clubObj = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404, never happen !
-	    
-	    $clubAccess = new ClubAccess($this->container, $this->logger);
-	    $canConfigure = $clubAccess->hasAccessForUser($clubObj, $this->getUser());
-		
 		return $this->render('club/club-infos.html.twig', [
 			'club' => $club,
 			'lessons' => $lessons,
 		    'startTimeByDays' => $this->determineStartsOffsetByQuarter($lessons),
-		    'canConfigure' => $canConfigure
+		    'canConfigure' => $this->canConfigure($uuid)
 		]);
 	}
 	
@@ -132,5 +142,16 @@ class ClubController extends AbstractController
 	        }
 	    }
 	    return $startOffsetByDays;
+	}
+	
+	private function canConfigure($club_uuid): bool
+	{
+	    $doctrine = $this->container->get('doctrine');
+	    $entityFinder = new EntityFinder($doctrine);
+	    $clubObj = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404, never happen !
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	   return $clubAccess->hasAccessForUser($clubObj, $this->getUser());
+	    
 	}
 }

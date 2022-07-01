@@ -32,6 +32,7 @@
                     <a class="dropdown-item" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/infos#hours"><li class="link">{% trans %}menu.club.hours{% endtrans %}</li></a>
                    	{% if canConfigure == 'true' %}
                     	<div class="dropdown-divider"></div>
+                    	<a class="dropdown-item" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/modify"><li class="link">{% trans %}menu.club.configure{% endtrans %}</li></a>
                     	<a class="dropdown-item" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/locations"><li class="link">{% trans %}menu.club.configure-locations{% endtrans %}</li></a>
                     	<a class="dropdown-item" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/prices"><li class="link">{% trans %}menu.club.configure-prices{% endtrans %}</li></a>
                     	<a class="dropdown-item" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons"><li class="link">{% trans %}menu.club.configure-lessons{% endtrans %}</li></a>
