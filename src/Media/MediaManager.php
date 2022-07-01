@@ -5,6 +5,7 @@ use Hoa\Iterator\FileSystem;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class MediaManager
 {

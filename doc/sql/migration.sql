@@ -35,8 +35,12 @@ CREATE TABLE zzmigr_club AS
           WHEN camel_case(nom) = 'Taekwondo Club Meudon' THEN 'meudon'
           WHEN camel_case(nom) = 'Suisse' THEN 'suisse'
           WHEN camel_case(nom) = 'Taekwonkido Kourou' THEN 'kourou'
+          WHEN nom = 'Taekwondo Club De La Buisse' THEN 'buisse'
+          WHEN nom = 'Leman' THEN 'leman'
+          WHEN nom = 'Taekwonkido Du Sud Ouest' THEN 'sudouest'
+          WHEN nom = 'Taekwonkido-hapkido Club De Hyeres' THEN 'hyeres'
           WHEN logo IS NOT NULL THEN substring_index(logo, '.', 1)
-          ELSE '?????'
+          ELSE concat(lower(lpad(conv(floor(rand()*pow(36,8)), 10, 36), 8, 0)), lower(lpad(conv(floor(rand()*pow(36,8)), 10, 36), 8, 0)))
           END AS uuid,
         camel_case(nom) AS name,
         coalesce(logo, 'default.png') AS logo,
@@ -44,9 +48,11 @@ CREATE TABLE zzmigr_club AS
         url_fb AS facebook_url,
         mailing_list,
         a_supprimer = 'N' AS active
-   FROM devclub;
+   FROM sc2cenacle_fromdump.club;
 
-
+UPDATE zzmigr_club SET uuid = 'nogent_sur_marne' WHERE uuid = 'nogent';
+UPDATE zzmigr_club SET uuid = 'paris5' WHERE uuid = 'paris_v';
+UPDATE zzmigr_club SET uuid = 'paris19' WHERE uuid = 'paris_xix';
 
 INSERT INTO club(uuid, name, logo, website_url, facebook_url, mailing_list, active)
  SELECT uuid, name, logo, website_url, facebook_url, mailing_list, active
@@ -64,7 +70,7 @@ INSERT INTO club(uuid, name, logo, website_url, facebook_url, mailing_list, acti
         '?' AS zipcode,
         departement AS county,
         camel_case(pays) AS country
-  FROM devclub oc
+  FROM sc2cenacle_fromdump.club oc
    JOIN zzmigr_club mc USING (id)
    JOIN club nc USING (uuid);
 
@@ -119,9 +125,9 @@ CREATE TABLE zzmigr_user AS
         0 AS blacklist_id,
         cast(null AS char(1000)) AS blacklist_date,
         cast(null AS char(1000)) AS blacklist_reason
-  FROM develeve_cenacle;
+  FROM sc2cenacle_fromdump.eleve_cenacle;
 
-INSERT INTO zzmigr_user
+/*INSERT INTO zzmigr_user
  SELECT 0 AS o_id,
         concat(lower(lpad(conv(floor(rand()*pow(36,8)), 10, 36), 8, 0)), lower(lpad(conv(floor(rand()*pow(36,8)), 10, 36), 8, 0))) AS uuid,
         Nom AS lastname,
@@ -139,7 +145,7 @@ INSERT INTO zzmigr_user
         Id AS blacklist_id,
         Date_blacklist AS blacklist_date,
         Motif AS blacklist_reason
-  FROM develeve_blacklist;
+  FROM sc2cenacle_fromdump.eleve_blacklist;*/
 
 
 INSERT INTO user(uuid, lastname, firstname, sex, birthday, address, zipcode, city, phone, phone_emergency, nationality, mails, created, blacklist_date, blacklist_reason)
@@ -156,7 +162,7 @@ CREATE TABLE zzmigr_account AS
         concat('sha1:', substr(Pwd, 1, 40)) AS password,
         '[]' AS roles,
         Acces = 'O' AS has_access
-  FROM develeve_site o_s
+  FROM sc2cenacle_fromdump.eleve_site o_s
    JOIN zzmigr_user z_u ON o_s.eleve_id = z_u.o_id
    JOIN user u ON u.uuid = z_u.uuid;
 
@@ -187,29 +193,29 @@ INSERT INTO user_club_subscribe(uuid, user_id, club_id, roles)
      SELECT Eleve_id, cast(ocid as signed) AS ocid, 'ROLE_CLUB_MANAGER' AS role
       FROM (
        SELECT Eleve_id, json_extract(concat('[', replace(Resp_club, ';', ','), ']'), '$[0]') AS ocid
-        FROM develeve_site
+        FROM sc2cenacle_fromdump.eleve_site
         WHERE Resp_club IS NOT NULL AND Resp_club != ''
        UNION
        SELECT Eleve_id, json_extract(concat('[', replace(Resp_club, ';', ','), ']'), '$[1]') AS ocid
-        FROM develeve_site
+        FROM sc2cenacle_fromdump.eleve_site
         WHERE Resp_club IS NOT NULL AND Resp_club != ''
        UNION
        SELECT Eleve_id, json_extract(concat('[', replace(Resp_club, ';', ','), ']'), '$[2]') AS ocid
-        FROM develeve_site
+        FROM sc2cenacle_fromdump.eleve_site
         WHERE Resp_club IS NOT NULL AND Resp_club != ''
        UNION
        SELECT Eleve_id, json_extract(concat('[', replace(Resp_club, ';', ','), ']'), '$[3]') AS ocid
-        FROM develeve_site
+        FROM sc2cenacle_fromdump.eleve_site
         WHERE Resp_club IS NOT NULL AND Resp_club != ''
        UNION
        SELECT Eleve_id, json_extract(concat('[', replace(Resp_club, ';', ','), ']'), '$[4]') AS ocid
-        FROM develeve_site
+        FROM sc2cenacle_fromdump.eleve_site
         WHERE Resp_club IS NOT NULL AND Resp_club != ''
        ) ut
      WHERE ocid IS NOT NULL
      UNION ALL
      SELECT Eleve_id, club_id AS ocid, 'ROLE_STUDENT' AS role
-      FROM develeve_cenacle
+      FROM sc2cenacle_fromdump.eleve_cenacle
     ) fgb
     GROUP BY 1, 2, 3
   ) unnest

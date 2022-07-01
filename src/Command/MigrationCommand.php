@@ -54,38 +54,46 @@ class MigrationCommand extends Command
 			throw new \Exception('File not found: '.$srcdump);
 		}
 
-		$this->importDump($srcdump);
-		$this->importDump($this->projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'migration.sql');
+		$this->importDump($this->projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'prepare.sql', false);
+		$this->importDump($srcdump, true);
+		$this->importDump($this->projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'migration.sql', false);
 
-		echo PHP_EOL.'====== Logo ======'.PHP_EOL;
-		$this->downloadClubLogo($domain);
-
-		echo PHP_EOL.'====== CSV Locations ======'.PHP_EOL;
-		$locations = $this->loadCSVLocations();
-
-		echo PHP_EOL.'====== CSV Hours ======'.PHP_EOL;
-		$this->loadCSVHours($locations);
-		
-		echo PHP_EOL.'====== CSV Prices ======'.PHP_EOL;
-		$this->loadCSVPrices();
+		try {
+    		echo PHP_EOL.'====== Logo ======'.PHP_EOL;
+    		$this->downloadClubLogo($domain);
+    
+    		echo PHP_EOL.'====== CSV Locations ======'.PHP_EOL;
+    		$locations = $this->loadCSVLocations();
+    
+    		echo PHP_EOL.'====== CSV Hours ======'.PHP_EOL;
+    		$this->loadCSVHours($locations);
+    		
+    		echo PHP_EOL.'====== CSV Prices ======'.PHP_EOL;
+    		$this->loadCSVPrices();
+		} catch(\Exception $e) {
+		    echo PHP_EOL.$e->getMessage().PHP_EOL;
+		    echo PHP_EOL.$e->getTraceAsString().PHP_EOL;
+		    throw $e;
+		}
 
 		return Command::SUCCESS;
 	}
 
 
-	private function importDump($dumpfile)
+	private function importDump($dumpfile, ?bool $fromProd)
 	{
 		$conn = $this->doctrine->getConnection();
 		$params = $conn->getParams();
+		$databaseName = $fromProd === true ? 'sc2cenacle_fromdump' : $conn->getDatabase();
 		$cmd = sprintf('mysql -u %s --password=%s %s < %s',
 		    $params['user'],
 		    $params['password'],
-			$conn->getDatabase(),
+		    $databaseName,
 			$dumpfile
 			);
 		//$output->writeln($cmd);
 		//echo $cmd.PHP_EOL;
-		echo 'Import DB dump '.$dumpfile.PHP_EOL;
+		echo 'Import DB dump '.$dumpfile.' to \''.$databaseName.'\''.PHP_EOL;
 
 		exec($cmd);
 	}
@@ -98,6 +106,9 @@ class MigrationCommand extends Command
 		foreach($this->doctrine->getManager()->getRepository(Club::class)->findAll() as $club)
 		{
 			$imgLogo = $club->getLogo();
+		    if("default.png" === $imgLogo) {
+		        continue;
+		    }
 			if("villiers_sur_marne.gif" === $imgLogo) {
 				$imgLogo = "villiers_sur_marne.jpg";
 			}
