@@ -12,11 +12,15 @@ $(document).ready(function(){
 		var urlOnSuccess = updateButton.attr('data-url-onsuccess');
 		var data = convertFormToJSON($('form#myForm'));
 		
+		if(typeof modifyDebug === "boolean" && modifyDebug){
+			console.log("Before reformat :", data);
+		}
+		
 		if(typeof modifyJsonReformat === "function"){
 			data = modifyJsonReformat(data);
 		}
 		if(typeof modifyDebug === "boolean" && modifyDebug){
-			console.log(data);
+			console.log("After reformat :", data);
 			return;
 		}
 		
@@ -30,6 +34,7 @@ $(document).ready(function(){
     		beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
     		success: function(response) {
 				if(typeof modifyRequestDebug === "boolean" && modifyRequestDebug){
+					console.log(data);
 					return;
 				}
     			location.assign(urlOnSuccess);

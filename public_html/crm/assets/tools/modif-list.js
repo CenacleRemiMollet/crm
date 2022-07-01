@@ -66,7 +66,7 @@ $(document).ready(function(){
 	});
 });
 
-function runSearch() {
+function getURLForSearch() {
 	var q = $('#input-search').val();
 	var href = new URL($(location).attr('href'));
 	if(q.trim() == '') {
@@ -75,6 +75,9 @@ function runSearch() {
 		href.searchParams.set('q', q);
 		href.searchParams.set('page', 1);
 	}
-	//console.log(href.toString());
-	location.href = href.toString();
+	return href;
+}
+
+function runSearch() {
+	location.href = getURLForSearch().toString();
 }

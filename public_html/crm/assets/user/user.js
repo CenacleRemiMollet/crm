@@ -12,16 +12,28 @@ function modifyJsonReformat(json) {
 			}
 			var key = fullkey.substring(index + 1);
 			if(key.startsWith('role_')) {
-				var roles = subsc['roles'];
-				if(roles == null) {
-					roles = [];
-					subsc['roles'] = roles;
+				var subscRoles = subsc['roles'];
+				if(subscRoles == null) {
+					subscRoles = [];
+					subsc['roles'] = subscRoles;
 				}
-				c = roles.push(key);
+				c = subscRoles.push(key);
 			} else {
 				subsc[key] = value;
 			}
 			delete json[fullkey];
+		}
+		if(fullkey == "admin_check_exists") {
+			if($('#input_admin_check_exists').length > 0) {
+				var roles = [];
+				delete json[fullkey];
+				delete json['admin_checkbox'];
+				if($('#input_admin_checkbox')[0].checked) {
+					roles.push('ROLE_ADMIN');
+				}
+				delete json['input_admin_checkbox'];
+				json['roles'] = roles;
+			}
 		}
 	}
 	var subscList = [];

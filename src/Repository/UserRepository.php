@@ -182,13 +182,13 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 	
 	private function appendFilter(): string
 	{
-	   return "(remove_accents(lower(lastname)) LIKE :query"
-	        ."    OR remove_accents(lower(firstname)) LIKE :query"
-	        ."    OR remove_accents(lower(mails)) LIKE :query"
-	        ."    OR remove_accents(lower(address)) LIKE :query"
-            ."    OR remove_accents(lower(city)) LIKE :query"
-            ."    OR remove_accents(lower(nationality)) LIKE :query"
-            ."    OR remove_accents(lower(login)) LIKE :query)";
+	   return "(remove_accents(lower(u.lastname)) LIKE :query"
+	        ."    OR remove_accents(lower(u.firstname)) LIKE :query"
+	        ."    OR remove_accents(lower(u.mails)) LIKE :query"
+	        ."    OR remove_accents(lower(u.address)) LIKE :query"
+            ."    OR remove_accents(lower(u.city)) LIKE :query"
+            ."    OR remove_accents(lower(u.nationality)) LIKE :query"
+            ."    OR remove_accents(lower(a.login)) LIKE :query)";
 	}
 
 }

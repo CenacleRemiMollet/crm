@@ -1,5 +1,5 @@
 day_of_week,start_time,end_time,discipline,age_level,location
-tuesday,18:30,19:30,Taekwondo,child,joinville_0
-tuesday,19:30,21:30,Taekwondo,adult,joinville_0
+tuesday,17:30,18:30,Taekwondo,child,joinville_0
+tuesday,18:30,20:00,Taekwondo,adult,joinville_0
 saturday,13:00,14:00,Taekwondo,child,joinville_0
 saturday,14:00,16:00,Taekwondo,adult,joinville_0

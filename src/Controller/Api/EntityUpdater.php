@@ -27,10 +27,9 @@ class EntityUpdater
         $this->logger = $logger;
     }
     
-    public function update(string $fieldName, $updateValue, $currentValue, $updator): self
+    public function update(string $fieldName, $updateValue, $currentValue, $updator): bool
     {
-        $this->fieldUpdater($fieldName, $updateValue, $currentValue, $updator);
-        return $this;
+        return $this->fieldUpdater($fieldName, $updateValue, $currentValue, $updator);
     }
     
     public function toResponse($object, string $logMessage = 'Updated', array $eventData = null): Response
@@ -51,16 +50,20 @@ class EntityUpdater
         return new Response('Updated', Response::HTTP_NO_CONTENT); // 204
     }
     
-    private function fieldUpdater(string $fieldName, $updateValue, $currentValue, $updator)
+    //**************************************************
+    
+    private function fieldUpdater(string $fieldName, $updateValue, $currentValue, $updator): bool
     {
         if($updateValue !== null && $currentValue !== $updateValue) {
             $updator($updateValue);
             $this->updatedFields = array_merge($this->updatedFields, array($fieldName => $updateValue));
+            return true;
         } else if($updateValue === null) {
             //$this->logger->debug('Field \''.$fieldName.'\' is null');
         } else if($currentValue === $updateValue) {
             //$this->logger->debug('Field \''.$fieldName.'\' has same value: '.$currentValue.' === '.$updateValue);
         }
+        return false;
     }
 }
 

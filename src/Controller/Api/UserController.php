@@ -343,14 +343,15 @@ class UserController extends AbstractController
  	    $entityUpdater->update('nationality', $userToUpdate->getNationality(), $user->getNationality(), function($v) use($user) { $user->setNationality($v); });
  	    $entityUpdater->update('mails', $userToUpdate->getMails(), $user->getMails(), function($v) use($user) { $user->setMails($v); });
  	    
- 	    $account = $this->getUser();
- 	    if($account->getUser()->getId() !== $user->getId() || $this->isGranted(Roles::ROLE_ADMIN)) { // can't update myself except admin
- 	      $this->updateSubscribes($user, $userToUpdate->getSubscribes(), $entityUpdater);
-//  	      if($userToUpdate->getAdmin() === 'true') {
-//  	          $entityUpdater->update('mails', $userToUpdate->getMails(), $user->getMails(), function($v) use($user) { $user->setMails($v); });
-//  	      }
+ 	    $currentAccount = $this->getUser();
+ 	    if($currentAccount->getUser()->getId() !== $user->getId() || $this->isGranted(Roles::ROLE_ADMIN)) { // can't update myself except admin
+            $this->updateSubscribes($user, $userToUpdate->getSubscribes(), $entityUpdater);
+            $entityFinder = new EntityFinder($doctrine);
+            $account = $entityFinder->findOneByOrThrow(Account::class, ['user' => $user]);
+            if($entityUpdater->update('roles', $userToUpdate->getRoles(), $account->getRoles(), function($v) use($account) { $account->setRoles($v); })) {
+                $doctrine->getManager()->persist($account);
+ 	        }
  	    }
- 	   
  	    return $entityUpdater->toResponse($user, 'User updated', ['id' => $user->getId()]);
 	}
 	

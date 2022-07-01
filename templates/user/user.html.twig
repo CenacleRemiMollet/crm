@@ -241,7 +241,8 @@
                     <div class="form-group row slimmargin">
                         <label class="col-sm-1 col-form-label" for="input_admin">Administrateur</label>
                         <div class="col-sm-10">
-    	                    <input class="form-check-input" type="checkbox" name="admin" id="input_admin" value="true" style="margin-left: 0px" {% if user.roles['ROLE_ADMIN'] is defined %}checked{% endif %}{% if user.myself is defined %}disabled{% endif %}>
+                        	{% if user.myself is not defined %}<input type="hidden" name="admin_check_exists" id="input_admin_check_exists" value="true">{% endif %}
+    	                    <input class="form-check-input" type="checkbox" name="admin_checkbox" id="input_admin_checkbox" value="true" style="margin-left: 0px" {% if 'ROLE_ADMIN' in user.roles %}checked {% endif %}{% if user.myself is defined %}disabled {% endif %}>
                             <div class="invalid-feedback" id="txtvalid-admin"></div>       	
                         </div>
                     </div>
@@ -267,9 +268,9 @@
 
 {% block javascripts_end_body %}
 	<script src="{{ app.request.baseUrl }}/assets/tools/modif.js"></script>
-	<script src="{{ app.request.baseUrl }}/assets/user/modif.js"></script>
+	<script src="{{ app.request.baseUrl }}/assets/user/user.js"></script>
 	<script>
 		//var modifyDebug = true; // used by tools/modif.js
-		var modifyRequestDebug = true; // used by tools/modif.js
+		//var modifyRequestDebug = true; // used by tools/modif.js
 	</script>
 {% endblock %}

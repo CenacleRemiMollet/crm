@@ -127,7 +127,7 @@
                     	<img src="{{ app.request.baseUrl }}/assets/img/profile.png" class="icon">{% trans %}menu.connection.my-account{% endtrans %}
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ app.request.baseUrl }}/#"><li class="link">{{ app.user.user.lastname }} {{ app.user.user.firstname }}</li></a>
+                        <a class="dropdown-item" href="{{ app.request.baseUrl }}/users/{{ app.user.user.uuid }}"><li class="link">{{ app.user.user.lastname }} {{ app.user.user.firstname }}</li></a>
                         {% if is_granted('ROLE_ADMIN') %}
                         	<a class="dropdown-item" href="{{ app.request.baseUrl }}/config"><li class="link">{% trans %}menu.connection.config{% endtrans %}</li></a>
                         {% endif %}
