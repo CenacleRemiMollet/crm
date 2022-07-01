@@ -29,7 +29,7 @@
             	<select class="custom-select" id="filter-by-club" name="filter-by-club">
             		<option value="" {% if app.request.get('club') == null %}selected{% endif %}><i>(tous)</i></option>
         			{% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
-        				<option value="{{ club.uuid }}" {% if app.request.get('club') == club.uuid %}selected{% endif %}>{% for location in club.locations %}{{ location.city }}{% if not loop.last %}, {% endif %}{% endfor %} ({{ club.name }})</option>
+        				<option value="{{ club.uuid }}" {% if app.request.get('club') == club.uuid %}selected{% endif %}>{% for city in club.locations|map(p => "#{p.city}")|reduce((unique, item) => item in unique ? unique : unique|merge([item]), []) %}{{ city }}{% if not loop.last %}, {% endif %}{% endfor %} ({{ club.name }})</option>
         			{% endfor %}
             	</select>
                 </div>

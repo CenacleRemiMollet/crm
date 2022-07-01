@@ -49,6 +49,7 @@ class ClubRepository extends ServiceEntityRepository
             ."         JOIN user_club_subscribe ucs ON c.id = ucs.club_id"
             ."         JOIN user u ON u.id = ucs.user_id"
             ."        WHERE u.uuid IN (:user_uuid)"
+            ."         AND c.active"
             ."        GROUP BY c.id) cs ON c.id = cs.id";
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata('App\Entity\Club', 'c');

@@ -33,7 +33,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    public const LOGIN_ROUTE = 'security_login';
 
     private $entityManager;
     private $urlGenerator;
@@ -72,7 +72,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function supports(Request $request): bool
     {
-    	$supported = 'app_login' === $request->attributes->get('_route') && $request->isMethod('POST');
+        $supported = LoginFormAuthenticator::LOGIN_ROUTE === $request->attributes->get('_route') && $request->isMethod('POST');
         $this->logger->info('LoginFormAuthenticator.supports(): '.($supported ? 'yes':'no'));
     	return $supported;
     }

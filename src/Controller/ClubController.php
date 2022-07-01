@@ -13,6 +13,8 @@ use App\Entity\ClubPrice;
 use App\Entity\EntityFinder;
 use App\Entity\Club;
 use App\Security\ClubAccess;
+use App\Service\ClubService;
+use Hateoas\HateoasBuilder;
 
 class ClubController extends AbstractController
 {
@@ -43,6 +45,24 @@ class ClubController extends AbstractController
 	}
 
 	/**
+	 * @Route("/clubs", name="web_clubs_list", methods={"GET"})
+	 */
+	public function getAllClubs(Request $request, SessionInterface $session)
+	{
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $clubs = $clubAccess->getClubsForAccount($this->getUser());
+	    
+	    $clubService = new ClubService($this->container->get('doctrine'));
+	    $clubViews = $clubService->convertToView($clubs);
+	   
+	    $hateoas = HateoasBuilder::create()->build();
+	    
+	    return $this->render('club/clubs.html.twig', [
+	        'clubs' => json_decode($hateoas->serialize($clubViews, 'json'))
+	    ]);
+	}
+	
+	/**
 	 * @Route("/club/{uuid}", name="web_club_one", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 */
 	public function viewOne($uuid, LoggerInterface $logger, SessionInterface $session)
@@ -70,6 +90,14 @@ class ClubController extends AbstractController
 	 */
 	public function modifyOne($uuid, LoggerInterface $logger, SessionInterface $session)
 	{
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+	    
 	    $response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
 	    if($response->getStatusCode() != 200) {
 	        throw $this->createNotFoundException();

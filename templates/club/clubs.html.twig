@@ -1,0 +1,77 @@
+{% extends 'dashboard.html.twig' %}
+
+
+{% block stylesheets2 %}
+	<link rel="stylesheet" href="{{ app.request.baseUrl }}/assets/tools/modif-list.css">
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+	<br>
+    <div class="table-content" style="padding: 20px">
+    	<div class="row">
+    		<div class="col-sm-10"><h5>Clubs</h5></div>
+    		<div><a class="btn btn-success" href="{{ app.request.baseUrl }}/club-new" role="button" style="margin: 10px" title="Ajouter un club"><i class="fas fa-plus"></i></a></div>
+    	</div>
+		<table class="table">
+			<thead>
+				<th scope="col" class="col-sm-1" style="width: 0% !important;"></th>
+				<th scope="col" class="col-sm-1">Nom</th>
+				<th scope="col" class="col-sm-1">Villes</th>
+				<th scope="col" class="col-sm-1"></th>
+			</thead>
+			<tbody>
+				{% for club in clubs %}
+					<tr id="{{ club.uuid }}">
+						<td scope="row"><a href="{{ app.request.baseUrl }}/club/{{ club.uuid }}"><img width="30" height="30" src="{{ club._links.logo.href }}" alt="logo_{{ club.uuid }}"></a></td>
+						<td scope="row"><a href="{{ app.request.baseUrl }}/club/{{ club.uuid }}">{{ club.name }}</a></td>
+						<td scope="row">
+							{% for city in club.locations|map(p => "#{p.city}")|reduce((unique, item) => item in unique ? unique : unique|merge([item]), []) %}
+								{{ city }}{% if not loop.last %}, {% endif %}
+							{% endfor %}
+						</td>
+						<td class="row" style="flex-wrap: nowrap;">
+							<a class="btn btn-warning btnupdel" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/modify" role="button"><i class="fas fa-pencil-alt"></i></a>
+						</td>
+					</tr>
+   				{% endfor %}
+			</tbody>
+		</table>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+   			        <div class="modal-header">
+           				<h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+			            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        			    	<span aria-hidden="true">&times;</span>
+            			</button>
+            		</div>
+            		<div class="modal-body"></div>
+            		<div class="invalid-feedback" id="txtvalid-delete"></div>
+            		<div class="modal-footer">
+            			<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            			<button type="button" class="btn btn-danger btnconfirmdelete" data-url-prefix="{{ app.request.baseUrl }}/api/users">Supprimer</button>
+            		</div>
+            	</div>
+            </div>
+        </div> 
+               
+        <div class="row" style="flex-wrap: nowrap;">
+            <div class="col-sm-10">
+            	<a href="javascript:history.back()" class="btn btn-secondary">Annuler</a>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts_end_body %}
+	<script src="{{ app.request.baseUrl }}/assets/tools/modif-list.js"></script>
+	<script src="{{ app.request.baseUrl }}/assets/user/users.js"></script>
+{% endblock %}

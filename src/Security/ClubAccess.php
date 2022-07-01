@@ -85,8 +85,8 @@ class ClubAccess
     {
         if($this->authorizationChecker->isGranted(Roles::ROLE_ADMIN) || $this->authorizationChecker->isGranted(Roles::ROLE_SUPER_ADMIN)) {
             $this->logger->debug('ClubAccess.getClubsForAccount(): current user ('.$account->getId().') is an admin');
-            $clubService = new ClubService( $this->manager);
-            return $clubService->getAllActive();
+            $clubService = new ClubService($this->manager);
+            return $clubService->getAll();
         }
         if(($this->authorizationChecker->isGranted(Roles::ROLE_CLUB_MANAGER) || $this->authorizationChecker->isGranted(Roles::ROLE_TEACHER)) && $account != null) {
             $this->logger->debug('ClubAccess: current user ('.$account->getId().') is a teacher or a manager');

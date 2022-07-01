@@ -13,8 +13,8 @@
         </div>
         <div class="name">
             <h1>{{  club.name }}<br>
-            	   {% for location in club.locations %}
-                    {{ location.city }}<br>
+    		    {% for city in club.locations|map(p => "#{p.city}")|reduce((unique, item) => item in unique ? unique : unique|merge([item]), []) %}
+                    {{ city }}<br>
                 {% endfor %}
             <span>{% trans %}club.home.martialarts{% endtrans %}</span></h1>
         </div>

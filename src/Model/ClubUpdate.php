@@ -26,6 +26,7 @@ class ClubUpdate
 	private $name;
 
 	/**
+	 * @Assert\Type("boolean")
 	 * @OA\Property(type="boolean", example="true")
 	 */
 	private $active;
@@ -108,7 +109,7 @@ class ClubUpdate
 		$this->name = $name;
 	}
 
-	public function isActive(): ?string
+	public function isActive(): ?bool
 	{
 	    return $this->active;
 	}

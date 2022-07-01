@@ -55,16 +55,16 @@ RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/le_plessis_trevise
 RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/meudon
 
 # Taekwondo-hapkido Club Des Tigres Nogentais (http://www.taekwondonogent.fr/)
-RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/nogent
+RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/nogent_sur_marne
 
 # Taekwondo-hapkido Club Du Val Maubuee (http://www.taekwondonoisiel.fr/)
 RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/noisiel
 
 # Taekwondo-hapkido Club De Paris V (http://www.taekwondoparis5.fr/)
-RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/paris_v
+RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/paris5
 
-# Sacamp - Taekwondo-taekwonkido (http://www.taekwondoparis19.fr/)
-RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/paris_xix
+# Sacamp - Taekwondo-taekwonkido (https://www.dojo-sacamp.com/)
+RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/paris19
 
 # Taekwondo-hapkido Club Des Coteaux (http://www.taekwondopommeuse.fr/)
 RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/pommeuse
@@ -78,7 +78,7 @@ RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/provins
 # Taekwondo-hapkido Club De Roissy (http://www.taekwondoroissy.fr/)
 RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/roissy_en_brie
 
-# Taekwondo - Taekwonkido Club De Sourdun (http://www.taekwondoprovins.fr/)
+# Taekwondo - Taekwonkido Club De Sourdun ()
 RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/sourdun
 
 # Suisse ()
@@ -113,6 +113,27 @@ RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/la_valette
 
 # Ghazal Taekwonkido ()
 RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/montreal
+
+# Lognes Police ()
+RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/asttpn
+
+# Taekwonkido-hapkido Club De Hyeres ()
+RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/hyeres
+
+# Taekwondo Compiègne (http://taekwondo-compiegne.e-monsite.com/)
+RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/compiegne
+
+# Aura Taekwonkido (http://aura-taekwonkido.fr/)
+RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/lyon
+
+# Taekwonkido Du Sud Ouest ()
+RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/sudouest
+
+# Leman ()
+RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/leman
+
+# Taekwondo Club De La Buisse ()
+RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/buisse
 
 
 */
