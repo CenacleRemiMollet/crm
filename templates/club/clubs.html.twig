@@ -12,7 +12,9 @@
     <div class="table-content" style="padding: 20px">
     	<div class="row">
     		<div class="col-sm-10"><h5>Clubs</h5></div>
-    		<div><a class="btn btn-success" href="{{ app.request.baseUrl }}/club-new" role="button" style="margin: 10px" title="Ajouter un club"><i class="fas fa-plus"></i></a></div>
+    		{% if is_granted('ROLE_ADMIN') %}
+    			<div><a class="btn btn-success" href="{{ app.request.baseUrl }}/club-new" role="button" style="margin: 10px" title="Ajouter un club"><i class="fas fa-plus"></i></a></div>
+    		{% endif %}
     	</div>
 		<table class="table">
 			<thead>

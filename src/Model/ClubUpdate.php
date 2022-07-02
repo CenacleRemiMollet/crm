@@ -21,6 +21,7 @@ class ClubUpdate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Abc Club")
 	 */
 	private $name;
@@ -41,18 +42,21 @@ class ClubUpdate
 	
 	/**
 	 * @Assert\Length(max = 512)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
 	 */
 	private $contact_emails;
 	
 	/**
 	 * @Assert\Length(max = 32)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="0 892 70 12 39")
 	 */
 	private $contact_phone;
 	
 	/**
 	 * @Assert\Length(max = 512)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
 	 */
 	private $mailing_list;

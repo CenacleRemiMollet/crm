@@ -15,6 +15,7 @@ use App\Entity\Club;
 use App\Security\ClubAccess;
 use App\Service\ClubService;
 use Hateoas\HateoasBuilder;
+use App\Security\Roles;
 
 class ClubController extends AbstractController
 {
@@ -49,6 +50,13 @@ class ClubController extends AbstractController
 	 */
 	public function getAllClubs(Request $request, SessionInterface $session)
 	{
+	    if(! $this->isGranted(Roles::ROLE_ADMIN)
+	        && ! $this->isGranted(Roles::ROLE_SUPER_ADMIN)
+	        && ! $this->isGranted(Roles::ROLE_CLUB_MANAGER)
+	        && ! $this->isGranted(Roles::ROLE_TEACHER)) {
+	            throw $this->createAccessDeniedException();    
+	    }
+	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
 	    $clubs = $clubAccess->getClubsForAccount($this->getUser());
 	    
