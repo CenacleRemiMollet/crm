@@ -1,0 +1,48 @@
+{% extends 'dashboard.html.twig' %}
+
+
+{% block stylesheets2 %}
+	<link rel="stylesheet" href="{{ app.request.baseUrl }}/assets/tools/modif.css">
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+	<br>
+    <div class="table-content" style="padding: 20px">
+		<form id="myForm">
+            <div class="form-group row slimmargin col-sm-5">
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="input_file">
+                        <label class="custom-file-label" for="input_file">Sélectionner un logo</label>
+                    </div>
+                    {# <div class="input-group-append">
+                   		<span class="input-group-text" id="">Upload</span>
+                    </div> #} 
+                </div>
+            </div>
+            
+			<br>
+			<br>
+            <div class="row" style="flex-wrap: nowrap;">
+                <div class="col-sm-10">
+                	<a href="javascript:history.back()" class="btn btn-secondary">Annuler</a>
+                </div>
+                <div class="col-sm-1">
+                	<button type="button" class="btn btn-warning btnupload" data-url-upload="{{ app.request.baseUrl }}/api/club/{{ club.uuid }}/logo" data-url-onsuccess="{% if app.request.headers.get('referer') is defined %}{{ app.request.headers.get('referer') }}{% else %}{{ app.request.baseUrl }}/club/{{ club.uuid }}{% endif %}">Importer</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts_end_body %}
+	<script src="{{ app.request.baseUrl }}/assets/tools/upload.js"></script>
+	<script>
+		
+	</script>
+{% endblock %}

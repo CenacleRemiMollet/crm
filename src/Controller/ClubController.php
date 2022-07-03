@@ -92,45 +92,8 @@ class ClubController extends AbstractController
 		    'canConfigure' => $this->canConfigure($uuid)
 		]);
 	}
-
-	/**
-	 * @Route("/club-new", name="web_new_club", methods={"GET"})
-	 */
-	public function create(LoggerInterface $logger, SessionInterface $session)
-	{
-	    $this->denyAccessUnlessGranted(Roles::ROLE_ADMIN);
-	    
-	    return $this->render('club/club-new.html.twig', [
-	        //'club' => $club,
-	        //'lessons' => $lessons,
-	        //'canConfigure' => $this->canConfigure($uuid)
-	    ]);
-	}
-	    /**
-	 * @Route("/club/{uuid}/modify", name="web_modify_club", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
-	 */
-	public function modifyOne($uuid, LoggerInterface $logger, SessionInterface $session)
-	{
-	    $doctrine = $this->container->get('doctrine');
-	    
-	    $entityFinder = new EntityFinder($doctrine);
-	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
-	    
-	    $clubAccess = new ClubAccess($this->container, $this->logger);
-	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
-	    
-	    $response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
-	    if($response->getStatusCode() != 200) {
-	        throw $this->createNotFoundException();
-	    }
-	    $club = json_decode($response->getContent());
-	    $session->set('club-selected', $club);
-	    
-	    return $this->render('club/club-modify.html.twig', [
-	        'club' => $club
-	    ]);
-	}
 	
+
 	/**
 	 * @Route("/club/{uuid}/infos", name="web_club_infos", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 */
@@ -154,8 +117,86 @@ class ClubController extends AbstractController
 		    'canConfigure' => $this->canConfigure($uuid)
 		]);
 	}
+
+	
+	/**
+	 * @Route("/club-new", name="web_new_club", methods={"GET"})
+	 */
+	public function create(LoggerInterface $logger, SessionInterface $session)
+	{
+	    $this->denyAccessUnlessGranted(Roles::ROLE_ADMIN);
+	    return $this->render('club/club-new.html.twig', []);
+	}
+	
+	
+	/**
+	 * @Route("/club/{uuid}/modify", name="web_modify_club", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 */
+	public function modifyOne($uuid, LoggerInterface $logger, SessionInterface $session)
+	{
+	    if(! $this->isGranted(Roles::ROLE_ADMIN)
+	        && ! $this->isGranted(Roles::ROLE_SUPER_ADMIN)
+	        && ! $this->isGranted(Roles::ROLE_CLUB_MANAGER)
+	        && ! $this->isGranted(Roles::ROLE_TEACHER)) {
+	        throw $this->createAccessDeniedException();
+	    }
+	     
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+	    
+	    $response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
+	    if($response->getStatusCode() != 200) {
+	        throw $this->createNotFoundException();
+	    }
+	    $club = json_decode($response->getContent());
+	    $session->set('club-selected', $club);
+	    
+	    return $this->render('club/club-modify.html.twig', [
+	        'club' => $club
+	    ]);
+	}
+
+	
+	/**
+	 * @Route("/club/{uuid}/logo/modify", name="web_modify_club_logo", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 */
+	public function modifyLogo($uuid, LoggerInterface $logger, SessionInterface $session)
+	{
+	    if(! $this->isGranted(Roles::ROLE_ADMIN)
+	        && ! $this->isGranted(Roles::ROLE_SUPER_ADMIN)
+	        && ! $this->isGranted(Roles::ROLE_CLUB_MANAGER)
+	        && ! $this->isGranted(Roles::ROLE_TEACHER)) {
+	        throw $this->createAccessDeniedException();
+	    }
+	        
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+	    
+	    $response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
+	    if($response->getStatusCode() != 200) {
+	        throw $this->createNotFoundException();
+	    }
+	    $club = json_decode($response->getContent());
+	    $session->set('club-selected', $club);
+	    
+	    return $this->render('club/club-logo-modify.html.twig', [
+	        'club' => $club
+	    ]);
+	}
+	
 	
 	//************************************************
+	
 	
 	private function determineStartsOffsetByQuarter($lessons)
 	{
