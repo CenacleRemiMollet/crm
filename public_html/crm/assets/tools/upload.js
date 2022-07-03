@@ -3,10 +3,10 @@ $(document).ready(function(){
 	$('#input_file').change(function (event) {
 		var files = $(this)[0].files;
 		if(files.length > 0) {
-			// TODO
+			var f = files[0].
+			$("#label_file").text(file.name);
+			checkFile(file);
 		}
-        console.log(file);
-	
     });
 
     $(".btnupload").click(function(){
@@ -17,6 +17,7 @@ $(document).ready(function(){
 		console.log(files);
         return;
         
+		checkFile(file);
 
 // Check file selected or not
         if(files.length > 0) {
@@ -44,3 +45,10 @@ $(document).ready(function(){
         }
     });
 });
+
+function checkFile(file) {
+	var maxSize = $('#input_file').attr('data-max-size');
+	if(maxSize && file.size > maxSize) {
+		// TODO 
+	}
+}

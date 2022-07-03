@@ -14,9 +14,10 @@
             <div class="form-group row slimmargin col-sm-5">
                 <div class="input-group mb-3">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="input_file">
-                        <label class="custom-file-label" for="input_file">Sélectionner un logo</label>
+                        <input type="file" class="custom-file-input" id="input_file" accept="image/png, image/jpg, image/jpeg, image/gif" data-max-size="262144">
+                        <label class="custom-file-label" id="label_file" for="input_file">Sélectionner un logo</label>
                     </div>
+                    <div class="invalid-feedback" id="txtvalid-file">hhh</div>
                     {# <div class="input-group-append">
                    		<span class="input-group-text" id="">Upload</span>
                     </div> #} 
