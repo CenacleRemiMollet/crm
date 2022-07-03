@@ -94,6 +94,19 @@ class ClubController extends AbstractController
 	}
 
 	/**
+	 * @Route("/club-new", name="web_new_club", methods={"GET"})
+	 */
+	public function create(LoggerInterface $logger, SessionInterface $session)
+	{
+	    $this->denyAccessUnlessGranted(Roles::ROLE_ADMIN);
+	    
+	    return $this->render('club/club-new.html.twig', [
+	        //'club' => $club,
+	        //'lessons' => $lessons,
+	        //'canConfigure' => $this->canConfigure($uuid)
+	    ]);
+	}
+	    /**
 	 * @Route("/club/{uuid}/modify", name="web_modify_club", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 */
 	public function modifyOne($uuid, LoggerInterface $logger, SessionInterface $session)

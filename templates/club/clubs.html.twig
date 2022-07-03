@@ -24,14 +24,25 @@
 				<th scope="col" class="col-sm-1"></th>
 			</thead>
 			<tbody>
-				{% for club in clubs %}
+				{% for club in clubs|sort((a, b) => a.uuid <=> b.uuid) %}
 					<tr id="{{ club.uuid }}">
 						<td scope="row"><a href="{{ app.request.baseUrl }}/club/{{ club.uuid }}"><img width="30" height="30" src="{{ club._links.logo.href }}" alt="logo_{{ club.uuid }}"></a></td>
-						<td scope="row"><a href="{{ app.request.baseUrl }}/club/{{ club.uuid }}">{{ club.name }}</a></td>
+						<td scope="row"><a href="{{ app.request.baseUrl }}/club/{{ club.uuid }}">
+						    {% if club.active == 'true' %}
+						    	<i class="fas fa-circle" style="color: #0f0"></i>
+						    {% else %}
+						    	<i class="fas fa-circle" style="color: #f00"></i>
+						    {% endif %}
+						    {{ club.name }}
+						</a></td>
 						<td scope="row">
-							{% for city in club.locations|map(p => "#{p.city}")|reduce((unique, item) => item in unique ? unique : unique|merge([item]), []) %}
+							{% set cities = club.locations|map(p => "#{p.city}")|reduce((unique, item) => item in unique ? unique : unique|merge([item]), []) %}
+							{% for city in cities %}
 								{{ city }}{% if not loop.last %}, {% endif %}
 							{% endfor %}
+							{% if cities is empty %}
+								<a class="btn btn-success" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/location-new" role="button" title="Ajouter une adresse"><i class="fas fa-plus"></i></a>
+							{% endif %}
 						</td>
 						<td class="row" style="flex-wrap: nowrap;">
 							<a class="btn btn-warning btnupdel" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/modify" role="button"><i class="fas fa-pencil-alt"></i></a>

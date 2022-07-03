@@ -33,8 +33,12 @@ class StringUtils
         return $str === null || trim($str) === '' ? '' : $str;
     }
     
-    public static function nameToUuid($name){
-        return strtr(strtolower(StringUtils::stripAccents($name)), ' ,-\'', '____');
+    public static function nameToUuid($name, $maxLength = 64) {
+        $uuid = strtr(strtolower(StringUtils::stripAccents($name)), ' ,-\'', '____');
+        if(strlen($uuid) > $maxLength) {
+            $uuid = substr($uuid, 0, $maxLength);
+        }
+        return $uuid;
     }
 }
 

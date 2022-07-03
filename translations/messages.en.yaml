@@ -56,6 +56,7 @@ menu:
     signup: "Sign up"
     my-account: "My account"
     config: "Configure"
+    clubs: 
     logout: "Logout"
     
 

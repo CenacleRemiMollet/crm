@@ -14,70 +14,70 @@
             <div class="form-group row slimmargin">
                 <label for="input-name" class="col-sm-1 col-form-label">Nom</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-name" name="name" value="{{ club.name }}" required/>
+                	<input type="text" class="form-control" id="input-name" name="name" value="" required/>
                     <div class="invalid-feedback" id="txtvalid-name"></div>       	
                 </div>
             </div>
             <div class="form-group row slimmargin">
                 <label for="input-website_url" class="col-sm-1 col-form-label">URL</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-website_url" name="website_url" value="{% if(club.website_url is defined) %}{{ club.website_url }}{% endif %}" />
+                	<input type="text" class="form-control" id="input-website_url" name="website_url" value=""/>
                     <div class="invalid-feedback" id="txtvalid-website_url"></div>       	
                 </div>
             </div>
             <div class="form-group row slimmargin">
                 <label for="input-contact_emails" class="col-sm-1 col-form-label">Emails</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-contact_emails" name="contact_emails" value="{% if(club.contact_emails is defined) %}{{ club.contact_emails }}{% endif %}" />
+                	<input type="text" class="form-control" id="input-contact_emails" name="contact_emails" value="" />
                     <div class="invalid-feedback" id="txtvalid-contact_emails"></div>       	
                 </div>
             </div>
             <div class="form-group row slimmargin">
                 <label for="input-mailing_list" class="col-sm-1 col-form-label">Mailing list</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-mailing_list" name="mailing_list" value="{% if(club.mailing_list is defined) %}{{ club.mailing_list }}{% endif %}" />
+                	<input type="text" class="form-control" id="input-mailing_list" name="mailing_list" value="" />
                     <div class="invalid-feedback" id="txtvalid-mailing_list"></div>       	
                 </div>
             </div>
             <div class="form-group row slimmargin">
                 <label for="input-contact_phone" class="col-sm-1 col-form-label">Téléphone</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-contact_phone" name="contact_phone" value="{% if(club.contact_phone is defined) %}{{ club.contact_phone }}{% endif %}" />
+                	<input type="text" class="form-control" id="input-contact_phone" name="contact_phone" value="" />
                     <div class="invalid-feedback" id="txtvalid-contact_phone"></div>       	
                 </div>
             </div>
             <div class="form-group row slimmargin">
                 <label for="input-facebook_url" class="col-sm-1 col-form-label">Facebook</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-facebook_url" name="facebook_url" value="{% if(club.facebook_url is defined) %}{{ club.facebook_url }}{% endif %}" />
+                	<input type="text" class="form-control" id="input-facebook_url" name="facebook_url" value="" />
                     <div class="invalid-feedback" id="txtvalid-facebook_url"></div>       	
                 </div>
             </div>
             <div class="form-group row slimmargin">
                 <label for="input-twitter_url" class="col-sm-1 col-form-label">Twitter</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-twitter_url" name="twitter_url" value="{% if(club.twitter_url is defined) %}{{ club.twitter_url }}{% endif %}" />
+                	<input type="text" class="form-control" id="input-twitter_url" name="twitter_url" value="" />
                     <div class="invalid-feedback" id="txtvalid-twitter_url"></div>       	
                 </div>
             </div>
             <div class="form-group row slimmargin">
                 <label for="input-instagram_url" class="col-sm-1 col-form-label">Instagram</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-instagram_url" name="instagram_url" value="{% if(club.instagram_url is defined) %}{{ club.instagram_url }}{% endif %}" />
+                	<input type="text" class="form-control" id="input-instagram_url" name="instagram_url" value="" />
                     <div class="invalid-feedback" id="txtvalid-instagram_url"></div>       	
                 </div>
             </div>
             <div class="form-group row slimmargin">
                 <label for="input-dailymotion_url" class="col-sm-1 col-form-label">Dailymotion</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-dailymotion_url" name="dailymotion_url" value="{% if(club.dailymotion_url is defined) %}{{ club.dailymotion_url }}{% endif %}" />
+                	<input type="text" class="form-control" id="input-dailymotion_url" name="dailymotion_url" value="" />
                     <div class="invalid-feedback" id="txtvalid-dailymotion_url"></div>       	
                 </div>
             </div>
             <div class="form-group row slimmargin">
                 <label for="input-youtube_url" class="col-sm-1 col-form-label">Youtube</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-youtube_url" name="youtube_url" value="{% if(club.youtube_url is defined) %}{{ club.youtube_url }}{% endif %}" />
+                	<input type="text" class="form-control" id="input-youtube_url" name="youtube_url" value="" />
                     <div class="invalid-feedback" id="txtvalid-youtube_url"></div>       	
                 </div>
             </div>
@@ -85,41 +85,27 @@
             <div class="form-group row slimmargin">
                 <label for="input-uuid" class="col-sm-1 col-form-label">UUID</label>
                 <div class="col-sm-10">
-                	<input type="text" class="form-control" id="input-uuid" name="uuid" value="{{ club.uuid }}" disabled/>
+                	<input type="text" class="form-control" id="input-uuid" name="uuid" value="" />
                     <div class="invalid-feedback" id="txtvalid-uuid"></div>       	
                 </div>
             </div>
 
-			{% if is_granted('ROLE_ADMIN') %}
-                <div class="form-group row slimmargin">
-                    <label class="col-sm-1 col-form-label" for="input_active">Actif</label>
-                    <div class="col-sm-10">
-                        <input class="form-check-input" type="checkbox" name="active" id="input_active" value="true" style="margin-left: 0px" {% if club.active == 'true' %}checked {% endif %}>
-                        <div class="invalid-feedback" id="txtvalid-active"></div>       	
-                    </div>
-                </div>
-            {% endif %}
-
-			<br>
-
-            <div class="row" style="flex-wrap: nowrap;">
-                <div class="col-sm-4">
-                	<a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/locations" role="button" style="margin: 10px" title="Modifier les adresses"><i class="fas fa-map"></i>&nbsp;Modifier les adresses</a>
-                </div>
-                <div class="col-sm-4">
-                	<a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons" role="button" style="margin: 10px" title="Modifier les horaires"><i class="fas fa-clock"></i>&nbsp;Modifier les horaires</a>
-                </div>
-                <div class="col-sm-4">
-                	<a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/prices" role="button" style="margin: 10px" title="Modifier les tarifs"><i class="fas fa-euro-sign"></i>&nbsp;Modifier les tarifs</a>
+            <div class="form-group row slimmargin">
+                <label class="col-sm-1 col-form-label" for="input_active">Actif</label>
+                <div class="col-sm-10">
+                    <input class="form-check-input" type="checkbox" name="active" id="input_active" value="true" style="margin-left: 0px" checked>
+                    <div class="invalid-feedback" id="txtvalid-active"></div>       	
                 </div>
             </div>
+
+			<br>
 			<br>
             <div class="row" style="flex-wrap: nowrap;">
                 <div class="col-sm-10">
                 	<a href="javascript:history.back()" class="btn btn-secondary">Annuler</a>
                 </div>
                 <div class="col-sm-1">
-                	<button type="button" class="btn btn-warning btnmodify" data-url-update="{{ app.request.baseUrl }}/api/club/{{ club.uuid }}" data-url-onsuccess="{% if app.request.headers.get('referer') is defined %}{{ app.request.headers.get('referer') }}{% else %}{{ app.request.baseUrl }}/club/{% endif %}">Modifier</button>
+                	<button type="button" class="btn btn-success btncreate" data-url-create="{{ app.request.baseUrl }}/api/club" data-url-onsuccess="{% if app.request.headers.get('referer') is defined %}{{ app.request.headers.get('referer') }}{% else %}{{ app.request.baseUrl }}/clubs{% endif %}">Créer</button>
                 </div>
             </div>
         </form>

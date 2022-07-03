@@ -65,12 +65,25 @@ $(document).ready(function(){
 		var createButton = $('.btncreate');
 		var urlCreate = createButton.attr('data-url-create');
 		var urlOnSuccess = createButton.attr('data-url-onsuccess');
+		var data = convertFormToJSON($('form#myForm'));
 		
+		if(typeof createDebug === "boolean" && createDebug){
+			console.log("Before reformat :", data);
+		}
+		
+		if(typeof createJsonReformat === "function"){
+			data = createJsonReformat(data);
+		}
+		if(typeof createDebug === "boolean" && createDebug){
+			console.log("After reformat :", data);
+			return;
+		}
+
 		$.ajax({
     		type: 'POST',
     		url: urlCreate,
     		contentType: 'application/json',
-    		data: JSON.stringify(convertFormToJSON($('form#myForm'))),
+    		data: JSON.stringify(data),
     		cache: false,
     		dataType: 'json',
     		beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },

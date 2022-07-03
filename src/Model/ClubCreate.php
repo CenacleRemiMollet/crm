@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Validator\Constraints as AcmeAssert;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,72 +24,82 @@ class ClubCreate
 	 * @Assert\NotBlank
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Abc Club")
 	 */
 	private $name;
 
 	/**
-	 * @Assert\NotBlank
 	 * @OA\Property(type="boolean", example="true")
 	 */
 	private $active = true;
 
 	/**
 	 * @Assert\Length(max = 64)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="abc_club")
 	 */
 	private $uuid;
 	
 	/**
 	 * @Assert\Length(max = 512)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
 	 */
 	private $contact_emails;
 	
 	/**
 	 * @Assert\Length(max = 32)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="0 892 70 12 39")
 	 */
 	private $contact_phone;
 	
 	/**
 	 * @Assert\Length(max = 512)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
 	 */
 	private $mailing_list;
 	
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://www.google.com")
 	 */
 	private $website_url;
 
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://facebook.com/pages/category/Local-Business/Taekwonkido-Cenacle-Rémi-Mollet-158619684187704/")
 	 */
 	private $facebook_url;
 
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://twitter.com/abc")
 	 */
 	private $twitter_url;
 
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://www.instagram.com/abc")
 	 */
 	private $instagram_url;
 
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://www.dailymotion.com/abc")
 	 */
 	private $dailymotion_url;
 	
 	/**
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @Assert\Url
 	 * @OA\Property(type="string", example="https://www.youtube.com/abc")
 	 */
 	private $youtube_url;
