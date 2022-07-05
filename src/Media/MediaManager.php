@@ -6,10 +6,14 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Exception\UnauthorizedTypeUploadException;
+use App\Exception\FileTooLargeUploadException;
 
 class MediaManager
 {
 	const MEDIA_FOLDER = "media";
+	const MAX_LOGO_SIZE = 256 * 1024;
 
 	private $projectPath;
 	private $logger;
@@ -32,9 +36,30 @@ class MediaManager
 		return new Media(null, $this->projectPath);
 	}
 
-	public function upload($category, $uuid, $inFile)
+	public function upload($category, $uuid, UploadedFile $inFile)
 	{
-		$this->logger->debug('upload: '.$inFile->getClientOriginalName());
+	    if($inFile->getSize() > MediaManager::MAX_LOGO_SIZE) {
+	        throw new FileTooLargeUploadException($inFile->getSize(), MediaManager::MAX_LOGO_SIZE);
+	    }
+	    
+	    $finfo = new \Finfo(FILEINFO_MIME);
+	    $type = $finfo->file($inFile, FILEINFO_MIME_TYPE);
+	    if($type !== 'image/gif'
+	        && $type !== 'image/jpeg'
+	        && $type !== 'image/png') {
+	           throw new UnauthorizedTypeUploadException($type);
+	    }
+	    
+// 	    $exif = exif_read_data($inFile, 'COMPUTED', true);
+// 	    if($exif !== null) {
+//     	    $exifComputed = $exif['COMPUTED'];
+//     	    if($exifComputed !== null) {
+//     	        // TODO do something with the image dimension ?
+//     	        $this->logger->debug($exifComputed['Width'].'x'.$exifComputed['Height']);
+//     	    }
+// 	    }
+	    
+	    $this->logger->debug('upload: '.$inFile->getClientOriginalName());
 		$folder = $this->getCategoryFolder($category);
 		$newfname = $uuid.'.'.strtolower(pathinfo($inFile->getClientOriginalName(), PATHINFO_EXTENSION));
 		$this->logger->debug('$newfname: '.$newfname);

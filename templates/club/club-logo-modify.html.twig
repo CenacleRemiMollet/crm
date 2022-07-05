@@ -11,13 +11,13 @@
 	<br>
     <div class="table-content" style="padding: 20px">
 		<form id="myForm">
-            <div class="form-group row slimmargin col-sm-5">
+            <div class="form-group row slimmargin col-sm-4">
                 <div class="input-group mb-3">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="input_file" accept="image/png, image/jpg, image/jpeg, image/gif" data-max-size="262144">
+                        <input type="file" name="logo" class="custom-file-input" id="input_file" accept="image/png, image/jpg, image/jpeg, image/gif" data-max-size="262144">
                         <label class="custom-file-label" id="label_file" for="input_file">Sélectionner un logo</label>
                     </div>
-                    <div class="invalid-feedback" id="txtvalid-file">hhh</div>
+                    <div class="invalid-feedback" id="txtvalid-file"></div>
                     {# <div class="input-group-append">
                    		<span class="input-group-text" id="">Upload</span>
                     </div> #} 
@@ -44,6 +44,6 @@
 {% block javascripts_end_body %}
 	<script src="{{ app.request.baseUrl }}/assets/tools/upload.js"></script>
 	<script>
-		
+		//var uploadRequestDebug = true; // used in tools/upload.js
 	</script>
 {% endblock %}

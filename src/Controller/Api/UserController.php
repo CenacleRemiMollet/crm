@@ -203,7 +203,7 @@ class UserController extends AbstractController
 	 *         description="Successful",
 	 *         @OA\MediaType(
 	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(ref="#/components/schemas/UserMe")
+	 *             @OA\Schema(ref="#/components/schemas/User")
 	 *         )
 	 *     )
 	 * )

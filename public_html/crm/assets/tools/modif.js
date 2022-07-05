@@ -34,7 +34,7 @@ $(document).ready(function(){
     		beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
     		success: function(response) {
 				if(typeof modifyRequestDebug === "boolean" && modifyRequestDebug){
-					console.log(data);
+					console.log(data, response);
 					return;
 				}
     			location.assign(urlOnSuccess);
@@ -43,7 +43,7 @@ $(document).ready(function(){
     			var details = data.responseJSON.details;
     			if(details) {
     				Object.keys(details).forEach(key => {
-						console.log(key, details[key]);
+						//console.log(key, details[key]);
 						var valido = $('#txtvalid-' + key);
 						valido.show();
 						valido.text(details[key]);

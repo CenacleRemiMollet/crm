@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use App\Exception\ViolationException;
 use App\Exception\CRMException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use App\Exception\UnauthorizedTypeUploadException;
+use App\Exception\FileTooLargeUploadException;
 
 class ExceptionListener
 {
@@ -45,6 +47,16 @@ class ExceptionListener
             $errorView->setStatus(Response::HTTP_BAD_REQUEST);
             $errorView->setMessage($this->joinArrayKV($exception->getErrors()));
             $errorView->setDetails($exception->getErrors());
+        
+        } elseif($exception instanceof UnauthorizedTypeUploadException) {
+            $errorView->setStatus(Response::HTTP_BAD_REQUEST);
+            $errorView->setMessage('Unauthorized type');
+            $errorView->setDetails(['type' => $exception->getType()]);
+            
+        } elseif($exception instanceof FileTooLargeUploadException) {
+            $errorView->setStatus(Response::HTTP_BAD_REQUEST);
+            $errorView->setMessage('File too large: '.$exception->getType());
+            $errorView->setDetails(['uploaded' => $exception->getUploaded(), 'max' => $exception->getMax()]);
         
         } elseif($exception instanceof CRMException) {
             $errorView->setStatus($exception->getStatusCode());

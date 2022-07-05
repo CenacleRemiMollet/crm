@@ -22,6 +22,7 @@ use App\Service\ClubService;
 use App\Entity\EntityFinder;
 use App\Security\ClubAccess;
 use App\Exception\CRMException;
+use Symfony\Component\Finder\SplFileInfo;
 
 
 class ClubLogoController extends AbstractController
@@ -100,11 +101,13 @@ class ClubLogoController extends AbstractController
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $entityFinder = new EntityFinder($doctrine);
+	    /** @var Club $club */
 	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
 
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
 	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
 	    
+	    /** @var UploadedFile $file **/
 		$file = $request->files->get('logo');
 		if (empty($file)) {
 		    throw new CRMException(Response::HTTP_UNPROCESSABLE_ENTITY, 'No file specified');
