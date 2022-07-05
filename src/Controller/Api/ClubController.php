@@ -99,6 +99,7 @@ class ClubController extends AbstractController
 	public function one($uuid)
 	{
 		$entityFinder = new EntityFinder($this->container->get('doctrine'));
+		/** @var Club $club */
 		$club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
 		
 		$clubService = new ClubService($this->container->get('doctrine'));
@@ -142,6 +143,7 @@ class ClubController extends AbstractController
 		$this->denyAccessUnlessGranted(Roles::ROLE_ADMIN); // 403
 		
 	    $requestUtil = new RequestUtil($serializer, $translator);
+	    /** @var ClubCreate $clubToCreate */
 	    $clubToCreate = $requestUtil->validate($request, ClubCreate::class); // 400
 	    
 		$name = $clubToCreate->getName();

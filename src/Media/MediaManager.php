@@ -13,6 +13,8 @@ use App\Exception\FileTooLargeUploadException;
 class MediaManager
 {
 	const MEDIA_FOLDER = "media";
+	const MEDIA_FOLDER_CLUB_LOGO = 'club_logo';
+	
 	const MAX_LOGO_SIZE = 256 * 1024;
 
 	private $projectPath;

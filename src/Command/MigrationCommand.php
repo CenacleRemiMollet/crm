@@ -115,7 +115,7 @@ class MigrationCommand extends Command
 			$imgFile = $imgClubsPath.$imgLogo;
 			if (file_exists($imgFile)) {
 				echo 'Copy logo for "'.$club->getUuid().'" from '.$imgFile.PHP_EOL;
-				$this->mediaManager->save($imgFile, 'club', $club->getUuid());
+				$this->mediaManager->save($imgFile, MediaManager::MEDIA_FOLDER_CLUB_LOGO, $club->getUuid());
 
 				if("villiers_sur_marne.jpg" === $imgLogo) {
 					$club->setLogo($imgLogo);
@@ -125,7 +125,7 @@ class MigrationCommand extends Command
 			} else {
 				$url = 'http://'.$domain.'/param_clubs/logo_club/'.$club->getLogo();
 				echo 'Download logo for "'.$club->getUuid().'" from '.$url.PHP_EOL;
-				$this->mediaManager->downloadAndSave($url, 'club', $club->getUuid());
+				$this->mediaManager->downloadAndSave($url, MediaManager::MEDIA_FOLDER_CLUB_LOGO, $club->getUuid());
 			}
 		}
 	}

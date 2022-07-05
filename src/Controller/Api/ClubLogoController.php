@@ -61,8 +61,8 @@ class ClubLogoController extends AbstractController
 	public function getLogo($uuid, KernelInterface $appKernel)
 	{
 		$mediaManager = new MediaManager($appKernel, $this->logger);
-		$media = $mediaManager->find('club', $uuid);
-		return new BinaryFileResponse($media->getFileOrDefault('assets/club/defaultlogo.gif'));
+		$media = $mediaManager->find(MediaManager::MEDIA_FOLDER_CLUB_LOGO, $uuid);
+		return new BinaryFileResponse($media->getFileOrDefault('assets/club/default_logo.gif'));
 	}
 
 	/**
@@ -114,13 +114,12 @@ class ClubLogoController extends AbstractController
 		}
 
 		$mediaManager = new MediaManager($appKernel, $this->logger);
-		$newFileName = $mediaManager->upload('club', $uuid, $file);
+		$newFileName = $mediaManager->upload(MediaManager::MEDIA_FOLDER_CLUB_LOGO, $uuid, $file);
 		if($newFileName !== $club->getLogo()) {
 			$previousFileName = $club->getLogo();
 			$club->setLogo($newFileName);
 			$doctrine->getManager()->flush();
-
-			$mediaManager->delete('club', $previousFileName);
+			$mediaManager->delete(MediaManager::MEDIA_FOLDER_CLUB_LOGO, $previousFileName);
 		}
 
 		return new Response(
@@ -130,5 +129,44 @@ class ClubLogoController extends AbstractController
 	}
 
 
-
+	/**
+	 * @Route("/api/club/{uuid}/logo", name="api_club_delete_logo", methods={"DELETE"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
+	 * @OA\Delete(
+	 *     operationId="deleteClubLogo",
+	 *     tags={"Club"},
+	 *     path="/api/club/{uuid}/logo",
+	 *     summary="Delete the image logo club",
+	 *     security = {{"basicAuth": {}}},
+	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
+	 *     @OA\Parameter(
+	 *         description="UUID of club",
+	 *         in="path",
+	 *         name="uuid",
+	 *         required=true,
+	 *         @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")
+	 *     ),
+	 *     @OA\Response(response="204", description="Successful"),
+	 *     @OA\Response(response="403", description="Forbidden to delete a logo", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
+	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
+	 * )
+	 */
+	public function deleteLogo($uuid, KernelInterface $appKernel)
+	{
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $entityFinder = new EntityFinder($doctrine);
+	    /** @var Club $club */
+	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+	    
+	    $mediaManager = new MediaManager($appKernel, $this->logger);
+	    $mediaManager->delete(MediaManager::MEDIA_FOLDER_CLUB_LOGO, $uuid);
+	    
+	    return new Response(
+	        "",
+	        Response::HTTP_NO_CONTENT,
+	        ['content-type' => 'text/plain']);
+	}
 }

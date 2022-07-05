@@ -97,11 +97,17 @@ class Club
 	 */
 	private $userClubSubscribes;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="App\Entity\ClubProperty", mappedBy="club", orphanRemoval=true)
+	 */
+	private $clubProperties;
+	
 	public function __construct()
   	{
   		$this->clubLessons = new ArrayCollection();
   		$this->uuid = StringUtils::random_str(16);
   		$this->userClubSubscribes = new ArrayCollection();
+  		$this->clubProperties = new ArrayCollection();
   	}
 
 	public function getId(): ?int
@@ -263,11 +269,39 @@ class Club
   				$userClubSubscribe->setClub(null);
   			}
   		}
-
   		return $this;
   	}
 
-    public function getTwitterUrl(): ?string
+  	/**
+  	 * @return Collection|UserClubSubscribe[]
+  	 */
+  	public function getClubProperties(): Collection
+  	{
+  	    return $this->clubProperties;
+  	}
+  	
+  	public function addClubProperty(ClubProperty $clubProperty): self
+  	{
+  	    if (!$this->clubProperties->contains($clubProperty)) {
+  	        $this->clubProperties[] = $clubProperty;
+  	        $clubProperty->setClub($this);
+  	    }
+  	    return $this;
+  	}
+  	
+  	public function removeClubProperty(ClubProperty $clubProperty): self
+  	{
+  	    if ($this->clubProperties->contains($clubProperty)) {
+  	        $this->clubProperties->removeElement($clubProperty);
+  	        // set the owning side to null (unless already changed)
+  	        if ($clubProperty->getClub() === $this) {
+  	            $clubProperty->setClub(null);
+  	        }
+  	    }
+  	    return $this;
+  	}
+  	
+  	public function getTwitterUrl(): ?string
     {
         return $this->twitter_url;
     }

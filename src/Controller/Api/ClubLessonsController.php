@@ -76,6 +76,7 @@ class ClubLessonsController extends AbstractController
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $entityFinder = new EntityFinder($doctrine);
+	    /** @var Club $club */
 	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubLessons = $this->container->get('doctrine')->getManager()
@@ -139,6 +140,7 @@ class ClubLessonsController extends AbstractController
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $entityFinder = new EntityFinder($doctrine);
+	    /** @var Club $club */
 	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    $clubLesson = $entityFinder->findOneByOrThrow(ClubLesson::class, ['uuid' => $lesson_uuid, 'club' => $club]); // 404
 	    
@@ -193,6 +195,7 @@ class ClubLessonsController extends AbstractController
         $doctrine = $this->container->get('doctrine');
         
         $entityFinder = new EntityFinder($doctrine);
+        /** @var Club $club */
         $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
          
         $clubAccess = new ClubAccess($this->container, $this->logger);
@@ -301,6 +304,7 @@ class ClubLessonsController extends AbstractController
         $lessonToUpdate = $requestUtil->validate($request, ClubLessonUpdate::class); // 400
 	    
         $entityFinder = new EntityFinder($doctrine);
+        /** @var Club $club */
         $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);

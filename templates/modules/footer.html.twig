@@ -74,7 +74,6 @@
         <ul>
             <a href="{{ app.request.baseUrl }}/"><li class="link">{% trans %}footer.siteplan.thecenacle{% endtrans %}</li></a> 
             <a href="{{ app.request.baseUrl }}/master"><li class="link">{% trans %}footer.siteplan.themaster{% endtrans %}</li></a> 
-            <li class="link">{% trans %}footer.siteplan.thedisciplines{% endtrans %}</li>
             {% if club is defined and club.uuid is defined %}
             	<a href="{{ app.request.baseUrl }}/club?select=clear"><li class="link">{% trans %}footer.siteplan.clubselected{% endtrans %}</li></a>
             {% else %}

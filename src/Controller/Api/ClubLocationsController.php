@@ -84,6 +84,7 @@ class ClubLocationsController extends AbstractController
 		$doctrine = $this->container->get('doctrine');
 		
 		$entityFinder = new EntityFinder($doctrine);
+		/** @var Club $club */
 		$club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubLocations = $doctrine->getManager()
@@ -148,6 +149,7 @@ class ClubLocationsController extends AbstractController
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $entityFinder = new EntityFinder($doctrine);
+	    /** @var Club $club */
 	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    $clubLocation = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $location_uuid, 'club' => $club]); // 404
 
@@ -202,6 +204,7 @@ class ClubLocationsController extends AbstractController
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $entityFinder = new EntityFinder($doctrine);
+	    /** @var Club $club */
 	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
 	    
 	    $clubAccess = new ClubAccess($this->container, $this->logger);

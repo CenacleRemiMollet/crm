@@ -9,6 +9,8 @@ use App\Entity\ClubPrice;
 use App\Model\ClubPriceView;
 use App\Entity\Club;
 use Psr\Log\LoggerInterface;
+use App\Entity\ClubProperty;
+use App\Model\ClubPropertyView;
 
 /**
  * @author f.agu
@@ -95,13 +97,29 @@ class ClubService
                 array_push($pricelist[$cid], $price);
             }
         }
+        
+        // properties
+        $properties = $this->manager
+            ->getRepository(ClubProperty::class)
+            ->findBy(array("club" => $clubs));
+        $propertylist = array();
+        foreach($properties as &$r) {
+            $cid = $r->getClub()->getId();
+            $property = new ClubPropertyView($clubByIds[$cid], $r);
+            if(! array_key_exists($cid, $propertylist)) {
+                $propertylist[$cid] = [$property];
+            } else {
+                array_push($propertylist[$cid], $property);
+            }
+        }
             
         // ClubView array
         $output = array();
         foreach($clubByIds as $cid => $club) {
             $locs = array_key_exists($cid, $loclist) ? $loclist[$cid] : [];
             $prices = array_key_exists($cid, $pricelist) ? $pricelist[$cid] : [];
-            array_push($output, new ClubView($club, $locs, $prices));
+            $properties = array_key_exists($cid, $propertylist) ? $propertylist[$cid] : [];
+            array_push($output, new ClubView($club, $locs, $prices, $properties));
         }
         
         return $inputSingle ? $output[0] : $output;

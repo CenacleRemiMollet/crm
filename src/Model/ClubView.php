@@ -92,7 +92,12 @@ class ClubView
 	 */
 	private $prices;
 	
-	public function __construct(Club $club, $locations = null, $prices = null)
+	/**
+	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/ClubProperty"))
+	 */
+	private $properties;
+	
+	public function __construct(Club $club, $locations = null, $prices = null, $properties = null)
 	{
 		$this->uuid = $club->getUuid();
 		$this->name = $club->getName();
@@ -108,6 +113,7 @@ class ClubView
 		$this->youtube_url = $club->getYoutubeUrl();
 		$this->locations = $locations;
 		$this->prices = $prices;
+		$this->properties = $properties;
 	}
 
 	public function getUuid(): ?string
@@ -168,6 +174,11 @@ class ClubView
 	public function getPrices()
 	{
 	    return $this->prices;
+	}
+	
+	public function getProperties()
+	{
+	    return $this->properties;
 	}
 	
 	public function getContactPhone(): ?string
