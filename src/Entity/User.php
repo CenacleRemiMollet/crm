@@ -255,7 +255,7 @@ class User
 	{
 		return $this->mails;
 	}
-
+	
 	public function setMails($mails): self
 	{
 	    if(! is_array($mails)) {

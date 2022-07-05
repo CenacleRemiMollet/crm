@@ -46,9 +46,9 @@ class UserController extends AbstractController
 		$this->logger = $logger;
 	}
 
-
+	
 	/**
-	 * @Route("/api/users", name="api_get_users", methods={"GET"})
+	 * @Route("/api/users", name="api_get_users", methods={"GET"}, format="text/plain")
 	 * @OA\Get(
 	 *     operationId="getUsers",
 	 *     path="/api/users",
@@ -85,18 +85,37 @@ class UserController extends AbstractController
      *             type="string"
      *         )
      *     ),
+	 *     @OA\Parameter(
+     *         description="club filter",
+     *         in="query",
+     *         name="club",
+     *         required=false,
+     *         @OA\Schema(
+     *             format="string",
+     *             type="string",
+     *             pattern="[a-z0-9_]{2,64}"
+     *         )
+     *     ),
 	 *     @OA\Response(
 	 *         response="200",
 	 *         description="Successful",
 	 *         @OA\MediaType(
 	 *             mediaType="application/hal+json",
 	 *             @OA\Items(ref="#/components/schemas/Pagination")
+	 *         ),
+	 *         @OA\MediaType(mediaType="text/csv")
 	 *         )
-	 *     )
+	 *     ),
+	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
 	 * )
 	 */
 	public function getUsers(Request $request): Response
 	{
+	    $accept = $request->headers->get('accept');
+	    if('text/csv' === $accept) {
+	        return $this->getUsersCSV($request);
+	    }
+	    
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $pager = new Pager($request);
@@ -149,6 +168,68 @@ class UserController extends AbstractController
 		    array('Content-Type' => 'application/hal+json'));
 	}
 
+	
+	public function getUsersCSV(Request $request): Response
+	{
+	    $doctrine = $this->container->get('doctrine');
+	   
+	    $q = $request->query->get('q');
+	    $delimiter = $request->query->get('delimiter', ';');
+	    $club_uuid = $request->query->get('club');
+	    
+	    $account = $this->getUser();
+	    $users = array();
+	    if($this->isGranted(Roles::ROLE_ADMIN)) {
+	        $users = $doctrine->getManager()
+	        ->getRepository(User::class)
+	        ->findInAll(null, $club_uuid, $q);
+	    } elseif($this->isGranted(Roles::ROLE_CLUB_MANAGER) || $this->isGranted(Roles::ROLE_TEACHER)) {
+	        if($club_uuid !== null) {
+	            $entityFinder = new EntityFinder($doctrine);
+	            $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]);
+	            $clubAccess = new ClubAccess($this->container, $this->logger);
+	            if( ! $clubAccess->hasAccessForUser($club, $account)) {
+	                throw $this->createAccessDeniedException();
+	            }
+	            
+	        }
+	        $users = $doctrine->getManager()
+	           ->getRepository(User::class)
+	           ->findInMyClubs($account->getId(), null, $club_uuid, $q);
+	    } elseif($account !== null) {
+	        $users = array($account->getUser());
+	    } else {
+	        throw $this->createAccessDeniedException();
+	    }
+	    
+	    $f = fopen('php://output', 'w');
+	    fputcsv($f, array('UUID', 'Nom', 'Prénom', 'Sexe', 'Né(e) le', 'Adresse', 'Code postal', 'Ville', 'Nationalité', 'Emails', 'Tel', 'Tel accident'), $delimiter);
+	    foreach ($users as $user) {
+	        /** @var User $user */
+	        fputcsv(
+	            $f,
+	            array(
+	                $user->getUuid(),
+	                $user->getLastname(),
+	                $user->getFirstname(),
+	                $user->getSex(),
+	                $user->getBirthday()->format("d/m/Y"),
+	                $user->getAddress(),
+	                $user->getZipcode(),
+	                $user->getCity(),
+	                $user->getNationality(),
+	                implode(', ', $user->getMails()),
+	                $user->getPhone(),
+	                $user->getPhoneEmergency()
+	            ),
+	            $delimiter);
+	    }
+	    $response = new Response();
+	    $response->headers->set('Content-Type', 'text/csv');
+	    $response->headers->set('Content-Disposition', 'attachment; filename="users.csv"');
+	    return $response;
+	}
+	
 	
 	/**
 	 * @Route("/api/users/{user_uuid}", name="api_get_user", methods={"GET"})
