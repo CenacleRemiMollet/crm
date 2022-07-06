@@ -47,23 +47,32 @@ function modifyJsonReformat(json) {
 var subscId = 0;
 
 $(document).ready(function(){	
-	$('.btnremovesubscribe').click(function(event){
-		var parent = $(this);
-		while(! parent.hasClass('divsubscribe')) {
-			parent = parent.parent()
-		}
-		if(parent.hasClass('divsubscribe')) {
-			parent.remove();
-		}
+	$('.btnremovesubscribe').on("click", function(event){
+		removeSubscribe($(this));
 	});
 	
-	$('.btnaddsubscribe').click(function(event){
+	$('.btnaddsubscribe').on("click", function(event){
 		++subscId;
 		var e = $('.divsubscribereference').clone();
 		e.insertBefore($('.divsubscribereference'));
 		e.html(e.html().replaceAll('${subscid}', 'x' + subscId));
 		e.removeClass('divsubscribereference');
+		e.addClass('btnremovesubscribe' + subscId)
 		e.show();
 		e.css("visibility", "visible");
+		
+		$('.btnremovesubscribe' + subscId).on("click", function(event){
+			removeSubscribe($(this));
+		});
+
 	});
 });
+
+function removeSubscribe(parent) {
+	while(! parent.hasClass('divsubscribe')) {
+		parent = parent.parent()
+	}
+	if(parent.hasClass('divsubscribe')) {
+		parent.remove();
+	}
+}

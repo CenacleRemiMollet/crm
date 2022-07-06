@@ -38,6 +38,11 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Util\Page\Pageable;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Util\DateUtils;
+use App\Model\UserClubSubscribeCreate;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserController extends AbstractController
 {
@@ -123,13 +128,15 @@ class UserController extends AbstractController
 	        return $this->getUsersXLSX($request);
 	    }
 	    
+	    /** @var ManagerRegistry $doctrine */
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $pageable = Pageable::of($request);
 	    $q = $request->query->get('q');
 	    $club_uuid = $request->query->get('club');
 
-		$account = $this->getUser();
+	    /** @var Account $account */
+	    $account = $this->getUser();
 		$users = array();
 		if($this->isGranted(Roles::ROLE_ADMIN)) {
 		    $users = $doctrine->getManager()
@@ -282,37 +289,70 @@ class UserController extends AbstractController
 	 *     )
 	 * )
 	 */
-	public function createUser(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
+	public function createUser(Request $request, SessionInterface $session, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
-	    //@IsGranted("ROLE_CLUB_MANAGER")
+	    if( ! $this->isGranted(Roles::ROLE_ADMIN)
+	        && ! $this->isGranted(Roles::ROLE_SUPER_ADMIN)
+	        && ! $this->isGranted(Roles::ROLE_CLUB_MANAGER)
+	        && ! $this->isGranted(Roles::ROLE_TEACHER)) {
+            throw $this->createAccessDeniedException();
+        }
+	    
 	    $requestUtil = new RequestUtil($serializer, $translator);
-
-		try {
-			$userCreate = $requestUtil->validate($request, UserCreate::class);
-		} catch (ViolationException $e) {
-			return ShortResponse::error("data", $e->getErrors())
-				->setStatusCode(Response::HTTP_BAD_REQUEST);
-		}
-
-		try {
-			$service = new UserService($this->getDoctrine()->getManager(), $request);
-		} catch (\Exception $e) {
-			return ShortResponse::exception('Initialization failed, '.$e->getMessage());
-		}
-
-		try {
-			$user = $service->create($this->getUser(), $userCreate);
-		} catch (\Exception $e) {
-			return ShortResponse::exception('Query failed, please try again shortly ('.$e->getMessage().')');
-		}
-
-		$output = array('user' => new UserView($user, $this->getUser()));
-		$hateoas = HateoasBuilder::create()->build();
-		$json = json_decode($hateoas->serialize($output, 'json'));
-
-		return new Response(json_encode($json), 200, array(
-			'Content-Type' => 'application/hal+json'
-		));
+	    /** @var UserCreate $userToCreate */
+	    $userToCreate = $requestUtil->validate($request, UserCreate::class); // 400
+	   
+	    /** @var ManagerRegistry $doctrine */
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $user = new User();
+	    $user->setLastname($userToCreate->getLastname());
+	    $user->setFirstname($userToCreate->getFirstname());
+	    $user->setBirthday(DateUtils::parseFrenchToDateTime($userToCreate->getBirthday()));
+	    $user->setSex($userToCreate->getSex());
+	    $user->setAddress($userToCreate->getAddress());
+	    $user->setZipcode($userToCreate->getZipcode());
+	    $user->setCity($userToCreate->getCity());
+	    $user->setPhone($userToCreate->getPhone());
+	    $user->setPhoneEmergency($userToCreate->getPhoneEmergency());
+	    $user->setNationality($userToCreate->getNationality());
+	    $user->setMails($userToCreate->getMailsToArray());
+	    
+	    $doctrine->getManager()->persist($user);
+	    
+	    try {
+	       $this->createSubscribes($user, $userToCreate->getSubscribes()); // 403
+	    } catch(AccessDeniedException $e) {
+	        $doctrine->getManager()->remove($user);
+	        throw $e;
+	    }
+	    
+	    $accountPersist = false;
+	    if( ! empty($userToCreate->getLogin())) {
+	        $account = new Account();
+	        $account->setUser($user);
+	        // TODO generate password process
+	        $account->setLogin($userToCreate->getLogin());
+	        $accountPersist = true;
+	    }
+	    if( ! empty($userToCreate->getRoles()) && $account !== null) {
+	        $account->setRoles($userToCreate->getRoles());
+	        $accountPersist = true;
+	    }
+	    if($accountPersist) {
+	        $this->manager->getManager()->persist($account);
+	    }
+	    
+	    $data = ['name' => $userToCreate->getLastname().' '.$userToCreate->getFirstname(),
+	             'uuid' => $user->getUuid()];
+	    Events::add($doctrine, Events::USER_CREATED, $this->getUser(), $request, $data);
+	    $this->logger->debug('User created: '.json_encode($data));
+	    
+	    $hateoas = HateoasBuilder::create()->build();
+	    return new Response(
+	        $hateoas->serialize(new UserView($user, null, true), 'json'),
+	        Response::HTTP_CREATED, // 201
+	        array('Content-Type' => 'application/hal+json'));
 	}
 
 	
@@ -349,9 +389,11 @@ class UserController extends AbstractController
 	 */
 	public function updateUser(string $user_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
 	{
+	    /** @var ManagerRegistry $doctrine */
 	    $doctrine = $this->container->get('doctrine');
     
 	    $requestUtil = new RequestUtil($serializer, $translator);
+	    /** @var UserUpdate $userToUpdate */
 	    $userToUpdate = $requestUtil->validate($request, UserUpdate::class); // 400
 
 	    $user = $this->findUserOrAccessDenied($user_uuid);
@@ -371,17 +413,41 @@ class UserController extends AbstractController
  	    
  	    $currentAccount = $this->getUser();
  	    if($currentAccount->getUser()->getId() !== $user->getId() || $this->isGranted(Roles::ROLE_ADMIN)) { // can't update myself except admin
-            $this->updateSubscribes($user, $userToUpdate->getSubscribes(), $entityUpdater);
+            $this->updateSubscribes($user, $userToUpdate->getSubscribes(), $entityUpdater); // 403
             $entityFinder = new EntityFinder($doctrine);
-            $account = $entityFinder->findOneByOrThrow(Account::class, ['user' => $user]);
+            $account = $entityFinder->findOneByOrThrow(Account::class, ['user' => $user]); // 404
             if($entityUpdater->update('roles', $userToUpdate->getRoles(), $account->getRoles(), function($v) use($account) { $account->setRoles($v); })) {
                 $doctrine->getManager()->persist($account);
  	        }
  	    }
- 	    return $entityUpdater->toResponse($user, 'User updated', ['id' => $user->getId()]);
+ 	    
+ 	    $response = $entityUpdater->toResponse($user, 'User updated', ['id' => $user->getId()]);
+ 	    
+ 	    $accountPersist = false;
+ 	    $account = $user->getAccount();
+ 	    if( ! empty($userToUpdate->getLogin())) {
+ 	        if($account == null) {
+ 	            $account = new Account();
+ 	            $account->setUser($user);
+ 	            // TODO generate password process
+ 	        }
+ 	        $account->setLogin($userToUpdate->getLogin());
+ 	        $accountPersist = true;
+ 	    }
+ 	    if( ! empty($userToUpdate->getRoles()) && $account !== null) {
+ 	        $account->setRoles($userToUpdate->getRoles());
+ 	        $accountPersist = true;
+ 	    }
+ 	    if($accountPersist) {
+ 	        $this->manager->getManager()->persist($account);
+ 	    }
+ 	    
+ 	    return $response;
 	}
 	
+	
 	//*****************************************************************************
+	
 	
 	private function getUsersCSV(Request $request): Response
 	{
@@ -472,11 +538,13 @@ class UserController extends AbstractController
 	
 	private function findUsers(Request $request)
 	{
+	    /** @var ManagerRegistry $doctrine */
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $q = $request->query->get('q');
 	    $club_uuid = $request->query->get('club');
 	    
+	    /** @var Account $account */
 	    $account = $this->getUser();
 	    if($this->isGranted(Roles::ROLE_ADMIN)) {
 	        return $doctrine->getManager()
@@ -500,8 +568,34 @@ class UserController extends AbstractController
         throw $this->createAccessDeniedException();
 	}
 	
+	private function createSubscribes(User $user, /** @var UserClubSubscribeCreate[] $subscribes */ $subscribes)
+	{
+	    if(empty($subscribes)) {
+	        return;
+	    }
+	    /** @var ManagerRegistry $doctrine */
+	    $doctrine = $this->container->get('doctrine');
+	    $entityFinder = new EntityFinder($doctrine);
+	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    foreach($subscribes as &$subscribe) {
+	        $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $subscribe->getClubUuid()]);
+	        $clubAccess->checkAccessForUser($club, $account); // 403
+	        
+	        $this->logger->debug('Create user : add UserClubSubscribe');
+	        $userClubSubscribe = new UserClubSubscribe();
+	        $userClubSubscribe->setClub($club);
+	        $userClubSubscribe->setRoles($subscribe->getRoles());
+	        $userClubSubscribe->setUser($user);
+	        $user->addUserClubSubscribe($userClubSubscribe);
+	        $doctrine->getManager()->persist($userClubSubscribe);
+	    }
+	}
 	
-	private function updateSubscribes(User $user, $subscribes, EntityUpdater $entityUpdater)
+	private function updateSubscribes(
+	    User $user, 
+	    /** @var UserClubSubscribeUpdate[] $subscribes */ $subscribes,
+	    EntityUpdater $entityUpdater)
 	{
 	    if(empty($subscribes)) {
 	        return;
@@ -518,6 +612,8 @@ class UserController extends AbstractController
 	        $subscMap[$uuid] = $subscribe;
 	    }
 	    
+	    $clubAccess = new ClubAccess($this->container, $this->logger);
+	    
 	    foreach($user->getUserClubSubscribes() as &$userClubSubscribe) {
 	        $this->logger->debug('Update user : '.$userClubSubscribe->getUuid());
 	        if( ! array_key_exists($userClubSubscribe->getUuid(), $subscMap)) { // to delete
@@ -527,27 +623,34 @@ class UserController extends AbstractController
 	        }
 	        $userSubscUpdate = $subscMap[$userClubSubscribe->getUuid()];
 	        unset($subscMap[$userClubSubscribe->getUuid()]);
-	        $this->updateSubscribeEntity($entityFinder, $entityUpdater, $userClubSubscribe, $userSubscUpdate);
+	        $this->updateSubscribeEntity($entityFinder, $clubAccess, $entityUpdater, $userClubSubscribe, $userSubscUpdate); // 403
 	    }
 	    $this->logger->debug('Update user : add '.count($subscMap).' UserClubSubscribe');
 	    foreach($subscMap as $uuid => $userClubSubscribeUpdate) {
 	        $this->logger->debug('Update user : add UserClubSubscribe '.$uuid);
 	        $userClubSubscribe = new UserClubSubscribe();
 	        $userClubSubscribe->setUuid($uuid);
-	        $this->updateSubscribeEntity($entityFinder, $entityUpdater, $userClubSubscribe, $userClubSubscribeUpdate);
+	        $this->updateSubscribeEntity($entityFinder, $clubAccess, $entityUpdater, $userClubSubscribe, $userClubSubscribeUpdate); // 403
 	        $user->addUserClubSubscribe($userClubSubscribe);
 	    }
 	}
 	
 	
-	private function updateSubscribeEntity(EntityFinder $entityFinder, EntityUpdater $entityUpdater, UserClubSubscribe $userClubSubscribe, UserClubSubscribeUpdate $userClubSubscribeUpdate)
+	private function updateSubscribeEntity(EntityFinder $entityFinder, ClubAccess $clubAccess, EntityUpdater $entityUpdater, UserClubSubscribe $userClubSubscribe, UserClubSubscribeUpdate $userClubSubscribeUpdate)
 	{
+	    $clubUuid = $userClubSubscribeUpdate->getClubUuid();
+	    if($clubUuid === null) {
+	        $club = $userClubSubscribe->getClub();
+	    } else {
+	        $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $clubUuid]);
+	    }
+	    $clubAccess->checkAccessForUser($club, $account); // 403
+	    
 	    $entityUpdater->update(
 	        'subsc-'.$userClubSubscribe->getUuid().'-club',
 	        $userClubSubscribeUpdate->getClubUuid(),
 	        $userClubSubscribe->getClub() !== null ? $userClubSubscribe->getClub()->getUuid() : null,
-	        function($v) use($userClubSubscribe, $entityFinder, $userClubSubscribeUpdate) {
-	            $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $userClubSubscribeUpdate->getClubUuid()]); // 404
+	        function($v) use($userClubSubscribe, $club) {
 	            $userClubSubscribe->setClub($club);
 	        });
 	    $entityUpdater->update(

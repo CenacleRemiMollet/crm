@@ -5,9 +5,7 @@ use App\Validator\Constraints as AcmeAssert;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Util\RequestUtil;
-use Symfony\Component\HttpFoundation\Request;
 use App\Util\NestedValidation;
-use App\Entity\UserClubSubscribe;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -27,6 +25,7 @@ class UserUpdate implements NestedValidation
     /**
      * @Assert\Type("string")
      * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
      * @OA\Property(type="string", example="Doe")
      */
     private $lastname;
@@ -35,6 +34,7 @@ class UserUpdate implements NestedValidation
      * @Assert\NotBlank
      * @Assert\Type("string")
      * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
      * @OA\Property(type="string", example="John")
      */
     private $firstname;
@@ -53,42 +53,49 @@ class UserUpdate implements NestedValidation
     
     /**
      * @Assert\Length(max = 512)
+	 * @AcmeAssert\NoHTML
      * @OA\Property(type="string", example="5 Avenue Anatole France")
      */
     private $address;
     
     /**
      * @Assert\Length(max = 32)
+	 * @AcmeAssert\NoHTML
      * @OA\Property(type="string", example="75007")
      */
     private $zipcode;
     
     /**
      * @Assert\Length(max = 255)
+	 * @AcmeAssert\NoHTML
      * @OA\Property(type="string", example="Paris")
      */
     private $city;
     
     /**
      * @Assert\Length(max = 32)
+	 * @AcmeAssert\NoHTML
      * @OA\Property(type="string", example="0 892 70 12 39")
      */
     private $phone;
     
     /**
      * @Assert\Length(max = 32)
+	 * @AcmeAssert\NoHTML
      * @OA\Property(type="string", example="0 892 70 12 39")
      */
     private $phone_emergency;
     
     /**
      * @Assert\Length(max = 64)
+	 * @AcmeAssert\NoHTML
      * @OA\Property(type="string", example="Française")
      */
     private $nationality;
     
     /**
      * @Assert\Length(max = 512)
+	 * @AcmeAssert\NoHTML
      * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
      */
     private $mails;
@@ -274,6 +281,10 @@ class UserUpdate implements NestedValidation
         $this->subscribes = $subscribes;
     }
  
+    /**
+     * {@inheritDoc}
+     * @see \App\Util\NestedValidation::validateNested()
+     */
     public function validateNested(RequestUtil $requestUtil): ConstraintViolationListInterface
     {
         // subscribes

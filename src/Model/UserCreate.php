@@ -5,6 +5,10 @@ namespace App\Model;
 use App\Validator\Constraints as AcmeAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Annotations as OA;
+use App\Util\RequestUtil;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use App\Util\NestedValidation;
 
 /**
  * @OA\Schema(
@@ -12,12 +16,13 @@ use OpenApi\Annotations as OA;
  *   required={"lastname", "firstname", "birthday", "sex"}
  * )
  */
-class UserCreate
+class UserCreate implements NestedValidation
 {
 	/**
 	 * @Assert\NotBlank
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Doe")
 	 */
 	private $lastname;
@@ -26,6 +31,7 @@ class UserCreate
 	 * @Assert\NotBlank
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="John")
 	 */
 	private $firstname;
@@ -46,46 +52,75 @@ class UserCreate
 
 	/**
 	 * @Assert\Length(max = 512)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="5 Avenue Anatole France")
 	 */
 	private $address;
 
 	/**
 	 * @Assert\Length(max = 32)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="75007")
 	 */
 	private $zipcode;
 
 	/**
 	 * @Assert\Length(max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Paris")
 	 */
 	private $city;
 
 	/**
 	 * @Assert\Length(max = 32)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="0 892 70 12 39")
 	 */
 	private $phone;
 
 	/**
 	 * @Assert\Length(max = 32)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="0 892 70 12 39")
 	 */
 	private $phone_emergency;
 
 	/**
 	 * @Assert\Length(max = 64)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Française")
 	 */
 	private $nationality;
 
 	/**
 	 * @Assert\Length(max = 512)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
 	 */
 	private $mails;
-
+	
+	/**
+	 * @Assert\Type("string")
+	 * @Assert\Length(min=3, max = 180)
+	 * @Assert\Regex(pattern="/[A-Za-z0-9_@\\.]{3,64}/")
+	 * @OA\Property(type="string", example="j.doe", pattern="^[A-Za-z0-9_@\\.]{3,64}$")
+	 */
+	private $login;
+	
+	/**
+	 * @var UserClubSubscribeCreate[]
+	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/UserClubSubscribeCreate"))
+	 */
+	private $subscribes;
+	
+	/**
+	 * @var string[]
+	 * @AcmeAssert\Roles
+	 * @OA\Property(type="array", example="ROLE_ADMIN", @OA\Items(type="string"))
+	 */
+	private $roles;
+	
+	
 	public function getLastname()
 	{
 		return $this->lastname;
@@ -211,5 +246,48 @@ class UserCreate
 	{
 		$this->mails = $mails;
 		return $this;
+	}
+	
+	public function getLogin()
+	{
+	    return $this->login;
+	}
+	
+	public function setLogin($login)
+	{
+	    $this->login = $login;
+	}
+	
+	public function getSubscribes()
+	{
+	    return $this->subscribes;
+	}
+	
+	public function setSubscribes($subscribes)
+	{
+	    $this->subscribes = $subscribes;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @see \App\Util\NestedValidation::validateNested()
+	 */
+	public function validateNested(RequestUtil $requestUtil): ConstraintViolationListInterface
+	{
+	    // subscribes
+	    if(empty($this->subscribes)) {
+	        return new ConstraintViolationList();
+	    }
+	    return $requestUtil->findErrors($this->subscribes); // 400
+	}
+	
+	public function getRoles(): ?array
+	{
+	    return $this->roles === null ? null : array_unique(array_map('strtoupper', $this->roles));
+	}
+	
+	public function setRoles($roles)
+	{
+	    $this->roles = $roles !== null ? array_unique(array_map('strtoupper', $roles)) : [];
 	}
 }

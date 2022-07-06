@@ -28,14 +28,14 @@ class ClubAccess
         $this->logger = $logger;
     }
     
-    public function checkAccessForUser(Club $club, $account)
+    public function checkAccessForUser(Club $club, Account $account)
     {
         $this->hasAccessForUser($club, $account, function($msg) {
             throw new AccessDeniedException($msg);
         });
     }
     
-    public function hasAccessForUser(Club $club, $account, ?object $ifDenied = null)
+    public function hasAccessForUser(Club $club, Account $account, ?object $ifDenied = null)
     {
         if($this->authorizationChecker->isGranted(Roles::ROLE_ADMIN) || $this->authorizationChecker->isGranted(Roles::ROLE_SUPER_ADMIN)) {
             $this->logger->debug('ClubAccess.hasAccessForUser(): current user ('.$account->getId().') is an admin');

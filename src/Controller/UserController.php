@@ -81,20 +81,21 @@ class UserController extends AbstractController
 	/**
 	 * @Route("/user-new", name="web_new_user", methods={"GET"})
 	 */
-	public function getUserNew(string $club_uuid, Request $request, SessionInterface $session)
+	public function getUserNew()
 	{
-	    // TODO grant
-// 	    $doctrine = $this->container->get('doctrine');
-	    
-// 	    $entityFinder = new EntityFinder($doctrine);
-// 	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
-	    
-// 	    $clubAccess = new ClubAccess($this->container, $this->logger);
-// 	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
-	    
-// 	    return $this->render('club/config-price-new.html.twig', [
-// 	        'club' => $club
-// 	    ]);
+	    if( ! $this->isGranted(Roles::ROLE_ADMIN)
+	        && ! $this->isGranted(Roles::ROLE_SUPER_ADMIN)
+	        && ! $this->isGranted(Roles::ROLE_CLUB_MANAGER)
+	        && ! $this->isGranted(Roles::ROLE_TEACHER)) {
+	            throw $this->createAccessDeniedException();
+	        }
+	        
+        $clubsResponse = $this->forward('App\Controller\Api\ClubController::listActive');
+	        
+	    return $this->render('user/user-new.html.twig', [
+	        'clubs' => json_decode($clubsResponse->getContent()),
+	        'canupdatesubscribes' => $this->isGranted(Roles::ROLE_ADMIN) ? 'true' : 'false'
+	    ]);
 
 	}
 	

@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Validator\Constraints as AcmeAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Annotations as OA;
 
@@ -17,6 +18,7 @@ class ConfigurationPropertyUpdate
 	 * @Assert\NotBlank
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="my.key")
 	 */
 	private $key;
@@ -24,7 +26,8 @@ class ConfigurationPropertyUpdate
 	/**
 	 * @Assert\NotBlank
 	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 512)
+	 * @Assert\Length(max = 512)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="my-value")
 	 */
 	private $value;

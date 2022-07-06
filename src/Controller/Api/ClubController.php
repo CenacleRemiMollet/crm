@@ -24,6 +24,7 @@ use App\Security\Roles;
 use App\Entity\EntityFinder;
 use App\Exception\CRMException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 
 class ClubController extends AbstractController
@@ -152,6 +153,7 @@ class ClubController extends AbstractController
 		    $uuid = StringUtils::nameToUuid($name);
 		}
 		
+		/** @var ManagerRegistry $doctrine */
 		$doctrine = $this->container->get('doctrine');
 		
 		$entityFinder = new EntityFinder($doctrine);

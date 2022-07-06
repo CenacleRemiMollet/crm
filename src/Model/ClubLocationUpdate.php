@@ -22,6 +22,7 @@ class ClubLocationUpdate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 128)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Gymnase Abc")
 	 */
 	private $name;
@@ -37,6 +38,7 @@ class ClubLocationUpdate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="120 avenue des Champs-Elysées")
 	 */
 	private $address;
@@ -44,6 +46,7 @@ class ClubLocationUpdate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Paris")
 	 */
 	private $city;
@@ -51,6 +54,7 @@ class ClubLocationUpdate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 20)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="75008")
 	 */
 	private $zipcode;
@@ -58,6 +62,7 @@ class ClubLocationUpdate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="Ile de France")
 	 */
 	private $county;
@@ -65,6 +70,7 @@ class ClubLocationUpdate
 	/**
 	 * @Assert\Type("string")
 	 * @Assert\Length(min = 1, max = 255)
+	 * @AcmeAssert\NoHTML
 	 * @OA\Property(type="string", example="France")
 	 */
 	private $country;

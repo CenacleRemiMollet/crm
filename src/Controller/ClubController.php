@@ -122,7 +122,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/club-new", name="web_new_club", methods={"GET"})
 	 */
-	public function create(LoggerInterface $logger, SessionInterface $session)
+	public function create()
 	{
 	    $this->denyAccessUnlessGranted(Roles::ROLE_ADMIN);
 	    return $this->render('club/club-new.html.twig', []);
