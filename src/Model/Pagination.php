@@ -4,7 +4,7 @@ namespace App\Model;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Annotations as OA;
 use Hateoas\Configuration\Annotation as Hateoas;
-use App\Util\Pager;
+use App\Util\Page\Pageable;
 
 /**
  * @Serializer\XmlRoot("pagination")
@@ -62,18 +62,18 @@ class Pagination
 	 */
 	private ?array $queryParameters;
 	
-	public function __construct($route, Pager $pager, $data, $viewConverter, ?array $queryParameters = [])
+	public function __construct($route, Pageable $pageable, $data, $viewConverter, ?array $queryParameters = [])
 	{
-	    $dataSliced = array_slice($data, 0, $pager->getElementByPage());
+	    $dataSliced = array_slice($data, 0, $pageable->getPageSize());
 	    $this->_embedded = array();
 	    foreach ($dataSliced as &$d) {
 	       array_push($this->_embedded, $viewConverter($d));
  	    }
 	    
 	    $this->route = $route;
-	    $this->page = $pager->getPage();
-	    $this->size = $pager->getElementByPage();
-	    $this->hasNext = count($data) > $pager->getElementByPage();
+	    $this->page = $pageable->getPageNumber();
+	    $this->size = $pageable->getPageSize();
+	    $this->hasNext = count($data) > $pageable->getPageSize();
 	    $this->count_elements = count($this->_embedded);
 	    $this->hasPrevious = $this->page > 1;
 		$this->queryParameters = $queryParameters;

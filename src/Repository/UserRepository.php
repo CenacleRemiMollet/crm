@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use App\Security\Roles;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
+use App\Util\Page\Pageable;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -31,7 +32,7 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 	    $this->logger = $logger;
 	}
 	
-	public function findInAll($uuid = null, $club_uuid = null, $q = null, $offset = 0, $limit = 20)
+	public function findInAll($uuid = null, $club_uuid = null, $q = null, Pageable $pageable = null)
 	{
 	    $clauses = array();
 	    $sql = $this->prepareUserAccountSelect()
@@ -52,7 +53,9 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 	        $sql .= " WHERE ".implode(' AND ', $clauses);
 	    }
 		$sql .= " ORDER BY lastname ASC, firstname ASC";
-		$sql .= " LIMIT ".$offset.", ".$limit;
+		if($pageable !== null && $pageable->isPaged()) {
+		    $sql .= " LIMIT ".$pageable->getOffset().", ".($pageable->getPageSize() + 2);
+		}
 
 		$rsm = $this->prepareUserAccountMapping();
 		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
@@ -70,7 +73,7 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 		return $query->getResult();
 	}
 
-	public function findInMyClubs($accountId, ?string $user_uuid = null, ?string $club_uuid = null, ?string $q = null, $offset = 0, $limit = 20)
+	public function findInMyClubs($accountId, ?string $user_uuid = null, ?string $club_uuid = null, ?string $q = null, Pageable $pageable = null)
 	{
 		$sql = $this->prepareUserAccountSelect()
 			  .$this->joinInMyClubs()
@@ -85,8 +88,10 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 		    $sql = $sql." AND ".$this->appendFilter();
 		}
 		$sql .= " ORDER BY lastname ASC, firstname ASC";
-		$sql .= " LIMIT ".$offset.", ".$limit;
-
+		if($pageable !== null && $pageable->isPaged()) {
+		    $sql .= " LIMIT ".$pageable->getOffset().", ".($pageable->getPageSize() + 2);
+		}
+		
 		$rsm = $this->prepareUserAccountMapping();
 		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
 		$query->setParameter('accountId', $accountId);

@@ -20,7 +20,6 @@ use primus852\ShortResponse\ShortResponse;
 use OpenApi\Annotations as OA;
 use App\Model\UsersView;
 use App\Model\Pagination;
-use App\Util\Pager;
 use App\Model\UserMeView;
 use App\Model\MeAnonymousView;
 use App\Security\Roles;
@@ -38,6 +37,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use App\Util\Page\Pageable;
 
 class UserController extends AbstractController
 {
@@ -125,7 +125,7 @@ class UserController extends AbstractController
 	    
 	    $doctrine = $this->container->get('doctrine');
 	    
-	    $pager = new Pager($request);
+	    $pageable = Pageable::of($request);
 	    $q = $request->query->get('q');
 	    $club_uuid = $request->query->get('club');
 
@@ -134,7 +134,7 @@ class UserController extends AbstractController
 		if($this->isGranted(Roles::ROLE_ADMIN)) {
 		    $users = $doctrine->getManager()
 				->getRepository(User::class)
-				->findInAll(null, $club_uuid, $q, $pager->getOffset(), $pager->getElementByPage() + 2);
+				->findInAll(null, $club_uuid, $q, $pageable);
 		} elseif($this->isGranted(Roles::ROLE_CLUB_MANAGER) || $this->isGranted(Roles::ROLE_TEACHER)) {
 		    if($club_uuid !== null) {
 		        $entityFinder = new EntityFinder($doctrine);
@@ -147,7 +147,7 @@ class UserController extends AbstractController
 		    }
 		    $users = $doctrine->getManager()
 				->getRepository(User::class)
-				->findInMyClubs($account->getId(), null, $club_uuid, $q, $pager->getOffset(), $pager->getElementByPage() + 1);
+				->findInMyClubs($account->getId(), null, $club_uuid, $q, $pageable);
 		} elseif($account !== null) {
 		    $users = array($account->getUser());
 		} else {
@@ -161,7 +161,7 @@ class UserController extends AbstractController
 		}
 		$pagination = new Pagination(
 		    $this->generateUrl('api_get_users'),
-		    $pager,
+		    $pageable,
 		    $users,
 		    function($u) {
 		        return new UserView($u, $this->getUser());

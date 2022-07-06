@@ -9,10 +9,10 @@ use App\Dao\SearchDao;
 use Symfony\Component\HttpFoundation\Response;
 use Hateoas\HateoasBuilder;
 use Psr\Log\LoggerInterface;
-use App\Util\Pager;
 use OpenApi\Annotations as OA;
 use App\Model\SearchResultsView;
 use App\Model\Pagination;
+use App\Util\Pageable;
 
 class SearchController extends AbstractController
 {
@@ -58,16 +58,20 @@ class SearchController extends AbstractController
 	 */
 	public function search(Request $request, LoggerInterface $logger)
 	{
-		$pager = new Pager($request);
+	    $pageable = Pageable::of($request);
 		$query = trim($request->query->get('q', ''));
 		$logger->debug('query: ['.$query.']');
 		$searched = array();
-		if($pager->isValid() && strlen($query) >= 2) {
+		if(strlen($query) >= 2) {
 			$search = new SearchDao($this->getDoctrine()->getManager(), $this->get('security.authorization_checker'));
-			$searched = $search->search($query, $this->getUser(), $pager->getOffset(), $pager->getElementByPage());
+			$searched = $search->search($query, $this->getUser(), $pageable);
 		}
 
-		$pagination = new Pagination($pager->getPage(), $pager->getElementByPage(), $searched['hasmore']);
+		$pagination = new Pagination(
+		    $this->generateUrl('api_search'),
+		    $pageable,
+		    $searched['results'],
+		    $searched['hasmore']);
 		$output = new SearchResultsView($query, $searched['results'], $pagination);
 		$hateoas = HateoasBuilder::create()->build();
 		$json = json_decode($hateoas->serialize($output, 'json'));

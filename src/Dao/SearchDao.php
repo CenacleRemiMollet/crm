@@ -6,6 +6,7 @@ use App\Entity\Account;
 use App\Model\SearchResultView;
 use Doctrine\ORM\Query\ResultSetMapping;
 use App\Repository\UserRepository;
+use App\Util\Pageable;
 
 class SearchDao
 {
@@ -19,7 +20,7 @@ class SearchDao
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    public function search($query, ?Account $connectedAccount, $offset = 0, $limit = 20) {
+    public function search($query, ?Account $connectedAccount, Pageable $pageable = null) {
         $paramLC = \Transliterator::create('NFD; [:Nonspacing Mark:] Remove; NFC')
             ->transliterate($query);
         $paramLC = '%'.mb_strtolower($paramLC).'%';
@@ -37,9 +38,11 @@ class SearchDao
                ." FROM ("
                .implode(" UNION ", $unions)
                .") t"
-               ." ORDER BY 3" // variable : ASC / DESC
-               ." LIMIT ".$offset.", ".($limit + 1);
-
+               ." ORDER BY 3"; // variable : ASC / DESC
+        if($pageable !== null && $pageable->isPaged()) {
+            $sql .= " LIMIT ".$pageable->getOffset().", ".($pageable->getPageSize() + 2);
+        }
+               
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('type', 'type');
         $rsm->addScalarResult('uuid', 'uuid');
@@ -53,18 +56,19 @@ class SearchDao
         //$stmt = $this->em->getConnection()->executeQuery($sql, $params);
         $results = $stmt->getResult();
         $output = array();
-        foreach(array_slice($results, 0, $limit)  as $result) {
+        foreach(array_slice($results, 0, $pageable->getPageSize())  as $result) {
          	array_push($output, new SearchResultView(
         		$result['type'],
         		$result['uuid'],
         		$result['name']));
         }
         return [
+            // TODO use Pageable
         	'query' => $query,
-        	'offset' => $offset,
-        	'limit' => $limit,
+            'offset' => $pageable->getOffset(),
+            'limit' => $pageable->getPageSize(),
         	'results' => $output,
-        	'hasmore' => count($results) > $limit
+            'hasmore' => count($results) > $pageable->getPageSize()
         ];
     }
 
