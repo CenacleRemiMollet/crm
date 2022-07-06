@@ -88,6 +88,9 @@ class UserService
 
 		return $previousUser;
 	}
+	
+	
+	
 
 	public function __destruct()
 	{

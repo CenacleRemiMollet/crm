@@ -16,6 +16,7 @@
 		"doctrine/persistence": "^2.2",
 		"nelmio/api-doc-bundle": "dev-master",
 		"phpdocumentor/reflection-docblock": "^5.2",
+		"phpoffice/phpspreadsheet": "^1.23",
 		"sensio/framework-extra-bundle": "^6.1",
 		"symfony/asset": "5.4.*",
 		"symfony/console": "5.4.*",

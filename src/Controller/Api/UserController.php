@@ -34,7 +34,10 @@ use App\Util\StringUtils;
 use App\Entity\Club;
 use App\Model\UserClubSubscribeUpdate;
 use App\Security\ClubAccess;
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class UserController extends AbstractController
 {
@@ -103,7 +106,8 @@ class UserController extends AbstractController
 	 *             mediaType="application/hal+json",
 	 *             @OA\Items(ref="#/components/schemas/Pagination")
 	 *         ),
-	 *         @OA\MediaType(mediaType="text/csv")
+	 *         @OA\MediaType(mediaType="text/csv"),
+	 *         @OA\MediaType(mediaType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 	 *         )
 	 *     ),
 	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
@@ -114,6 +118,9 @@ class UserController extends AbstractController
 	    $accept = $request->headers->get('accept');
 	    if('text/csv' === $accept) {
 	        return $this->getUsersCSV($request);
+	    }
+	    if('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' === $accept) {
+	        return $this->getUsersXLSX($request);
 	    }
 	    
 	    $doctrine = $this->container->get('doctrine');
@@ -168,69 +175,7 @@ class UserController extends AbstractController
 		    array('Content-Type' => 'application/hal+json'));
 	}
 
-	
-	public function getUsersCSV(Request $request): Response
-	{
-	    $doctrine = $this->container->get('doctrine');
-	   
-	    $q = $request->query->get('q');
-	    $delimiter = $request->query->get('delimiter', ';');
-	    $club_uuid = $request->query->get('club');
-	    
-	    $account = $this->getUser();
-	    $users = array();
-	    if($this->isGranted(Roles::ROLE_ADMIN)) {
-	        $users = $doctrine->getManager()
-	        ->getRepository(User::class)
-	        ->findInAll(null, $club_uuid, $q);
-	    } elseif($this->isGranted(Roles::ROLE_CLUB_MANAGER) || $this->isGranted(Roles::ROLE_TEACHER)) {
-	        if($club_uuid !== null) {
-	            $entityFinder = new EntityFinder($doctrine);
-	            $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]);
-	            $clubAccess = new ClubAccess($this->container, $this->logger);
-	            if( ! $clubAccess->hasAccessForUser($club, $account)) {
-	                throw $this->createAccessDeniedException();
-	            }
-	            
-	        }
-	        $users = $doctrine->getManager()
-	           ->getRepository(User::class)
-	           ->findInMyClubs($account->getId(), null, $club_uuid, $q);
-	    } elseif($account !== null) {
-	        $users = array($account->getUser());
-	    } else {
-	        throw $this->createAccessDeniedException();
-	    }
-	    
-	    $f = fopen('php://output', 'w');
-	    fputcsv($f, array('UUID', 'Nom', 'Prénom', 'Sexe', 'Né(e) le', 'Adresse', 'Code postal', 'Ville', 'Nationalité', 'Emails', 'Tel', 'Tel accident'), $delimiter);
-	    foreach ($users as $user) {
-	        /** @var User $user */
-	        fputcsv(
-	            $f,
-	            array(
-	                $user->getUuid(),
-	                $user->getLastname(),
-	                $user->getFirstname(),
-	                $user->getSex(),
-	                $user->getBirthday()->format("d/m/Y"),
-	                $user->getAddress(),
-	                $user->getZipcode(),
-	                $user->getCity(),
-	                $user->getNationality(),
-	                implode(', ', $user->getMails()),
-	                $user->getPhone(),
-	                $user->getPhoneEmergency()
-	            ),
-	            $delimiter);
-	    }
-	    $response = new Response();
-	    $response->headers->set('Content-Type', 'text/csv');
-	    $response->headers->set('Content-Disposition', 'attachment; filename="users.csv"');
-	    return $response;
-	}
-	
-	
+		
 	/**
 	 * @Route("/api/users/{user_uuid}", name="api_get_user", methods={"GET"})
 	 * @OA\Get(
@@ -434,6 +379,125 @@ class UserController extends AbstractController
  	        }
  	    }
  	    return $entityUpdater->toResponse($user, 'User updated', ['id' => $user->getId()]);
+	}
+	
+	//*****************************************************************************
+	
+	private function getUsersCSV(Request $request): Response
+	{
+	    $delimiter = $request->query->get('delimiter', ';');
+	    $users = $this->findUsers($request);
+	    
+	    $f = fopen('php://output', 'w');
+	    fputcsv($f, array('UUID', 'Nom', 'Prénom', 'Sexe', 'Né(e) le', 'Adresse', 'Code postal', 'Ville', 'Nationalité', 'Emails', 'Tel', 'Tel accident'), $delimiter);
+	    foreach ($users as $user) {
+	        /** @var User $user */
+	        fputcsv(
+	            $f,
+	            array(
+	                $user->getUuid(),
+	                $user->getLastname(),
+	                $user->getFirstname(),
+	                $user->getSex(),
+	                $user->getBirthday()->format("d/m/Y"),
+	                $user->getAddress(),
+	                $user->getZipcode(),
+	                $user->getCity(),
+	                $user->getNationality(),
+	                implode(', ', $user->getMails()),
+	                $user->getPhone(),
+	                $user->getPhoneEmergency()
+	            ),
+	            $delimiter);
+	    }
+	    $now = new \DateTime();
+	    $fileName = 'users-'.($now->format("Y-m-d_Gi")).'.csv';
+	    $response = new Response();
+	    $response->headers->set('Content-Type', 'text/csv');
+	    $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName);
+	    return $response;
+	}
+	
+	
+	private function getUsersXLSX(Request $request): Response
+	{
+	    $users = $this->findUsers($request);
+	    $spreadsheet = new Spreadsheet();
+	    $now = new \DateTime();
+	    
+	    /** @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+	    $sheet = $spreadsheet->getActiveSheet();
+	    $sheet->setTitle('cenacle-users-'.$now->format("Y-m-d"));
+	    $sheet->setCellValue('A1', 'UUID');
+	    $sheet->setCellValue('B1', 'Nom');
+	    $sheet->setCellValue('C1', 'Prénom');
+	    $sheet->setCellValue('D1', 'Sexe');
+	    $sheet->setCellValue('E1', 'Né(e) le');
+	    $sheet->setCellValue('F1', 'Adresse');
+	    $sheet->setCellValue('G1', 'Code postal');
+	    $sheet->setCellValue('H1', 'Ville');
+	    $sheet->setCellValue('I1', 'Nationalité');
+	    $sheet->setCellValue('J1', 'Emails');
+	    $sheet->setCellValue('K1', 'Tel');
+	    $sheet->setCellValue('L1', 'Tel accident');
+	    $row = 2;
+	    foreach ($users as $user) {
+	        $sheet->setCellValue('A'.$row, $user->getUuid(),);
+	        $sheet->setCellValue('B'.$row, $user->getLastname());
+	        $sheet->setCellValue('C'.$row, $user->getFirstname());
+	        $sheet->setCellValue('D'.$row, $user->getSex());
+	        $sheet->setCellValue('E'.$row, $user->getBirthday()->format("d/m/Y"));
+	        $sheet->setCellValue('F'.$row, $user->getAddress());
+	        $sheet->setCellValue('G'.$row, $user->getZipcode());
+	        $sheet->setCellValue('H'.$row, $user->getCity());
+	        $sheet->setCellValue('I'.$row, $user->getNationality());
+	        $sheet->setCellValue('J'.$row, implode(', ', $user->getMails()));
+	        $sheet->setCellValue('K'.$row, $user->getPhone());
+	        $sheet->setCellValue('L'.$row, $user->getPhoneEmergency());
+	        ++$row;
+	    }
+	    
+	    $writer = new Xlsx($spreadsheet);
+	    
+	    $fileName = 'users-'.($now->format("Y-m-d_Gi")).'.xlsx';
+	    $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+	    $writer->save($temp_file);
+	   
+	    $response = new BinaryFileResponse($temp_file);
+	    $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName);
+	    $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+	    return $response;
+	}
+	
+	
+	private function findUsers(Request $request)
+	{
+	    $doctrine = $this->container->get('doctrine');
+	    
+	    $q = $request->query->get('q');
+	    $club_uuid = $request->query->get('club');
+	    
+	    $account = $this->getUser();
+	    if($this->isGranted(Roles::ROLE_ADMIN)) {
+	        return $doctrine->getManager()
+	           ->getRepository(User::class)
+	           ->findInAll(null, $club_uuid, $q);
+	    } elseif($this->isGranted(Roles::ROLE_CLUB_MANAGER) || $this->isGranted(Roles::ROLE_TEACHER)) {
+	        if($club_uuid !== null) {
+	            $entityFinder = new EntityFinder($doctrine);
+	            $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]);
+	            $clubAccess = new ClubAccess($this->container, $this->logger);
+	            if( ! $clubAccess->hasAccessForUser($club, $account)) {
+	                throw $this->createAccessDeniedException();
+	            }
+	        }
+	        return $doctrine->getManager()
+	           ->getRepository(User::class)
+	           ->findInMyClubs($account->getId(), null, $club_uuid, $q);
+	    } elseif($account !== null) {
+	        return array($account->getUser());
+	    }
+        throw $this->createAccessDeniedException();
 	}
 	
 	
