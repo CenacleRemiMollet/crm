@@ -14,6 +14,28 @@
         </div>
     </section>
 
-  
+    <section class="sinkidoBanner"  style="background-image: url('{{ app.request.baseUrl }}/assets/showcase/sinkido/IMG_47072.JPG')">
+        <div class="txt">
+            <h2>{% trans %}showcase.sinkido.whats.title{% endtrans %}</h2>
+            <p>{% trans %}showcase.sinkido.whats.text{% endtrans %}</p>
+        </div>
+    </section>
+
+    <section class="approche">
+        <img src="{{ app.request.baseUrl }}/assets/showcase/sinkido/_MG_1163ok.jpg" alt="le Grand-Maître Shin Byung-Hyun montre un blocage">
+        <div class="txt">
+            <h2>{% trans %}showcase.sinkido.principle.title{% endtrans %}</h2>
+            <p>{% trans %}showcase.sinkido.principle.text{% endtrans %}</p>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h3>{% trans %}showcase.disciplines.other{% endtrans %}</h3>
+        <div class="buttons">
+            <div><a class="btn" href="{{ app.request.baseUrl }}/taekwonkido">taekwonkido</a></div>
+            <div><a class="btn" href="{{ app.request.baseUrl }}/taekwondo">taekwondo</a></div>
+            <div><a class="btn" href="{{ app.request.baseUrl }}/hapkido">hapkido</a></div>
+        </div>
+    </section>    
 
 {% endblock %}

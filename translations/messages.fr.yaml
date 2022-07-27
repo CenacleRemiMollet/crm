@@ -154,6 +154,67 @@ showcase:
       text: "Pour finir, nous dirons qu'il est Directeur Technique du Cénacle, vaste amicale de clubs qui regroupe une trentaine de Do-Jangs (salles d'entraînement) sur Paris, le Sud de la France et l'étranger. Il va régulièrement y animer des stages et faire profiter les pratiquants d'une expérience pédagogique de plus de 35 ans."
 
 
+# ShowCase / Hapkido
+
+  hapkido:
+    whats:
+      title: "QU'EST-CE QUE LE HAPKIDO ?"
+      text: "Le Hapkido a été fondé par Me. CHOI Yong Sul qui partit pour le Japon en 1912 où il fut adopté par la famille de Sokaku Takeda avec qui il s’entraîna durant 30 ans. Vers 1954, après avoir fait la synthèse de différents arts martiaux coréens tels que le TAEKYON (ancêtre du Taekwondo), du YU SOUL (ancêtre du Judo coréen) et du KUNG JUNG MOO SOUL (art martial royal coréen), il les combina avec ce qu’il avait appris et nomma son art « HAPKIDO »."
+    history:
+      title: "son histoire"
+      text: "Le Grand-Maître JI Han-Jae, connu pour avoir été le partenaire de Bruce Lee dans \"Le Jeu de la Mort\", a fondé le Hapkido moderne en synthétisant les techniques de clés de CHOI Yong Sul et des techniques de coups de pieds très élaborées. En 1984, il évolue encore et crée le Sin-Moo Hapkido, méthode supérieure (\"Sin\" veut dire esprit) avec notamment des techniques de méditation."
+    principles:
+      title: "ses principes"
+      text: "Le programme d’entraînement du Hapkido comprend : 3800 techniques d’attaque et de défense, 20 coups de pied de base, 77 coups de pied spéciaux, 15 chutes ainsi que le travail des armes : bâton court, bâton moyen, bâton long, canne, corde, poignard, éventail, etc. C'est resté un art martial traditionnel ne pratique pas la compétition et est un système reconnu par la plupart des gardes du corps présidentiels et autres corps de sécurité dans le monde."
+      text2: "Les trois principes du Hapkido sont : <span>l’harmonie, le cercle, la non résistance</span>. L’emblème du HAPKIDO, un aigle qui attrape une flèche dans ses serres, résume bien les principes de cet art martial."
+
+
+# ShowCase / Sinkido
+
+  sinkido:
+    whats:
+      title: "QU'EST-CE QUE LE SINKIDO ?"
+      text: "Le <span>Sinkido Self-Défense Système</span> est une méthode qui s'adresse exclusivement aux adultes et aux seniors. C'est un programme d'<span>autodéfense accessible</span>, sans chutes éprouvantes, sans coups de pied hauts, sans Formes compliquées, sans acrobaties. Axé sur l'efficacité, il est directement applicable en combat réel. C'est la simplicité du programme qui permet de ne pas hésiter en \"combat de survie\", de mobiliser tous ses moyens (frappes, clés, fauchages, coups de pied bas et moyens, etc.) pour un résultat maximal."
+    principle:
+      title: "SON APPROCHE"
+      text: "Fondé sur une approche dynamique, le Sinkido est un concentré de techniques efficientes et pratiques. Rationnel et progressif, le programme par grades peut être appréhendé par tout adulte qui se préoccupe d'efficacité plus que de médailles sportives."
+
+
+# ShowCase / Taekwonkido
+
+  taekwonkido:
+    whats:
+      title: "qu'est-ce que le<br> taekwonkido ?"
+      text: "Le Taekwonkido® est une méthode éducative, fondée par Me Rémi Mollet et le Dr. Jean-Laurent Taddeï, synthétisant les techniques de Karaté, Taekwondo, de Hapkido, de Gumdo (sabre), d’arts martiaux coréens et surtout de Khido, méthode supérieure instaurée par Me Michel Morlon, créée en 1984."
+    methods:
+      title: "les méthodes"
+      text: "Selon un programme technique repensé afin d’être accessible à tous, du plus jeune au vétéran, de la femme à l’homme, axé sur l’autodéfense et sur une pratique traditionnelle, le Taekwonkido® est avant tout une méthode d’éducation permettant de former l’individu afin de le responsabiliser, de l’aider à surmonter les embûches et tracas du quotidien et de l’aider à s’intégrer dans la société. Basé sur le développement du goût de l’effort et l’aptitude à dépasser ses limites, il doit valoriser le pratiquant et l’aider à être mieux dans sa peau, tout en sachant respecter autrui et accepter l’autorité."
+    technics:
+      title: "les techniques"
+      text: "Techniquement, le Taekwonkido® présente beaucoup de coups de pied sautés, retournés, mais aussi des mouvements de bras. Un tapis (style tatami) est bien souvent nécessaire pour les chutes lors des techniques d’autodéfense. Le recours à des protections lors des assauts et surtout à des cibles en mousse permet une pratique respectant l’intégrité physique et la santé du pratiquant, et surtout constitue un bon défouloir dont le dynamisme séduit les plus jeunes. Afin de faciliter l’apprentissage, certaines formes trop souvent rébarbatives sont devenues optionnelles, des ateliers ont été simplifiés ou remplacés par des techniques d’autodéfense plus accessibles. A partir d’un certain niveau, le travail des armes et notamment du sabre coréen (Gumdo) est abordé."
+    utility:
+      title: "son utilité"
+      text: "Le Taekwonkido® est basé sur une utilisation naturelle du corps. Le pratiquant de Taekwonkido® doit être amené à canaliser son énergie. Par son côté physique, l’entraînement devient une sorte d’ascèse, un exutoire où s’élimine le trop-plein d’énergie de bien des jeunes. Me Rémi Mollet est par ailleurs professeur de Lettres classiques en collège et lycée, il pratique depuis plus de 35 ans et enseigne les arts martiaux depuis plus de 30 ans ; il est diplômé d’Etat (France et Corée) : toute cette expérience pédagogique sera mise au service du Taekwonkido®."
+
+
+# ShowCase / Taekwondo
+
+  taekwondo:
+    whats:
+      title: "QU'EST-CE QUE LE TAEKWONDO ?"
+      text: "Le Taekwondo, discipline olympique, est un art martial sans armes et l’esprit dans lequel il est pratiqué entraîne obligatoirement courtoisie, loyauté, persévérance, maîtrise de soi, combativité sans agressivité."
+    history:
+      title: "son histoire"
+      text: "Art martial coréen pendant plus de vingt siècles sous le nom de \"TAEKYON\" avant 1955, le TKD, tout en conservant la tradition et l’esprit de l’art martial, est devenu un sport international moderne qui compte de nos jours de 20 millions de pratiquants répartis dans de 150 pays dont la France depuis 1969, et qui gagne chaque jour du terrain dans le monde."
+    school:
+      title: "notre école"
+      text: "Le Cénacle Rémi Mollet appartient à l'école <span>Chung Do Kwan</span> de Taekwondo."
+
+# ShowCase / Disciplines commons
+  disciplines:
+    other: "découvrir nos autres disciplines"
+
+
 # Club
 
 club:

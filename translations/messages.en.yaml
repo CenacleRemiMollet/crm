@@ -155,6 +155,68 @@ showcase:
       text: 
 
 
+# ShowCase / Hapkido
+
+  hapkido:
+    whats:
+      title: 
+      text: 
+    history:
+      title: 
+      text: 
+    principles:
+      title: 
+      text: 
+      text2: 
+
+
+# ShowCase / Sinkido
+
+  sinkido:
+    whats:
+      title: 
+      text: 
+    principle:
+      title: 
+      text: 
+
+
+# ShowCase / Taekwonkido
+
+  taekwonkido:
+    whats:
+      title: 
+      text: 
+    methods:
+      title: 
+      text: 
+    technics:
+      title: 
+      text: 
+    utility:
+      title: 
+      text: 
+
+
+# ShowCase / Taekwondo
+
+  taekwondo:
+    whats:
+      title: 
+      text: 
+    history:
+      title: 
+      text: 
+    school:
+      title: 
+      text: 
+
+
+# ShowCase / Disciplines commons
+  disciplines:
+    other: 
+
+
 # Club
 
 club:

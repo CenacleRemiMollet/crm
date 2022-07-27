@@ -58,7 +58,6 @@ section{
 .tkdbanner {
     width: 100%;
     height: 85vh;
-    background-image: url("img/tkd.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
     display: flex;
@@ -72,7 +71,7 @@ section{
     padding: 1.5rem 3rem;
     margin : 2rem 1rem 3rem 1rem;
     width: 450px;
-    height: 250px;
+    height: 275px;
     background-color: #ffffffa6;
     font-weight: 500;
 }
@@ -85,7 +84,7 @@ section{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 10rem;
+    margin-bottom: 2rem;
 }
 
 .histoire img{
@@ -104,7 +103,7 @@ section{
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10rem;
+    margin-bottom: 3rem;
 }
 
 .ecole img{
@@ -222,7 +221,6 @@ section{
 .sinkidoBanner {
     width: 100%;
     height: 85vh;
-    background-image: url("img/IMG_4707.JPG");
     background-repeat: no-repeat;
     background-size: 120%;
     background-position-y: -6rem;

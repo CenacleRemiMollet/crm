@@ -14,6 +14,36 @@
         </div>
     </section>
 
-  
+    <section class="tkdbanner" style="background-image: url('{{ app.request.baseUrl }}/assets/showcase/taekwondo/tkd.jpg')">
+        <div class="txt">
+            <h2>{% trans %}showcase.taekwondo.whats.title{% endtrans %}</h2>
+            <p>{% trans %}showcase.taekwondo.whats.text{% endtrans %}</p>
+        </div>
+    </section>
+
+    <section class="histoire">
+        <img src="{{ app.request.baseUrl }}/assets/showcase/taekwondo/tkd2.jpg" alt="démontration d'un blocage en taekwondo">
+        <div class="txt">
+            <h2>{% trans %}showcase.taekwondo.history.title{% endtrans %}</h2>
+            <p>{% trans %}showcase.taekwondo.history.text{% endtrans %}</p>
+        </div>
+    </section>
+
+    <section class="ecole">
+        <img src="{{ app.request.baseUrl }}/assets/showcase/taekwondo/ChungDoKwan.jpg" alt="logo du chung do kwan">
+        <div class="txt">
+            <h2>{% trans %}showcase.taekwondo.school.title{% endtrans %}</h2>
+            <p>{% trans %}showcase.taekwondo.school.text{% endtrans %}</p>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h3>{% trans %}showcase.disciplines.other{% endtrans %}</h3>
+        <div class="buttons">
+            <div><a class="btn" href="{{ app.request.baseUrl }}/taekwonkido">taekwonkido</a></div>
+            <div><a class="btn" href="{{ app.request.baseUrl }}/hapkido">hapkido</a></div>
+            <div><a class="btn" href="{{ app.request.baseUrl }}/sinkido">Sinkido<br><span>self-défense système</span></a></div>
+        </div>
+    </section>  
 
 {% endblock %}

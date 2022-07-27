@@ -20,16 +20,16 @@
 
      <section class="first">
         <div class="d-flex justify-content-center">
-                <div class="definition col-md-11 col-lg-7 col-xl-5">
-                        <h2>qu'est-ce que le<br> taekwonkido ?</h2>
-                        <p>Le Taekwonkido® est une méthode éducative, fondée par Me Rémi Mollet et le Dr. Jean-Laurent Taddeï, synthétisant les techniques de Karaté, Taekwondo, de Hapkido, de Gumdo (sabre), d’arts martiaux coréens et surtout de Khido, méthode supérieure instaurée par Me Michel Morlon, créée en 1984. </p>
-                </div>
+            <div class="definition col-md-11 col-lg-7 col-xl-5">
+                <h2>{% trans %}showcase.taekwonkido.whats.title{% endtrans %}</h2>
+                <p>{% trans %}showcase.taekwonkido.whats.text{% endtrans %} </p>
             </div>
+        </div>
 
         <div class="methods offset-xl-2 col-xl-7 col-md-12 offset-lg-1 col-lg-7 p-0">
                 <div class="content">
-                <h2>les méthodes</h2>
-                <p>Selon un programme technique repensé afin d’être accessible à tous, du plus jeune au vétéran, de la femme à l’homme, axé sur l’autodéfense et sur une pratique traditionnelle, le Taekwonkido® est avant tout une méthode d’éducation permettant de former l’individu afin de le responsabiliser, de l’aider à surmonter les embûches et tracas du quotidien et de l’aider à s’intégrer dans la société. Basé sur le développement du goût de l’effort et l’aptitude à dépasser ses limites, il doit valoriser le pratiquant et l’aider à être mieux dans sa peau, tout en sachant respecter autrui et accepter l’autorité.</p>
+                <h2>{% trans %}showcase.taekwonkido.methods.title{% endtrans %}</h2>
+                <p>{% trans %}showcase.taekwonkido.methods.text{% endtrans %}</p>
                 </div>
         </div>
     </section> 
@@ -41,8 +41,8 @@
         </div>
         <div class="content">
             <div class="technics col-md-12 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3">
-                <h2>les techniques</h2> 
-                <p>Techniquement, le Taekwonkido® présente beaucoup de coups de pied sautés, retournés, mais aussi des mouvements de bras. Un tapis (style tatami) est bien souvent nécessaire pour les chutes lors des techniques d’autodéfense. Le recours à des protections lors des assauts et surtout à des cibles en mousse permet une pratique respectant l’intégrité physique et la santé du pratiquant, et surtout constitue un bon défouloir dont le dynamisme séduit les plus jeunes. Afin de faciliter l’apprentissage, certaines formes trop souvent rébarbatives sont devenues optionnelles, des ateliers ont été simplifiés ou remplacés par des techniques d’autodéfense plus accessibles. A partir d’un certain niveau, le travail des armes et notamment du sabre coréen (Gumdo) est abordé.</p>
+                <h2>{% trans %}showcase.taekwonkido.technics.title{% endtrans %}</h2> 
+                <p>{% trans %}showcase.taekwonkido.technics.text{% endtrans %}</p>
             </div>
         </div>
     </section>
@@ -53,15 +53,15 @@
         </div>
         <div class="utility col-xl-7 col-lg-6">
             <div class="content">
-                <h2>son utilité</h2>
-                <p>Le Taekwonkido® est basé sur une utilisation naturelle du corps. Le pratiquant de Taekwonkido® doit être amené à canaliser son énergie. Par son côté physique, l’entraînement devient une sorte d’ascèse, un exutoire où s’élimine le trop-plein d’énergie de bien des jeunes. Me Rémi Mollet est par ailleurs professeur de Lettres classiques en collège et lycée, il pratique depuis plus de 35 ans et enseigne les arts martiaux depuis plus de 30 ans ; il est diplômé d’Etat (France et Corée) : toute cette expérience pédagogique sera mise au service du Taekwonkido®.</p> 
+                <h2>{% trans %}showcase.taekwonkido.utility.title{% endtrans %}</h2>
+                <p>{% trans %}showcase.taekwonkido.utility.text{% endtrans %}</p> 
             </div>
         </div>
      </section>
 
      
     <section class="cta">
-        <h3>découvrir nos autres disciplines</h3>
+        <h3>{% trans %}showcase.disciplines.other{% endtrans %}</h3>
         <div class="buttons">
             <div><a class="btn" href="{{ app.request.baseUrl }}/taekwondo">taekwondo</a></div>
             <div><a class="btn" href="{{ app.request.baseUrl }}/hapkido">hapkido</a></div>
