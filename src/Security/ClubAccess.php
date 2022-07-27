@@ -35,8 +35,12 @@ class ClubAccess
         });
     }
     
-    public function hasAccessForUser(Club $club, Account $account, ?object $ifDenied = null)
+    public function hasAccessForUser(Club $club, ?Account $account, ?object $ifDenied = null)
     {
+        if($account === null) {
+            return false;
+        }
+        
         if($this->authorizationChecker->isGranted(Roles::ROLE_ADMIN) || $this->authorizationChecker->isGranted(Roles::ROLE_SUPER_ADMIN)) {
             $this->logger->debug('ClubAccess.hasAccessForUser(): current user ('.$account->getId().') is an admin');
             return true;
