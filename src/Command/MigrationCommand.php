@@ -54,7 +54,7 @@ class MigrationCommand extends Command
 // 		if(! file_exists($srcdump)) {
 // 			throw new \Exception('File not found: '.$srcdump);
 // 		}
-        echo "Environment: ".$env;
+		echo "Environment: ".$env.PHP_EOL;
         
 		$this->importDump($this->projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'prepare.sql', false);
 		if(file_exists($srcdump)) {

@@ -230,35 +230,35 @@ INSERT INTO user_club_subscribe(uuid, user_id, club_id, roles)
 -- **** Fix duplicate rows ****  
 
 -- user_club_subscribe
-CREATE TABLE zzz_deduplication_ucs AS
- SELECT user_id, club_id, JSON_ARRAYAGG(replace(replace(replace(roles, '"', ''), '[', ''), ']', '')) AS roles, '[]' AS newroles
-  FROM user_club_subscribe
-  GROUP BY user_id, club_id
-   HAVING count(*) > 1;
-     
-ALTER TABLE zzz_deduplication_ucs CHANGE `newroles` `newroles` VARCHAR(512) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL; 
-
-UPDATE zzz_deduplication_ucs
- SET newroles = JSON_ARRAY_APPEND(newroles, '$', 'ROLE_STUDENT')
- WHERE json_contains(roles, json_quote('ROLE_STUDENT'));
-UPDATE zzz_deduplication_ucs
- SET newroles = JSON_ARRAY_APPEND(newroles, '$', 'ROLE_TEACHER')
- WHERE json_contains(roles, json_quote('ROLE_TEACHER'));
-UPDATE zzz_deduplication_ucs
- SET newroles = JSON_ARRAY_APPEND(newroles, '$', 'ROLE_CLUB_MANAGER')
- WHERE json_contains(roles, json_quote('ROLE_CLUB_MANAGER'));
-
-DELETE ucs
- FROM user_club_subscribe ucs
-  JOIN zzz_deduplication_ucs z USING (user_id, club_id);
-
-INSERT INTO user_club_subscribe(user_id, club_id, uuid, roles)
- SELECT user_id, club_id,
-        concat(lower(lpad(conv(floor(rand()*pow(36,8)), 10, 36), 8, 0)), lower(lpad(conv(floor(rand()*pow(36,8)), 10, 36), 8, 0))),
-        newroles
-  FROM zzz_deduplication_ucs;
-
-DROP TABLE zzz_deduplication_ucs;
+-- CREATE TABLE zzz_deduplication_ucs AS
+--  SELECT user_id, club_id, JSON_ARRAYAGG(replace(replace(replace(roles, '"', ''), '[', ''), ']', '')) AS roles, '[]' AS newroles
+--   FROM user_club_subscribe
+--   GROUP BY user_id, club_id
+--    HAVING count(*) > 1;
+--      
+-- ALTER TABLE zzz_deduplication_ucs CHANGE `newroles` `newroles` VARCHAR(512) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL; 
+-- 
+-- UPDATE zzz_deduplication_ucs
+--  SET newroles = JSON_ARRAY_APPEND(newroles, '$', 'ROLE_STUDENT')
+--  WHERE json_contains(roles, json_quote('ROLE_STUDENT'));
+-- UPDATE zzz_deduplication_ucs
+--  SET newroles = JSON_ARRAY_APPEND(newroles, '$', 'ROLE_TEACHER')
+--  WHERE json_contains(roles, json_quote('ROLE_TEACHER'));
+-- UPDATE zzz_deduplication_ucs
+--  SET newroles = JSON_ARRAY_APPEND(newroles, '$', 'ROLE_CLUB_MANAGER')
+--  WHERE json_contains(roles, json_quote('ROLE_CLUB_MANAGER'));
+-- 
+-- DELETE ucs
+--  FROM user_club_subscribe ucs
+--   JOIN zzz_deduplication_ucs z USING (user_id, club_id);
+-- 
+-- INSERT INTO user_club_subscribe(user_id, club_id, uuid, roles)
+--  SELECT user_id, club_id,
+--         concat(lower(lpad(conv(floor(rand()*pow(36,8)), 10, 36), 8, 0)), lower(lpad(conv(floor(rand()*pow(36,8)), 10, 36), 8, 0))),
+--         newroles
+--   FROM zzz_deduplication_ucs;
+-- 
+-- DROP TABLE zzz_deduplication_ucs;
 
   
 -- **** << DROP temporary tables >> ****
