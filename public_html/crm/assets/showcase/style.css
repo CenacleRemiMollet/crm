@@ -55,6 +55,223 @@ section{
     opacity: 70%;
 }*/
 
+.tkdbanner {
+    width: 100%;
+    height: 85vh;
+    background-image: url("img/tkd.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    display: flex;
+    padding: 3rem 0 0 3rem;
+    margin-bottom: 10rem;
+}
+
+.tkdbanner .txt {
+    border: solid #CE2A37 5px;
+    border-radius: 0 80px 0 80px;
+    padding: 1.5rem 3rem;
+    margin : 2rem 1rem 3rem 1rem;
+    width: 450px;
+    height: 250px;
+    background-color: #ffffffa6;
+    font-weight: 500;
+}
+
+.tkdbanner .txt p{
+    margin: 0;
+}
+
+.histoire {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10rem;
+}
+
+.histoire img{
+    width: 50%;
+}
+
+.histoire .txt {
+    margin-top: 5rem;
+    width: 50%;
+    border-left: solid #515151 5px;
+    padding: 0rem 1.5rem;
+    margin: 2rem 1rem 3rem 1rem;
+}
+
+.ecole {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10rem;
+}
+
+.ecole img{
+    width: 25%;
+    margin-right: 3rem;
+}
+
+.ecole .txt span {
+    font-weight: bold;
+}
+
+/* page hapkido */
+
+.hapkidoBanner {
+    width: 100%;
+    height: 600px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: -285px;
+    display: flex;
+    margin-bottom: 5rem;
+    position: relative;
+}
+
+/*.hapkidoBanner img {
+    display: none;
+}*/
+
+.hapkidoBanner .definitionHapkido {
+    border: solid #CE2A37 5px;
+    background-color: #ffffffa6;
+    border-radius: 0 80px 0 80px;
+    padding: 1.5rem 3rem;
+    width: 500px;
+    font-weight: 500;
+    display: flex;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 1rem;
+}
+
+.histoireHapkido {
+    margin-top: 25vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10rem;
+}
+
+.histoireHapkido img{
+    width: 50%;
+}
+
+.histoireHapkido .txt {
+    margin-top: 5rem;
+    width: 50%;
+    border-left: solid #515151 5px;
+    padding: 0rem 0 0 1.5rem;
+    margin: 2rem 1rem 0 1rem;
+}
+
+.principesHapkido {
+    margin-top : 5rem;
+    margin-bottom: 10rem;
+    display: flex;
+}
+
+.principesHapkido .left_img{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.principesHapkido .left_img img {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.principesHapkido .txt {
+    width: 100%;
+    color: #fff;
+    background-color: #515151;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 2rem;
+}
+
+.principesHapkido .txt span {
+    font-style: italic;
+}
+
+.principesHapkido .txt .part2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.principesHapkido .txt .part2 p {
+    width: 70%;
+    text-align: right;
+    padding-right: 1rem;
+}
+
+.principesHapkido .txt .part2 img {
+    width: 30%;
+    align-self: center;
+    padding: 1rem 0 0 0 ;
+}
+
+/* page sinkido */
+
+.sinkidoBanner {
+    width: 100%;
+    height: 85vh;
+    background-image: url("img/IMG_4707.JPG");
+    background-repeat: no-repeat;
+    background-size: 120%;
+    background-position-y: -6rem;
+    display: flex;
+    padding: 3rem 0 0 3rem;
+}
+
+.sinkidoBanner img {
+    display: none;
+}
+
+.sinkidoBanner .txt {
+    border: solid #CE2A37 5px;
+    border-radius: 0 80px 0 80px;
+    padding: 1.5rem 2rem;
+    width: 450px;
+    height: fit-content;
+    background-color: #ffffffa6;
+    font-weight: 500;
+}
+
+.sinkidoBanner .txt span {
+    font-weight: bold;
+}
+
+.sinkidoBanner .txt p{
+    margin: 0;
+}
+
+.approche {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10rem;
+    background-color: #515151;
+}
+
+.approche img {
+    width: 40%;
+}
+
+.approche .txt {
+    border-left: solid #CE2A37 5px;
+    color: #fff;
+    margin-left: 2rem;
+    padding-left: 1.5rem;
+    width: 50%;
+}
+
 .top h1{
     padding: 4rem 0rem;
     font-size: 3em;
@@ -348,4 +565,301 @@ section{
         font-size: 1em;
     }
     
+}
+
+@media screen and (max-width: 1300px) {
+
+	/* page taekwondo */
+	
+	.tkdbanner {
+	    padding: 0;
+	}
+	
+	.tkdbanner .txt {
+	    margin: 1rem;
+	}
+	
+	/* page hapkido */
+	
+	.hapkidoBanner {
+	    background-image: none;
+	    height: auto;
+	    display: flex;
+	    justify-content: center;
+	}
+	
+	.hapkidoBanner img {
+	    display: block;
+	    width: 100%;
+	}
+	
+	.hapkidoBanner .definitionHapkido {
+	    width: 80%;
+	    right: initial;
+	}
+	
+	.principesHapkido {
+	    flex-direction: column;
+	}
+	
+	.principesHapkido .left_img {
+	    background-color: #515151;
+	}
+	
+	/* page sinkido */
+	
+	.sinkidoBanner {
+	    padding: 2rem 0 0 2rem;
+	}
+	
+	.sinkidoBanner .txt {
+	    width: 350px;
+	}
+
+}
+
+@media screen and (max-width: 1000px) {
+
+	/* page taekwondo */
+	    
+	.tkdbanner {
+	    justify-content: center;
+	    align-items: flex-end;
+	    position: relative;
+	    background-size: cover;
+	    background-position-x: center;
+	    height: 400px;
+	    margin-bottom: 400px;
+	}
+	
+	.tkdbanner .txt {
+	    position: relative;
+	    margin: 0;
+	    bottom: -300px;
+	    width: 65%;
+	    height: fit-content;
+	    padding: 1.5rem 2rem;
+	    border-radius: 0 40px 0 40px;
+	}
+	
+	.histoire img {
+	    width: 70%;
+	}
+	
+	.histoire .txt {
+	    width: 70%;
+	}
+	
+	.ecole {
+	    padding: 1rem;
+	}
+	
+	.ecole img {
+	    margin-right: 1rem
+	}
+	
+	
+	/* page hapkido */
+	
+	.hapkidoBanner {
+	    position: initial;
+	    flex-direction: column;
+	    align-items: center;
+	}
+	
+	.hapkidoBanner .definitionHapkido {
+	    position: initial;
+	    border-radius: 0 40px 0 40px;
+	}
+	
+	.histoireHapkido {
+	    margin-top: 10vh;
+	}
+	
+	.histoireHapkido img {
+	    width: 100%;
+	}
+	
+	.histoireHapkido .txt {
+	    width: initial;
+	}
+	
+	.principesHapkido .txt .part2 p {
+	    width: 50%;
+	}
+	
+	
+	/* page sinkido */
+	
+	.sinkidoBanner {
+	    padding: 0;
+	    align-items: flex-end;
+	}
+	
+	.sinkidoBanner .txt {
+	    width: 100%;
+	    margin: 0 1rem 1rem 1rem;
+	    border-radius: 0 40px 0 40px;
+	}
+	   
+}
+
+@media screen and (max-width: 800px) {
+
+	/* page sinkido */
+	
+	.sinkidoBanner {
+	    background: none;
+	    display: flex;
+	    flex-direction: column;
+	    height: fit-content;
+	}
+	
+	.sinkidoBanner img {
+	    display: block;
+	    width: 100%;
+	}
+	
+	.sinkidoBanner .txt {
+	    margin: 2rem;
+	    width: auto;
+	}
+}
+
+@media screen and (max-width: 600px) {
+
+	p {
+	    font-size: 0.8em;
+	}
+	
+	h2 {
+	    font-size: 1.2em;
+	}
+	
+	/* page taekwondo */
+	
+	.tkdbanner {
+	     height: 250px;
+	     margin-bottom: 250px;
+	}
+	
+	.tkdbanner .txt {
+	    width: 80%;
+	    bottom: -200px;
+	    width: 100%;
+	    margin: 1rem;
+	}
+	
+	.histoire {
+	    margin-bottom: 2rem;
+	}
+	
+	.histoire img {
+	    width: 100%;
+	}
+	
+	.histoire .txt {
+	    width: unset;
+	    margin: 2rem 1rem;
+	}
+	
+	.ecole {
+	    flex-direction: column;
+	    padding: 0;
+	}
+	
+	.ecole img {
+	    margin: 0;
+	    width: 70%;
+	}
+	
+	.ecole .txt {
+	    margin: 2rem 1rem;
+	    border-left: solid #CE2A37 5px;
+	    padding: 0rem 1.5rem;
+	}
+	
+	.cta .buttons {
+	    flex-direction: column;
+	    align-items: center;
+	}
+	
+	.cta .buttons .btn {
+	    margin-bottom: 1rem;
+	}
+	
+	
+	/* page hapkido */
+	
+	.hapkidoBanner .definitionHapkido {
+	    width: initial;
+	    margin: 1rem;
+	}
+	
+	.principesHapkido .txt .part2 p {
+	    width: 65%;
+	}
+	
+	.principesHapkido .txt .part2 {
+	    padding-top: 1rem;
+	}
+	
+	.principesHapkido .txt .part2 img {
+	    padding: 0;
+	}
+	
+	
+	/* page sinkido */
+	
+	.approche {
+	    flex-direction: column;
+	}
+	
+	.approche .txt {
+	    margin-left: 1rem;
+	    padding-left: 1rem;
+	    width: 80%;
+	    margin: 4rem;
+	}
+	
+	.approche img {
+	    width: 100%;
+	}
+
+}
+
+
+@media screen and (max-width: 450px) {
+
+	/* page taekwondo */
+	
+	.tkdbanner {
+	    background-position-x: -75px;
+	    margin-bottom: 300px;
+	}
+	
+	.tkdbanner .txt {
+	    bottom: -250px;
+	}
+	
+	/* page hapkido */
+	
+	.hapkidoBanner .definitionHapkido {
+	    padding: 1.5rem;
+	}
+	
+	.principesHapkido .txt .part2 {
+	    flex-direction: column;
+	}
+	
+	.principesHapkido .txt .part2 p {
+	    width: 100%;
+	    text-align: inherit;
+	    margin-bottom: 1rem;
+	}
+	
+	.principesHapkido .txt .part2 img {
+	    width: 50%;
+	}
+
 }

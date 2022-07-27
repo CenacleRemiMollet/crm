@@ -8,10 +8,50 @@
 
 {% block dashboardcontent %}
 
-    <section class="top">
+	<section class="top">
         <div class="title">
             <h1>Hapkido</h1>
         </div>
     </section>
 
+        <section class="hapkidoBanner">
+            <img src="{{ app.request.baseUrl }}/assets/showcase/hapkido/hapkido2.jpg" alt="">
+            <div class="definitionHapkido">
+                <div class="txt">
+                    <h2>QU'EST-CE QUE LE HAPKIDO ?</h2>
+                    <p>Le Hapkido a été fondé par Me. CHOI Yong Sul qui partit pour le Japon en 1912 où il fut adopté par la famille de Sokaku Takeda avec qui il s’entraîna durant 30 ans. Vers 1954, après avoir fait la synthèse de différents arts martiaux coréens tels que le TAEKYON (ancêtre du Taekwondo), du YU SOUL (ancêtre du Judo coréen) et du KUNG JUNG MOO SOUL (art martial royal coréen), il les combina avec ce qu’il avait appris et nomma son art « HAPKIDO ».</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="histoireHapkido">
+            <img src="{{ app.request.baseUrl }}/assets/showcase/hapkido/hapkido1.jpg" alt="démonstration d'une clé en hapkido">
+            <div class="txt">
+                <h2>son histoire</h2>
+                <p>Le Grand-Maître JI Han-Jae, connu pour avoir été le partenaire de Bruce Lee dans "Le Jeu de la Mort", a fondé le Hapkido moderne en synthétisant les techniques de clés de CHOI Yong Sul et des techniques de coups de pieds très élaborées. En 1984, il évolue encore et crée le Sin-Moo Hapkido, méthode supérieure ("Sin" veut dire esprit) avec notamment des techniques de méditation. </p>
+            </div>
+        </section>
+
+        <section class="principesHapkido">
+            <div class="left_img">
+                <img src="{{ app.request.baseUrl }}/assets/showcase/hapkido/IMG_0139.JPG" alt="le maître effectue une clé de bras">
+            </div>
+            <div class="txt">
+                <h2>ses principes</h2>
+                <p>Le programme d’entraînement du Hapkido comprend : 3800 techniques d’attaque et de défense, 20 coups de pied de base, 77 coups de pied spéciaux, 15 chutes ainsi que le travail des armes : bâton court, bâton moyen, bâton long, canne, corde, poignard, éventail, etc. C'est resté un art martial traditionnel ne pratique pas la compétition et est un système reconnu par la plupart des gardes du corps présidentiels et autres corps de sécurité dans le monde.</p>
+                <div class="part2">
+                    <p>Les trois principes du Hapkido sont : <span>l’harmonie, le cercle, la non résistance</span>. L’emblème du HAPKIDO, un aigle qui attrape une flèche dans ses serres, résume bien les principes de cet art martial.</p>
+                    <img src="{{ app.request.baseUrl }}/assets/showcase/hapkido/4.jpg" alt="logo Hapkido">
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <h3>découvrir nos autres disciplines</h3>
+            <div class="buttons">
+                <div><a class="btn" href="{{ app.request.baseUrl }}/taekwonkido">taekwonkido</a></div>
+                <div><a class="btn" href="{{ app.request.baseUrl }}/taekwondo">taekwondo</a></div>
+                <div><a class="btn" href="{{ app.request.baseUrl }}/sinkido">Sinkido<br><span>self-défense système</span></a></div>
+            </div>
+        </section>
 {% endblock %}
