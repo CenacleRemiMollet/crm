@@ -50,12 +50,16 @@ class MigrationCommand extends Command
 	{
 		$domain = $input->getOption('domainname');
 		$srcdump = $input->getOption('dump');
-		if(! file_exists($srcdump)) {
-			throw new \Exception('File not found: '.$srcdump);
-		}
-
+		$env = $this->getEnv($input);
+// 		if(! file_exists($srcdump)) {
+// 			throw new \Exception('File not found: '.$srcdump);
+// 		}
+        echo "Environment: ".$env;
+        
 		$this->importDump($this->projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'prepare.sql', false);
-		$this->importDump($srcdump, true);
+		if(file_exists($srcdump)) {
+            $this->importDump($srcdump, true);
+		}
 		$this->importDump($this->projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'migration.sql', false);
 
 		try {
@@ -77,6 +81,19 @@ class MigrationCommand extends Command
 		}
 
 		return Command::SUCCESS;
+	}
+	
+	private function getEnv(InputInterface $input):? string
+	{
+	    $env = $input->getOption('env');
+	    if($env === null || $env === "") {
+	        $env = substr($this->projectDir, strpos("/sites/crm."));
+    	    if($env === null || $env === "") {
+    	        //throw new \Exception("Environment undeclared: add --env=...");
+    	        $env = "dev";
+    	    }
+	    }
+	    return $env;
 	}
 
 
