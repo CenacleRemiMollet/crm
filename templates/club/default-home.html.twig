@@ -47,7 +47,9 @@
 				<i class="fas fa-phone-alt" aria-hidden="true"></i>
 			</button>
 			<div class="bloc-text">
-	            {{ club.contact_phone }}
+            	{%  for phone in club.contact_phone|split('/') %}
+                	{{ phone|trim }}<br>
+               	{% endfor %}
 			</div>
 		</div>
 		{% set dropNum = dropNum + 1 %}

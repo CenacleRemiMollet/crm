@@ -75,8 +75,8 @@ class MigrationCommand extends Command
     		echo PHP_EOL.'====== CSV Prices ======'.PHP_EOL;
     		$this->loadCSVPrices();
  
-    		echo PHP_EOL.'====== CSV Contact ======'.PHP_EOL;
-    		$this->loadCSVContact();
+    		echo PHP_EOL.'====== CSV Infos ======'.PHP_EOL;
+    		$this->loadCSVInfos();
 		
 		} catch(\Exception $e) {
 		    echo PHP_EOL.$e->getMessage().PHP_EOL;
@@ -322,35 +322,47 @@ class MigrationCommand extends Command
 	}
 	
 	
-	private function loadCSVContact()
+	private function loadCSVInfos()
 	{
 	    $clubsPath = $this->projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'clubs'.DIRECTORY_SEPARATOR;
 	    $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
 	    foreach($this->doctrine->getManager()->getRepository(Club::class)->findAll() as $club)
 	    {
-	        $csvFile = $clubsPath.$club->getUuid().'-contacts.csv';
+	        $csvFile = $clubsPath.$club->getUuid().'-infos.csv';
 	        if (! file_exists($csvFile)) {
 	            //echo 'File not found: '.$csvFile.PHP_EOL;
 	            continue;
 	        }
 	        echo 'Loading: '.$csvFile.PHP_EOL;
 	        $data = $serializer->decode(file_get_contents($csvFile), 'csv');
-	        $this->saveOrUpdateContact($club, $data);
+	        $this->saveOrUpdateInfos($club, $data);
 	    }
 	}
 	
-	private function saveOrUpdateContact(Club $club, $data)
+	private function saveOrUpdateInfos(Club $club, $data)
 	{
 	    foreach ($data as $line) {
 	        if(implode($line, "-") === "") {
 	            continue;
 	        }
 	        try {
-	            if(isset($line["emails"])) {
+	            if(isset($line["name"]) && ! empty($line["name"])) {
+	                $club->setName($line["name"]);
+	            }
+	            if(isset($line["emails"]) && ! empty($line["emails"])) {
 	               $club->setContactEmails($line["emails"]);
 	            }
-	            if(isset($line["phone"])) {
+	            if(isset($line["phone"]) && ! empty($line["phone"])) {
 	                $club->setContactPhone($line["phone"]);
+	            }
+	            if(isset($line["facebook"]) && ! empty($line["facebook"])) {
+	                $club->setFacebookUrl($line["facebook"]);
+	            }
+	            if(isset($line["instagram"]) && ! empty($line["instagram"])) {
+	                $club->setInstagramUrl($line["instagram"]);
+	            }
+	            if(isset($line["twitter"]) && ! empty($line["twitter"])) {
+	                $club->setTwitterUrl($line["twitter"]);
 	            }
 	            break;
 	        } catch(Exception $e) {
