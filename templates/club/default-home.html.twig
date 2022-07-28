@@ -83,4 +83,7 @@
     </div>
 
     {% include 'modules/locale-button.html.twig' %}
+    
 </section>
+
+{% include 'club/' ~ club.uuid ~ '/sponsors.html.twig' ignore missing %}

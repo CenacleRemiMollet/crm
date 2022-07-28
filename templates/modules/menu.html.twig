@@ -45,7 +45,11 @@
         {% endif %}
 
 		{% if menuProperties["menu.master.enabled"] == "true" %}
-			<a class="btn link flex-nowrap" href="{{ app.request.baseUrl }}/master"><img src="{{ app.request.baseUrl }}/assets/img/icon_master.png" class="icon"> {% trans %}menu.the master{% endtrans %}</a>
+            {% if club is defined and club.uuid is defined and menuProperties["menu.club.enabled"] == "true" %}
+                {% include ['club/' ~ club.uuid ~ '/menu-master.html.twig', 'modules/menu-master.html.twig'] %}
+            {% else %}
+                {% include ['modules/menu-master.html.twig'] %}
+            {% endif %}
 		{% endif %}
 		        
 		{% if menuProperties["menu.disciplines.enabled"] == "true" %}

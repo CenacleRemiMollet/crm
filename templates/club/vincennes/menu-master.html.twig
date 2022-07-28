@@ -1,0 +1,9 @@
+<div class="dropdown">
+    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    	<img src="{{ app.request.baseUrl }}/assets/img/icon_master.png" class="icon">{% trans %}menu.the masters{% endtrans %}
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="{{ app.request.baseUrl }}/master"><li class="link">{% trans %}menu.the grand master{% endtrans %}</li></a>
+        <a class="dropdown-item" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/sc/instructor"><li class="link">{% trans %}menu.the instructor{% endtrans %}</li></a>
+    </div>
+</div> 

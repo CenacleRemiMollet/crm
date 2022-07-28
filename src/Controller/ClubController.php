@@ -120,6 +120,28 @@ class ClubController extends AbstractController
 
 	
 	/**
+	 * @Route("/club/{uuid}/sc/{code}", name="web_club_static_custom", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}","code"="[a-z0-9_]{2,64}"})
+	 */
+	public function viewStaticCustom($uuid, $code, SessionInterface $session)
+	{
+	    $response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
+	    if($response->getStatusCode() != 200) {
+	        throw $this->createNotFoundException();
+	    }
+	    $club = json_decode($response->getContent());
+	    $session->set('club-selected', $club);
+	    
+	    $response = $this->forward('App\Controller\Api\ClubLessonsController::getLessons', ['club_uuid' => $uuid]);
+	    $lessons = json_decode($response->getContent());
+	    $session->set('lessons-selected', $lessons);
+	    
+	    return $this->render('club/'.$uuid.'/'.$code.'.html.twig', [
+	        'club' => $club
+	    ]);
+	}
+	
+	
+	/**
 	 * @Route("/club-new", name="web_new_club", methods={"GET"})
 	 */
 	public function create()

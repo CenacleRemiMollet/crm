@@ -1,0 +1,26 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block stylesheets2 %}
+    <link rel="stylesheet" href="{{ app.request.baseUrl }}/assets/showcase/master/master.css">
+{% endblock %}
+
+
+{% block dashboardcontent %}
+
+    <h1 class="title row m-0">Instructeur Stesso</h1>
+
+    <section class="section-one row m-0 d-flex justify-content-center">
+        <div class="image col-xl-4 col-lg-4 col-md-5 col-sm-5">
+            <img src="{{ app.request.baseUrl }}/assets/club/vincennes/6.jpg">
+        </div>
+
+        <div class="content col-lg-4 col-sm-10">
+            <p>Licence n° 14012565 ( KOREA HAPKIDO
+                TOTAL FEDERATION )
+                DARP IDF n°2 13 94 050 ( FFTDA ) <br> <br>BLACK BELT TAEKWONKIDO ( CENACLE REMI MOLLET ) Ceinture Noir
+                SKKD degrés 4 ) <br><br> <strong>Diplômé lutétia</strong>: Tonfa & Bâton Degrés 2 PENCHAK SILAT ( ECJ ),
+                Degrés 1 KICK JUTSU ( W.K.J.A ) 1ère Dan</p>
+        </div>
+    </section>
+
+{% endblock %}

@@ -44,6 +44,9 @@ menu:
     configure-lessons: 
     configure-users: 
   the master: "the master"
+  the masters: "the masters"
+  the grand master: "the grand master"
+  the instructor: "the instructor"
   disciplines: "disciplines"
   club list: "club list"
   club list selected: 
