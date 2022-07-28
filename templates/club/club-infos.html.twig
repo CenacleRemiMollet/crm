@@ -354,6 +354,7 @@
                                         {% if canConfigure == 'true' %}
                     						<a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons/{{ lesson.uuid }}" role="button" style="margin: 10px"><i class="fas fa-pencil-alt"></i></a>
                     	                {% endif %}
+                    					<br><small>{{ lesson.location.address }}<br>{{ lesson.location.zipcode }} {{ lesson.location.city }}</small>
                     				</h6>
                                 </div>
                             {% endfor %}

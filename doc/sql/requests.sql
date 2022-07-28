@@ -70,3 +70,12 @@ UPDATE configuration_property
      previous_value = (SELECT property_value FROM configuration_property WHERE property_key = 'club.contact.default.email')
  WHERE configuration_property.property_key = 'club.contact.default.email'
   AND configuration_property.property_value <> 'mollet.remi@orange.frA';
+
+
+-- Liste clubs pour migration
+SELECT c.uuid, website_url, concat(u.lastname, ' ', u.firstname), u.phone
+ FROM club c
+  LEFT JOIN user_club_subscribe ucs ON (c.id = ucs.club_id AND NOT ucs.roles LIKE '%ROLE_STUDENT%')
+  LEFT JOIN user u ON u.id = ucs.user_id
+ ORDER BY 1, 3;
+

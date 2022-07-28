@@ -1,0 +1,5 @@
+day_of_week,start_time,end_time,discipline,age_level,location
+monday,17:00,18:00,Taekwondo,child,langon_0
+monday,17:00,18:00,Taekwonkido,child,langon_0
+monday,18:00,19:00,Taekwondo,adult,langon_0
+monday,18:00,19:00,Taekwonkido,adult,langon_0

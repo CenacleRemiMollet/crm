@@ -74,6 +74,10 @@ class MigrationCommand extends Command
     		
     		echo PHP_EOL.'====== CSV Prices ======'.PHP_EOL;
     		$this->loadCSVPrices();
+ 
+    		echo PHP_EOL.'====== CSV Contact ======'.PHP_EOL;
+    		$this->loadCSVContact();
+		
 		} catch(\Exception $e) {
 		    echo PHP_EOL.$e->getMessage().PHP_EOL;
 		    echo PHP_EOL.$e->getTraceAsString().PHP_EOL;
@@ -316,5 +320,46 @@ class MigrationCommand extends Command
 	    }
 	    $manager->flush();
 	}
+	
+	
+	private function loadCSVContact()
+	{
+	    $clubsPath = $this->projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'clubs'.DIRECTORY_SEPARATOR;
+	    $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
+	    foreach($this->doctrine->getManager()->getRepository(Club::class)->findAll() as $club)
+	    {
+	        $csvFile = $clubsPath.$club->getUuid().'-contacts.csv';
+	        if (! file_exists($csvFile)) {
+	            //echo 'File not found: '.$csvFile.PHP_EOL;
+	            continue;
+	        }
+	        echo 'Loading: '.$csvFile.PHP_EOL;
+	        $data = $serializer->decode(file_get_contents($csvFile), 'csv');
+	        $this->saveOrUpdateContact($club, $data);
+	    }
+	}
+	
+	private function saveOrUpdateContact(Club $club, $data)
+	{
+	    foreach ($data as $line) {
+	        if(implode($line, "-") === "") {
+	            continue;
+	        }
+	        try {
+	            if(isset($line["emails"])) {
+	               $club->setContactEmails($line["emails"]);
+	            }
+	            if(isset($line["phone"])) {
+	                $club->setContactPhone($line["phone"]);
+	            }
+	            break;
+	        } catch(Exception $e) {
+	            throw new \Exception("Failed to save the club ".$club->getName()." with line (".implode($line, ",").")", 0, $e);
+	        }
+	    }
+	    $this->doctrine->getManager()->flush();
+	}
+	
+	
 }
 
