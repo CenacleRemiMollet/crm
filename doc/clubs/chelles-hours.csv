@@ -1,5 +1,5 @@
 day_of_week,start_time,end_time,discipline,age_level,location
-monday,18:30,20:30,Taekwondo,child,chelles_0
-monday,20:15,22:00,Taekwondo,child,chelles_0
-wednesday,18:30,20:30,Taekwondo,child,chelles_0
-wednesday,20:15,22:00,Taekwondo,child,chelles_0
+monday,18:30,20:15,Taekwondo,child,chelles_0
+monday,20:15,21:30,Taekwondo,child,chelles_0
+wednesday,18:30,20:15,Taekwondo,child,chelles_0
+wednesday,20:15,21:30,Taekwondo,child,chelles_0

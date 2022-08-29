@@ -133,12 +133,15 @@ class MigrationCommand extends Command
 			if("villiers_sur_marne.gif" === $imgLogo) {
 				$imgLogo = "villiers_sur_marne.jpg";
 			}
+			if("chelles.gif" === $imgLogo) {
+			    $imgLogo = "chelles.png";
+			}
 			$imgFile = $imgClubsPath.$imgLogo;
 			if (file_exists($imgFile)) {
 				echo 'Copy logo for "'.$club->getUuid().'" from '.$imgFile.PHP_EOL;
 				$this->mediaManager->save($imgFile, MediaManager::MEDIA_FOLDER_CLUB_LOGO, $club->getUuid());
 
-				if("villiers_sur_marne.jpg" === $imgLogo) {
+				if("villiers_sur_marne.jpg" === $imgLogo || "chelles.png" === $imgLogo) {
 					$club->setLogo($imgLogo);
 					$this->doctrine->getManager()->persist($club);
 				}
@@ -363,6 +366,9 @@ class MigrationCommand extends Command
 	            }
 	            if(isset($line["twitter"]) && ! empty($line["twitter"])) {
 	                $club->setTwitterUrl($line["twitter"]);
+	            }
+	            if(isset($line["active"]) && ! empty($line["active"])) {
+	                $club->setActive($line["active"] !== 'false');
 	            }
 	            break;
 	        } catch(Exception $e) {
