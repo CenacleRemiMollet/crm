@@ -16,6 +16,8 @@ use App\Security\ClubAccess;
 use App\Service\ClubService;
 use Hateoas\HateoasBuilder;
 use App\Security\Roles;
+use App\Entity\ClubLesson;
+use App\Model\ClubLessonView;
 
 class ClubController extends AbstractController
 {
@@ -225,36 +227,50 @@ class ClubController extends AbstractController
 	    if($lessons === null) {
 	        return array();
 	    }
+	    /** @var ClubLessonView[] $lessons */
 	    $startTimeMinuteByDays = array();
 	    foreach($lessons as &$lesson) {
 	        $startMinutes = DateIntervalUtils::getTotalMinutes(DateIntervalUtils::parseHourDoubleDotsMinute($lesson->start_time));
+	        $this->logger->debug('lesson '.$lesson->day_of_week.' '.$lesson->start_time.' : '.$startMinutes);
 	        if(array_key_exists($lesson->day_of_week, $startTimeMinuteByDays)) {
 	            $startTimeMinuteByDays[$lesson->day_of_week] = min($startMinutes, $startTimeMinuteByDays[$lesson->day_of_week]);
+	            $this->logger->debug('exists '.$startTimeMinuteByDays[$lesson->day_of_week].' with '.$startMinutes);
 	        } else {
 	            $startTimeMinuteByDays[$lesson->day_of_week] = $startMinutes;
+	            $this->logger->debug('not exists '.$startTimeMinuteByDays[$lesson->day_of_week]);
 	        }
 	    }
 	    $minStartMinutes = min($startTimeMinuteByDays);
+	    $this->logger->debug('minStartMinutes: '.$minStartMinutes);
 	    
 	    $startOffsetByDays = array();
 	    foreach ($startTimeMinuteByDays as $day => $minutes) {
 	        $startOffsetByDays[$day] = ceil(($minutes - $minStartMinutes) / 15);
+	        $this->logger->debug($day.' => : ('.$minutes.' - '.$minStartMinutes.')/15 = '.$startOffsetByDays[$day]);
 	    }
 	    asort($startOffsetByDays);
 	    $previous = 0;
 	    $diff = 0;
 	    foreach ($startOffsetByDays as $day => $minutes) {
 	        if($minutes != 0) {
-	            $d = $minutes - $previous;
+	            if($previous == 0) {
+	               $d = 0;
+	            } else {
+	               $d = $minutes - $previous;
+	            }
 	            if($d > 1) {
 	                $diff = $d - 1;
 	            }
 	            $previous = $startOffsetByDays[$day];
 	            $startOffsetByDays[$day] = $startOffsetByDays[$day] - $diff;
+	            $this->logger->debug($day.' => '.$minutes.' - '.$previous.' = '.$d.' >> '.$startOffsetByDays[$day]);
+	        } else {
+	            $this->logger->debug($day.' OFF');
 	        }
 	    }
 	    return $startOffsetByDays;
 	}
+	
 	
 	private function canConfigure($club_uuid): bool
 	{
