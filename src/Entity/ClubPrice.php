@@ -172,4 +172,5 @@ class ClubPrice
         $this->price_adult = $price_adult == 0 ? null : $price_adult;
         return $this;
     }
+
 }

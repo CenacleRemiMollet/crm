@@ -83,6 +83,16 @@ class ClubView
 	private $youtube_url;
 
 	/**
+	 * @OA\Property(type="number", format="float", nullable="true", example="29")
+	 */
+	private $price_cenacle_joining;
+	
+	/**
+	 * @OA\Property(type="number", format="float", nullable="true", example="79")
+	 */
+	private $price_base_subscribe;
+	
+	/**
 	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/ClubLocation"))
 	 */
 	private $locations;
@@ -111,6 +121,8 @@ class ClubView
 		$this->instagram_url = $club->getInstagramUrl();
 		$this->dailymotion_url = $club->getDailymotionUrl();
 		$this->youtube_url = $club->getYoutubeUrl();
+		$this->price_cenacle_joining = $club->getPriceCenacleJoining();
+		$this->price_base_subscribe = $club->getPriceBaseSubscribe();
 		$this->locations = $locations;
 		$this->prices = $prices;
 		$this->properties = $properties;
@@ -191,5 +203,14 @@ class ClubView
 	    return $this->contact_emails;
 	}
 	
+	public function getPriceCenacleJoining(): ?float
+	{
+	    return $this->price_cenacle_joining;
+	}
+	
+	public function getPriceBaseSubscribe(): ?float
+	{
+	    return $this->price_base_subscribe;
+	}
 	
 }

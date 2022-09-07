@@ -257,7 +257,7 @@ club:
       norefund: "Les cotisations ne sont pas remboursables"
       afterexpensive: "Par ailleurs, une fois la période des inscriptions passée, les gradés auront une cotisation majorée"
       traineeship: "Les stages, passages de grades et autres activités organisées par le Cénacle ou une fédération sont la plupart du temps en sus"
-      payment: "Le paiement de la cotisation permet de faire les cours à Bry et évidemment dans tous les autres clubs du Cénacle"
+      payment: "Le paiement de la cotisation permet de faire les cours dans ce club et évidemment dans tous les autres clubs du Cénacle"
     pricesforall:
       membership: "adhésion cénacle"
       base:

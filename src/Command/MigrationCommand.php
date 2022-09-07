@@ -127,7 +127,10 @@ class MigrationCommand extends Command
 		foreach($this->doctrine->getManager()->getRepository(Club::class)->findAll() as $club)
 		{
 			$imgLogo = $club->getLogo();
-		    if("default.png" === $imgLogo) {
+			if("sudouest" === $club->getUuid()) {
+			    $imgLogo = "sudouest.png";
+			}
+			if("default.png" === $imgLogo) {
 		        continue;
 		    }
 			if("villiers_sur_marne.gif" === $imgLogo) {
@@ -141,7 +144,7 @@ class MigrationCommand extends Command
 				echo 'Copy logo for "'.$club->getUuid().'" from '.$imgFile.PHP_EOL;
 				$this->mediaManager->save($imgFile, MediaManager::MEDIA_FOLDER_CLUB_LOGO, $club->getUuid());
 
-				if("villiers_sur_marne.jpg" === $imgLogo || "chelles.png" === $imgLogo) {
+				if($club->getLogo() !== $imgLogo) {
 					$club->setLogo($imgLogo);
 					$this->doctrine->getManager()->persist($club);
 				}
@@ -369,6 +372,12 @@ class MigrationCommand extends Command
 	            }
 	            if(isset($line["active"]) && ! empty($line["active"])) {
 	                $club->setActive($line["active"] !== 'false');
+	            }
+	            if(isset($line["cenacle_joining"])) {
+	                $club->setPriceCenacleJoining('' === $line["cenacle_joining"] ? null : floatval($line["cenacle_joining"]));
+	            }
+	            if(isset($line["base_subscribe"])) {
+	                $club->setPriceBaseSubscribe('' === $line["base_subscribe"] ? null : floatval($line["base_subscribe"]));
 	            }
 	            break;
 	        } catch(Exception $e) {

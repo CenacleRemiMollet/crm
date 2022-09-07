@@ -88,6 +88,16 @@ class Club
 	private $contact_phone;
 	
 	/**
+	 * @ORM\Column(type="float", nullable=true, options={"default": 29})
+	 */
+	private $price_cenacle_joining = 29;
+	
+	/**
+	 * @ORM\Column(type="float", nullable=true, options={"default": 79})
+	 */
+	private $price_base_subscribe = 79;
+	
+	/**
 	 * @ORM\OneToMany(targetEntity="App\Entity\ClubLesson", mappedBy="club", orphanRemoval=true)
 	 */
 	private $clubLessons;
@@ -345,5 +355,26 @@ class Club
         return $this;
     }
     
-  
+    public function getPriceCenacleJoining(): ?float
+    {
+        return $this->price_cenacle_joining;
+    }
+    
+    public function setPriceCenacleJoining(?float $price_cenacle_joining): self
+    {
+        $this->price_cenacle_joining = $price_cenacle_joining == 0 ? null : $price_cenacle_joining;
+        return $this;
+    }
+    
+    public function getPriceBaseSubscribe(): ?float
+    {
+        return $this->price_base_subscribe;
+    }
+    
+    public function setPriceBaseSubscribe(?float $price_base_subscribe): self
+    {
+        $this->price_base_subscribe = $price_base_subscribe == 0 ? null : $price_base_subscribe;
+        return $this;
+    }
+    
 }

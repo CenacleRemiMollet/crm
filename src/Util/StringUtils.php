@@ -34,7 +34,7 @@ class StringUtils
     }
     
     public static function nameToUuid($name, $maxLength = 64) {
-        $uuid = strtr(strtolower(StringUtils::stripAccents($name)), ' ,-\'', '____');
+        $uuid = strtr(strtolower(StringUtils::stripAccents($name)), ' ,-\'()[]{}#"~|/^@=*+$£¨%µ§!:;?<>&.', '___________________________________');
         if(strlen($uuid) > $maxLength) {
             $uuid = substr($uuid, 0, $maxLength);
         }

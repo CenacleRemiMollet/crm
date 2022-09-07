@@ -140,38 +140,63 @@
 
     </div>
 
-    <div class="fourth section">
-        <div class="price">
-            <span class="number">29</span>
-            <span class="euro">euros</span>
-            <span class="text">{% trans %}club.infos.pricesforall.membership{% endtrans %}</span>
-        </div>
-
-        <span class="plus">+</span>
-
-        <!-- Button trigger modal -->
-        <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">
-            <div class="price info">
-                <div class="front">
-                    <span class="number">79</span>
+    {% if club.price_cenacle_joining is defined or club.price_base_subscribe is defined %}
+        <div class="fourth section">
+            {% if club.price_cenacle_joining is defined %}
+                <div class="price">
+                    <span class="number">{{ club.price_cenacle_joining }}</span>
                     <span class="euro">euros</span>
-                    <span class="text">{% trans %}club.infos.pricesforall.base.title{% endtrans %}</span>
-                    <i class="fas fa-angle-down"></i>
+                    <span class="text">{% trans %}club.infos.pricesforall.membership{% endtrans %}</span>
                 </div>
-            </div>
-        </button>
-        
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
+            {% endif %}
+    
+    		{% if club.price_cenacle_joining is defined and club.price_base_subscribe is defined %}
+            	<span class="plus">+</span>
+           	{% endif %}
+    
+            {% if club.price_cenacle_joining is defined %}
+                <!-- Button trigger modal -->
+                <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">
+                    <div class="price info">
+                        <div class="front">
+                            <span class="number">79</span>
+                            <span class="euro">euros</span>
+                            <span class="text">{% trans %}club.infos.pricesforall.base.title{% endtrans %}</span>
+                            <i class="fas fa-angle-down"></i>
+                        </div>
                     </div>
-
-                    <div class="modal-body">
+                </button>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+        
+                            <div class="modal-body">
+                                <p>{% trans %}club.infos.pricesforall.base.contains{% endtrans %}
+                                    <ul>
+                                        <li>{% trans %}club.infos.pricesforall.base.right{% endtrans %}</li> 
+                                        <li>{% trans %}club.infos.pricesforall.base.dobok{% endtrans %}</li> 
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="price info">
+                    <div class="front">
+                        <span class="number">79</span>
+                        <span class="euro">euros</span>
+                        <span class="text">{% trans %}club.infos.pricesforall.base.title{% endtrans %}</span>
+                        <i class="fas fa-angle-down"></i>
+                    </div>
+                    <div class="infoHover">
                         <p>{% trans %}club.infos.pricesforall.base.contains{% endtrans %}
                             <ul>
                                 <li>{% trans %}club.infos.pricesforall.base.right{% endtrans %}</li> 
@@ -180,36 +205,20 @@
                         </p>
                     </div>
                 </div>
-            </div>
+    		{% endif %}
         </div>
-
-        <div class="price info">
-            <div class="front">
-                <span class="number">79</span>
-                <span class="euro">euros</span>
-                <span class="text">{% trans %}club.infos.pricesforall.base.title{% endtrans %}</span>
-                <i class="fas fa-angle-down"></i>
-            </div>
-            <div class="infoHover">
-                <p>{% trans %}club.infos.pricesforall.base.contains{% endtrans %}
-                    <ul>
-                        <li>{% trans %}club.infos.pricesforall.base.right{% endtrans %}</li> 
-                        <li>{% trans %}club.infos.pricesforall.base.dobok{% endtrans %}</li> 
-                    </ul>
-                </p>
-            </div>
-        </div>
-
-    </div>
-
+    {% endif %}
+    
     <div class="fifth section">
-        <div class="midTitle">
-            <span class="plus">+</span>
-            <h3>{% trans %}club.infos.contribution.title{% endtrans %}</h3>
-            {% if canConfigure == 'true' %}
-            	<span><a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/prices" role="button">Modifier les tarifs</a></span>
-            {% endif %}
-        </div>
+        {% if club.price_cenacle_joining is defined or club.price_base_subscribe is defined %}
+            <div class="midTitle">
+                <span class="plus">+</span>
+                <h3>{% trans %}club.infos.contribution.title{% endtrans %}</h3>
+            </div>
+        {% endif %}
+        {% if canConfigure == 'true' %}
+        	<span><a class="btn btn-warning" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/prices" role="button">Modifier les tarifs</a></span>
+        {% endif %}
 
         <div class="cours">
             {% for price in club.prices %}
@@ -278,10 +287,12 @@
                     <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
                     <p>{% trans %}club.infos.sponsorship.advantages1{% endtrans %}</p>
                 </div>
-                <div class="step">
-                    <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
-                    <p>{% trans %}club.infos.sponsorship.advantages2{% endtrans %}</p>
-                </div>
+                {% if club.price_cenacle_joining is defined %}
+                    <div class="step">
+                        <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
+                        <p>{% trans %}club.infos.sponsorship.advantages2{% endtrans %}</p>
+                    </div>
+                {% endif %}
                 <h4 class="caption2">{% trans %}club.infos.sponsorship.eachstudent{% endtrans %}</h4>
 
                 <div class="board">
