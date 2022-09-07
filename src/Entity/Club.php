@@ -362,7 +362,7 @@ class Club
     
     public function setPriceCenacleJoining(?float $price_cenacle_joining): self
     {
-        $this->price_cenacle_joining = $price_cenacle_joining == 0 ? null : $price_cenacle_joining;
+        $this->price_cenacle_joining = $price_cenacle_joining == null || $price_cenacle_joining == 0 ? null : $price_cenacle_joining;
         return $this;
     }
     
@@ -373,7 +373,7 @@ class Club
     
     public function setPriceBaseSubscribe(?float $price_base_subscribe): self
     {
-        $this->price_base_subscribe = $price_base_subscribe == 0 ? null : $price_base_subscribe;
+        $this->price_base_subscribe = $price_base_subscribe == null || $price_base_subscribe == 0 ? null : $price_base_subscribe;
         return $this;
     }
     

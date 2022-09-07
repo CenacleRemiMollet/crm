@@ -104,7 +104,19 @@ class ClubCreate
 	 */
 	private $youtube_url;
 	
-
+	/**
+	 * @Assert\Type("float")
+	 * @OA\Property(type="number", format="float", nullable="true", example="29")
+	 */
+	private $price_cenacle_joining;
+	
+	/**
+	 * @Assert\Type("float")
+	 * @OA\Property(type="number", format="float", nullable="true", example="79")
+	 */
+	private $price_base_subscribe;
+	
+	
 	public function getName(): ?string
 	{
 		return $this->name;
@@ -244,5 +256,23 @@ class ClubCreate
 	    $this->youtube_url = $youtube_url;
 	}
 	
-
+	public function getPriceCenacleJoining(): ?float
+	{
+	    return $this->price_cenacle_joining;
+	}
+	
+	public function setPriceCenacleJoining(?float $price_cenacle_joining)
+	{
+	    $this->price_cenacle_joining = $price_cenacle_joining;
+	}
+	
+	public function getPriceBaseSubscribe(): ?float
+	{
+	    return $this->price_base_subscribe;
+	}
+	
+	public function setPriceBaseSubscribe(?float $price_base_subscribe)
+	{
+	    $this->price_base_subscribe = $price_base_subscribe;
+	}
 }

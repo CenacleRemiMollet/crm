@@ -264,7 +264,7 @@ club:
         title: "inscription de base"
         contains: "l'inscription de base comprend :"
         right: "droit d’entrée, affiliations fédérales & assurance"
-        dobok: "tenue du club avec ceinture pour les nouveaux élèves) : 79 € (ou 59 € pour Hapkidoïstes adultes - tenue non comprise)"
+        dobok: "tenue du club avec ceinture pour les nouveaux élèves) : %price_base_subscribe% € (ou 59 € pour Hapkidoïstes adultes - tenue non comprise)"
     contribution:
       title: "la ou les cotisation(s) au choix"
       child: "enfant"
@@ -275,7 +275,7 @@ club:
     sponsorship:
       title: "parrainage"
       advantages1: "Ces avantages ne sont pas valables pour des personnes appartenant à la même famille"
-      advantages2: "Ces avantages concernent la cotisation et non le droit d’affiliation Cénacle (29€) et les droits d’inscription-assurance"
+      advantages2: "Ces avantages concernent la cotisation et non le droit d’affiliation Cénacle (%price_cenacle_joining%€) et les droits d’inscription-assurance"
       eachstudent: "Chaque élève \"ramenant\" au club des élèves aura les avantages suivants :"
       table:
         number: "nombre<br>d'élèves ramenés"

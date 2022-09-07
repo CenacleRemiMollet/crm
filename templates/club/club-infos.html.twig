@@ -106,38 +106,39 @@
 
     </div>
 
-    <div class="third section">
-        <div class="bloc">
-            <div class="title">
-                <div class="line"></div>
-                <h3 id="prices">{% trans %}club.infos.prices.title{% endtrans %}</h3>
-                <div class="line"></div>
+	{% if club.price_base_subscribe is defined %}
+        <div class="third section">
+            <div class="bloc">
+                <div class="title">
+                    <div class="line"></div>
+                    <h3 id="prices">{% trans %}club.infos.prices.title{% endtrans %}</h3>
+                    <div class="line"></div>
+                </div>
+    
+                <div class="content">
+                    <div class="step">
+                        <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
+                        <p>{% trans %}club.infos.prices.dobok{% endtrans %}</p>
+                    </div>
+                    <div class="step">
+                        <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
+                        <p>{% trans %}club.infos.prices.norefund{% endtrans %}</p>
+                    </div>
+                    <div class="step">
+                        <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
+                        <p>{% trans %}club.infos.prices.afterexpensive{% endtrans %}</p>
+                    </div>
+                    <div class="step">
+                        <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
+                        <p>{% trans %}club.infos.prices.traineeship{% endtrans %}</p>
+                    </div>
+                    <div class="step">
+                        <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
+                        <p>{% trans %}club.infos.prices.payment{% endtrans %}</p>
+                    </div>
+                </div>
             </div>
-
-            <div class="content">
-                <div class="step">
-                    <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
-                    <p>{% trans %}club.infos.prices.dobok{% endtrans %}</p>
-                </div>
-                <div class="step">
-                    <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
-                    <p>{% trans %}club.infos.prices.norefund{% endtrans %}</p>
-                </div>
-                <div class="step">
-                    <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
-                    <p>{% trans %}club.infos.prices.afterexpensive{% endtrans %}</p>
-                </div>
-                <div class="step">
-                    <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
-                    <p>{% trans %}club.infos.prices.traineeship{% endtrans %}</p>
-                </div>
-                <div class="step">
-                    <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
-                    <p>{% trans %}club.infos.prices.payment{% endtrans %}</p>
-                </div>
-            </div>
-        </div>
-
+        {% endif %}
     </div>
 
     {% if club.price_cenacle_joining is defined or club.price_base_subscribe is defined %}
@@ -154,12 +155,12 @@
             	<span class="plus">+</span>
            	{% endif %}
     
-            {% if club.price_cenacle_joining is defined %}
+            {% if club.price_base_subscribe is defined %}
                 <!-- Button trigger modal -->
                 <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">
                     <div class="price info">
                         <div class="front">
-                            <span class="number">79</span>
+                            <span class="number">{{ club.price_base_subscribe }}</span>
                             <span class="euro">euros</span>
                             <span class="text">{% trans %}club.infos.pricesforall.base.title{% endtrans %}</span>
                             <i class="fas fa-angle-down"></i>
@@ -181,7 +182,7 @@
                                 <p>{% trans %}club.infos.pricesforall.base.contains{% endtrans %}
                                     <ul>
                                         <li>{% trans %}club.infos.pricesforall.base.right{% endtrans %}</li> 
-                                        <li>{% trans %}club.infos.pricesforall.base.dobok{% endtrans %}</li> 
+                                        <li>{{ "club.infos.pricesforall.base.dobok"|trans({'%price_base_subscribe%': club.price_base_subscribe }) }}</li> 
                                     </ul>
                                 </p>
                             </div>
@@ -191,7 +192,7 @@
         
                 <div class="price info">
                     <div class="front">
-                        <span class="number">79</span>
+                        <span class="number">{{ club.price_base_subscribe }}</span>
                         <span class="euro">euros</span>
                         <span class="text">{% trans %}club.infos.pricesforall.base.title{% endtrans %}</span>
                         <i class="fas fa-angle-down"></i>
@@ -200,7 +201,7 @@
                         <p>{% trans %}club.infos.pricesforall.base.contains{% endtrans %}
                             <ul>
                                 <li>{% trans %}club.infos.pricesforall.base.right{% endtrans %}</li> 
-                                <li>{% trans %}club.infos.pricesforall.base.dobok{% endtrans %}</li> 
+                                <li>{{ "club.infos.pricesforall.base.dobok"|trans({'%price_base_subscribe%': club.price_base_subscribe }) }}</li> 
                             </ul>
                         </p>
                     </div>
@@ -290,7 +291,7 @@
                 {% if club.price_cenacle_joining is defined %}
                     <div class="step">
                         <img src="{{ app.request.baseUrl }}/assets/icons/check-mark.svg">
-                        <p>{% trans %}club.infos.sponsorship.advantages2{% endtrans %}</p>
+                        <p>{{ "club.infos.sponsorship.advantages2"|trans({'%price_cenacle_joining%': club.price_cenacle_joining }) }}</p>
                     </div>
                 {% endif %}
                 <h4 class="caption2">{% trans %}club.infos.sponsorship.eachstudent{% endtrans %}</h4>

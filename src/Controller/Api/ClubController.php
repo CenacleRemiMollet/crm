@@ -169,6 +169,8 @@ class ClubController extends AbstractController
         $club->setLogo('default.png');
 		$club->setContactEmails($clubToCreate->getContactEmails());
 		$club->setContactPhone($clubToCreate->getContactPhone());
+		$club->setPriceCenacleJoining($clubToCreate->getPriceCenacleJoining());
+		$club->setPriceBaseSubscribe($clubToCreate->getPriceBaseSubscribe());
 		$club->setFacebookUrl($clubToCreate->getFacebookUrl());
 		$club->setInstagramUrl($clubToCreate->getInstagramUrl());
 		$club->setMailingList($clubToCreate->getMailingList());
@@ -223,11 +225,15 @@ class ClubController extends AbstractController
 	    $this->denyAccessUnlessGranted(Roles::ROLE_ADMIN); // 403
 	    
 	    $requestUtil = new RequestUtil($serializer, $translator);
+	    /** @var ClubUpdate $clubToUpdate */
 	    $clubToUpdate = $requestUtil->validate($request, ClubUpdate::class); // 400
+	    $this->logger->debug('Club update.priceCenacleJoining: '.$clubToUpdate->getPriceCenacleJoining());
+	    $this->logger->debug('Club update.priceBaseSubscribe: '.$clubToUpdate->getPriceBaseSubscribe());
 	    
 	    $doctrine = $this->container->get('doctrine');
 	    
 	    $entityFinder = new EntityFinder($doctrine);
+	    /** @var Club $club */
 	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $uuid]); // 404
 	    
 	    $newuuid = $clubToUpdate->getUuid();
@@ -244,12 +250,21 @@ class ClubController extends AbstractController
 	    $entityUpdater->update('name', $clubToUpdate->getName(), $club->getName(), function($v) use($club) { $club->setName($v); });
 	    $entityUpdater->update('contactemails', $clubToUpdate->getContactEmails(), $club->getContactEmails(), function($v) use($club) { $club->setContactEmails($v); });
 	    $entityUpdater->update('contactphone', $clubToUpdate->getContactPhone(), $club->getContactPhone(), function($v) use($club) { $club->setContactPhone($v); });
+	    $entityUpdater->update('pricecenaclejoining', $clubToUpdate->getPriceCenacleJoining(), $club->getPriceCenacleJoining(),
+	        function($v) use($club) { $club->setPriceCenacleJoining($v); },
+	        function($v) use($club) { $club->setPriceCenacleJoining(null); });
+	    $entityUpdater->update('pricebasesubscribe', $clubToUpdate->getPriceBaseSubscribe(), $club->getPriceBaseSubscribe(),
+	        function($v) use($club) { $club->setPriceBaseSubscribe($v); },
+	        function($v) use($club) { $club->setPriceBaseSubscribe(null); });
 	    $entityUpdater->update('facebookurl', $clubToUpdate->getFacebookUrl(), $club->getFacebookUrl(), function($v) use($club) { $club->setFacebookUrl($v); });
 	    $entityUpdater->update('instagramurl', $clubToUpdate->getInstagramUrl(), $club->getInstagramUrl(), function($v) use($club) { $club->setInstagramUrl($v); });
 	    $entityUpdater->update('mailinglist', $clubToUpdate->getMailingList(), $club->getMailingList(), function($v) use($club) { $club->setMailingList($v); });
 	    $entityUpdater->update('twitterurl', $clubToUpdate->getTwitterUrl(), $club->getTwitterUrl(), function($v) use($club) { $club->setTwitterUrl($v); });
 	    $entityUpdater->update('websiteurl', $clubToUpdate->getWebsiteUrl(), $club->getWebsiteUrl(), function($v) use($club) { $club->setWebsiteUrl($v); });
 	    $updatedResponse = $entityUpdater->toResponse($club, 'Club updated', ['id' => $club->getId()]);
+	    
+	    $this->logger->debug('Club.priceCenacleJoining: '.$club->getPriceCenacleJoining());
+	    $this->logger->debug('Club.priceBaseSubscribe: '.$club->getPriceBaseSubscribe());
 	    
 	    $selectedClub = $session->get('club-selected');
 	    if($selectedClub !== null && $selectedClub->uuid === $uuid) {

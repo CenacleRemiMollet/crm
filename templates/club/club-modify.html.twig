@@ -47,6 +47,20 @@
                 </div>
             </div>
             <div class="form-group row slimmargin">
+                <label for="input-price_cenacle_joining" class="col-sm-1 col-form-label">Tarif adhésion Cénacle</label>
+                <div class="col-sm-10">
+                	<input type="number" data-format="float" class="form-control" id="input-price_cenacle_joining" name="price_cenacle_joining" value="{% if(club.price_cenacle_joining is defined) %}{{ club.price_cenacle_joining }}{% endif %}" />
+                    <div class="invalid-feedback" id="txtvalid-price_cenacle_joining"></div>
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
+                <label for="input-price_base_subscribe" class="col-sm-1 col-form-label">Tarif inscription de base</label>
+                <div class="col-sm-10">
+                	<input type="number" data-format="float" class="form-control" id="input-price_base_subscribe" name="price_base_subscribe" value="{% if(club.price_base_subscribe is defined) %}{{ club.price_base_subscribe }}{% endif %}" />
+                    <div class="invalid-feedback" id="txtvalid-price_base_subscribe"></div>
+                </div>
+            </div>
+            <div class="form-group row slimmargin">
                 <label for="input-facebook_url" class="col-sm-1 col-form-label">Facebook</label>
                 <div class="col-sm-10">
                 	<input type="text" class="form-control" id="input-facebook_url" name="facebook_url" value="{% if(club.facebook_url is defined) %}{{ club.facebook_url }}{% endif %}" />
@@ -139,6 +153,6 @@
 	<script src="{{ app.request.baseUrl }}/assets/club/club-modify.js"></script>
 	<script>
 		//var modifyDebug = true; // used by tools/modif.js
-		//var modifyRequestDebug = true; // used by tools/modif.js
+		var modifyRequestDebug = true; // used by tools/modif.js
 	</script>
 {% endblock %}
