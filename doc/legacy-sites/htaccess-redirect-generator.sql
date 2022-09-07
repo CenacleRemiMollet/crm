@@ -120,7 +120,7 @@ RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/asttpn
 # Taekwonkido-hapkido Club De Hyeres ()
 RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/hyeres
 
-# Taekwondo Compiègne (http://taekwondo-compiegne.e-monsite.com/)
+# Taekwondo Compiï¿½gne (http://taekwondo-compiegne.e-monsite.com/)
 RedirectMatch 301 (.*) https://ceintureblanche.fr/crm/club/compiegne
 
 # Aura Taekwonkido (http://aura-taekwonkido.fr/)

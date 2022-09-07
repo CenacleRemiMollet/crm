@@ -2,6 +2,15 @@ RewriteEngine on
 RewriteCond %{HTTPS} !=on
 RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
+RedirectMatch 301 ^/$ /crm
+RedirectMatch 301 ^/clubs$ /crm/club
+RedirectMatch 301 ^/pres/cenacle$ /crm
+RedirectMatch 301 ^/pres/taekwonkido$ /crm/taekwonkido
+RedirectMatch 301 ^/pres/taekwondo$ /crm/taekwondo
+RedirectMatch 301 ^/pres/hapkido$ /crm/hapkido
+RedirectMatch 301 ^/pres/sinkidosds$ /crm/sinkido
+RedirectMatch 301 ^/pres/master-rm$ /crm/master
+
 RedirectMatch 404 /\.git
 RedirectMatch 404 ^/developer/?$
 
