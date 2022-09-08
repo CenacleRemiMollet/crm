@@ -61,8 +61,10 @@ class EntityUpdater
             return true;
         } else if($updateValue === null) {
             $this->logger->debug('Field \''.$fieldName.'\' is null');
-            $updatorToNull(null);
-            $this->updatedFields = array_merge($this->updatedFields, array($fieldName => null));
+            if($updatorToNull !== null) {
+                $updatorToNull(null);
+                $this->updatedFields = array_merge($this->updatedFields, array($fieldName => null));
+            }
             return true;
         } else if($currentValue === $updateValue) {
             //$this->logger->debug('Field \''.$fieldName.'\' has same value: '.$currentValue.' === '.$updateValue);
