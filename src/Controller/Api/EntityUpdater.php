@@ -32,7 +32,7 @@ class EntityUpdater
         return $this->fieldUpdater($fieldName, $updateValue, $currentValue, $updator, $updatorToNull);
     }
     
-    public function toResponse($object, string $logMessage = 'Updated', array $eventData = null): Response
+    public function toResponse($object, string $logMessage = 'Updated', ?array $eventData = null): Response
     {
         if(empty($this->updatedFields)) {
             $this->logger->debug('Nothing to update');

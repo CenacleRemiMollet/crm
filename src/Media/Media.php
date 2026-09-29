@@ -8,7 +8,7 @@ class Media
 	private $file; // SplFileInfo
 	private $projectPath;
 
-	public function __construct(SplFileInfo $file = null, $projectPath = null)
+	public function __construct(?SplFileInfo $file = null, $projectPath = null)
 	{
 		$this->file = $file;
 		$this->projectPath = $projectPath;

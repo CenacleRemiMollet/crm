@@ -30,6 +30,10 @@ security:
 #            guard:
 #                authenticators:
 #                    - App\Security\LoginFormAuthenticator
+            # brute-force protection (per username+IP and per IP), requires symfony/rate-limiter
+            login_throttling:
+                max_attempts: 5
+                interval: '15 minutes'
             remember_me:
                 secret:   '%kernel.secret%'
                 lifetime: 604800 # 1 week in seconds

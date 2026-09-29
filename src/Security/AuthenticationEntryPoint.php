@@ -18,7 +18,7 @@ class AuthenticationEntryPoint implements AuthenticationEntryPointInterface
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function start(Request $request, AuthenticationException $authException = null): Response
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
         if(str_starts_with($request->getPathInfo(), '/api')) {
             return new Response('', Response::HTTP_UNAUTHORIZED);

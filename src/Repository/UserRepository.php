@@ -32,7 +32,7 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 	    $this->logger = $logger;
 	}
 	
-	public function findInAll($uuid = null, $club_uuid = null, $q = null, Pageable $pageable = null)
+	public function findInAll($uuid = null, $club_uuid = null, $q = null, ?Pageable $pageable = null)
 	{
 	    $clauses = array();
 	    $sql = $this->prepareUserAccountSelect()
@@ -73,7 +73,7 @@ class UserRepository extends ServiceEntityRepository implements LoggerAwareInter
 		return $query->getResult();
 	}
 
-	public function findInMyClubs($accountId, ?string $user_uuid = null, ?string $club_uuid = null, ?string $q = null, Pageable $pageable = null)
+	public function findInMyClubs($accountId, ?string $user_uuid = null, ?string $club_uuid = null, ?string $q = null, ?Pageable $pageable = null)
 	{
 		$sql = $this->prepareUserAccountSelect()
 			  .$this->joinInMyClubs()

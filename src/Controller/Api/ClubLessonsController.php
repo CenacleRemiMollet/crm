@@ -222,7 +222,7 @@ class ClubLessonsController extends AbstractController
            }
            $location = $locations[0];
         } else {
-            $location = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $locationUuid]); // 404
+            $location = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $locationUuid, 'club' => $club]); // 404
         }
         
         if($lessonToCreate->getStartTime() > $lessonToCreate->getEndTime()) {
@@ -321,16 +321,16 @@ class ClubLessonsController extends AbstractController
 	    }
 	    
 	    $locationUuid = $lessonToUpdate->getLocationUuid();
+	    $location = null;
 	    if(! empty($locationUuid)) {
-	        // check if location exists
-	        $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $locationUuid]); // 404
+	        // location must exist in the same club
+	        $location = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $locationUuid, 'club' => $club]); // 404
 	    }
 	    
 	    if($lessonToUpdate->getStartTime() !== null && $lessonToUpdate->getEndTime() != null && $lessonToUpdate->getStartTime() > $lessonToUpdate->getEndTime()) {
 	        throw new CRMException(Response::HTTP_BAD_REQUEST, 'start_time is after end_time !', ['start_time' => 'start_time is after end_time']); // 400
 	    }
 	    
-	    $location = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $locationUuid]); // 404
 		    
 	    $entityUpdater = new EntityUpdater($doctrine, $request, $this->getUser(), Events::CLUB_LESSON_UPDATED, $this->logger);
 	    $entityUpdater->update('uuid', $uuid, $lesson->getUuid(), function($v) use($lesson) { $lesson->setUuid($v); });

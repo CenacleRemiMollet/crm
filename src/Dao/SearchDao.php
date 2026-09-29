@@ -20,7 +20,7 @@ class SearchDao
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    public function search($query, ?Account $connectedAccount, Pageable $pageable = null) {
+    public function search($query, ?Account $connectedAccount, ?Pageable $pageable = null) {
         $paramLC = \Transliterator::create('NFD; [:Nonspacing Mark:] Remove; NFC')
             ->transliterate($query);
         $paramLC = '%'.mb_strtolower($paramLC).'%';

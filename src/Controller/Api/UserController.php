@@ -34,6 +34,7 @@ use App\Entity\Club;
 use App\Model\UserClubSubscribeUpdate;
 use App\Security\ClubAccess;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -327,20 +328,19 @@ class UserController extends AbstractController
 	        throw $e;
 	    }
 	    
-	    $accountPersist = false;
+	    $account = null;
 	    if( ! empty($userToCreate->getLogin())) {
 	        $account = new Account();
 	        $account->setUser($user);
 	        // TODO generate password process
 	        $account->setLogin($userToCreate->getLogin());
-	        $accountPersist = true;
 	    }
 	    if( ! empty($userToCreate->getRoles()) && $account !== null) {
+	        $this->checkCanAssignAccountRoles($userToCreate->getRoles()); // 403
 	        $account->setRoles($userToCreate->getRoles());
-	        $accountPersist = true;
 	    }
-	    if($accountPersist) {
-	        $this->manager->getManager()->persist($account);
+	    if($account !== null) {
+	        $doctrine->getManager()->persist($account);
 	    }
 	    
 	    $data = ['name' => $userToCreate->getLastname().' '.$userToCreate->getFirstname(),
@@ -415,34 +415,31 @@ class UserController extends AbstractController
  	    if($currentAccount->getUser()->getId() !== $user->getId() || $this->isGranted(Roles::ROLE_ADMIN)) { // can't update myself except admin
             $this->updateSubscribes($user, $userToUpdate->getSubscribes(), $entityUpdater); // 403
             $entityFinder = new EntityFinder($doctrine);
-            $account = $entityFinder->findOneByOrThrow(Account::class, ['user' => $user]); // 404
-            if($entityUpdater->update('roles', $userToUpdate->getRoles(), $account->getRoles(), function($v) use($account) { $account->setRoles($v); })) {
-                $doctrine->getManager()->persist($account);
- 	        }
+            if($userToUpdate->getRoles() !== null) {
+                $this->checkCanAssignAccountRoles($userToUpdate->getRoles()); // 403
+                $account = $entityFinder->findOneByOrThrow(Account::class, ['user' => $user]); // 404
+                if($entityUpdater->update('roles', $userToUpdate->getRoles(), $account->getDeclaredRoles(), function($v) use($account) { $account->setRoles($v); })) {
+                    $doctrine->getManager()->persist($account);
+                }
+            }
  	    }
- 	    
- 	    $response = $entityUpdater->toResponse($user, 'User updated', ['id' => $user->getId()]);
- 	    
- 	    $accountPersist = false;
- 	    $account = $user->getAccount();
+
  	    if( ! empty($userToUpdate->getLogin())) {
+ 	        if( ! $this->isAdmin()) {
+ 	            throw $this->createAccessDeniedException('Only an admin can change a login'); // 403
+ 	        }
+ 	        $account = $user->getAccount();
  	        if($account == null) {
  	            $account = new Account();
  	            $account->setUser($user);
  	            // TODO generate password process
  	        }
- 	        $account->setLogin($userToUpdate->getLogin());
- 	        $accountPersist = true;
+ 	        if($entityUpdater->update('login', $userToUpdate->getLogin(), $account->getLogin(), function($v) use($account) { $account->setLogin($v); })) {
+ 	            $doctrine->getManager()->persist($account);
+ 	        }
  	    }
- 	    if( ! empty($userToUpdate->getRoles()) && $account !== null) {
- 	        $account->setRoles($userToUpdate->getRoles());
- 	        $accountPersist = true;
- 	    }
- 	    if($accountPersist) {
- 	        $this->manager->getManager()->persist($account);
- 	    }
- 	    
- 	    return $response;
+
+ 	    return $entityUpdater->toResponse($user, 'User updated', ['id' => $user->getId()]);
 	}
 	
 	
@@ -455,12 +452,12 @@ class UserController extends AbstractController
 	    $users = $this->findUsers($request);
 	    
 	    $f = fopen('php://output', 'w');
-	    fputcsv($f, array('UUID', 'Nom', 'Prénom', 'Sexe', 'Né(e) le', 'Adresse', 'Code postal', 'Ville', 'Nationalité', 'Emails', 'Tel', 'Tel accident'), $delimiter);
+	    fputcsv($f, array('UUID', 'Nom', 'Prénom', 'Sexe', 'Né(e) le', 'Adresse', 'Code postal', 'Ville', 'Nationalité', 'Emails', 'Tel', 'Tel accident'), $delimiter, '"', '\\');
 	    foreach ($users as $user) {
 	        /** @var User $user */
 	        fputcsv(
 	            $f,
-	            array(
+	            array_map([self::class, 'csvSafe'], array(
 	                $user->getUuid(),
 	                $user->getLastname(),
 	                $user->getFirstname(),
@@ -473,8 +470,8 @@ class UserController extends AbstractController
 	                implode(', ', $user->getMails()),
 	                $user->getPhone(),
 	                $user->getPhoneEmergency()
-	            ),
-	            $delimiter);
+	            )),
+	            $delimiter, '"', '\\');
 	    }
 	    $now = new \DateTime();
 	    $fileName = 'users-'.($now->format("Y-m-d_Gi")).'.csv';
@@ -484,6 +481,18 @@ class UserController extends AbstractController
 	    return $response;
 	}
 	
+	
+	/**
+	 * Prevent CSV/formula injection when the file is opened in a spreadsheet.
+	 */
+	private static function csvSafe($value): ?string
+	{
+	    if($value === null) {
+	        return null;
+	    }
+	    $value = (string) $value;
+	    return preg_match('/^[=+\-@\t\r]/', $value) ? "'".$value : $value;
+	}
 	
 	private function getUsersXLSX(Request $request): Response
 	{
@@ -508,18 +517,18 @@ class UserController extends AbstractController
 	    $sheet->setCellValue('L1', 'Tel accident');
 	    $row = 2;
 	    foreach ($users as $user) {
-	        $sheet->setCellValue('A'.$row, $user->getUuid(),);
-	        $sheet->setCellValue('B'.$row, $user->getLastname());
-	        $sheet->setCellValue('C'.$row, $user->getFirstname());
-	        $sheet->setCellValue('D'.$row, $user->getSex());
-	        $sheet->setCellValue('E'.$row, $user->getBirthday()->format("d/m/Y"));
-	        $sheet->setCellValue('F'.$row, $user->getAddress());
-	        $sheet->setCellValue('G'.$row, $user->getZipcode());
-	        $sheet->setCellValue('H'.$row, $user->getCity());
-	        $sheet->setCellValue('I'.$row, $user->getNationality());
-	        $sheet->setCellValue('J'.$row, implode(', ', $user->getMails()));
-	        $sheet->setCellValue('K'.$row, $user->getPhone());
-	        $sheet->setCellValue('L'.$row, $user->getPhoneEmergency());
+	        $sheet->setCellValueExplicit('A'.$row, $user->getUuid(), DataType::TYPE_STRING);
+	        $sheet->setCellValueExplicit('B'.$row, $user->getLastname(), DataType::TYPE_STRING);
+	        $sheet->setCellValueExplicit('C'.$row, $user->getFirstname(), DataType::TYPE_STRING);
+	        $sheet->setCellValueExplicit('D'.$row, $user->getSex(), DataType::TYPE_STRING);
+	        $sheet->setCellValueExplicit('E'.$row, $user->getBirthday()->format("d/m/Y"), DataType::TYPE_STRING);
+	        $sheet->setCellValueExplicit('F'.$row, $user->getAddress(), DataType::TYPE_STRING);
+	        $sheet->setCellValueExplicit('G'.$row, $user->getZipcode(), DataType::TYPE_STRING);
+	        $sheet->setCellValueExplicit('H'.$row, $user->getCity(), DataType::TYPE_STRING);
+	        $sheet->setCellValueExplicit('I'.$row, $user->getNationality(), DataType::TYPE_STRING);
+	        $sheet->setCellValueExplicit('J'.$row, implode(', ', $user->getMails()), DataType::TYPE_STRING);
+	        $sheet->setCellValueExplicit('K'.$row, $user->getPhone(), DataType::TYPE_STRING);
+	        $sheet->setCellValueExplicit('L'.$row, $user->getPhoneEmergency(), DataType::TYPE_STRING);
 	        ++$row;
 	    }
 	    
@@ -530,6 +539,7 @@ class UserController extends AbstractController
 	    $writer->save($temp_file);
 	   
 	    $response = new BinaryFileResponse($temp_file);
+	    $response->deleteFileAfterSend(true);
 	    $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName);
 	    $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 	    return $response;
@@ -580,7 +590,8 @@ class UserController extends AbstractController
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
 	    foreach($subscribes as &$subscribe) {
 	        $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $subscribe->getClubUuid()]);
-	        $clubAccess->checkAccessForUser($club, $account); // 403
+	        $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+	        $this->checkCanAssignClubRoles($subscribe->getRoles()); // 403
 	        
 	        $this->logger->debug('Create user : add UserClubSubscribe');
 	        $userClubSubscribe = new UserClubSubscribe();
@@ -644,7 +655,8 @@ class UserController extends AbstractController
 	    } else {
 	        $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $clubUuid]);
 	    }
-	    $clubAccess->checkAccessForUser($club, $account); // 403
+	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
+	    $this->checkCanAssignClubRoles($userClubSubscribeUpdate->getRoles()); // 403
 	    
 	    $entityUpdater->update(
 	        'subsc-'.$userClubSubscribe->getUuid().'-club',
@@ -660,6 +672,44 @@ class UserController extends AbstractController
 	        function($v) use($userClubSubscribe) { $userClubSubscribe->setRoles($v); });
 	}
 	
+	
+	private function isAdmin(): bool
+	{
+	    return $this->isGranted(Roles::ROLE_ADMIN) || $this->isGranted(Roles::ROLE_SUPER_ADMIN);
+	}
+	
+	/**
+	 * Global account roles: admin only, and only a super admin can grant ROLE_SUPER_ADMIN.
+	 */
+	private function checkCanAssignAccountRoles(?array $roles): void
+	{
+	    if(empty($roles)) {
+	        return;
+	    }
+	    if( ! $this->isAdmin()) {
+	        throw $this->createAccessDeniedException('Only an admin can change account roles');
+	    }
+	    if(in_array(Roles::ROLE_SUPER_ADMIN, $roles, true) && ! $this->isGranted(Roles::ROLE_SUPER_ADMIN)) {
+	        throw $this->createAccessDeniedException('Only a super admin can grant '.Roles::ROLE_SUPER_ADMIN);
+	    }
+	}
+	
+	/**
+	 * Club subscription roles: never a global role, and a teacher can't promote to club manager.
+	 */
+	private function checkCanAssignClubRoles(?array $roles): void
+	{
+	    if(empty($roles)) {
+	        return;
+	    }
+	    $allowed = $this->isAdmin() || $this->isGranted(Roles::ROLE_CLUB_MANAGER)
+	        ? Roles::CLUB_ROLES
+	        : [Roles::ROLE_TEACHER, Roles::ROLE_STUDENT];
+	    $forbidden = array_diff($roles, $allowed);
+	    if( ! empty($forbidden)) {
+	        throw $this->createAccessDeniedException('Not allowed to grant: '.implode(', ', $forbidden));
+	    }
+	}
 	
 	private function findUserOrAccessDenied($user_uuid): User
 	{

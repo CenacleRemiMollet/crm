@@ -15,7 +15,7 @@ class DumpDbCommand extends Command
 
 	private $doctrine;
 
-	public function __construct(ManagerRegistry $doctrine = null)
+	public function __construct(?ManagerRegistry $doctrine = null)
 	{
 		parent::__construct();
 		$this->doctrine = $doctrine;

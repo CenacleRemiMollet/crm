@@ -22,4 +22,17 @@ class Roles
 		self::ROLE_ANONYMOUS
 	);
 
+	// roles that can be held within a club (UserClubSubscribe), never global ones
+	public const CLUB_ROLES = array(
+		self::ROLE_CLUB_MANAGER,
+		self::ROLE_TEACHER,
+		self::ROLE_STUDENT
+	);
+
+	// roles granting write access to a club
+	public const CLUB_WRITE_ROLES = array(
+		self::ROLE_CLUB_MANAGER,
+		self::ROLE_TEACHER
+	);
+
 }

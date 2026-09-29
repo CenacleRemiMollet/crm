@@ -13,7 +13,7 @@ class LocaleSubscriber implements EventSubscriberInterface
 
 	private $defaultLocale;
 
-	public function __construct(string $defaultLocale = 'fr', LoggerInterface $logger)
+	public function __construct(string $defaultLocale, LoggerInterface $logger)
     {
     	$this->defaultLocale = $defaultLocale;
     	$this->logger = $logger;

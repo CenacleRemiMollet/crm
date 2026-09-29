@@ -53,7 +53,9 @@ class ClubAccess
             if(! empty($userClubSubscribes)) {
                 foreach ($userClubSubscribes as &$userClubSubscribe) {
                     foreach ($userClubSubscribe->getRoles() as &$role) {
-                        $granted = $this->authorizationChecker->isGranted($role);
+                        // Account::getRoles() merges all club roles, so isGranted($role) would always be true:
+                        // check the role held in *this* club instead
+                        $granted = in_array(strtoupper($role), Roles::CLUB_WRITE_ROLES, true);
                         $this->logger->debug('ClubAccess.hasAccessForUser(): verify access for current user ('.$account->getId().') in club '.$club->getId().' role '.$role.' => '.($granted ? 'accepted':'reject'));
                         if($granted) {
                             //$this->logger->debug('ClubAccess: access authorized for current user ('.$account->getId().') in club '.$club->getId().' with role '.$role);

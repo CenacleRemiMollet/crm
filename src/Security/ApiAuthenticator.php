@@ -47,7 +47,7 @@ class ApiAuthenticator extends AbstractAuthenticator
     	$this->logger = $logger;
     }
 
-    public function start(Request $request, AuthenticationException $authException = null): Response
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
     	$this->logger->debug('ApiAuthenticator.start(...) '.$request->getRequestUri());
     	$url = $this->getLoginUrl($request);
