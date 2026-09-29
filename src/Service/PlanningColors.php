@@ -29,6 +29,8 @@ class PlanningColors
 
     private EntityManagerInterface $em;
 
+    private ?array $overrides = null;
+
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
@@ -59,6 +61,9 @@ class PlanningColors
      */
     public function getOverrides(): array
     {
+        if ($this->overrides !== null) {
+            return $this->overrides;
+        }
         $properties = $this->em->getRepository(ConfigurationProperty::class)->findByStartsWith(self::PREFIX);
         $overrides = [];
         foreach ($properties as $property) {
@@ -69,7 +74,22 @@ class PlanningColors
                 $overrides[$discipline] = strtoupper($color);
             }
         }
-        return $overrides;
+        return $this->overrides = $overrides;
+    }
+
+    /**
+     * Color used when a lesson has no color of its own: admin override, else CSS default.
+     * Like the CSS classes, a label such as "Sinkido self-defense système" resolves on its first known word.
+     */
+    public function defaultFor(?string $discipline): ?string
+    {
+        $overrides = $this->getOverrides();
+        foreach (preg_split('/\s+/', mb_strtolower(trim((string) $discipline))) as $word) {
+            if (array_key_exists($word, self::DEFAULTS) && $word !== 'empty') {
+                return $overrides[$word] ?? self::DEFAULTS[$word];
+            }
+        }
+        return null;
     }
 
     /**

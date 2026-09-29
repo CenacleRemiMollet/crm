@@ -72,6 +72,12 @@ class ClubLesson
      */
     private $description;
 
+    /**
+     * Planning color (#RRGGBB), null = color of the discipline
+     * @ORM\Column(type="string", length=7, nullable=true)
+     */
+    private $color;
+
 	public function __construct()
 	{
 		$this->uuid = StringUtils::random_str(16);
@@ -192,6 +198,14 @@ class ClubLesson
         return $this;
     }
 
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
 
-
+    public function setColor(?string $color): self
+    {
+        $this->color = $color;
+        return $this;
+    }
 }

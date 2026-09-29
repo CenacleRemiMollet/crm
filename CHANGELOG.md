@@ -5,6 +5,7 @@
 
 ### Added
 - Planning colors (club "Horaires & tarifs" page) configurable per discipline in the admin (`/config`), stored as `planning.color.<discipline>` properties; CSS defaults kept when nothing is configured, `default` value resets a color
+- Planning color per lesson (lesson edit/creation form, color swatch in the club lessons list); empty = color of the discipline (admin `/config`, else CSS default). **Schema change**, to run once per database: `php bin/console dbal:run-sql "ALTER TABLE club_lesson ADD COLUMN IF NOT EXISTS color VARCHAR(7) DEFAULT NULL"`
 - Login brute-force protection: `login_throttling` (5 attempts / 15 min), adds `symfony/rate-limiter` and `symfony/lock` (`LOCK_DSN=flock`)
 
 ### Changed

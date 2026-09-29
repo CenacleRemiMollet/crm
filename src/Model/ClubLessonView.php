@@ -68,6 +68,11 @@ class ClubLessonView
 	 */
 	private $location;
 
+	/**
+	 * @OA\Property(type="string", example="#E66F78", description="Planning color, null = color of the discipline")
+	 */
+	private $color;
+
 	public function __construct(Club $club, ClubLesson $clubLesson)
 	{
 	    $this->club_uuid = $club->getUuid();
@@ -80,6 +85,7 @@ class ClubLessonView
 		$this->end_time = $clubLesson->getEndTime()->format('H:i');
 		$this->duration = $clubLesson->getStartTime()->diff($clubLesson->getEndTime());
 		$this->location = new ClubLocationView($club, $clubLesson->getClubLocation());
+		$this->color = $clubLesson->getColor();
 	}
 
 	public function getClubUuid(): ?string
@@ -132,4 +138,8 @@ class ClubLessonView
 		return $this->location;
 	}
 
+	public function getColor(): ?string
+	{
+		return $this->color;
+	}
 }

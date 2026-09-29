@@ -90,6 +90,14 @@ class ClubLessonCreate
 	 * @OA\Property(type="string")
 	 */
 	private $description;
+
+	/**
+	 * Planning color, empty = color of the discipline
+	 * @Assert\Type("string")
+	 * @Assert\Regex(pattern="/^(#[0-9a-fA-F]{6})?$/", message="Color must be #RRGGBB")
+	 * @OA\Property(type="string", example="#E66F78", pattern="^(#[0-9a-fA-F]{6})?$")
+	 */
+	private $color;
 	
 	public function getLocationUuid(): ?string
 	{
@@ -180,5 +188,14 @@ class ClubLessonCreate
 	{
 	    $this->description = $description;
 	}
-	
+
+	public function getColor(): ?string
+	{
+	    return $this->color;
+	}
+
+	public function setColor($color)
+	{
+	    $this->color = $color;
+	}
 }

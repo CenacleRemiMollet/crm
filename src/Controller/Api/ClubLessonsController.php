@@ -240,6 +240,7 @@ class ClubLessonsController extends AbstractController
         $lesson->setStartTime($lessonToCreate->getStartTime());
         $lesson->setEndTime($lessonToCreate->getEndTime());
         $lesson->setDescription(StringUtils::defaultOrEmpty($lessonToCreate->getDescription()));
+        $lesson->setColor(empty($lessonToCreate->getColor()) ? null : strtoupper($lessonToCreate->getColor()));
         $doctrine->getManager()->persist($lesson);
         
         $data = ['day' => $lesson->getDayOfWeek(), 'uuid' => $uuid, 'start' => $lesson->getStartTime(), 'discipline' => $lesson->getDiscipline()];
@@ -344,6 +345,12 @@ class ClubLessonsController extends AbstractController
 	    $entityUpdater->update('start', $lessonToUpdate->getStartTime(), $lesson->getStartTime(), function($v) use($lesson) { $lesson->setStartTime($v); });
 	    $entityUpdater->update('end', $lessonToUpdate->getEndTime(), $lesson->getEndTime(), function($v) use($lesson) { $lesson->setEndTime($v); });
 	    $entityUpdater->update('description', $lessonToUpdate->getDescription(), $lesson->getDescription(), function($v) use($lesson) { $lesson->setDescription($v); });
+	    if($lessonToUpdate->getColor() !== null) { // null = unchanged, '' = back to the discipline color
+	        $color = $lessonToUpdate->getColor() === '' ? null : strtoupper($lessonToUpdate->getColor());
+	        if($color !== $lesson->getColor()) {
+	            $entityUpdater->update('color', $color ?? '', $lesson->getColor() ?? '', function($v) use($lesson, $color) { $lesson->setColor($color); });
+	        }
+	    }
 	    return $entityUpdater->toResponse($lesson, 'Club lesson updated', ['id' => $lesson->getId()]);
 	}
 	

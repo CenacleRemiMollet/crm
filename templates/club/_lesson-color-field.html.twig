@@ -1,0 +1,42 @@
+{# Planning color of a lesson: the hidden "color" field is what the form sends ('' = color of the discipline) #}
+{% set ownColor = lesson is defined and lesson.color is defined and lesson.color ? lesson_color(lesson) : null %}
+{% set disciplineColor = discipline_color(lesson is defined ? lesson.discipline : 'Taekwondo') %}
+<div class="form-group row slimmargin">
+    <label for="lesson-color-picker" class="col-sm-1 col-form-label">Couleur</label>
+    <div class="col-sm-10" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <input type="hidden" name="color" id="input-color" value="{{ ownColor ?? '' }}">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="lesson-color-custom" {% if ownColor %}checked{% endif %}>
+            <label class="custom-control-label" for="lesson-color-custom">Couleur personnalisée</label>
+        </div>
+        <input type="color" id="lesson-color-picker" value="{{ ownColor ?? disciplineColor ?? '#FFFFFF' }}" {% if not ownColor %}disabled{% endif %} style="width: 3em; height: 2em; padding: 0; border: 1px solid #999;">
+        <code id="lesson-color-hex">{{ ownColor ?? disciplineColor ?? 'aucune' }}</code>
+        <small class="text-muted">Couleur de la discipline :
+            <span id="lesson-color-default-swatch" style="display: inline-block; width: 1.2em; height: 1.2em; vertical-align: middle; border: 1px solid #999; background-color: {{ disciplineColor ?? 'transparent' }};"></span>
+            <code id="lesson-color-default">{{ disciplineColor ?? 'aucune' }}</code>
+        </small>
+        <div class="invalid-feedback" id="txtvalid-color"></div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var hidden = document.getElementById('input-color');
+        var custom = document.getElementById('lesson-color-custom');
+        var picker = document.getElementById('lesson-color-picker');
+        var hex = document.getElementById('lesson-color-hex');
+        var disciplineColor = {{ (disciplineColor ?? '')|json_encode|raw }};
+        function refresh() {
+            picker.disabled = ! custom.checked;
+            if (custom.checked) {
+                hidden.value = picker.value.toUpperCase();
+                hex.textContent = hidden.value;
+            } else {
+                hidden.value = '';
+                picker.value = disciplineColor || '#FFFFFF';
+                hex.textContent = disciplineColor || 'aucune';
+            }
+        }
+        custom.addEventListener('change', refresh);
+        picker.addEventListener('input', refresh);
+    });
+</script>

@@ -25,7 +25,7 @@
 				{% for day in days %}
     				{% for lesson in lessons|filter(l => l.day_of_week == day)|sort((a,b) => a.start_time|replace({':':''})|integer <=> b.start_time|replace({':':''})|integer) %}
     					<tr>
-    						<td scope="row" class="deletetext-{{ lesson.uuid }}">{{ lesson.discipline }}{% if(lesson.age_level is defined) %}<br><i>{{ lesson.age_level }}</i>{% endif %}</td>
+    						<td scope="row" class="deletetext-{{ lesson.uuid }}">{% set lessonColor = lesson_color(lesson) %}{% set ownColor = lesson.color is defined and lesson.color %}<span title="{{ lessonColor ? (ownColor ? 'Couleur du cours : ' : 'Couleur de la discipline : ') ~ lessonColor : 'Aucune couleur' }}" style="display: inline-block; width: 1.1em; height: 1.1em; margin-right: .4em; vertical-align: middle; border-radius: 3px; border: 1px {{ ownColor ? 'solid #333' : 'dashed #999' }}; background-color: {{ lessonColor ?? 'transparent' }};"></span>{{ lesson.discipline }}{% if(lesson.age_level is defined) %}<br><i>{{ lesson.age_level }}</i>{% endif %}</td>
     						<td class="deletetext-{{ lesson.uuid }}">{{ lesson.day_of_week|trans }}<br>{{ lesson.start_time }} - {{ lesson.end_time }}</td>
     						<td class="row" style="flex-wrap: nowrap;">
     							<a class="btn btn-warning btnupdel" href="{{ app.request.baseUrl }}/club/{{ club.uuid }}/lessons/{{ lesson.uuid }}" role="button" style="margin: 10px" title="Modifier"><i class="fas fa-pencil-alt"></i></a>
