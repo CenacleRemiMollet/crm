@@ -1,7 +1,7 @@
 <?php
 namespace App\Util;
 
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 
 class DiffTool
 {
@@ -19,7 +19,6 @@ class DiffTool
 		}
 		$array = [];
 		foreach ($ref->getProperties() as $prop) {
-			$prop->setAccessible(true);
 			$value = $prop->getValue($object);
 			if($value instanceof \DateTime) {
 				$value = $value->format(\DateTime::RFC3339_EXTENDED);

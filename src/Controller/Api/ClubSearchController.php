@@ -7,9 +7,9 @@ use Hateoas\HateoasBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\ClubLocation;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use App\Media\MediaManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -24,83 +24,73 @@ use App\Service\ClubService;
 
 class ClubSearchController extends AbstractController
 {
+    use \App\Controller\DoctrineSubscriberTrait;
+
 
 	private $logger;
 
-	public function __construct(LoggerInterface $logger)
+	public function __construct(LoggerInterface $logger, private readonly \Doctrine\Persistence\ManagerRegistry $managerRegistry)
 	{
 		$this->logger = $logger;
 	}
 
-	/**
-	 * @Route("/api/clubsearch", name="api_club_search", methods={"GET"})
-	 * @OA\Get(
-	 *     operationId="searchClub",
-	 *     tags={"Club"},
-	 *     path="/api/clubsearch",
-	 *     summary="Search clubs",
-	 *     @OA\Parameter(
-	 *         description="Zip code",
-	 *         in="query",
-	 *         name="zc",
-	 *         required=false,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string",
-	 *             pattern="\d{4,6}"
-	 *         )
-	 *     ),
-	 *     @OA\Parameter(
-	 *         description="Distance in kilometers",
-	 *         in="query",
-	 *         name="d",
-	 *         required=false,
-	 *         @OA\Schema(
-	 *             type="integer",
-	 *             default=5
-	 *         )
-	 *     ),
-	 *     @OA\Parameter(
-	 *         description="Disciplines separated by comma",
-	 *         in="query",
-	 *         name="dis",
-	 *         required=false,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string"
-	 *         )
-	 *     ),
-	 *     @OA\Parameter(
-	 *         description="Days of week separated by comma",
-	 *         in="query",
-	 *         name="days",
-	 *         required=false,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string"
-	 *         )
-	 *     ),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(
-	 *                 type="array",
-	 *                 @OA\Items(ref="#/components/schemas/ClubLocation")
-	 *             )
-	 *         )
-	 *     )
-	 * )
-	 */
-	public function search(Request $request)
+	#[OA\Get(
+	    path: '/api/clubsearch',
+	    operationId: 'searchClub',
+	    summary: 'Search clubs',
+	    tags: ['Club'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'zc',
+	            description: 'Zip code',
+	            in: 'query',
+	            required: false,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '\\d{4,6}')
+	        ),
+	        new OA\Parameter(
+	            name: 'd',
+	            description: 'Distance in kilometers',
+	            in: 'query',
+	            required: false,
+	            schema: new OA\Schema(type: 'integer', default: 5)
+	        ),
+	        new OA\Parameter(
+	            name: 'dis',
+	            description: 'Disciplines separated by comma',
+	            in: 'query',
+	            required: false,
+	            schema: new OA\Schema(type: 'string', format: 'string')
+	        ),
+	        new OA\Parameter(
+	            name: 'days',
+	            description: 'Days of week separated by comma',
+	            in: 'query',
+	            required: false,
+	            schema: new OA\Schema(type: 'string', format: 'string')
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(
+	            response: '200',
+	            description: 'Successful',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(type: 'array', items: new OA\Items(ref: '#/components/schemas/ClubLocation'))
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/clubsearch', name: 'api_club_search', methods: ['GET'])]
+    public function search(Request $request)
 	{
 	    $zipcode = $request->query->get('zc', '');
 	    $distance = $request->query->get('d', 5);
 	    $disciplines = ControllerUtils::parseDisciplines($request->query->get('dis', ''));
 	    $days = ControllerUtils::parseDays($request->query->get('days', ''));
 	    
-	    $clubLocations = $this->getDoctrine()->getManager()
+	    $clubLocations = $this->managerRegistry->getManager()
 	    ->getRepository(ClubLocation::class)
 	    ->findByZipcodeAndDistance($zipcode, $distance, $disciplines, $days, true);
 	    
@@ -113,7 +103,7 @@ class ClubSearchController extends AbstractController
 	        array_push($clubLocationIds, $clubLocation->getId());
 	    }
 	    
-	    $clubs = $clubLocations = $this->getDoctrine()->getManager()
+	    $clubs = $clubLocations = $this->managerRegistry->getManager()
     	    ->getRepository(Club::class)
     	    ->findByClubLocationIds($clubLocationIds);
 	    

@@ -38,16 +38,16 @@ class EntityUpdater
             $this->logger->debug('Nothing to update');
             return new Response('Nothing to update', Response::HTTP_NO_CONTENT); // 204
         }
-        
+
         $this->manager->getManager()->persist($object);
         $alldata = $this->updatedFields;
         if($eventData != null) {
             $alldata = array_merge($alldata, $eventData);
         }
-        
+
         Events::add($this->manager, $this->eventName, $this->account, $this->request, $alldata);
         $this->logger->debug($logMessage.': '.json_encode($alldata));
-        
+
         return new Response('Updated', Response::HTTP_NO_CONTENT); // 204
     }
     

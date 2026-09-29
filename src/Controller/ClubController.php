@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Util\DateIntervalUtils;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\ClubPrice;
@@ -22,6 +22,8 @@ use App\Service\PlanningColors;
 
 class ClubController extends AbstractController
 {
+    use \App\Controller\DoctrineSubscriberTrait;
+
 
     private $logger;
     
@@ -31,10 +33,8 @@ class ClubController extends AbstractController
     }
     
     
-	/**
-	 * @Route("/club", name="web_club_list-active", methods={"GET"})
-	 */
-	public function listActive(Request $request, SessionInterface $session)
+	#[Route(path: '/club', name: 'web_club_list-active', methods: ['GET'])]
+    public function listActive(Request $request, SessionInterface $session)
 	{
 		if($request->query->get('select') === 'clear') {
 			$session->remove('club-selected');
@@ -48,10 +48,8 @@ class ClubController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/clubs", name="web_clubs_list", methods={"GET"})
-	 */
-	public function getAllClubs(Request $request, SessionInterface $session)
+	#[Route(path: '/clubs', name: 'web_clubs_list', methods: ['GET'])]
+    public function getAllClubs(Request $request, SessionInterface $session)
 	{
 	    if(! $this->isGranted(Roles::ROLE_ADMIN)
 	        && ! $this->isGranted(Roles::ROLE_SUPER_ADMIN)
@@ -73,10 +71,8 @@ class ClubController extends AbstractController
 	    ]);
 	}
 	
-	/**
-	 * @Route("/club/{uuid}", name="web_club_one", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
-	 */
-	public function viewOne($uuid, LoggerInterface $logger, SessionInterface $session)
+	#[Route(path: '/club/{uuid}', name: 'web_club_one', methods: ['GET'], requirements: ['uuid' => '[a-z0-9_]{2,64}'])]
+    public function viewOne($uuid, LoggerInterface $logger, SessionInterface $session)
 	{
 		$response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
 		if($response->getStatusCode() != 200) {
@@ -97,10 +93,8 @@ class ClubController extends AbstractController
 	}
 	
 
-	/**
-	 * @Route("/club/{uuid}/infos", name="web_club_infos", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
-	 */
-	public function viewInfos($uuid, LoggerInterface $logger, SessionInterface $session, PlanningColors $planningColors)
+	#[Route(path: '/club/{uuid}/infos', name: 'web_club_infos', methods: ['GET'], requirements: ['uuid' => '[a-z0-9_]{2,64}'])]
+    public function viewInfos($uuid, LoggerInterface $logger, SessionInterface $session, PlanningColors $planningColors)
 	{
 		$response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
 		if($response->getStatusCode() != 200) {
@@ -123,10 +117,8 @@ class ClubController extends AbstractController
 	}
 
 	
-	/**
-	 * @Route("/club/{uuid}/sc/{code}", name="web_club_static_custom", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}","code"="[a-z0-9_]{2,64}"})
-	 */
-	public function viewStaticCustom($uuid, $code, SessionInterface $session)
+	#[Route(path: '/club/{uuid}/sc/{code}', name: 'web_club_static_custom', methods: ['GET'], requirements: ['uuid' => '[a-z0-9_]{2,64}', 'code' => '[a-z0-9_]{2,64}'])]
+    public function viewStaticCustom($uuid, $code, SessionInterface $session)
 	{
 	    $response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
 	    if($response->getStatusCode() != 200) {
@@ -145,20 +137,16 @@ class ClubController extends AbstractController
 	}
 	
 	
-	/**
-	 * @Route("/club-new", name="web_new_club", methods={"GET"})
-	 */
-	public function create()
+	#[Route(path: '/club-new', name: 'web_new_club', methods: ['GET'])]
+    public function create()
 	{
 	    $this->denyAccessUnlessGranted(Roles::ROLE_ADMIN);
 	    return $this->render('club/club-new.html.twig', []);
 	}
 	
 	
-	/**
-	 * @Route("/club/{uuid}/modify", name="web_modify_club", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
-	 */
-	public function modifyOne($uuid, LoggerInterface $logger, SessionInterface $session)
+	#[Route(path: '/club/{uuid}/modify', name: 'web_modify_club', methods: ['GET'], requirements: ['uuid' => '[a-z0-9_]{2,64}'])]
+    public function modifyOne($uuid, LoggerInterface $logger, SessionInterface $session)
 	{
 	    if(! $this->isGranted(Roles::ROLE_ADMIN)
 	        && ! $this->isGranted(Roles::ROLE_SUPER_ADMIN)
@@ -188,10 +176,8 @@ class ClubController extends AbstractController
 	}
 
 	
-	/**
-	 * @Route("/club/{uuid}/logo/modify", name="web_modify_club_logo", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
-	 */
-	public function modifyLogo($uuid, LoggerInterface $logger, SessionInterface $session)
+	#[Route(path: '/club/{uuid}/logo/modify', name: 'web_modify_club_logo', methods: ['GET'], requirements: ['uuid' => '[a-z0-9_]{2,64}'])]
+    public function modifyLogo($uuid, LoggerInterface $logger, SessionInterface $session)
 	{
 	    if(! $this->isGranted(Roles::ROLE_ADMIN)
 	        && ! $this->isGranted(Roles::ROLE_SUPER_ADMIN)

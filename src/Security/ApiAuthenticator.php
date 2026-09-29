@@ -56,18 +56,18 @@ class ApiAuthenticator extends AbstractAuthenticator
     }
 
 
-    public function authenticate(Request $request): PassportInterface
+    public function authenticate(Request $request): \Symfony\Component\Security\Http\Authenticator\Passport\Passport
     {
         $this->logger->debug('ApiAuthenticator.authenticate() '.$request->getRequestUri());
         $login = $request->request->get('login', '');
 
-        $request->getSession()->set(Security::LAST_USERNAME, $login);
+        $request->getSession()->set(\Symfony\Component\Security\Http\SecurityRequestAttributes::LAST_USERNAME, $login);
 
         return new Passport(
             new UserBadge($login),
             new PasswordCredentials($request->request->get('password', '')),
             [
-                new CsrfTokenBadge('authenticate', $request->get('_csrf_token')),
+                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
             ]
         );
     }
@@ -88,7 +88,7 @@ class ApiAuthenticator extends AbstractAuthenticator
     		'csrf_token' => $request->request->get('_csrf_token'),
     	];
     	$request->getSession()->set(
-    		Security::LAST_USERNAME,
+    		\Symfony\Component\Security\Http\SecurityRequestAttributes::LAST_USERNAME,
     		$credentials['login']
     		);
 
@@ -98,7 +98,7 @@ class ApiAuthenticator extends AbstractAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         $this->logger->debug('ApiAuthenticator.onAuthenticationSuccess() '.$request->getRequestUri());
-        
+
         $sessionHst = new AccountSessionHistory();
         $sessionHst->setAccount($token->getUser());
         $sessionHst->setIp($request->getClientIp());
@@ -106,7 +106,7 @@ class ApiAuthenticator extends AbstractAuthenticator
         $this->entityManager->persist($sessionHst);
         $this->entityManager->flush();
         $request->getSession()->set('AccountSessionHistory', $sessionHst);
-        
+
     	// on success, let the request continue
     	return null;
     }

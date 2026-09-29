@@ -12,7 +12,9 @@ use App\Entity\Club;
 
 
 class MenuController extends AbstractController
-{      
+{
+    use \App\Controller\DoctrineSubscriberTrait;
+      
     
     private LoggerInterface $logger;
     

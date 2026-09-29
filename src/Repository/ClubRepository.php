@@ -57,8 +57,8 @@ class ClubRepository extends ServiceEntityRepository
         $query->setParameter('user_uuid', $user_uuid);
         return $query->getResult();
 	}
-	
-	
+
+
 	/*public function findAllActiveGroupedWithCitiesOLD() //: ?ClubDTO
 	{
 		$sql = "SELECT id, name, group_concat(city SEPARATOR  ', ') AS cities"

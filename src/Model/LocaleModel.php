@@ -7,9 +7,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 use App\Entity\City;
 
-/**
- * @Serializer\XmlRoot("locale")
- */
+#[Serializer\XmlRoot('locale')]
 class LocaleModel
 {
 	private $locale;

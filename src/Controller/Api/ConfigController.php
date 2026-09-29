@@ -4,10 +4,10 @@ namespace App\Controller\Api;
 
 use Hateoas\HateoasBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;
 use App\Util\RequestUtil;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use App\Model\LocaleModel;
 use App\Exception\ViolationException;
 use primus852\ShortResponse\ShortResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\ConfigurationProperty;
 use App\Model\ConfigurationPropertyUpdate;
 use App\Model\ConfigurationPropertyView;
@@ -26,6 +26,8 @@ use App\Service\PlanningColors;
 
 class ConfigController extends AbstractController
 {
+    use \App\Controller\DoctrineSubscriberTrait;
+
 	private $logger;
 
 	public function __construct(LoggerInterface $logger)
@@ -33,30 +35,41 @@ class ConfigController extends AbstractController
 		$this->logger = $logger;
 	}
 
-	/**
-	 * @Route("/api/config/properties", methods={"GET"}, name="api_configuration_properties-get")
-	 * @IsGranted("ROLE_ADMIN")
-	 * @OA\Get(
-	 *     operationId="getAllProperties",
-	 *     tags={"Configuration"},
-	 *     path="/api/config/properties",
-	 *     summary="List all configuration properties",
-	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(
-	 *                 type="array",
-	 *                 @OA\Items(ref="#/components/schemas/ConfigurationProperty")
-	 *             )
-	 *         )
-	 *     ),
-	 *     @OA\Response(response="401", description="You are not authorized", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function getAllProperties(Request $request)
+	#[OA\Get(
+	    path: '/api/config/properties',
+	    operationId: 'getAllProperties',
+	    summary: 'List all configuration properties',
+	    security: [['basicAuth' => []]],
+	    tags: ['Configuration'],
+	    responses: [
+	        new OA\Response(
+	            response: '200',
+	            description: 'Successful',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(
+	                        type: 'array',
+	                        items: new OA\Items(ref: '#/components/schemas/ConfigurationProperty')
+	                    )
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '401',
+	            description: 'You are not authorized',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/config/properties', methods: ['GET'], name: 'api_configuration_properties-get')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function getAllProperties(Request $request)
 	{
 		$properties = $this->container->get('doctrine')->getManager()
 			->getRepository(ConfigurationProperty::class)
@@ -74,31 +87,59 @@ class ConfigController extends AbstractController
 	}
 
 
-	/**
-	 * @Route("/api/config/properties", methods={"PATCH"}, name="api_configuration_properties-update")
-	 * @IsGranted("ROLE_ADMIN")
-	 * @OA\Patch(
-	 *     operationId="updateProperties",
-	 *     tags={"Configuration"},
-	 *     path="/api/config/properties",
-	 *     summary="Update some properties",
-	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
-	 *     security = {{"basicAuth": {}}},
-	 *     @OA\RequestBody(
-	 *         @OA\MediaType(
-	 *            mediaType="application/json",
-	 *            @OA\Schema(
-	 *               type="array",
-	 *               @OA\Items(ref="#/components/schemas/ConfigurationPropertyUpdate")
-	 *            )
-	 *        )
-	 *     ),
-	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
-	 *     @OA\Response(response="401", description="You are not authorized", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function updateProperties(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
+	#[OA\Patch(
+	    path: '/api/config/properties',
+	    operationId: 'updateProperties',
+	    summary: 'Update some properties',
+	    security: [['basicAuth' => []]],
+	    requestBody: new OA\RequestBody(
+	        content: [
+	            new OA\MediaType(
+	                mediaType: 'application/json',
+	                schema: new OA\Schema(
+	                    type: 'array',
+	                    items: new OA\Items(ref: '#/components/schemas/ConfigurationPropertyUpdate')
+	                )
+	            )
+	        ]
+	    ),
+	    tags: ['Configuration'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'X-ClientId',
+	            in: 'header',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}'),
+	            example: 'my-client-name'
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(response: '204', description: 'Successful'),
+	        new OA\Response(
+	            response: '400',
+	            description: 'Request contains not valid field',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '401',
+	            description: 'You are not authorized',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/config/properties', methods: ['PATCH'], name: 'api_configuration_properties-update')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function updateProperties(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
 		$requestUtil = new RequestUtil($serializer, $translator);
     	//$propertiesToUpdate = $requestUtil->validate($request, ConfigurationPropertyUpdate::class);

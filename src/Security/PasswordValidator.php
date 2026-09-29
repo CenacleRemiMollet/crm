@@ -15,7 +15,7 @@ class PasswordValidator
 	public function __construct(TranslatorInterface $translator)
 	{
 		$this->validator = Validation::createValidatorBuilder()
-			->enableAnnotationMapping()
+			->enableAttributeMapping()
 			->getValidator();
 		$this->violator = new ViolationUtil($translator);
 	}

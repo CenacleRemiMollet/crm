@@ -3,43 +3,35 @@
 namespace App\Model;
 
 use App\Validator\Constraints as AcmeAssert;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @OA\Schema(
- *     schema="UserClubSubscribeUpdate",
- *     description="Update a user club subscription",
- *     title="UserClubSubscribeUpdate",
- *     @OA\Xml(
- *         name="UserClubSubscribeUpdate"
- *     )
- * )
- */
+#[OA\Schema(
+    schema: 'UserClubSubscribeUpdate',
+    title: 'UserClubSubscribeUpdate',
+    description: 'Update a user club subscription',
+    xml: new OA\Xml(name: 'UserClubSubscribeUpdate')
+)]
 class UserClubSubscribeUpdate
 {
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min=2, max = 64)
-	 * @Assert\Regex(pattern="/[A-Za-z0-9_]{2,64}/")
-	 * @OA\Property(type="string", example="abcdef13245", pattern="^[A-Za-z0-9_]{2,64}$")
-	 */
-	private $uuid;
+	#[OA\Property(type: 'string', pattern: '^[A-Za-z0-9_]{2,64}$', example: 'abcdef13245')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 2, max: 64)]
+    #[Assert\Regex(pattern: '/[A-Za-z0-9_]{2,64}/')]
+    private $uuid;
 
 	/**
 	 * @var string[]
-	 * @AcmeAssert\Roles
-	 * @OA\Property(type="array", example="ROLE_STUDENT", @OA\Items(type="string"))
 	 */
-	private $roles;
+	#[OA\Property(type: 'array', items: new OA\Items(type: 'string'), example: 'ROLE_STUDENT')]
+    #[AcmeAssert\Roles]
+    private $roles;
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min=2, max = 64)
-	 * @Assert\Regex(pattern="/[a-z0-9_]{2,64}/")
-	 * @OA\Property(type="string", example="abcdef13245", pattern="^[a-z0-9_]{2,64}$")
-	 */
-	private $club_uuid;
+	#[OA\Property(type: 'string', pattern: '^[a-z0-9_]{2,64}$', example: 'abcdef13245')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 2, max: 64)]
+    #[Assert\Regex(pattern: '/[a-z0-9_]{2,64}/')]
+    private $club_uuid;
 
 	
 	public function getUuid(): ?string

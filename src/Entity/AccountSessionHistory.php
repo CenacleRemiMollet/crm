@@ -4,38 +4,26 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AccountSessionHistoryRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\AccountSessionHistoryRepository::class)]
 class AccountSessionHistory
 {
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+	#[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\Account")
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $account;
+	#[ORM\ManyToOne(targetEntity: \App\Entity\Account::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $account;
 
-	/**
-	 * @ORM\Column(type="string", length=48)
-	 */
-	private $ip;
+	#[ORM\Column(type: 'string', length: 48)]
+    private $ip;
 
-	/**
-	 * @ORM\Column(type="string", length=400)
-	 */
-	private $user_agent;
+	#[ORM\Column(type: 'string', length: 400)]
+    private $user_agent;
 
-	/**
-	 * @ORM\Column(type="datetime")
-	 */
-	private $start_datetime;
+	#[ORM\Column(type: 'datetime')]
+    private $start_datetime;
 
 	public function __construct()
 	{

@@ -15,6 +15,16 @@
 - `nelmio/api-doc-bundle` pinned to `^4.11` instead of `dev-master`
 - A user's login can only be changed by an admin
 - Logs: daily rotated files (30 days), `deprecation` channel no longer logged (prod.log had reached 779 MB)
+- Symfony 5.4 → 7.4 (LTS), PHP requirement `>=8.4` (DoctrineBundle 3 requires native lazy objects)
+- Doctrine ORM 2.20 → 3.7, DBAL 3.10 → 4.5, DoctrineBundle 2.13 → 3.3, persistence 2 → 4, migrations-bundle 3 → 4, fixtures-bundle 3 → 4
+- `nelmio/api-doc-bundle` 4 → 5.12, `zircote/swagger-php` 4 → 6.11, `symfony/monolog-bundle` 3 → 4.1 (monolog 3), `symfony/flex` 1 → 2
+- All docblock annotations replaced by PHP attributes: routing, Doctrine mapping (`type: attribute`), validation (incl. `App\Validator\Constraints\*`), `#[IsGranted]` (Symfony's), JMS serializer, Hateoas, OpenAPI (`OpenApi\Attributes`)
+- `doctrine/dbal`, `jms/serializer`, `symfony/lock` now required explicitly (used directly, were transitive)
+- `default_table_options` pinned to `utf8mb4` / `utf8mb4_unicode_ci` (DBAL 4 no longer forces it). On existing databases `doctrine:schema:update` only proposes dropping the legacy `(DC2Type:json)` column comments (harmless)
+- Access denied messages are more explicit (`Access Denied. The user doesn't have ROLE_ADMIN.`)
+
+### Removed
+- `sensio/framework-extra-bundle`, `doctrine/annotations`, `symfony/proxy-manager-bridge`, `composer/package-versions-deprecated` (abandoned / unsupported by Symfony 7)
 
 ### Fixed
 - PHP 8.4+ deprecations: implicit nullable parameters, optional parameter before required (`LocaleSubscriber`)
@@ -23,6 +33,9 @@
 - XLSX export temporary file was never deleted
 - `/api/search` always returned 500 (wrong `Pageable` import in `SearchController` and `SearchDao`)
 - `db:dump` crashed with DBAL 3 (`Connection::getUsername()` removed)
+- OpenAPI spec: `getUsers` 404 response was emitted as a global component (stray parenthesis); single-resource GETs (lesson, location, price, user, users) had an empty `application/hal+json` schema (`Items` directly under `MediaType`); `nullable` was the string `"true"`
+- `StaticPageController`: missing `City` import
+- PHP 8.5 deprecation notices were printed in HTTP responses (old Symfony `ErrorHandler`)
 
 ### Security
 - 72 known vulnerabilities fixed through dependency upgrades (twig, phpspreadsheet, symfony/http-kernel, security-http, http-foundation, yaml, mime...)

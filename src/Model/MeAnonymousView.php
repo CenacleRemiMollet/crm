@@ -3,18 +3,14 @@ namespace App\Model;
 
 use JMS\Serializer\Annotation as Serializer;
 use Hateoas\Configuration\Annotation as Hateoas;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @Serializer\XmlRoot("me")
- * @Hateoas\Relation("self", href = "/crm/api/user/me")
- * @OA\Schema(schema="MeAnonymous")
- */
+#[OA\Schema(schema: 'MeAnonymous')]
+#[Serializer\XmlRoot('me')]
+#[Hateoas\Relation('self', href: '/crm/api/user/me')]
 class MeAnonymousView
 {
-	/**
-	 * @OA\Property(type="array", example="abcDEF654", items = @OA\Items(type="string"))
-	 */
+	#[OA\Property(type: 'array', items: new OA\Items(type: 'string'), example: 'abcDEF654')]
 	private $grantedRoles;
 
 	public function __construct($grantedRoles)

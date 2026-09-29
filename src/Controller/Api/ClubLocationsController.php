@@ -8,9 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\ClubLocation;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use App\Media\MediaManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -38,6 +38,8 @@ use App\Exception\CRMException;
 
 class ClubLocationsController extends AbstractController
 {
+    use \App\Controller\DoctrineSubscriberTrait;
+
 
     private LoggerInterface $logger;
     
@@ -47,39 +49,45 @@ class ClubLocationsController extends AbstractController
     }
     
     
-    /**
-	 * @Route("/api/club/{club_uuid}/locations", name="api_get_club_locations", methods={"GET"}, requirements={"club_uuid"="[a-z0-9_]{2,64}"})
-	 * @OA\Get(
-	 *     operationId="getClubLocations",
-	 *     tags={"Club"},
-	 *     path="/api/club/{club_uuid}/locations",
-	 *     summary="Give some locations",
-	 *     @OA\Parameter(
-	 *         description="UUID of club",
-	 *         in="path",
-	 *         name="club_uuid",
-	 *         required=true,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string",
-	 *             pattern="[a-z0-9_]{2,64}"
-	 *         )
-	 *     ),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(
-	 *                 type="array",
-	 *                 @OA\Items(ref="#/components/schemas/ClubLocation")
-	 *             )
-	 *         )
-	 *     ),
-	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function getLocations(string $club_uuid): Response
+    #[OA\Get(
+        path: '/api/club/{club_uuid}/locations',
+        operationId: 'getClubLocations',
+        summary: 'Give some locations',
+        tags: ['Club'],
+        parameters: [
+            new OA\Parameter(
+                name: 'club_uuid',
+                description: 'UUID of club',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}')
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Successful',
+                content: [
+                    new OA\MediaType(
+                        mediaType: 'application/hal+json',
+                        schema: new OA\Schema(type: 'array', items: new OA\Items(ref: '#/components/schemas/ClubLocation'))
+                    )
+                ]
+            ),
+            new OA\Response(
+                response: '404',
+                description: 'Club not found',
+                content: [
+                    new OA\MediaType(
+                        mediaType: 'application/hal+json',
+                        schema: new OA\Schema(ref: '#/components/schemas/Error')
+                    )
+                ]
+            )
+        ]
+    )]
+    #[Route(path: '/api/club/{club_uuid}/locations', name: 'api_get_club_locations', methods: ['GET'], requirements: ['club_uuid' => '[a-z0-9_]{2,64}'])]
+    public function getLocations(string $club_uuid): Response
 	{
 		$doctrine = $this->container->get('doctrine');
 		
@@ -104,47 +112,52 @@ class ClubLocationsController extends AbstractController
 	}
 
 	
-	/**
-	 * @Route("/api/club/{club_uuid}/locations/{location_uuid}", name="api_get_club_location", methods={"GET"}, requirements={"club_uuid"="[a-z0-9_]{2,64}","location_uuid"="[a-zA-Z0-9_]{2,64}"})
-	 * @OA\Get(
-	 *     operationId="getClubLocation",
-	 *     tags={"Club"},
-	 *     path="/api/club/{club_uuid}/locations/{location_uuid}",
-	 *     summary="Give a location for a club",
-	 *     @OA\Parameter(
-	 *         description="UUID of club",
-	 *         in="path",
-	 *         name="club_uuid",
-	 *         required=true,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string",
-	 *             pattern="[a-z0-9_]{2,64}"
-	 *         )
-	 *     ),
-	 *     @OA\Parameter(
-	 *         description="UUID of location",
-	 *         in="path",
-	 *         name="location_uuid",
-	 *         required=true,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string",
-	 *             pattern="[A-Za-z0-9_]{2,64}"
-	 *         )
-	 *     ),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Items(ref="#/components/schemas/ClubLocation")
-	 *         )
-	 *     ),
-	 *     @OA\Response(response="404", description="Club or location not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function getLocation(string $club_uuid, string $location_uuid): Response
+	#[OA\Get(
+	    path: '/api/club/{club_uuid}/locations/{location_uuid}',
+	    operationId: 'getClubLocation',
+	    summary: 'Give a location for a club',
+	    tags: ['Club'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'club_uuid',
+	            description: 'UUID of club',
+	            in: 'path',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}')
+	        ),
+	        new OA\Parameter(
+	            name: 'location_uuid',
+	            description: 'UUID of location',
+	            in: 'path',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[A-Za-z0-9_]{2,64}')
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(
+	            response: '200',
+	            description: 'Successful',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/ClubLocation')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '404',
+	            description: 'Club or location not found',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/club/{club_uuid}/locations/{location_uuid}', name: 'api_get_club_location', methods: ['GET'], requirements: ['club_uuid' => '[a-z0-9_]{2,64}', 'location_uuid' => '[a-zA-Z0-9_]{2,64}'])]
+    public function getLocation(string $club_uuid, string $location_uuid): Response
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    
@@ -161,45 +174,78 @@ class ClubLocationsController extends AbstractController
 	}
 	
 	
-	/**
-	 * @Route("/api/club/{club_uuid}/locations", name="api_create_club_locations", methods={"POST"}, requirements={"club_uuid"="[a-z0-9_]{2,64}"})
-	 * @OA\Post(
-	 *     operationId="createClubLocation",
-	 *     tags={"Club"},
-	 *     path="/api/club/{club_uuid}/locations",
-	 *     summary="Create a location for a club",
-	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(
-	 *         description="UUID of club",
-	 *         in="path",
-	 *         name="club_uuid",
-	 *         required=true,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string",
-	 *             pattern="[a-z0-9_]{2,64}"
-	 *         )
-	 *     ),
-	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
-     *     @OA\RequestBody(
-     *         description="Location object that needs to be added",
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ClubLocationCreate"),
-     *     ),
-	 *     @OA\Response(
-	 *         response="201",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(ref="#/components/schemas/ClubLocation")
-	 *         )
-	 *     ),
-	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
-	 *     @OA\Response(response="403", description="Forbidden to create a location", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
-	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function createLocation(string $club_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
+	#[OA\Post(
+	    path: '/api/club/{club_uuid}/locations',
+	    operationId: 'createClubLocation',
+	    summary: 'Create a location for a club',
+	    security: [['basicAuth' => []]],
+	    requestBody: new OA\RequestBody(
+	        description: 'Location object that needs to be added',
+	        required: true,
+	        content: new OA\JsonContent(ref: '#/components/schemas/ClubLocationCreate')
+	    ),
+	    tags: ['Club'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'club_uuid',
+	            description: 'UUID of club',
+	            in: 'path',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}')
+	        ),
+	        new OA\Parameter(
+	            name: 'X-ClientId',
+	            in: 'header',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}'),
+	            example: 'my-client-name'
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(
+	            response: '201',
+	            description: 'Successful',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/ClubLocation')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '400',
+	            description: 'Request contains not valid field',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '403',
+	            description: 'Forbidden to create a location',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '404',
+	            description: 'Club not found',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/club/{club_uuid}/locations', name: 'api_create_club_locations', methods: ['POST'], requirements: ['club_uuid' => '[a-z0-9_]{2,64}'])]
+    public function createLocation(string $club_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    
@@ -242,49 +288,76 @@ class ClubLocationsController extends AbstractController
 	}
 	
 	
-	/**
-	 * @Route("/api/club/{club_uuid}/locations/{location_uuid}", name="api_update_club_locations", methods={"PATCH"}, requirements={"club_uuid"="[a-z0-9_]{2,64}","location_uuid"="[a-zA-Z0-9_]{2,64}"})
-	 * @OA\Patch(
-	 *     operationId="updateClubLocation",
-	 *     tags={"Club"},
-	 *     path="/api/club/{club_uuid}/locations/{location_uuid}",
-	 *     summary="Update a location for a club",
-	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
-	 *     @OA\Parameter(
-	 *         description="UUID of club",
-	 *         in="path",
-	 *         name="club_uuid",
-	 *         required=true,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string",
-	 *             pattern="[a-z0-9_]{2,64}"
-	 *         )
-	 *     ),
-	 *     @OA\Parameter(
-	 *         description="UUID of location",
-	 *         in="path",
-	 *         name="location_uuid",
-	 *         required=true,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string",
-	 *             pattern="[A-Za-z0-9_]{2,64}"
-	 *         )
-	 *     ),
-     *     @OA\RequestBody(
-     *         description="Location object that needs to be added",
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ClubLocationUpdate"),
-     *     ),
-	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
-	 *     @OA\Response(response="403", description="Forbidden to update a location", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
-	 *     @OA\Response(response="404", description="Club or location not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function updateLocation(string $club_uuid, string $location_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
+	#[OA\Patch(
+	    path: '/api/club/{club_uuid}/locations/{location_uuid}',
+	    operationId: 'updateClubLocation',
+	    summary: 'Update a location for a club',
+	    security: [['basicAuth' => []]],
+	    requestBody: new OA\RequestBody(
+	        description: 'Location object that needs to be added',
+	        required: true,
+	        content: new OA\JsonContent(ref: '#/components/schemas/ClubLocationUpdate')
+	    ),
+	    tags: ['Club'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'X-ClientId',
+	            in: 'header',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}'),
+	            example: 'my-client-name'
+	        ),
+	        new OA\Parameter(
+	            name: 'club_uuid',
+	            description: 'UUID of club',
+	            in: 'path',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}')
+	        ),
+	        new OA\Parameter(
+	            name: 'location_uuid',
+	            description: 'UUID of location',
+	            in: 'path',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[A-Za-z0-9_]{2,64}')
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(response: '204', description: 'Successful'),
+	        new OA\Response(
+	            response: '400',
+	            description: 'Request contains not valid field',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '403',
+	            description: 'Forbidden to update a location',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '404',
+	            description: 'Club or location not found',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/club/{club_uuid}/locations/{location_uuid}', name: 'api_update_club_locations', methods: ['PATCH'], requirements: ['club_uuid' => '[a-z0-9_]{2,64}', 'location_uuid' => '[a-zA-Z0-9_]{2,64}'])]
+    public function updateLocation(string $club_uuid, string $location_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    
@@ -319,60 +392,78 @@ class ClubLocationsController extends AbstractController
 	}
 	    
 	    
-	/**
-	 * @Route("/api/club/{club_uuid}/locations/{location_uuid}", name="api_delete_club_locations", methods={"DELETE"}, requirements={"club_uuid"="[a-z0-9_]{2,64}","location_uuid"="[a-zA-Z0-9_]{2,64}"})
-	 * @OA\Delete(
-	 *     operationId="deleteClubLocation",
-	 *     tags={"Club"},
-	 *     path="/api/club/{club_uuid}/locations/{location_uuid}",
-	 *     summary="Delete a location for a club",
-	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(
-	 *         description="UUID of club",
-	 *         in="path",
-	 *         name="club_uuid",
-	 *         required=true,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string",
-	 *             pattern="[a-z0-9_]{2,64}"
-	 *         )
-	 *     ),
-	 *     @OA\Parameter(
-	 *         description="UUID of location",
-	 *         in="path",
-	 *         name="location_uuid",
-	 *         required=true,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string",
-	 *             pattern="[A-Za-z0-9_]{2,64}"
-	 *         )
-	 *     ),
-	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
-	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="403", description="Forbidden to delete a location", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
-	 *     @OA\Response(response="404", description="Club or location not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function deleteLocation(Request $request, string $club_uuid, string $location_uuid): Response
+	#[OA\Delete(
+	    path: '/api/club/{club_uuid}/locations/{location_uuid}',
+	    operationId: 'deleteClubLocation',
+	    summary: 'Delete a location for a club',
+	    security: [['basicAuth' => []]],
+	    tags: ['Club'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'club_uuid',
+	            description: 'UUID of club',
+	            in: 'path',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}')
+	        ),
+	        new OA\Parameter(
+	            name: 'location_uuid',
+	            description: 'UUID of location',
+	            in: 'path',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[A-Za-z0-9_]{2,64}')
+	        ),
+	        new OA\Parameter(
+	            name: 'X-ClientId',
+	            in: 'header',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}'),
+	            example: 'my-client-name'
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(response: '204', description: 'Successful'),
+	        new OA\Response(
+	            response: '403',
+	            description: 'Forbidden to delete a location',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '404',
+	            description: 'Club or location not found',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/club/{club_uuid}/locations/{location_uuid}', name: 'api_delete_club_locations', methods: ['DELETE'], requirements: ['club_uuid' => '[a-z0-9_]{2,64}', 'location_uuid' => '[a-zA-Z0-9_]{2,64}'])]
+    public function deleteLocation(Request $request, string $club_uuid, string $location_uuid): Response
 	{
 	    $doctrine = $this->container->get('doctrine');
-	    
+
 	    $entityFinder = new EntityFinder($doctrine);
 	    $club = $entityFinder->findOneByOrThrow(Club::class, ['uuid' => $club_uuid]); // 404
-	    
+
 	    $clubAccess = new ClubAccess($this->container, $this->logger);
 	    $clubAccess->checkAccessForUser($club, $this->getUser()); // 403
-	   
+
 	    $clubLocation = $entityFinder->findOneByOrThrow(ClubLocation::class, ['uuid' => $location_uuid, 'club' => $club]); // 404
-	    	    
+
 	    $doctrine->getManager()->remove($clubLocation);
-	    
+
 	    $data = ['club_uuid' => $club_uuid, 'location_uuid' => $location_uuid, 'name' => $clubLocation->getName()];
 	    Events::add($doctrine, Events::CLUB_LOCATION_DELETED, $this->getUser(), $request, $data);
 	    $this->logger->debug('Club location deleted: '.json_encode($data));
-	    
+
 	    return new Response('', Response::HTTP_NO_CONTENT); // 204
 	}
 }

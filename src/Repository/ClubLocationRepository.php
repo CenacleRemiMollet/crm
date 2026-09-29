@@ -71,14 +71,14 @@ class ClubLocationRepository extends ServiceEntityRepository
 	        $sql = 	$sql." NOT ";
 	    }
 	    $sql = 	$sql." c.active";
-		    
+
 		if(! is_null($disciplines) && ! empty($disciplines)) {
 		    $sql = 	$sql." AND cles.discipline IN ('".implode("','", $disciplines)."')";
 		}
 		if(! is_null($days) && ! empty($days)) {
 		    $sql = 	$sql." AND cles.day_of_week IN ('".implode("','", $days)."')";
 		}
-						
+
 		$rsm = new ResultSetMappingBuilder($this->getEntityManager());
 		$rsm->addRootEntityFromClassMetadata('App\Entity\ClubLocation', 'l');
 		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm);

@@ -7,11 +7,11 @@ use App\Util\StringUtils;
 
 class AppExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new TwigFilter('remove_accent', [$this, 'removeAccent']),
-            new TwigFilter('integer', [$this, 'toInteger']),
+            new TwigFilter('remove_accent', $this->removeAccent(...)),
+            new TwigFilter('integer', $this->toInteger(...)),
         ];
     }
     

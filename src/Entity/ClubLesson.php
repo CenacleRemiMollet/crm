@@ -5,77 +5,53 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Util\StringUtils;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ClubLessonRepository")
- * @ORM\Table(
- *	  indexes={@ORM\Index(name="idx_club_lesson_uuid", columns={"uuid"})},
- *	  uniqueConstraints={@ORM\UniqueConstraint(columns={"uuid"})})
- */
+#[ORM\Entity(repositoryClass: \App\Repository\ClubLessonRepository::class)]
+#[ORM\Table]
+#[ORM\Index(name: 'idx_club_lesson_uuid', columns: ['uuid'])]
+#[ORM\UniqueConstraint(columns: ['uuid'])]
 class ClubLesson
 {
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+	#[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-	/**
-	 * @ORM\Column(type="string", length=64)
-	 */
-	private $uuid;
+	#[ORM\Column(type: 'string', length: 64)]
+    private $uuid;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\ClubLocation", inversedBy="clubLessons", cascade={"persist"})
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $club_location;
+	#[ORM\ManyToOne(targetEntity: \App\Entity\ClubLocation::class, inversedBy: 'clubLessons', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $club_location;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\Club", inversedBy="clubLessons", cascade={"persist"})
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $club;
+	#[ORM\ManyToOne(targetEntity: \App\Entity\Club::class, inversedBy: 'clubLessons', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $club;
 
-	/**
-	 * @ORM\Column(type="integer")
-	 */
-	private $point;
+	#[ORM\Column(type: 'integer')]
+    private $point;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	private $discipline;
+	#[ORM\Column(type: 'string', length: 255)]
+    private $discipline;
 
-	/**
-	 * @ORM\Column(type="string", length=512, nullable=true)
-	 */
-	private $age_level;
+	#[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private $age_level;
 
-	/**
-	 * @ORM\Column(type="string", length=20)
-	 */
-	private $day_of_week;
+	#[ORM\Column(type: 'string', length: 20)]
+    private $day_of_week;
 
-	/**
-	 * @ORM\Column(type="time")
-	 */
-	private $start_time;
+	#[ORM\Column(type: 'time')]
+    private $start_time;
 
-	/**
-	 * @ORM\Column(type="time")
-	 */
-	private $end_time;
+	#[ORM\Column(type: 'time')]
+    private $end_time;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $description;
 
     /**
      * Planning color (#RRGGBB), null = color of the discipline
-     * @ORM\Column(type="string", length=7, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 7, nullable: true)]
     private $color;
 
 	public function __construct()

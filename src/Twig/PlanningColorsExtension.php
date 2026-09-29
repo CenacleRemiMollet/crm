@@ -19,8 +19,8 @@ class PlanningColorsExtension extends AbstractExtension
     {
         return [
             // lesson color if set, else the discipline color (admin override, else CSS default); null = no color
-            new TwigFunction('lesson_color', [$this, 'lessonColor']),
-            new TwigFunction('discipline_color', [$this->planningColors, 'defaultFor']),
+            new TwigFunction('lesson_color', $this->lessonColor(...)),
+            new TwigFunction('discipline_color', $this->planningColors->defaultFor(...)),
         ];
     }
 

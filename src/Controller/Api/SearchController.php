@@ -4,12 +4,12 @@ namespace App\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Dao\SearchDao;
 use Symfony\Component\HttpFoundation\Response;
 use Hateoas\HateoasBuilder;
 use Psr\Log\LoggerInterface;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use App\Model\SearchResultsView;
 use App\Model\Pagination;
 use App\Util\Page\Pageable;
@@ -17,53 +17,50 @@ use App\Util\Page\Pageable;
 class SearchController extends AbstractController
 {
 
-	/**
-	 * @Route("/api/search", name="api_search", methods={"GET"})
-	 * @OA\Get(
-	 *     operationId="search",
-	 *     tags={"Search"},
-	 *     path="/api/search",
-	 *     summary="Search",
-	 *     @OA\Parameter(
-     *         description="query",
-     *         in="query",
-     *         name="q",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     ),
-	 *     @OA\Parameter(
-     *         description="page number",
-     *         in="query",
-     *         name="page",
-     *         required=false,
-     *         @OA\Schema(
-     *             format="string",
-     *             type="string"
-     *         )
-     *     ),
-	 *     @OA\Parameter(
-     *         description="max number of result in a page",
-     *         in="query",
-     *         name="n",
-     *         required=false,
-     *         @OA\Schema(
-     *             format="string",
-     *             type="string"
-     *         )
-     *     ),
-	 *     @OA\Response(response="200", description="Successful search")
-	 * )
-	 */
-	public function search(Request $request, LoggerInterface $logger)
+	public function __construct(private readonly \Doctrine\Persistence\ManagerRegistry $managerRegistry)
+    {
+    }
+    #[OA\Get(
+	    path: '/api/search',
+	    operationId: 'search',
+	    summary: 'Search',
+	    tags: ['Search'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'q',
+	            description: 'query',
+	            in: 'query',
+	            required: true,
+	            schema: new OA\Schema(type: 'string')
+	        ),
+	        new OA\Parameter(
+	            name: 'page',
+	            description: 'page number',
+	            in: 'query',
+	            required: false,
+	            schema: new OA\Schema(type: 'string', format: 'string')
+	        ),
+	        new OA\Parameter(
+	            name: 'n',
+	            description: 'max number of result in a page',
+	            in: 'query',
+	            required: false,
+	            schema: new OA\Schema(type: 'string', format: 'string')
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(response: '200', description: 'Successful search')
+	    ]
+	)]
+    #[Route(path: '/api/search', name: 'api_search', methods: ['GET'])]
+    public function search(Request $request, LoggerInterface $logger)
 	{
 	    $pageable = Pageable::of($request);
 		$query = trim($request->query->get('q', ''));
 		$logger->debug('query: ['.$query.']');
 		$searched = array();
 		if(strlen($query) >= 2) {
-			$search = new SearchDao($this->getDoctrine()->getManager(), $this->get('security.authorization_checker'));
+			$search = new SearchDao($this->managerRegistry->getManager(), $this->container->get('security.authorization_checker'));
 			$searched = $search->search($query, $this->getUser(), $pageable);
 		}
 

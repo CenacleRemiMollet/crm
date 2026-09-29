@@ -3,118 +3,89 @@
 namespace App\Model;
 
 use App\Validator\Constraints as AcmeAssert;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @OA\Schema(
- *     schema="ClubUpdate",
- *     description="Update a club",
- *     title="ClubUpdate",
- *     @OA\Xml(
- *         name="ClubUpdate"
- *     )
- * )
- */
+#[OA\Schema(
+    schema: 'ClubUpdate',
+    title: 'ClubUpdate',
+    description: 'Update a club',
+    xml: new OA\Xml(name: 'ClubUpdate')
+)]
 class ClubUpdate
 {
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="Abc Club")
-	 */
-	private $name;
+	#[OA\Property(type: 'string', example: 'Abc Club')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $name;
 
-	/**
-	 * @Assert\Type("boolean")
-	 * @OA\Property(type="boolean", example="true")
-	 */
-	private $active;
+	#[OA\Property(type: 'boolean', example: 'true')]
+    #[Assert\Type('boolean')]
+    private $active;
 	
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min=2, max = 64)
-	 * @Assert\Regex(pattern="/[a-z0-9_]{2,64}/")
-	 * @OA\Property(type="string", example="abcdef13245", pattern="^[a-z0-9_]{2,64}$")
-	 */
-	private $uuid;
+	#[OA\Property(type: 'string', pattern: '^[a-z0-9_]{2,64}$', example: 'abcdef13245')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 2, max: 64)]
+    #[Assert\Regex(pattern: '/[a-z0-9_]{2,64}/')]
+    private $uuid;
 	
-	/**
-	 * @Assert\Length(max = 512)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
-	 */
-	private $contact_emails;
+	#[OA\Property(type: 'string', example: 'mail_1@adresse.fr, mail_2@adresse.fr')]
+    #[Assert\Length(max: 512)]
+    #[AcmeAssert\NoHTML]
+    private $contact_emails;
 	
-	/**
-	 * @Assert\Length(max = 32)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="0 892 70 12 39")
-	 */
-	private $contact_phone;
+	#[OA\Property(type: 'string', example: '0 892 70 12 39')]
+    #[Assert\Length(max: 32)]
+    #[AcmeAssert\NoHTML]
+    private $contact_phone;
 	
-	/**
-	 * @Assert\Length(max = 512)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
-	 */
-	private $mailing_list;
+	#[OA\Property(type: 'string', example: 'mail_1@adresse.fr, mail_2@adresse.fr')]
+    #[Assert\Length(max: 512)]
+    #[AcmeAssert\NoHTML]
+    private $mailing_list;
 	
-	/**
-	 * @Assert\Length(max = 512)
-	 * @Assert\Url
-	 * @OA\Property(type="string", example="https://www.google.com")
-	 */
-	private $website_url;
+	#[OA\Property(type: 'string', example: 'https://www.google.com')]
+    #[Assert\Length(max: 512)]
+    #[Assert\Url(requireTld: false)]
+    private $website_url;
 
-	/**
-	 * @Assert\Length(max = 512)
-	 * @Assert\Url
-	 * @OA\Property(type="string", example="https://facebook.com/pages/category/Local-Business/Taekwonkido-Cenacle-Rémi-Mollet-158619684187704/")
-	 */
-	private $facebook_url;
+	#[OA\Property(
+	    type: 'string',
+	    example: 'https://facebook.com/pages/category/Local-Business/Taekwonkido-Cenacle-Rémi-Mollet-158619684187704/'
+	)]
+    #[Assert\Length(max: 512)]
+    #[Assert\Url(requireTld: false)]
+    private $facebook_url;
 
-	/**
-	 * @Assert\Length(max = 512)
-	 * @Assert\Url
-	 * @OA\Property(type="string", example="https://twitter.com/abc")
-	 */
-	private $twitter_url;
+	#[OA\Property(type: 'string', example: 'https://twitter.com/abc')]
+    #[Assert\Length(max: 512)]
+    #[Assert\Url(requireTld: false)]
+    private $twitter_url;
 
-	/**
-	 * @Assert\Length(max = 512)
-	 * @Assert\Url
-	 * @OA\Property(type="string", example="https://www.instagram.com/abc")
-	 */
-	private $instagram_url;
+	#[OA\Property(type: 'string', example: 'https://www.instagram.com/abc')]
+    #[Assert\Length(max: 512)]
+    #[Assert\Url(requireTld: false)]
+    private $instagram_url;
 
-	/**
-	 * @Assert\Length(max = 512)
-	 * @Assert\Url
-	 * @OA\Property(type="string", example="https://www.dailymotion.com/abc")
-	 */
-	private $dailymotion_url;
+	#[OA\Property(type: 'string', example: 'https://www.dailymotion.com/abc')]
+    #[Assert\Length(max: 512)]
+    #[Assert\Url(requireTld: false)]
+    private $dailymotion_url;
 	
-	/**
-	 * @Assert\Length(max = 512)
-	 * @Assert\Url
-	 * @OA\Property(type="string", example="https://www.youtube.com/abc")
-	 */
-	private $youtube_url;
+	#[OA\Property(type: 'string', example: 'https://www.youtube.com/abc')]
+    #[Assert\Length(max: 512)]
+    #[Assert\Url(requireTld: false)]
+    private $youtube_url;
 	
-	/**
-	 * @Assert\Type("float")
-	 * @OA\Property(type="number", format="float", nullable="true", example="29")
-	 */
-	private $price_cenacle_joining;
+	#[OA\Property(type: 'number', format: 'float', example: '29', nullable: true)]
+    #[Assert\Type('float')]
+    private $price_cenacle_joining;
 	
-	/**
-	 * @Assert\Type("float")
-	 * @OA\Property(type="number", format="float", nullable="true", example="79")
-	 */
-	private $price_base_subscribe;
+	#[OA\Property(type: 'number', format: 'float', example: '79', nullable: true)]
+    #[Assert\Type('float')]
+    private $price_base_subscribe;
 	
 	public function getName(): ?string
 	{

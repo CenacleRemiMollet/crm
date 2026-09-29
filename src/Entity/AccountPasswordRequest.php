@@ -5,33 +5,23 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Util\StringUtils;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AccountPasswordRequestRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\AccountPasswordRequestRepository::class)]
 class AccountPasswordRequest
 {
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+	#[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\Account")
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $account;
+	#[ORM\ManyToOne(targetEntity: \App\Entity\Account::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $account;
 
-	/**
-	 * @ORM\Column(type="string", length=40)
-	 */
-	private $uuid;
+	#[ORM\Column(type: 'string', length: 40)]
+    private $uuid;
 
-	/**
-	 * @ORM\Column(type="datetime")
-	 */
-	private $create_date;
+	#[ORM\Column(type: 'datetime')]
+    private $create_date;
 
 	public function __construct()
 	{

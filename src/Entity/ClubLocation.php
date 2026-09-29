@@ -7,66 +7,44 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Util\StringUtils;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ClubLocationRepository")
- * @ORM\Table(
- *	  indexes={@ORM\Index(name="idx_club_location_uuid", columns={"uuid"})},
- *	  uniqueConstraints={@ORM\UniqueConstraint(columns={"uuid"})})
- */
+#[ORM\Entity(repositoryClass: \App\Repository\ClubLocationRepository::class)]
+#[ORM\Table]
+#[ORM\Index(name: 'idx_club_location_uuid', columns: ['uuid'])]
+#[ORM\UniqueConstraint(columns: ['uuid'])]
 class ClubLocation
 {
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+	#[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-	/**
-	 * @ORM\Column(type="string", length=64)
-	 */
-	private $uuid;
+	#[ORM\Column(type: 'string', length: 64)]
+    private $uuid;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\Club")
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $club;
+	#[ORM\ManyToOne(targetEntity: \App\Entity\Club::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $club;
 	
-	/**
-	 * @ORM\Column(type="string", length=128)
-	 */
-	private $name;
+	#[ORM\Column(type: 'string', length: 128)]
+    private $name;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	private $address;
+	#[ORM\Column(type: 'string', length: 255)]
+    private $address;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	private $city;
+	#[ORM\Column(type: 'string', length: 255)]
+    private $city;
 
-	/**
-	 * @ORM\Column(type="string", length=20)
-	 */
-	private $zipcode;
+	#[ORM\Column(type: 'string', length: 20)]
+    private $zipcode;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	private $county;
+	#[ORM\Column(type: 'string', length: 255)]
+    private $county;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	private $country;
+	#[ORM\Column(type: 'string', length: 255)]
+    private $country;
 
-	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\ClubLesson", mappedBy="club_location", orphanRemoval=true)
-	 */
-	private $clubLessons;
+	#[ORM\OneToMany(targetEntity: \App\Entity\ClubLesson::class, mappedBy: 'club_location', orphanRemoval: true)]
+    private $clubLessons;
 
 	public function __construct()
 	{

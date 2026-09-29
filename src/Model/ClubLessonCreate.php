@@ -3,101 +3,83 @@
 namespace App\Model;
 
 use App\Validator\Constraints as AcmeAssert;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @OA\Schema(
- *     schema="ClubLessonCreate",
- *     description="Create a club lesson",
- *     title="ClubLessonCreate",
- *     required={"discipline", "day_of_week", "start_time", "end_time"},
- *     @OA\Xml(
- *         name="ClubLessonCreate"
- *     )
- * )
- */
+#[OA\Schema(
+    schema: 'ClubLessonCreate',
+    title: 'ClubLessonCreate',
+    description: 'Create a club lesson',
+    required: ['discipline', 'day_of_week', 'start_time', 'end_time'],
+    xml: new OA\Xml(name: 'ClubLessonCreate')
+)]
 class ClubLessonCreate
 {
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min=2, max = 64)
-	 * @Assert\Regex(pattern="/[A-Za-z0-9_]{2,64}/")
-	 * @OA\Property(type="string", example="abcdef13245", pattern="^[A-Za-z0-9_]{2,64}$")
-	 */
-	private $location_uuid;
+	#[OA\Property(type: 'string', pattern: '^[A-Za-z0-9_]{2,64}$', example: 'abcdef13245')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 2, max: 64)]
+    #[Assert\Regex(pattern: '/[A-Za-z0-9_]{2,64}/')]
+    private $location_uuid;
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min=2, max = 64)
-	 * @Assert\Regex(pattern="/[A-Za-z0-9_]{2,64}/")
-	 * @OA\Property(type="string", example="abcdef13245", pattern="^[A-Za-z0-9_]{2,64}$")
-	 */
-	private $uuid;
+	#[OA\Property(type: 'string', pattern: '^[A-Za-z0-9_]{2,64}$', example: 'abcdef13245')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 2, max: 64)]
+    #[Assert\Regex(pattern: '/[A-Za-z0-9_]{2,64}/')]
+    private $uuid;
 	
-	/**
-	 * @Assert\Type("integer")
-	 * @Assert\Range(min = 1, max = 20)
-	 * @OA\Property(type="integer", default = 1)
-	 */
-	private $point = 1;
+	#[OA\Property(type: 'integer', default: 1)]
+    #[Assert\Type('integer')]
+    #[Assert\Range(min: 1, max: 20)]
+    private $point = 1;
 
-	/**
-	 * @Assert\NotBlank
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="Taekwondo")
-	 */
-	private $discipline;
+	#[OA\Property(type: 'string', example: 'Taekwondo')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $discipline;
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(max = 512)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="baby")
-	 */
-	private $age_level;
+	#[OA\Property(type: 'string', example: 'baby')]
+    #[Assert\Type('string')]
+    #[Assert\Length(max: 512)]
+    #[AcmeAssert\NoHTML]
+    private $age_level;
 
-	/**
-	 * @Assert\NotBlank
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 20)
-	 * @AcmeAssert\DayOfWeek
-	 * @OA\Property(type="string", example="monday", enum={"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"})
-	 */
-	private $day_of_week;
+	#[OA\Property(
+	    type: 'string',
+	    enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+	    example: 'monday'
+	)]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 20)]
+    #[AcmeAssert\DayOfWeek]
+    private $day_of_week;
 
-	/**
-	 * @Assert\NotNull
-	 * @AcmeAssert\HourMinute
-	 * @OA\Property(type="time", example="19:00")
-	 */
-	private $start_time;
+	#[OA\Property(type: 'time', example: '19:00')]
+    #[Assert\NotNull]
+    #[AcmeAssert\HourMinute]
+    private $start_time;
 
-	/**
-	 * @Assert\NotNull
-	 * @AcmeAssert\HourMinute
-	 * @OA\Property(type="time", example="20:00")
-	 */
-	private $end_time;
+	#[OA\Property(type: 'time', example: '20:00')]
+    #[Assert\NotNull]
+    #[AcmeAssert\HourMinute]
+    private $end_time;
 	
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string")
-	 */
-	private $description;
+	#[OA\Property(type: 'string')]
+    #[Assert\Type('string')]
+    #[Assert\Length(max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $description;
 
 	/**
 	 * Planning color, empty = color of the discipline
-	 * @Assert\Type("string")
-	 * @Assert\Regex(pattern="/^(#[0-9a-fA-F]{6})?$/", message="Color must be #RRGGBB")
-	 * @OA\Property(type="string", example="#E66F78", pattern="^(#[0-9a-fA-F]{6})?$")
 	 */
-	private $color;
+	#[OA\Property(type: 'string', pattern: '^(#[0-9a-fA-F]{6})?$', example: '#E66F78')]
+    #[Assert\Type('string')]
+    #[Assert\Regex(pattern: '/^(#[0-9a-fA-F]{6})?$/', message: 'Color must be #RRGGBB')]
+    private $color;
 	
 	public function getLocationUuid(): ?string
 	{

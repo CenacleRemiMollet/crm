@@ -4,54 +4,36 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserHistoryRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\UserHistoryRepository::class)]
 class UserHistory
 {
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+	#[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\User")
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $modifier_user;
+	#[ORM\ManyToOne(targetEntity: \App\Entity\User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $modifier_user;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\User")
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $modified_user;
+	#[ORM\ManyToOne(targetEntity: \App\Entity\User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $modified_user;
 
-	/**
-	 * @ORM\Column(type="datetime")
-	 */
-	private $modification_date;
+	#[ORM\Column(type: 'datetime')]
+    private $modification_date;
 
-	/**
-	 * @ORM\Column(type="string", length=64)
-	 */
-	private $element_name;
+	#[ORM\Column(type: 'string', length: 64)]
+    private $element_name;
 
-	/**
-	 * @ORM\Column(type="string", length=255, nullable=true)
-	 */
-	private $previous_value;
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $previous_value;
 
-	/**
-	 * @ORM\Column(type="string", length=255, nullable=true)
-	 */
-	private $new_value;
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $new_value;
 
-	/**
-	 * @ORM\Column(type="string", length=1)
-	 */
-	private $action;
+	#[ORM\Column(type: 'string', length: 1)]
+    private $action;
 
 	public function __construct()
 	{

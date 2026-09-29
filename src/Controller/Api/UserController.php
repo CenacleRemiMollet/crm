@@ -13,11 +13,11 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use primus852\ShortResponse\ShortResponse;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use App\Model\UsersView;
 use App\Model\Pagination;
 use App\Model\UserMeView;
@@ -44,9 +44,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Util\DateUtils;
 use App\Model\UserClubSubscribeCreate;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 
 class UserController extends AbstractController
 {
+    use \App\Controller\DoctrineSubscriberTrait;
+
 
 	private $logger;
 
@@ -56,70 +59,69 @@ class UserController extends AbstractController
 	}
 
 	
-	/**
-	 * @Route("/api/users", name="api_get_users", methods={"GET"}, format="text/plain")
-	 * @OA\Get(
-	 *     operationId="getUsers",
-	 *     path="/api/users",
-	 *     summary="List of users",
-	 *     tags={"User"},
-	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(
-     *         description="page number",
-     *         in="query",
-     *         name="page",
-     *         required=false,
-     *         @OA\Schema(
-     *             format="string",
-     *             type="string"
-     *         )
-     *     ),
-	 *     @OA\Parameter(
-     *         description="max number of result in a page",
-     *         in="query",
-     *         name="n",
-     *         required=false,
-     *         @OA\Schema(
-     *             format="string",
-     *             type="string"
-     *         )
-     *     ),
-	 *     @OA\Parameter(
-     *         description="pattern filter",
-     *         in="query",
-     *         name="q",
-     *         required=false,
-     *         @OA\Schema(
-     *             format="string",
-     *             type="string"
-     *         )
-     *     ),
-	 *     @OA\Parameter(
-     *         description="club filter",
-     *         in="query",
-     *         name="club",
-     *         required=false,
-     *         @OA\Schema(
-     *             format="string",
-     *             type="string",
-     *             pattern="[a-z0-9_]{2,64}"
-     *         )
-     *     ),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Items(ref="#/components/schemas/Pagination")
-	 *         ),
-	 *         @OA\MediaType(mediaType="text/csv"),
-	 *         @OA\MediaType(mediaType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-	 *         )
-	 *     ),
-	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function getUsers(Request $request): Response
+	#[OA\Get(
+	    path: '/api/users',
+	    operationId: 'getUsers',
+	    summary: 'List of users',
+	    security: [['basicAuth' => []]],
+	    tags: ['User'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'page',
+	            description: 'page number',
+	            in: 'query',
+	            required: false,
+	            schema: new OA\Schema(type: 'string', format: 'string')
+	        ),
+	        new OA\Parameter(
+	            name: 'n',
+	            description: 'max number of result in a page',
+	            in: 'query',
+	            required: false,
+	            schema: new OA\Schema(type: 'string', format: 'string')
+	        ),
+	        new OA\Parameter(
+	            name: 'q',
+	            description: 'pattern filter',
+	            in: 'query',
+	            required: false,
+	            schema: new OA\Schema(type: 'string', format: 'string')
+	        ),
+	        new OA\Parameter(
+	            name: 'club',
+	            description: 'club filter',
+	            in: 'query',
+	            required: false,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}')
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(
+	            response: '200',
+	            description: 'Successful',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Pagination')
+	                ),
+	                new OA\MediaType(mediaType: 'text/csv'),
+	                new OA\MediaType(mediaType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '404',
+	            description: 'Club not found',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/users', name: 'api_get_users', methods: ['GET'], format: 'text/plain')]
+    public function getUsers(Request $request): Response
 	{
 	    $accept = $request->headers->get('accept');
 	    if('text/csv' === $accept) {
@@ -184,37 +186,46 @@ class UserController extends AbstractController
 	}
 
 		
-	/**
-	 * @Route("/api/users/{user_uuid}", name="api_get_user", methods={"GET"})
-	 * @OA\Get(
-	 *     operationId="getUser",
-	 *     path="/api/users/{user_uuid}",
-	 *     summary="Get a user",
-	 *     tags={"User"},
-	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(
-	 *         description="UUID of user",
-	 *         in="path",
-	 *         name="user_uuid",
-	 *         required=true,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string",
-	 *             pattern="[a-z0-9_]{2,64}"
-	 *         )
-	 *     ),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Items(ref="#/components/schemas/User")
-	 *         )
-	 *     ),
-	 *     @OA\Response(response="404", description="User not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function getAUser(string $user_uuid): Response
+	#[OA\Get(
+	    path: '/api/users/{user_uuid}',
+	    operationId: 'getUser',
+	    summary: 'Get a user',
+	    security: [['basicAuth' => []]],
+	    tags: ['User'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'user_uuid',
+	            description: 'UUID of user',
+	            in: 'path',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}')
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(
+	            response: '200',
+	            description: 'Successful',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/User')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '404',
+	            description: 'User not found',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/users/{user_uuid}', name: 'api_get_user', methods: ['GET'])]
+    public function getAUser(string $user_uuid): Response
 	{
 	    $user = $this->findUserOrAccessDenied($user_uuid);
 	    $hateoas = HateoasBuilder::create()->build();
@@ -225,28 +236,31 @@ class UserController extends AbstractController
 	}
 	
 	
-	/**
-	 * @Route("/api/user/me", name="api_user_me", methods={"GET"})
-	 * @OA\Get(
-	 *     operationId="getUserMe",
-	 *     path="/api/user/me",
-	 *     summary="Gives informations about me",
-	 *     tags={"User"},
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(ref="#/components/schemas/User")
-	 *         )
-	 *     )
-	 * )
-	 */
-	public function me()
+	#[OA\Get(
+	    path: '/api/user/me',
+	    operationId: 'getUserMe',
+	    summary: 'Gives informations about me',
+	    tags: ['User'],
+	    responses: [
+	        new OA\Response(
+	            response: '200',
+	            description: 'Successful',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/User')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/user/me', name: 'api_user_me', methods: ['GET'])]
+    public function me()
 	{
 	    $grantedRoles = array();
 	    foreach (Roles::ROLES as &$role) {
-	        if($this->isGranted($role)) {
+	        // Symfony 6+ dropped IS_AUTHENTICATED_ANONYMOUSLY: PUBLIC_ACCESS keeps the API output unchanged
+	        if($this->isGranted($role === Roles::ROLE_ANONYMOUS ? AuthenticatedVoter::PUBLIC_ACCESS : $role)) {
 	            array_push($grantedRoles, $role);
 	        }
 	    }
@@ -266,31 +280,41 @@ class UserController extends AbstractController
 	}
 	
 	
-    /**
- 	 * @Route("/api/users", name="api_create_user", methods={"POST"})
-	 * @OA\Post(
-	 *     operationId="createUser",
-	 *     path="/api/users",
-	 *     summary="Create an user",
-	 *     tags={"User"},
-	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
-     *     @OA\RequestBody(
-     *         description="User object that needs to be added",
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/UserCreate"),
-     *     ),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(ref="#/components/schemas/User")
-	 *         )
-	 *     )
-	 * )
-	 */
-	public function createUser(Request $request, SessionInterface $session, SerializerInterface $serializer, TranslatorInterface $translator)
+    #[OA\Post(
+        path: '/api/users',
+        operationId: 'createUser',
+        summary: 'Create an user',
+        security: [['basicAuth' => []]],
+        requestBody: new OA\RequestBody(
+            description: 'User object that needs to be added',
+            required: true,
+            content: new OA\JsonContent(ref: '#/components/schemas/UserCreate')
+        ),
+        tags: ['User'],
+        parameters: [
+            new OA\Parameter(
+                name: 'X-ClientId',
+                in: 'header',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}'),
+                example: 'my-client-name'
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Successful',
+                content: [
+                    new OA\MediaType(
+                        mediaType: 'application/hal+json',
+                        schema: new OA\Schema(ref: '#/components/schemas/User')
+                    )
+                ]
+            )
+        ]
+    )]
+    #[Route(path: '/api/users', name: 'api_create_user', methods: ['POST'])]
+    public function createUser(Request $request, SessionInterface $session, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
 	    if( ! $this->isGranted(Roles::ROLE_ADMIN)
 	        && ! $this->isGranted(Roles::ROLE_SUPER_ADMIN)
@@ -356,38 +380,69 @@ class UserController extends AbstractController
 	}
 
 	
-	/**
-	 * @Route("/api/users/{user_uuid}", name="api_update_user", methods={"PATCH"}, requirements={"user_uuid"="[a-z0-9_]{2,64}"})
-	 * @OA\Patch(
-	 *     operationId="updateUser",
-	 *     tags={"User"},
-	 *     path="/api/users/{user_uuid}",
-	 *     summary="Update an user",
-	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
-	 *     @OA\Parameter(
-	 *         description="UUID of user",
-	 *         in="path",
-	 *         name="user_uuid",
-	 *         required=true,
-	 *         @OA\Schema(
-	 *             format="string",
-	 *             type="string",
-	 *             pattern="[a-z0-9_]{2,64}"
-	 *         )
-	 *     ),
-	 *     @OA\RequestBody(
-	 *         description="Location object that needs to be added",
-	 *         required=true,
-	 *         @OA\JsonContent(ref="#/components/schemas/UserUpdate"),
-	 *     ),
-	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
-	 *     @OA\Response(response="403", description="Forbidden to update an user", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
-	 *     @OA\Response(response="404", description="User not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function updateUser(string $user_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
+	#[OA\Patch(
+	    path: '/api/users/{user_uuid}',
+	    operationId: 'updateUser',
+	    summary: 'Update an user',
+	    security: [['basicAuth' => []]],
+	    requestBody: new OA\RequestBody(
+	        description: 'Location object that needs to be added',
+	        required: true,
+	        content: new OA\JsonContent(ref: '#/components/schemas/UserUpdate')
+	    ),
+	    tags: ['User'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'X-ClientId',
+	            in: 'header',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}'),
+	            example: 'my-client-name'
+	        ),
+	        new OA\Parameter(
+	            name: 'user_uuid',
+	            description: 'UUID of user',
+	            in: 'path',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}')
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(response: '204', description: 'Successful'),
+	        new OA\Response(
+	            response: '400',
+	            description: 'Request contains not valid field',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '403',
+	            description: 'Forbidden to update an user',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '404',
+	            description: 'User not found',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/users/{user_uuid}', name: 'api_update_user', methods: ['PATCH'], requirements: ['user_uuid' => '[a-z0-9_]{2,64}'])]
+    public function updateUser(string $user_uuid, Request $request, SerializerInterface $serializer, TranslatorInterface $translator): Response
 	{
 	    /** @var ManagerRegistry $doctrine */
 	    $doctrine = $this->container->get('doctrine');

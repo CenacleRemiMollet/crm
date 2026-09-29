@@ -3,8 +3,8 @@
 namespace App\Controller\Debug;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use App\Emails\EmailTypes;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,27 +13,21 @@ use App\Emails\EmailFactory;
 use Psr\Log\LoggerInterface;
 
 
-/**
- * @Route("/debug")
- */
+#[Route(path: '/debug')]
 class EmailsPreviewController extends AbstractController
 {
-	/**
-	 * @Route("/email", name="web_email_list-type", methods={"GET"})
-	 * @IsGranted("ROLE_ADMIN")
-	 */
-	public function listTypes()
+	#[Route(path: '/email', name: 'web_email_list-type', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function listTypes()
 	{
 		return $this->render('emails/viewEmailList.html.twig', [
 			'emailTypes' => array_keys(EmailTypes::getTypes())
 		]);
 	}
 
-	/**
-	 * @Route("/email/{name}", name="web_email_list-mimetypes", methods={"GET"})
-	 * @IsGranted("ROLE_ADMIN")
-	 */
-	public function listMimeTypes($name)
+	#[Route(path: '/email/{name}', name: 'web_email_list-mimetypes', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function listMimeTypes($name)
 	{
 		$parameters = EmailTypes::getTypes()[$name];
 		if($parameters == null) {
@@ -53,11 +47,9 @@ class EmailsPreviewController extends AbstractController
 	}
 
 
-	/**
-	 * @Route("/email/{name}", name="web_email_send", methods={"POST"})
-	 * @IsGranted("ROLE_ADMIN")
-	 */
-	public function sendMail(Request $request, \Swift_Mailer $mailer, TranslatorInterface $translator, LoggerInterface $logger, $name)
+	#[Route(path: '/email/{name}', name: 'web_email_send', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function sendMail(Request $request, \Swift_Mailer $mailer, TranslatorInterface $translator, LoggerInterface $logger, $name)
 	{
 		$parameters = EmailTypes::getTypes()[$name];
 		if($parameters == null) {
@@ -77,11 +69,9 @@ class EmailsPreviewController extends AbstractController
 	}
 
 
-	/**
- 	 * @Route("/email/{name}/{mt}", name="web_email_name_mimetype", methods={"GET"})
- 	 * @IsGranted("ROLE_ADMIN")
-	 */
-	public function viewEmailMimeType($name, $mt)
+	#[Route(path: '/email/{name}/{mt}', name: 'web_email_name_mimetype', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function viewEmailMimeType($name, $mt)
 	{
 		$parameters = EmailTypes::getTypes()[$name];
 		if($parameters == null) {

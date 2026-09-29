@@ -20,7 +20,7 @@ class RequestUtil
 	{
 		$this->serializer = $serializer;
 		$this->validator = Validation::createValidatorBuilder()
-		      ->enableAnnotationMapping()
+		      ->enableAttributeMapping()
 		      ->getValidator();
 		$this->violator = new ViolationUtil($translator);
 	}

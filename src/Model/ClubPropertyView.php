@@ -3,38 +3,29 @@
 namespace App\Model;
 
 use App\Entity\ClubLocation;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 use App\Entity\Club;
 use App\Entity\ClubProperty;
 
 /**
- * @OA\Schema(schema="ClubProperty")
- * @Serializer\XmlRoot("club")
- *
  * @author f.agu
  */
+#[OA\Schema(schema: 'ClubProperty')]
+#[Serializer\XmlRoot('club')]
 class ClubPropertyView
 {
-    /**
-     * @OA\Property(type="string", example="abcd-xyz")
-     */
+    #[OA\Property(type: 'string', example: 'abcd-xyz')]
     private $club_uuid;
     
-    /**
-	 * @OA\Property(type="string", example="abcd-xyz")
-	 */
+    #[OA\Property(type: 'string', example: 'abcd-xyz')]
 	private $uuid;
 
-	/**
-	 * @OA\Property(type="string", example="Gymnase Abc")
-	 */
+	#[OA\Property(type: 'string', example: 'Gymnase Abc')]
 	private $name;
 
-	/**
-	 * @OA\Property(type="string", example="a value")
-	 */
+	#[OA\Property(type: 'string', example: 'a value')]
 	private $value;
 
 	public function __construct(Club $club, ClubProperty $clubProperty)

@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Util\DateIntervalUtils;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\ClubPrice;
@@ -20,6 +20,8 @@ use Hateoas\HateoasBuilder;
 
 class UserController extends AbstractController
 {
+    use \App\Controller\DoctrineSubscriberTrait;
+
 
     private LoggerInterface $logger;
     
@@ -29,9 +31,7 @@ class UserController extends AbstractController
     }
 
     
-	/**
-	 * @Route("/users", name="web_view_users", methods={"GET"})
-	 */
+	#[Route(path: '/users', name: 'web_view_users', methods: ['GET'])]
     public function getUsers(Request $request, SessionInterface $session)
 	{
 	    $response = $this->forward('App\Controller\Api\UserController::getUsers', ['request' => $request]);
@@ -54,10 +54,8 @@ class UserController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/users/{user_uuid}", name="web_view_user", methods={"GET"})
-	 */
-	public function getAUser(string $user_uuid)
+	#[Route(path: '/users/{user_uuid}', name: 'web_view_user', methods: ['GET'])]
+    public function getAUser(string $user_uuid)
 	{
 	    $userResponse = $this->forward('App\Controller\Api\UserController::getAUser', ["user_uuid" => $user_uuid]);
 	    if($userResponse->getStatusCode() != 200) {
@@ -78,10 +76,8 @@ class UserController extends AbstractController
 	    ]);
 	}
 	
-	/**
-	 * @Route("/user-new", name="web_new_user", methods={"GET"})
-	 */
-	public function getUserNew()
+	#[Route(path: '/user-new', name: 'web_new_user', methods: ['GET'])]
+    public function getUserNew()
 	{
 	    if( ! $this->isGranted(Roles::ROLE_ADMIN)
 	        && ! $this->isGranted(Roles::ROLE_SUPER_ADMIN)

@@ -3,82 +3,62 @@
 namespace App\Model;
 
 use App\Validator\Constraints as AcmeAssert;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @OA\Schema(
- *     schema="ClubPriceCreate",
- *     description="Create a club price",
- *     title="ClubPriceCreate",
- *     required={"discipline"},
- *     @OA\Xml(
- *         name="ClubPriceCreate"
- *     )
- * )
- */
+#[OA\Schema(
+    schema: 'ClubPriceCreate',
+    title: 'ClubPriceCreate',
+    description: 'Create a club price',
+    required: ['discipline'],
+    xml: new OA\Xml(name: 'ClubPriceCreate')
+)]
 class ClubPriceCreate
 {
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min=2, max = 64)
-	 * @Assert\Regex(pattern="/[A-Za-z0-9_]{2,64}/")
-	 * @OA\Property(type="string", example="abcdef13245", pattern="^[A-Za-z0-9_]{2,64}$")
-	 */
-	private $uuid;
+	#[OA\Property(type: 'string', pattern: '^[A-Za-z0-9_]{2,64}$', example: 'abcdef13245')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 2, max: 64)]
+    #[Assert\Regex(pattern: '/[A-Za-z0-9_]{2,64}/')]
+    private $uuid;
 
-	/**
-	 * @Assert\NotBlank
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="Baby Taekwondo")
-	 */
-	private $discipline;
+	#[OA\Property(type: 'string', example: 'Baby Taekwondo')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $discipline;
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="Baby")
-	 */
-	private $category;
+	#[OA\Property(type: 'string', example: 'Baby')]
+    #[Assert\Type('string')]
+    #[Assert\Length(max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $category;
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="(4-6 ans)")
-	 */
-	private $comment;
+	#[OA\Property(type: 'string', example: '(4-6 ans)')]
+    #[Assert\Type('string')]
+    #[Assert\Length(max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $comment;
 	
-	/**
-	 * @Assert\Type("float")
-	 * @Assert\Range(min = 1, max = 999)
-	 * @OA\Property(type="float", example = 190)
-	 */
-	private $child1;
+	#[OA\Property(type: 'float', example: 190)]
+    #[Assert\Type('float')]
+    #[Assert\Range(min: 1, max: 999)]
+    private $child1;
 	
-	/**
-	 * @Assert\Type("float")
-	 * @Assert\Range(min = 1, max = 999)
-	 * @OA\Property(type="float", example = 180)
-	 */
-	private $child2;
+	#[OA\Property(type: 'float', example: 180)]
+    #[Assert\Type('float')]
+    #[Assert\Range(min: 1, max: 999)]
+    private $child2;
 	
-	/**
-	 * @Assert\Type("float")
-	 * @Assert\Range(min = 1, max = 999)
-	 * @OA\Property(type="float", example = 170)
-	 */
-	private $child3;
+	#[OA\Property(type: 'float', example: 170)]
+    #[Assert\Type('float')]
+    #[Assert\Range(min: 1, max: 999)]
+    private $child3;
 	
-	/**
-	 * @Assert\Type("float")
-	 * @Assert\Range(min = 1, max = 999)
-	 * @OA\Property(type="float", example = 210)
-	 */
-	private $adult;
+	#[OA\Property(type: 'float', example: 210)]
+    #[Assert\Type('float')]
+    #[Assert\Range(min: 1, max: 999)]
+    private $adult;
 	
 	public function getUuid(): ?string
 	{

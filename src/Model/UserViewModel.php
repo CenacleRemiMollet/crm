@@ -4,77 +4,49 @@ namespace App\Model;
 
 use App\Entity\User;
 use JMS\Serializer\Annotation as Serializer;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @Serializer\XmlRoot("user")
- * @OA\Schema(schema="UserBase")
- */
+#[OA\Schema(schema: 'UserBase')]
+#[Serializer\XmlRoot('user')]
 class UserViewModel
 {
-	/**
-	 * @OA\Property(type="string", example="abcDEF654")
-	 */
+	#[OA\Property(type: 'string', example: 'abcDEF654')]
 	private $uuid;
 
-	/**
-	 * @OA\Property(type="string", example="Doe")
-	 */
+	#[OA\Property(type: 'string', example: 'Doe')]
 	private $lastname;
 
-	/**
-	 * @OA\Property(type="string", example="John")
-	 */
+	#[OA\Property(type: 'string', example: 'John')]
 	private $firstname;
 
-	/**
-	 * @OA\Property(ref="#/components/schemas/DateModel")
-	 */
+	#[OA\Property(ref: '#/components/schemas/DateModel')]
 	private $birthday; 	// , items = @ OA \ Items(ref="#/components/schemas/DateModel")
 
-	/**
-	 * @OA\Property(type="string", example="F")
-	 */
+	#[OA\Property(type: 'string', example: 'F')]
 	private $sex;
 
-	/**
-	 * @OA\Property(type="string", example="5 Avenue Anatole France")
-	 */
+	#[OA\Property(type: 'string', example: '5 Avenue Anatole France')]
 	private $address;
 
-	/**
-	 * @OA\Property(type="string", example="75007")
-	 */
+	#[OA\Property(type: 'string', example: '75007')]
 	private $zipcode;
 
-	/**
-	 * @OA\Property(type="string", example="Paris")
-	 */
+	#[OA\Property(type: 'string', example: 'Paris')]
 	private $city;
 
-	/**
-	 * @OA\Property(type="string", example="0 892 70 12 39")
-	 */
+	#[OA\Property(type: 'string', example: '0 892 70 12 39')]
 	private $phone;
 
-	/**
-	 * @OA\Property(type="string", example="0 892 70 12 39")
-	 */
+	#[OA\Property(type: 'string', example: '0 892 70 12 39')]
 	private $phone_emergency;
 
-	/**
-	 * @OA\Property(type="string", example="Française")
-	 */
+	#[OA\Property(type: 'string', example: 'Française')]
 	private $nationality;
 
-	/**
-	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
-	 */
+	#[OA\Property(type: 'string', example: 'mail_1@adresse.fr, mail_2@adresse.fr')]
 	private $mails;
 
-	/**
-	 * @OA\Property(type="object")
-	 */
+	#[OA\Property(type: 'object')]
 	private $created; // , items = @ OA\Items(ref="#/components/schemas/DateModel")
 
 	public function __construct(User $user)

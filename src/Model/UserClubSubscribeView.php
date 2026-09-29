@@ -5,40 +5,28 @@ namespace App\Model;
 use Hateoas\Configuration\Annotation as Hateoas;
 use App\Entity\User;
 use JMS\Serializer\Annotation as Serializer;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Hateoas\Helper\LinkHelper;
 use App\Entity\UserClubSubscribe;
 
-/**
- * @Serializer\XmlRoot("UserClubSubscribe")
- * @OA\Schema(schema="UserClubSubscribe")
- */
+#[OA\Schema(schema: 'UserClubSubscribe')]
+#[Serializer\XmlRoot('UserClubSubscribe')]
 class UserClubSubscribeView
 {
 
-    /**
-     * @OA\Property(type="string", example="abcDEF654")
-     */
+    #[OA\Property(type: 'string', example: 'abcDEF654')]
     private $uuid;
     
-    /**
-	 * @OA\Property(type="array", example="ROLE_STUDENT", @OA\Items(type="string"))
-	 */
+    #[OA\Property(type: 'array', items: new OA\Items(type: 'string'), example: 'ROLE_STUDENT')]
 	private $roles;
 	
-	/**
-	 * @OA\Property(type="object")
-	 */
+	#[OA\Property(type: 'object')]
 	private $subscribeDate;
 	
-	/**
-	 * @OA\Property(type="object")
-	 */
+	#[OA\Property(type: 'object')]
 	private $unsubscribeDate;
 
-	/**
-	 * @OA\Property(ref="#/components/schemas/Club")
-	 */
+	#[OA\Property(ref: '#/components/schemas/Club')]
 	private $club;
 	
 	public function __construct(UserClubSubscribe $UserClubSubscribe)

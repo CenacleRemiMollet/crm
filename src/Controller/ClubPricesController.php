@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Util\DateIntervalUtils;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\ClubPrice;
@@ -16,6 +16,8 @@ use App\Entity\EntityFinder;
 
 class ClubPricesController extends AbstractController
 {
+    use \App\Controller\DoctrineSubscriberTrait;
+
 
     private LoggerInterface $logger;
     
@@ -25,9 +27,7 @@ class ClubPricesController extends AbstractController
     }
 
     
-	/**
-	 * @Route("/club/{uuid}/prices", name="web_view_club_prices", methods={"GET"})
-	 */
+	#[Route(path: '/club/{uuid}/prices', name: 'web_view_club_prices', methods: ['GET'])]
     public function getPrices(string $uuid, Request $request, SessionInterface $session)
 	{
 	    $doctrine = $this->container->get('doctrine');
@@ -46,10 +46,8 @@ class ClubPricesController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/club/{club_uuid}/prices/{price_uuid}", name="web_view_club_price", methods={"GET"})
-	 */
-	public function getPrice(string $club_uuid, string $price_uuid, Request $request, SessionInterface $session)
+	#[Route(path: '/club/{club_uuid}/prices/{price_uuid}', name: 'web_view_club_price', methods: ['GET'])]
+    public function getPrice(string $club_uuid, string $price_uuid, Request $request, SessionInterface $session)
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    
@@ -68,10 +66,8 @@ class ClubPricesController extends AbstractController
 	    ]);
 	}
 	
-	/**
-	 * @Route("/club/{club_uuid}/price-new", name="web_new_club_price", methods={"GET"})
-	 */
-	public function getLocationNew(string $club_uuid, Request $request, SessionInterface $session)
+	#[Route(path: '/club/{club_uuid}/price-new', name: 'web_new_club_price', methods: ['GET'])]
+    public function getLocationNew(string $club_uuid, Request $request, SessionInterface $session)
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    

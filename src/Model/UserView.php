@@ -5,41 +5,29 @@ namespace App\Model;
 use Hateoas\Configuration\Annotation as Hateoas;
 use App\Entity\User;
 use JMS\Serializer\Annotation as Serializer;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Hateoas\Helper\LinkHelper;
 use App\Entity\UserClubSubscribe;
 use App\Entity\Account;
 
-/**
- * @Serializer\XmlRoot("user")
- * @Hateoas\Relation("self", href = "expr('/crm/api/users/' ~ object.getUuid())")
- * @OA\Schema(schema="User")
- */
+#[OA\Schema(schema: 'User')]
+#[Serializer\XmlRoot('user')]
+#[Hateoas\Relation('self', href: "expr('/crm/api/users/' ~ object.getUuid())")]
 class UserView extends UserViewModel
 {
-	/**
-	 * @OA\Property(type="string", example="j.doe")
-	 */
+	#[OA\Property(type: 'string', example: 'j.doe')]
 	private $login;
 
-	/**
-	 * @OA\Property(type="array", example="abcDEF654", @OA\Items(type="string"))
-	 */
+	#[OA\Property(type: 'array', items: new OA\Items(type: 'string'), example: 'abcDEF654')]
 	private $roles;
 	
-	/**
-	 * @OA\Property(type="array", example="abcDEF654", @OA\Items(type="string"))
-	 */
+	#[OA\Property(type: 'array', items: new OA\Items(type: 'string'), example: 'abcDEF654')]
 	private $granted_roles;
 	
-	/**
-	 * @OA\Property(type="object")
-	 */
+	#[OA\Property(type: 'object')]
 	private $subscribes;
 
-	/**
-	 * @OA\Property(type="boolean")
-	 */
+	#[OA\Property(type: 'boolean')]
 	private $myself;
 	
 	public function __construct(User $user, $myself = null, ?bool $attachClubSubscribe = false)

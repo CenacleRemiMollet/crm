@@ -50,12 +50,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     	$this->logger = $logger;
     }
 
-    public function authenticate(Request $request): PassportInterface
+    public function authenticate(Request $request): \Symfony\Component\Security\Http\Authenticator\Passport\Passport
     {
         $this->logger->debug('authenticate');
         $login = $request->request->get('login', '');
 
-        $request->getSession()->set(Security::LAST_USERNAME, $login);
+        $request->getSession()->set(\Symfony\Component\Security\Http\SecurityRequestAttributes::LAST_USERNAME, $login);
 
 //         $pwd = $credentials['password'];
 //         if(substr($pwd, 0, 5) === 'sha1:') {
@@ -65,7 +65,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             new UserBadge($login),
             new PasswordCredentials($request->request->get('password', '')),
             [
-                new CsrfTokenBadge('authenticate', $request->get('_csrf_token')),
+                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
             ]
         );
     }
@@ -86,7 +86,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     		'csrf_token' => $request->request->get('_csrf_token'),
     	];
     	$request->getSession()->set(
-    		Security::LAST_USERNAME,
+    		\Symfony\Component\Security\Http\SecurityRequestAttributes::LAST_USERNAME,
     		$credentials['login']
     		);
 
@@ -166,7 +166,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     }
 
     //********************************************
-    
+
 //     private function checkCredentialsLegacy($sha1, $password, Account $user)
 //     {
 //     	$salt = 'gh(-#fgbVD56ù@iutyxc +tyu_75^rrtyè6';

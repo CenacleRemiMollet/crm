@@ -2,23 +2,17 @@
 namespace App\Model;
 
 use JMS\Serializer\Annotation as Serializer;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
 
-/**
- * @Serializer\XmlRoot("users")
- * @OA\Schema(schema="Users")
- */
+#[OA\Schema(schema: 'Users')]
+#[Serializer\XmlRoot('users')]
 class UsersView
 {
-	/**
-	 * @OA\Property(ref="#/components/schemas/Pagination")
-	 */
+	#[OA\Property(ref: '#/components/schemas/Pagination')]
 	private $pagination;
 
-	/**
-	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/Account"))
-	 */
+	#[OA\Property(type: 'array', items: new OA\Items(ref: '#/components/schemas/Account'))]
 	private $accounts;
 
 	public function __construct($pagination, $accounts)

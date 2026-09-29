@@ -5,106 +5,66 @@ namespace App\Model;
 use App\Entity\Club;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(
- *     schema="Club",
- *     description="Club",
- *     title="Club",
- *     @OA\Xml(
- *         name="Club"
- *     )
- * )
- * @Serializer\XmlRoot("club")
- * @Hateoas\Relation("self", href = "expr('/crm/api/club/' ~ object.getUuid())")
- * @Hateoas\Relation("logo", href = "expr('/crm/api/club/' ~ object.getUuid() ~ '/logo')")
- */
+#[OA\Schema(schema: 'Club', title: 'Club', description: 'Club', xml: new OA\Xml(name: 'Club'))]
+#[Serializer\XmlRoot('club')]
+#[Hateoas\Relation('self', href: "expr('/crm/api/club/' ~ object.getUuid())")]
+#[Hateoas\Relation('logo', href: "expr('/crm/api/club/' ~ object.getUuid() ~ '/logo')")]
 class ClubView
 {
-	/**
-	 * @OA\Property(type="string", example="abcd-xyz")
-	 */
+	#[OA\Property(type: 'string', example: 'abcd-xyz')]
 	private $uuid;
 
-	/**
-	 * @OA\Property(type="string", example="Abc Club")
-	 */
+	#[OA\Property(type: 'string', example: 'Abc Club')]
 	private $name;
 	
-	/**
-	 * @OA\Property(type="boolean", example="true")
-	 */
+	#[OA\Property(type: 'boolean', example: 'true')]
 	private $active;
 
-	/**
-	 * @OA\Property(type="string", example="foo@bar.com")
-	 */
+	#[OA\Property(type: 'string', example: 'foo@bar.com')]
 	private $mailing_list;
 	
-	/**
-	 * @OA\Property(type="string", example="foo@bar.com")
-	 */
+	#[OA\Property(type: 'string', example: 'foo@bar.com')]
 	private $contact_emails;
 	
-	/**
-	 * @OA\Property(type="string", example="0 892 70 12 39")
-	 */
+	#[OA\Property(type: 'string', example: '0 892 70 12 39')]
 	private $contact_phone;
 	
-	/**
-	 * @OA\Property(type="string", example="https://www.google.com")
-	 */
+	#[OA\Property(type: 'string', example: 'https://www.google.com')]
 	private $website_url;
 
-	/**
-	 * @OA\Property(type="string", example="https://facebook.com/pages/category/Local-Business/Taekwonkido-Cenacle-Rémi-Mollet-158619684187704/")
-	 */
+	#[OA\Property(
+	    type: 'string',
+	    example: 'https://facebook.com/pages/category/Local-Business/Taekwonkido-Cenacle-Rémi-Mollet-158619684187704/'
+	)]
 	private $facebook_url;
 
-	/**
-	 * @OA\Property(type="string", example="https://twitter.com/abc")
-	 */
+	#[OA\Property(type: 'string', example: 'https://twitter.com/abc')]
 	private $twitter_url;
 
-	/**
-	 * @OA\Property(type="string", example="https://www.instagram.com/abc")
-	 */
+	#[OA\Property(type: 'string', example: 'https://www.instagram.com/abc')]
 	private $instagram_url;
 
-	/**
-	 * @OA\Property(type="string", example="https://www.dailymotion.com/abc")
-	 */
+	#[OA\Property(type: 'string', example: 'https://www.dailymotion.com/abc')]
 	private $dailymotion_url;
 	
-    /**
-	 * @OA\Property(type="string", example="https://www.youtube.com/abc")
-	 */
+    #[OA\Property(type: 'string', example: 'https://www.youtube.com/abc')]
 	private $youtube_url;
 
-	/**
-	 * @OA\Property(type="number", format="float", nullable="true", example="29")
-	 */
+	#[OA\Property(type: 'number', format: 'float', example: '29', nullable: true)]
 	private $price_cenacle_joining;
 	
-	/**
-	 * @OA\Property(type="number", format="float", nullable="true", example="79")
-	 */
+	#[OA\Property(type: 'number', format: 'float', example: '79', nullable: true)]
 	private $price_base_subscribe;
 	
-	/**
-	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/ClubLocation"))
-	 */
+	#[OA\Property(type: 'array', items: new OA\Items(ref: '#/components/schemas/ClubLocation'))]
 	private $locations;
 
-	/**
-	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/ClubPrice"))
-	 */
+	#[OA\Property(type: 'array', items: new OA\Items(ref: '#/components/schemas/ClubPrice'))]
 	private $prices;
 	
-	/**
-	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/ClubProperty"))
-	 */
+	#[OA\Property(type: 'array', items: new OA\Items(ref: '#/components/schemas/ClubProperty'))]
 	private $properties;
 	
 	public function __construct(Club $club, $locations = null, $prices = null, $properties = null)

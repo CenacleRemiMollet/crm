@@ -29,7 +29,7 @@ class AccountRepository extends ServiceEntityRepository implements PasswordUpgra
     private LoggerInterface $logger;
     private PasswordHasherInterface $passwordEncoder;
     private RequestStack $requestStack;
-    
+
     public function __construct(ManagerRegistry $registry, LoggerInterface $logger, RequestStack $requestStack)
     {
         parent::__construct($registry, Account::class);
@@ -47,15 +47,15 @@ class AccountRepository extends ServiceEntityRepository implements PasswordUpgra
             return;
         }
         $this->requestStack->getCurrentRequest()->attributes->remove('plainpwdforrehash');
-        
+
         if (!$user instanceof Account) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
         $newHash = $this->passwordEncoder->hash($plainPassword);
         //$this->logger->debug('upgradePassword new hash: '.$newHash.'  user_id: '.$user->getId());
         $user->setPassword($newHash);
-        $this->_em->persist($user);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
     }
 
 

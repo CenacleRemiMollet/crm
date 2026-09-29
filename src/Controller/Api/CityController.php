@@ -7,9 +7,9 @@ use Hateoas\HateoasBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\ClubLocation;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use App\Media\MediaManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -24,39 +24,40 @@ class CityController extends AbstractController
 {
 	private $logger;
 
-	public function __construct(LoggerInterface $logger)
+	public function __construct(LoggerInterface $logger, private readonly \Doctrine\Persistence\ManagerRegistry $managerRegistry)
 	{
 		$this->logger = $logger;
 	}
 
-	/**
-	 * @Route("/api/city", name="api_club_search-city", methods={"GET"})
-	 * @OA\Get(
-	 *     operationId="searchCityAround",
-	 *     tags={"City"},
-	 *     path="/api/city",
-	 *     summary="Search a city",
-	 *     @OA\Parameter(
-	 *         @OA\Schema(type="string"),
-	 *         in="query",
-	 *         allowReserved=true,
-	 *         name="q",
-	 *         required=true
-	 *     ),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(
-	 *                 type="array",
-	 *                 @OA\Items(ref="#/components/schemas/City")
-	 *             )
-	 *         )
-	 *     )
-	 * )
-	 */
-	public function searchByCity(Request $request)
+	#[OA\Get(
+	    path: '/api/city',
+	    operationId: 'searchCityAround',
+	    summary: 'Search a city',
+	    tags: ['City'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'q',
+	            in: 'query',
+	            required: true,
+	            schema: new OA\Schema(type: 'string'),
+	            allowReserved: true
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(
+	            response: '200',
+	            description: 'Successful',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(type: 'array', items: new OA\Items(ref: '#/components/schemas/City'))
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/city', name: 'api_club_search-city', methods: ['GET'])]
+    public function searchByCity(Request $request)
 	{
 		$query = $request->query->get('q');
 		$limit = $request->query->get('limit', 10);
@@ -67,7 +68,7 @@ class CityController extends AbstractController
 			));
 		}
 
-		$cities = $this->getDoctrine()->getManager()
+		$cities = $this->managerRegistry->getManager()
 		->getRepository(City::class)
 		->findByStartsWith($query, $limit);
 

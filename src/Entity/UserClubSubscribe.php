@@ -5,49 +5,33 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Util\StringUtils;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserClubSubscribeRepository")
- */
+#[ORM\Entity(repositoryClass: \App\Repository\UserClubSubscribeRepository::class)]
 class UserClubSubscribe
 {
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+	#[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-	/**
-	 * @ORM\Column(type="string", length=64)
-	 */
-	private $uuid;
+	#[ORM\Column(type: 'string', length: 64)]
+    private $uuid;
 	
-	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="userClubSubscribes")
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $user;
+	#[ORM\ManyToOne(targetEntity: \App\Entity\User::class, inversedBy: 'userClubSubscribes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
 	
-	/**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\Club", inversedBy="userClubSubscribes", cascade={"persist"})
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $club;
+	#[ORM\ManyToOne(targetEntity: \App\Entity\Club::class, inversedBy: 'userClubSubscribes', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $club;
 	
-	/**
-	 * @ORM\Column(type="json")
-	 */
-	private $roles;
+	#[ORM\Column(type: 'json')]
+    private $roles;
 
-	/**
-	 * @ORM\Column(type="date", nullable=true)
-	 */
-	private $subscribe_date;
+	#[ORM\Column(type: 'date', nullable: true)]
+    private $subscribe_date;
 
-	/**
-	 * @ORM\Column(type="date", nullable=true)
-	 */
-	private $unsubscribe_date;
+	#[ORM\Column(type: 'date', nullable: true)]
+    private $unsubscribe_date;
 
     public function __construct()
     {

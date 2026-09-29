@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OpenApi\Annotations as OA;
@@ -24,10 +24,8 @@ class LocaleController extends AbstractController
 		$this->logger = $logger;
 	}
 
-	/**
-	 * @Route("/locale", methods={"GET"}, name="web_locale-get")
-	 */
-	public function getLocale(Request $request)
+	#[Route(path: '/locale', methods: ['GET'], name: 'web_locale-get')]
+    public function getLocale(Request $request)
 	{
 		$locale = $request->getLocale();
 		return new Response(
@@ -36,10 +34,8 @@ class LocaleController extends AbstractController
 		    array('Content-Type' => 'application/json'));
 	}
 
-	/**
- 	 * @Route("/locale", methods={"PUT"}, name="web_locale-put")
-	 */
-	public function putLocale(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
+	#[Route(path: '/locale', methods: ['PUT'], name: 'web_locale-put')]
+    public function putLocale(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
 		$requestUtil = new RequestUtil($serializer, $translator);
 		$localeModel = $requestUtil->validate($request, LocaleModel::class);

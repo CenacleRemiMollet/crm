@@ -4,25 +4,20 @@ namespace App\Model;
 
 use App\Entity\ClubLesson;
 use App\Entity\ClubLocation;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use App\Entity\ConfigurationProperty;
 
 /**
- * @OA\Schema(schema="ConfigurationProperty")
- *
  * @author f.agu
  */
+#[OA\Schema(schema: 'ConfigurationProperty')]
 class ConfigurationPropertyView
 {
 
-	/**
-	 * @OA\Property(type="string", example="my.key")
-	 */
+	#[OA\Property(type: 'string', example: 'my.key')]
 	private $key;
 
-	/**
-	 * @OA\Property(type="string", example="my-value")
-	 */
+	#[OA\Property(type: 'string', example: 'my-value')]
 	private $value;
 
 	//private $updated_date;

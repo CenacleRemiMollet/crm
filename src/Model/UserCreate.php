@@ -4,121 +4,92 @@ namespace App\Model;
 
 use App\Validator\Constraints as AcmeAssert;
 use Symfony\Component\Validator\Constraints as Assert;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use App\Util\RequestUtil;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use App\Util\NestedValidation;
 
-/**
- * @OA\Schema(
- *   schema="UserCreate",
- *   required={"lastname", "firstname", "birthday", "sex"}
- * )
- */
+#[OA\Schema(schema: 'UserCreate', required: ['lastname', 'firstname', 'birthday', 'sex'])]
 class UserCreate implements NestedValidation
 {
-	/**
-	 * @Assert\NotBlank
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="Doe")
-	 */
-	private $lastname;
+	#[OA\Property(type: 'string', example: 'Doe')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $lastname;
 
-	/**
-	 * @Assert\NotBlank
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="John")
-	 */
-	private $firstname;
+	#[OA\Property(type: 'string', example: 'John')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $firstname;
 
-	/**
-	 * @Assert\NotBlank
-	 * @AcmeAssert\Birthday
-	 * @OA\Property(type="string", example="31/12/2000")
-	 */
-	private $birthday;
+	#[OA\Property(type: 'string', example: '31/12/2000')]
+    #[Assert\NotBlank]
+    #[AcmeAssert\Birthday]
+    private $birthday;
 
-	/**
-	 * @Assert\NotBlank
-	 * @Assert\Regex(pattern = "[F|M]")
-	 * @OA\Property(type="string", example="F")
-	 */
-	private $sex;
+	#[OA\Property(type: 'string', example: 'F')]
+    #[Assert\NotBlank]
+    #[Assert\Regex(pattern: '[F|M]')]
+    private $sex;
 
-	/**
-	 * @Assert\Length(max = 512)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="5 Avenue Anatole France")
-	 */
-	private $address;
+	#[OA\Property(type: 'string', example: '5 Avenue Anatole France')]
+    #[Assert\Length(max: 512)]
+    #[AcmeAssert\NoHTML]
+    private $address;
 
-	/**
-	 * @Assert\Length(max = 32)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="75007")
-	 */
-	private $zipcode;
+	#[OA\Property(type: 'string', example: '75007')]
+    #[Assert\Length(max: 32)]
+    #[AcmeAssert\NoHTML]
+    private $zipcode;
 
-	/**
-	 * @Assert\Length(max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="Paris")
-	 */
-	private $city;
+	#[OA\Property(type: 'string', example: 'Paris')]
+    #[Assert\Length(max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $city;
 
-	/**
-	 * @Assert\Length(max = 32)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="0 892 70 12 39")
-	 */
-	private $phone;
+	#[OA\Property(type: 'string', example: '0 892 70 12 39')]
+    #[Assert\Length(max: 32)]
+    #[AcmeAssert\NoHTML]
+    private $phone;
 
-	/**
-	 * @Assert\Length(max = 32)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="0 892 70 12 39")
-	 */
-	private $phone_emergency;
+	#[OA\Property(type: 'string', example: '0 892 70 12 39')]
+    #[Assert\Length(max: 32)]
+    #[AcmeAssert\NoHTML]
+    private $phone_emergency;
 
-	/**
-	 * @Assert\Length(max = 64)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="Française")
-	 */
-	private $nationality;
+	#[OA\Property(type: 'string', example: 'Française')]
+    #[Assert\Length(max: 64)]
+    #[AcmeAssert\NoHTML]
+    private $nationality;
 
-	/**
-	 * @Assert\Length(max = 512)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="mail_1@adresse.fr, mail_2@adresse.fr")
-	 */
-	private $mails;
+	#[OA\Property(type: 'string', example: 'mail_1@adresse.fr, mail_2@adresse.fr')]
+    #[Assert\Length(max: 512)]
+    #[AcmeAssert\NoHTML]
+    private $mails;
 	
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min=3, max = 180)
-	 * @Assert\Regex(pattern="/[A-Za-z0-9_@\\.]{3,64}/")
-	 * @OA\Property(type="string", example="j.doe", pattern="^[A-Za-z0-9_@\\.]{3,64}$")
-	 */
-	private $login;
+	#[OA\Property(type: 'string', pattern: '^[A-Za-z0-9_@\\\\.]{3,64}$', example: 'j.doe')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 3, max: 180)]
+    #[Assert\Regex(pattern: '/[A-Za-z0-9_@\\\\.]{3,64}/')]
+    private $login;
 	
 	/**
 	 * @var UserClubSubscribeCreate[]
-	 * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/UserClubSubscribeCreate"))
 	 */
+	#[OA\Property(type: 'array', items: new OA\Items(ref: '#/components/schemas/UserClubSubscribeCreate'))]
 	private $subscribes;
 	
 	/**
 	 * @var string[]
-	 * @AcmeAssert\Roles
-	 * @OA\Property(type="array", example="ROLE_ADMIN", @OA\Items(type="string"))
 	 */
-	private $roles;
+	#[OA\Property(type: 'array', items: new OA\Items(type: 'string'), example: 'ROLE_ADMIN')]
+    #[AcmeAssert\Roles]
+    private $roles;
 	
 	
 	public function getLastname()

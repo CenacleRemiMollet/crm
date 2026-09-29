@@ -5,17 +5,21 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\ClubLocation;
+use App\Entity\City;
 use App\Service\ConfigurationPropertyService;
 
 class StaticPageController extends AbstractController
 {
+    use \App\Controller\DoctrineSubscriberTrait;
 
-	/**
-	 * @Route("/", methods={"GET"}, name="home")
-	 */
-	public function viewHome(): Response
+
+	public function __construct(private readonly \Doctrine\Persistence\ManagerRegistry $managerRegistry)
+    {
+    }
+    #[Route(path: '/', methods: ['GET'], name: 'home')]
+    public function viewHome(): Response
 	{
 		$user = $this->getUser();
 		$propService = new ConfigurationPropertyService($this->container->get('doctrine')->getManager());
@@ -26,10 +30,8 @@ class StaticPageController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/master", methods={"GET"}, name="master")
-	 */
-	public function viewMaster(): Response
+	#[Route(path: '/master', methods: ['GET'], name: 'master')]
+    public function viewMaster(): Response
 	{
 		$user = $this->getUser();
 		return $this->render('showcase/master.html.twig', [
@@ -37,10 +39,8 @@ class StaticPageController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/taekwonkido", methods={"GET"}, name="Taekwonkido")
-	 */
-	public function viewTaekwonkido(): Response
+	#[Route(path: '/taekwonkido', methods: ['GET'], name: 'Taekwonkido')]
+    public function viewTaekwonkido(): Response
 	{
 		$user = $this->getUser();
 		return $this->render('showcase/taekwonkido.html.twig', [
@@ -48,10 +48,8 @@ class StaticPageController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/taekwondo", methods={"GET"}, name="Taekwondo")
-	 */
-	public function viewTaekwondo(): Response
+	#[Route(path: '/taekwondo', methods: ['GET'], name: 'Taekwondo')]
+    public function viewTaekwondo(): Response
 	{
 		$user = $this->getUser();
 		return $this->render('showcase/taekwondo.html.twig', [
@@ -59,10 +57,8 @@ class StaticPageController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/hapkido", methods={"GET"}, name="Hapkido")
-	 */
-	public function viewHapkido(): Response
+	#[Route(path: '/hapkido', methods: ['GET'], name: 'Hapkido')]
+    public function viewHapkido(): Response
 	{
 		$user = $this->getUser();
 		return $this->render('showcase/hapkido.html.twig', [
@@ -70,10 +66,8 @@ class StaticPageController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/sinkido", methods={"GET"}, name="Sinkido")
-	 */
-	public function viewSinkido(): Response
+	#[Route(path: '/sinkido', methods: ['GET'], name: 'Sinkido')]
+    public function viewSinkido(): Response
 	{
 		$user = $this->getUser();
 		return $this->render('showcase/sinkido.html.twig', [
@@ -81,10 +75,8 @@ class StaticPageController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/searchclub", methods={"GET"}, name="Search club around a city")
-	 */
-	public function searchClub(Request $request): Response
+	#[Route(path: '/searchclub', methods: ['GET'], name: 'Search club around a city')]
+    public function searchClub(Request $request): Response
 	{
 		$user = $this->getUser();
 
@@ -102,7 +94,7 @@ class StaticPageController extends AbstractController
 		}
 
 		$limit = $request->query->get('limit', 20);
-		$cities = $this->getDoctrine()->getManager()
+		$cities = $this->managerRegistry->getManager()
 		->getRepository(City::class)
 		->findByStartsWith($query, $limit);
 

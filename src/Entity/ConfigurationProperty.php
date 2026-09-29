@@ -5,44 +5,30 @@ namespace App\Entity;
 use App\Repository\ConfigurationPropertyRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ConfigurationPropertyRepository::class)
- * @ORM\Table(
- *	  indexes={@ORM\Index(name="idx_configuration_property_key", columns={"property_key"})},
- *	  uniqueConstraints={@ORM\UniqueConstraint(columns={"property_key"})})
- */
+#[ORM\Entity(repositoryClass: ConfigurationPropertyRepository::class)]
+#[ORM\Table]
+#[ORM\Index(name: 'idx_configuration_property_key', columns: ['property_key'])]
+#[ORM\UniqueConstraint(columns: ['property_key'])]
 class ConfigurationProperty
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $property_key;
 
-    /**
-     * @ORM\Column(type="string", length=512)
-     */
+    #[ORM\Column(type: 'string', length: 512)]
     private $property_value;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $updated_date;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $updater_user_id;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 512, nullable: true)]
     private $previous_value;
 
     public function getId(): ?int

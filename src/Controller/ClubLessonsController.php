@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Util\DateIntervalUtils;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\ClubPrice;
@@ -17,6 +17,8 @@ use App\Entity\ClubLesson;
 
 class ClubLessonsController extends AbstractController
 {
+    use \App\Controller\DoctrineSubscriberTrait;
+
 
     private LoggerInterface $logger;
     
@@ -26,9 +28,7 @@ class ClubLessonsController extends AbstractController
     }
 
     
-	/**
-	 * @Route("/club/{club_uuid}/lessons", name="web_view_club_lessons", methods={"GET"})
-	 */
+	#[Route(path: '/club/{club_uuid}/lessons', name: 'web_view_club_lessons', methods: ['GET'])]
     public function getLessons(string $club_uuid, Request $request, SessionInterface $session)
 	{
 	    $doctrine = $this->container->get('doctrine');
@@ -48,10 +48,8 @@ class ClubLessonsController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/club/{club_uuid}/lessons/{lesson_uuid}", name="web_view_club_lesson", methods={"GET"})
-	 */
-	public function getLesson(string $club_uuid, string $lesson_uuid, Request $request, SessionInterface $session)
+	#[Route(path: '/club/{club_uuid}/lessons/{lesson_uuid}', name: 'web_view_club_lesson', methods: ['GET'])]
+    public function getLesson(string $club_uuid, string $lesson_uuid, Request $request, SessionInterface $session)
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    
@@ -74,10 +72,8 @@ class ClubLessonsController extends AbstractController
 	    ]);
 	}
 
-	/**
-	 * @Route("/club/{club_uuid}/lesson-new", name="web_new_club_lesson", methods={"GET"})
-	 */
-	public function getLessonNew(string $club_uuid, Request $request, SessionInterface $session)
+	#[Route(path: '/club/{club_uuid}/lesson-new', name: 'web_new_club_lesson', methods: ['GET'])]
+    public function getLessonNew(string $club_uuid, Request $request, SessionInterface $session)
 	{
 	    $doctrine = $this->container->get('doctrine');
 	    

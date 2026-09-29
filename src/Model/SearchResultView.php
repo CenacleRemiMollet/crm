@@ -5,10 +5,8 @@ namespace App\Model;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 
-/**
- * @Serializer\XmlRoot("searchResult")
- * @Hateoas\Relation("self", href = "expr('/crm/api/' ~ object.getType() ~ '/' ~ object.getUuid())")
- */
+#[Serializer\XmlRoot('searchResult')]
+#[Hateoas\Relation('self', href: "expr('/crm/api/' ~ object.getType() ~ '/' ~ object.getUuid())")]
 class SearchResultView
 {
 	private $type;

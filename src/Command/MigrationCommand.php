@@ -24,10 +24,9 @@ use App\Entity\ClubPrice;
  * php bin/console crm:migration --domainname=<domain> --dump=dump_src.sql
  * @author f.agu
  */
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'crm:migration')]
 class MigrationCommand extends Command
 {
-	protected static $defaultName = 'crm:migration';
-
 	private $doctrine;
 	private $mediaManager;
 	private $projectDir;
@@ -40,13 +39,13 @@ class MigrationCommand extends Command
 		$this->projectDir = $appKernel->getProjectDir();
 	}
 
-	protected function configure()
+	protected function configure(): void
 	{
 		$this->addOption('domainname', 'd', InputOption::VALUE_REQUIRED, 'Domain name to download club logo', null);
 		$this->addOption('dump', null, InputOption::VALUE_REQUIRED, 'Dump file from legacy database', null);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
+	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
 		$domain = $input->getOption('domainname');
 		$srcdump = $input->getOption('dump');

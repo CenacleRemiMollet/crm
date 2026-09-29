@@ -10,7 +10,7 @@ use App\Model\UserUpdate;
 use App\Util\DateUtils;
 use App\Util\DiffTool;
 use App\Util\TreeWalker;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Psr\Log\LoggerInterface;
 
 

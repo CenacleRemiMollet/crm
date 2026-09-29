@@ -1,12 +1,11 @@
 <?php
 namespace App\Security;
 
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use App\Entity\Club;
 use App\Entity\Account;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Argument\ServiceLocator;
+use Psr\Container\ContainerInterface;
 use App\Entity\UserClubSubscribe;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -15,13 +14,13 @@ use App\Service\ClubService;
 class ClubAccess
 {
 
-    private AuthorizationChecker $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
     
     private ManagerRegistry $manager;
     
     private LoggerInterface $logger;
     
-    public function __construct(ServiceLocator $container, LoggerInterface $logger)
+    public function __construct(ContainerInterface $container, LoggerInterface $logger)
     {
         $this->authorizationChecker = $container->get('security.authorization_checker');
         $this->manager = $container->get('doctrine');

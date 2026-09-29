@@ -3,9 +3,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Birthday extends Constraint
 {
 	public $validFormatMessage = 'The birthday date should like dd/mm/YYYY: {{ string }}';

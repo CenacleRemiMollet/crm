@@ -6,37 +6,25 @@ use App\Repository\ClubPropertyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Util\StringUtils;
 
-/**
- * @ORM\Entity(repositoryClass=ClubPropertyRepository::class)
- */
+#[ORM\Entity(repositoryClass: ClubPropertyRepository::class)]
 class ClubProperty
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
+    #[ORM\Column(type: 'string', length: 64)]
     private $uuid;
     
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Club", inversedBy="clubProperties", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Club::class, inversedBy: 'clubProperties', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     private $club;
     
-    /**
-     * @ORM\Column(type="string", length=128)
-     */
+    #[ORM\Column(type: 'string', length: 128)]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=512)
-     */
+    #[ORM\Column(type: 'string', length: 512)]
     private $value;
 
     

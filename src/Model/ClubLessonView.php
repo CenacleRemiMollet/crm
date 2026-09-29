@@ -4,73 +4,58 @@ namespace App\Model;
 
 use App\Entity\ClubLesson;
 use App\Entity\ClubLocation;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 use App\Entity\Club;
 
 /**
- * @OA\Schema(schema="ClubLesson")
- * @Serializer\XmlRoot("club")
- * @Hateoas\Relation("self", href = "expr('/crm/api/club/' ~ object.getClubUuid() ~ '/lessons/' ~ object.getUuid())")
- *
  * @author f.agu
  */
+#[OA\Schema(schema: 'ClubLesson')]
+#[Serializer\XmlRoot('club')]
+#[Hateoas\Relation('self', href: "expr('/crm/api/club/' ~ object.getClubUuid() ~ '/lessons/' ~ object.getUuid())")]
 class ClubLessonView
 {
-    /**
-     * @OA\Property(type="string", example="abcd-xyz")
-     */
+    #[OA\Property(type: 'string', example: 'abcd-xyz')]
     private $club_uuid;
     
-	/**
-	 * @OA\Property(type="string", example="abcd-xyz")
-	 */
+	#[OA\Property(type: 'string', example: 'abcd-xyz')]
 	private $uuid;
 
-	/**
-	 * @OA\Property(type="integer", format="int32", example="1", minimum=0, maximum=10)
-	 */
+	#[OA\Property(type: 'integer', format: 'int32', maximum: 10, minimum: 0, example: '1')]
 	private $point;
 
-	/**
-	 * @OA\Property(type="string", example="Taekwondo")
-	 */
+	#[OA\Property(type: 'string', example: 'Taekwondo')]
 	private $discipline;
 
-	/**
-	 * @OA\Property(type="string", example="Enfants")
-	 */
+	#[OA\Property(type: 'string', example: 'Enfants')]
 	private $age_level;
 
-	/**
-	 * @OA\Property(type="string", example="monday", enum={"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"})
-	 */
+	#[OA\Property(
+	    type: 'string',
+	    enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+	    example: 'monday'
+	)]
 	private $day_of_week;
 
-	/**
-	 * @OA\Property(type="string", example="19:30", pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")
-	 */
+	#[OA\Property(type: 'string', pattern: '^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$', example: '19:30')]
 	private $start_time;
 
-	/**
-	 * @OA\Property(type="string", example="20:45", pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")
-	 */
+	#[OA\Property(type: 'string', pattern: '^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$', example: '20:45')]
 	private $end_time;
 
-	/**
-	 * @OA\Property(type="string", example="20:45", pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")
-	 */
+	#[OA\Property(type: 'string', pattern: '^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$', example: '20:45')]
 	private $duration;
 	
-	/**
-	 * @OA\Property(ref="#/components/schemas/ClubLocation")
-	 */
+	#[OA\Property(ref: '#/components/schemas/ClubLocation')]
 	private $location;
 
-	/**
-	 * @OA\Property(type="string", example="#E66F78", description="Planning color, null = color of the discipline")
-	 */
+	#[OA\Property(
+	    description: 'Planning color, null = color of the discipline',
+	    type: 'string',
+	    example: '#E66F78'
+	)]
 	private $color;
 
 	public function __construct(Club $club, ClubLesson $clubLesson)

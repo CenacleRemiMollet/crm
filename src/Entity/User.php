@@ -10,111 +10,73 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Exception\ViolationException;
 
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(
- *	  indexes={@ORM\Index(name="idx_user_uuid", columns={"uuid"})},
- *	  uniqueConstraints={@ORM\UniqueConstraint(columns={"uuid"})})
- */
+#[ORM\Entity(repositoryClass: \App\Repository\UserRepository::class)]
+#[ORM\Table]
+#[ORM\Index(name: 'idx_user_uuid', columns: ['uuid'])]
+#[ORM\UniqueConstraint(columns: ['uuid'])]
 class User
 {
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+	#[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-	/**
-	 * @Assert\NotBlank
-	 * @ORM\Column(type="string", length=16)
-	 */
-	private $uuid;
+	#[Assert\NotBlank]
+    #[ORM\Column(type: 'string', length: 16)]
+    private $uuid;
 
-	/**
-	 * @Assert\NotBlank
-	 * @ORM\Column(type="string", length=255)
-	 */
-	private $lastname;
+	#[Assert\NotBlank]
+    #[ORM\Column(type: 'string', length: 255)]
+    private $lastname;
 
-	/**
-	 * @Assert\NotNull
-	 * @ORM\Column(type="string", length=255)
-	 */
-	private $firstname;
+	#[Assert\NotNull]
+    #[ORM\Column(type: 'string', length: 255)]
+    private $firstname;
 
-	/**
-	 * @Assert\NotBlank
-	 * @ORM\Column(type="string", length=1)
-	 */
-	private $sex = "-";
+	#[Assert\NotBlank]
+    #[ORM\Column(type: 'string', length: 1)]
+    private $sex = "-";
 
-	/**
-	 * @Assert\NotNull
-	 * @ORM\Column(type="date")
-	 */
-	private $birthday;
+	#[Assert\NotNull]
+    #[ORM\Column(type: 'date')]
+    private $birthday;
 
-	/**
-	 * @ORM\Column(type="string", length=512, nullable=true)
-	 */
-	private $address;
+	#[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private $address;
 
-	/**
-	 * @ORM\Column(type="string", length=32, nullable=true)
-	 */
-	private $zipcode;
+	#[ORM\Column(type: 'string', length: 32, nullable: true)]
+    private $zipcode;
 
-	/**
-	 * @ORM\Column(type="string", length=255, nullable=true)
-	 */
-	private $city;
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $city;
 
-	/**
-	 * @ORM\Column(type="string", length=32, nullable=true)
-	 */
-	private $phone;
+	#[ORM\Column(type: 'string', length: 32, nullable: true)]
+    private $phone;
 
-	/**
-	 * @ORM\Column(type="string", length=32, nullable=true)
-	 */
-	private $phone_emergency;
+	#[ORM\Column(type: 'string', length: 32, nullable: true)]
+    private $phone_emergency;
 
-	/**
-	 * @ORM\Column(type="string", length=64, nullable=true)
-	 */
-	private $nationality;
+	#[ORM\Column(type: 'string', length: 64, nullable: true)]
+    private $nationality;
 
-	/**
-	 * @ORM\Column(type="json")
-	 */
-	private $mails = [];
+	#[ORM\Column(type: 'json')]
+    private $mails = [];
 
-	/**
-	 * @Assert\NotNull
-	 * @ORM\Column(type="datetime")
-	 */
-	private $created;
+	#[Assert\NotNull]
+    #[ORM\Column(type: 'datetime')]
+    private $created;
 
-	/**
-	 * @ORM\Column(type="date", nullable=true)
-	 */
-	private $blacklist_date;
+	#[ORM\Column(type: 'date', nullable: true)]
+    private $blacklist_date;
 
-	/**
-	 * @ORM\Column(type="string", length=1000, nullable=true)
-	 */
-	private $blacklist_reason;
+	#[ORM\Column(type: 'string', length: 1000, nullable: true)]
+    private $blacklist_reason;
 
-	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\Account", mappedBy="user")
-	 */
-	private $accounts;
+	#[ORM\OneToMany(targetEntity: \App\Entity\Account::class, mappedBy: 'user')]
+    private $accounts;
 
-	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\UserClubSubscribe", mappedBy="user", orphanRemoval=true, cascade={"persist"})
-	 */
-	private $userClubSubscribes;
+	#[ORM\OneToMany(targetEntity: \App\Entity\UserClubSubscribe::class, mappedBy: 'user', orphanRemoval: true, cascade: ['persist'])]
+    private $userClubSubscribes;
 
 	public function __construct()
 	{

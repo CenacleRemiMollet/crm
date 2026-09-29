@@ -4,9 +4,7 @@ namespace App\Model;
 
 use JMS\Serializer\Annotation as Serializer;
 
-/**
- * @Serializer\XmlRoot("searchResults")
- */
+#[Serializer\XmlRoot('searchResults')]
 class SearchResultsView
 {
 	private $q;

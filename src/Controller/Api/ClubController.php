@@ -7,8 +7,8 @@ use Hateoas\HateoasBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use OpenApi\Annotations as OA;
+use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;
 use App\Model\ClubCreate;
 use App\Service\ClubService;
@@ -29,6 +29,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class ClubController extends AbstractController
 {
+    use \App\Controller\DoctrineSubscriberTrait;
+
 
     private LoggerInterface $logger;
     
@@ -37,27 +39,26 @@ class ClubController extends AbstractController
         $this->logger = $logger;
     }
    
-	/**
-	 * @Route("/api/club", name="api_club_list-active", methods={"GET"})
-	 * @OA\Get(
-	 *     operationId="getActiveClubList",
-	 *     tags={"Club"},
-	 *     path="/api/club",
-	 *     summary="List all active clubs",
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(
-	 *                 type="array",
-	 *                 @OA\Items(ref="#/components/schemas/Club")
-	 *             )
-	 *         )
-	 *     )
-	 * )
-	 */
-	public function listActive()
+	#[OA\Get(
+	    path: '/api/club',
+	    operationId: 'getActiveClubList',
+	    summary: 'List all active clubs',
+	    tags: ['Club'],
+	    responses: [
+	        new OA\Response(
+	            response: '200',
+	            description: 'Successful',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(type: 'array', items: new OA\Items(ref: '#/components/schemas/Club'))
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/club', name: 'api_club_list-active', methods: ['GET'])]
+    public function listActive()
 	{
 	    $clubService = new ClubService($this->container->get('doctrine'));
 	    $clubViews = $clubService->convertAllActiveToView();
@@ -68,36 +69,45 @@ class ClubController extends AbstractController
 		    array('Content-Type' => 'application/hal+json'));
 	}
 
-	/**
-	 * @Route("/api/club/{uuid}", name="api_get_club", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
-	 * @OA\Get(
-	 *     operationId="getClub",
-	 *     tags={"Club"},
-	 *     path="/api/club/{uuid}",
-	 *     summary="Give a club",
-	 *     @OA\Parameter(
-     *         description="UUID of club",
-     *         in="path",
-     *         name="uuid",
-     *         required=true,
-     *         @OA\Schema(
-     *             format="string",
-     *             type="string",
-     *             pattern="[a-z0-9_]{2,64}"
-     *         )
-     *     ),
-	 *     @OA\Response(
-	 *         response="200",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(ref="#/components/schemas/Club")
-	 *         )
-	 *     ),
-	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function one($uuid)
+	#[OA\Get(
+	    path: '/api/club/{uuid}',
+	    operationId: 'getClub',
+	    summary: 'Give a club',
+	    tags: ['Club'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'uuid',
+	            description: 'UUID of club',
+	            in: 'path',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}')
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(
+	            response: '200',
+	            description: 'Successful',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Club')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '404',
+	            description: 'Club not found',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/club/{uuid}', name: 'api_get_club', methods: ['GET'], requirements: ['uuid' => '[a-z0-9_]{2,64}'])]
+    public function one($uuid)
 	{
 		$entityFinder = new EntityFinder($this->container->get('doctrine'));
 		/** @var Club $club */
@@ -113,33 +123,61 @@ class ClubController extends AbstractController
 		    array('Content-Type' => 'application/hal+json'));
 	}
 
-	/**
-	 * @Route("/api/club", name="api_club_create", methods={"POST"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
-	 * @OA\Post(
-	 *     operationId="createClub",
-	 *     tags={"Club"},
-	 *     path="/api/club",
-	 *     summary="Create a club",
-	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(name="X-ClientId", in="header",  required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
-     *     @OA\RequestBody(
-     *         description="User object that needs to be added",
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ClubCreate"),
-     *     ),
-	 *     @OA\Response(
-	 *         response="201",
-	 *         description="Successful",
-	 *         @OA\MediaType(
-	 *             mediaType="application/hal+json",
-	 *             @OA\Schema(ref="#/components/schemas/Club")
-	 *         )
-	 *     ),
-	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
-	 *     @OA\Response(response="403", description="Forbidden to create a club", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function create(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
+	#[OA\Post(
+	    path: '/api/club',
+	    operationId: 'createClub',
+	    summary: 'Create a club',
+	    security: [['basicAuth' => []]],
+	    requestBody: new OA\RequestBody(
+	        description: 'User object that needs to be added',
+	        required: true,
+	        content: new OA\JsonContent(ref: '#/components/schemas/ClubCreate')
+	    ),
+	    tags: ['Club'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'X-ClientId',
+	            in: 'header',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}'),
+	            example: 'my-client-name'
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(
+	            response: '201',
+	            description: 'Successful',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Club')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '400',
+	            description: 'Request contains not valid field',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '403',
+	            description: 'Forbidden to create a club',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/club', name: 'api_club_create', methods: ['POST'], requirements: ['uuid' => '[a-z0-9_]{2,64}'])]
+    public function create(Request $request, SerializerInterface $serializer, TranslatorInterface $translator)
 	{
 		$this->denyAccessUnlessGranted(Roles::ROLE_ADMIN); // 403
 		
@@ -189,38 +227,69 @@ class ClubController extends AbstractController
 		    array('Content-Type' => 'application/hal+json'));
 	}
 
-	/**
-	 * @Route("/api/club/{uuid}", name="api_club_update", methods={"PATCH"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
-	 * @OA\Patch(
-	 *     operationId="updateClub",
-	 *     tags={"Club"},
-	 *     path="/api/club/{uuid}",
-	 *     summary="Update a club",
-	 *     security = {{"basicAuth": {}}},
-	 *     @OA\Parameter(name="X-ClientId", in="header", required=true, example="my-client-name", @OA\Schema(format="string", type="string", pattern="[a-z0-9_]{2,64}")),
-	 *     @OA\Parameter(
-     *         description="UUID of club",
-     *         in="path",
-     *         name="uuid",
-     *         required=true,
-     *         @OA\Schema(
-     *             format="string",
-     *             type="string",
-     *             pattern="[a-z0-9_]{2,64}"
-     *         )
-     *     ),
-     *     @OA\RequestBody(
-     *         description="User object that needs to be added",
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ClubUpdate"),
-     *     ),
-	 *     @OA\Response(response="204", description="Successful"),
-	 *     @OA\Response(response="400", description="Request contains not valid field", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
-	 *     @OA\Response(response="403", description="Forbidden to update a club", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error"))),
-	 *     @OA\Response(response="404", description="Club not found", @OA\MediaType(mediaType="application/hal+json", @OA\Schema(ref="#/components/schemas/Error")))
-	 * )
-	 */
-	public function update(Request $request, $uuid, SerializerInterface $serializer, TranslatorInterface $translator, SessionInterface $session)
+	#[OA\Patch(
+	    path: '/api/club/{uuid}',
+	    operationId: 'updateClub',
+	    summary: 'Update a club',
+	    security: [['basicAuth' => []]],
+	    requestBody: new OA\RequestBody(
+	        description: 'User object that needs to be added',
+	        required: true,
+	        content: new OA\JsonContent(ref: '#/components/schemas/ClubUpdate')
+	    ),
+	    tags: ['Club'],
+	    parameters: [
+	        new OA\Parameter(
+	            name: 'X-ClientId',
+	            in: 'header',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}'),
+	            example: 'my-client-name'
+	        ),
+	        new OA\Parameter(
+	            name: 'uuid',
+	            description: 'UUID of club',
+	            in: 'path',
+	            required: true,
+	            schema: new OA\Schema(type: 'string', format: 'string', pattern: '[a-z0-9_]{2,64}')
+	        )
+	    ],
+	    responses: [
+	        new OA\Response(response: '204', description: 'Successful'),
+	        new OA\Response(
+	            response: '400',
+	            description: 'Request contains not valid field',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '403',
+	            description: 'Forbidden to update a club',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        ),
+	        new OA\Response(
+	            response: '404',
+	            description: 'Club not found',
+	            content: [
+	                new OA\MediaType(
+	                    mediaType: 'application/hal+json',
+	                    schema: new OA\Schema(ref: '#/components/schemas/Error')
+	                )
+	            ]
+	        )
+	    ]
+	)]
+    #[Route(path: '/api/club/{uuid}', name: 'api_club_update', methods: ['PATCH'], requirements: ['uuid' => '[a-z0-9_]{2,64}'])]
+    public function update(Request $request, $uuid, SerializerInterface $serializer, TranslatorInterface $translator, SessionInterface $session)
 	{
 	    $this->denyAccessUnlessGranted(Roles::ROLE_ADMIN); // 403
 	    

@@ -4,40 +4,23 @@ namespace App\Model;
 
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @OA\Schema(
- *     schema="Error",
- *     description="Error",
- *     title="Error",
- *     @OA\Xml(
- *         name="Error"
- *     )
- * )
- * @Serializer\XmlRoot("error")
- */
+#[OA\Schema(schema: 'Error', title: 'Error', description: 'Error', xml: new OA\Xml(name: 'Error'))]
+#[Serializer\XmlRoot('error')]
 class ErrorView
 {
-	/**
-	 * @OA\Property(type="int", example=500, minimum=100, maximum=599)
-	 */
+	#[OA\Property(type: 'int', maximum: 599, minimum: 100, example: 500)]
 	private $status;
 
-	/**
-	 * @OA\Property(type="string", example="Internal Server Error")
-	 */
+	#[OA\Property(type: 'string', example: 'Internal Server Error')]
 	private $error;
 	
-	/**
-	 * @OA\Property(type="string", example="Club not found: anywhere")
-	 */
+	#[OA\Property(type: 'string', example: 'Club not found: anywhere')]
 	private $message;
 
-	/**
-	 * @OA\Property(type="string", example="2022-06-22T07:27:38+00:00")
-	 */
+	#[OA\Property(type: 'string', example: '2022-06-22T07:27:38+00:00')]
 	private $timestamp;
 	
 	private $details;

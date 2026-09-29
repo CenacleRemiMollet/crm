@@ -12,6 +12,8 @@ use Psr\Log\LoggerInterface;
 
 class FooterController extends AbstractController
 {
+    use \App\Controller\DoctrineSubscriberTrait;
+
     
     private LoggerInterface $logger;
     

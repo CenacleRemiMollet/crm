@@ -7,110 +7,70 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Util\StringUtils;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ClubRepository")
- * @ORM\Table(
- *	  indexes={@ORM\Index(name="idx_club_uuid", columns={"uuid"})},
- *	  uniqueConstraints={@ORM\UniqueConstraint(columns={"uuid"})})
- */
+#[ORM\Entity(repositoryClass: \App\Repository\ClubRepository::class)]
+#[ORM\Table]
+#[ORM\Index(name: 'idx_club_uuid', columns: ['uuid'])]
+#[ORM\UniqueConstraint(columns: ['uuid'])]
 class Club
 {
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+	#[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-	/**
-	 * @ORM\Column(type="string", length=64)
-	 */
-	private $uuid;
+	#[ORM\Column(type: 'string', length: 64)]
+    private $uuid;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	private $name;
+	#[ORM\Column(type: 'string', length: 255)]
+    private $name;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	private $logo;
+	#[ORM\Column(type: 'string', length: 255)]
+    private $logo;
 
-	/**
-	 * @ORM\Column(type="string", length=512, nullable=true)
-	 */
-	private $website_url;
+	#[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private $website_url;
 
-	/**
-	 * @ORM\Column(type="string", length=512, nullable=true)
-	 */
-	private $facebook_url;
+	#[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private $facebook_url;
 
-	/**
-	 * @ORM\Column(type="string", length=512, nullable=true)
-	 */
-	private $twitter_url;
+	#[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private $twitter_url;
 
-	/**
-	 * @ORM\Column(type="string", length=512, nullable=true)
-	 */
-	private $instagram_url;
+	#[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private $instagram_url;
 
-	/**
-	 * @ORM\Column(type="string", length=512, nullable=true)
-	 */
-	private $dailymotion_url;
+	#[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private $dailymotion_url;
 	
-	/**
-	 * @ORM\Column(type="string", length=512, nullable=true)
-	 */
-	private $youtube_url;
+	#[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private $youtube_url;
 
-	/**
-	 * @ORM\Column(type="string", length=512, nullable=true)
-	 */
-	private $mailing_list;
+	#[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private $mailing_list;
 
-	/**
-	 * @ORM\Column(type="boolean")
-	 */
-	private $active;
+	#[ORM\Column(type: 'boolean')]
+    private $active;
 
-	/**
-	 * @ORM\Column(type="string", length=512, nullable=true)
-	 */
-	private $contact_emails;
+	#[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private $contact_emails;
 	
-	/**
-	 * @ORM\Column(type="string", length=64, nullable=true)
-	 */
-	private $contact_phone;
+	#[ORM\Column(type: 'string', length: 64, nullable: true)]
+    private $contact_phone;
 	
-	/**
-	 * @ORM\Column(type="float", nullable=true, options={"default": 29})
-	 */
-	private $price_cenacle_joining = 29;
+	#[ORM\Column(type: 'float', nullable: true, options: ['default' => 29])]
+    private $price_cenacle_joining = 29;
 	
-	/**
-	 * @ORM\Column(type="float", nullable=true, options={"default": 79})
-	 */
-	private $price_base_subscribe = 79;
+	#[ORM\Column(type: 'float', nullable: true, options: ['default' => 79])]
+    private $price_base_subscribe = 79;
 	
-	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\ClubLesson", mappedBy="club", orphanRemoval=true)
-	 */
-	private $clubLessons;
+	#[ORM\OneToMany(targetEntity: \App\Entity\ClubLesson::class, mappedBy: 'club', orphanRemoval: true)]
+    private $clubLessons;
 
-	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\UserClubSubscribe", mappedBy="club", orphanRemoval=true)
-	 */
-	private $userClubSubscribes;
+	#[ORM\OneToMany(targetEntity: \App\Entity\UserClubSubscribe::class, mappedBy: 'club', orphanRemoval: true)]
+    private $userClubSubscribes;
 
-	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\ClubProperty", mappedBy="club", orphanRemoval=true)
-	 */
-	private $clubProperties;
+	#[ORM\OneToMany(targetEntity: \App\Entity\ClubProperty::class, mappedBy: 'club', orphanRemoval: true)]
+    private $clubProperties;
 	
 	public function __construct()
   	{

@@ -3,79 +3,61 @@
 namespace App\Model;
 
 use App\Validator\Constraints as AcmeAssert;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @OA\Schema(
- *     schema="ClubLocationCreate",
- *     description="Create a club location",
- *     title="ClubLocationCreate",
- *     required={"name"},
- *     @OA\Xml(
- *         name="ClubLocationCreate"
- *     )
- * )
- */
+#[OA\Schema(
+    schema: 'ClubLocationCreate',
+    title: 'ClubLocationCreate',
+    description: 'Create a club location',
+    required: ['name'],
+    xml: new OA\Xml(name: 'ClubLocationCreate')
+)]
 class ClubLocationCreate
 {
 
-	/**
-	 * @Assert\NotBlank
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 128)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="Gymnase Abc")
-	 */
-	private $name;
+	#[OA\Property(type: 'string', example: 'Gymnase Abc')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 128)]
+    #[AcmeAssert\NoHTML]
+    private $name;
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min=2, max = 64)
-	 * @Assert\Regex(pattern="/[A-Za-z0-9_]{2,64}/")
-	 * @OA\Property(type="string", example="abcdef13245", pattern="^[A-Za-z0-9_]{2,64}$")
-	 */
-	private $uuid;
+	#[OA\Property(type: 'string', pattern: '^[A-Za-z0-9_]{2,64}$', example: 'abcdef13245')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 2, max: 64)]
+    #[Assert\Regex(pattern: '/[A-Za-z0-9_]{2,64}/')]
+    private $uuid;
 	
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="120 avenue des Champs-Elysées")
-	 */
-	private $address;
+	#[OA\Property(type: 'string', example: '120 avenue des Champs-Elysées')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $address;
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="Paris")
-	 */
-	private $city;
+	#[OA\Property(type: 'string', example: 'Paris')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $city;
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 20)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="75008")
-	 */
-	private $zipcode;
+	#[OA\Property(type: 'string', example: '75008')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 20)]
+    #[AcmeAssert\NoHTML]
+    private $zipcode;
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="Ile de France")
-	 */
-	private $county;
+	#[OA\Property(type: 'string', example: 'Ile de France')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $county;
 
-	/**
-	 * @Assert\Type("string")
-	 * @Assert\Length(min = 1, max = 255)
-	 * @AcmeAssert\NoHTML
-	 * @OA\Property(type="string", example="France")
-	 */
-	private $country;
+	#[OA\Property(type: 'string', example: 'France')]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 1, max: 255)]
+    #[AcmeAssert\NoHTML]
+    private $country;
 
 	public function getName(): ?string
 	{

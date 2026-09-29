@@ -3,33 +3,23 @@ namespace App\Model;
 
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @Serializer\XmlRoot("date")
- * @OA\Schema(schema="DateModel")
- */
+#[OA\Schema(schema: 'DateModel')]
+#[Serializer\XmlRoot('date')]
 class DateModel
 {
 
-	/**
-	 * @OA\Property(type="string", format="date-time", example="1997-07-16T19:20:30.4+0100")
-	 */
+	#[OA\Property(type: 'string', format: 'date-time', example: '1997-07-16T19:20:30.4+0100')]
 	private $iso8601;
 
-	/**
-	 * @OA\Property(type="string", format="date", example="1997-07-16")
-	 */
+	#[OA\Property(type: 'string', format: 'date', example: '1997-07-16')]
 	private $date;
 
-	/**
-	 * @OA\Property(type="string", example="19:20:30")
-	 */
+	#[OA\Property(type: 'string', example: '19:20:30')]
 	private $time;
 
-	/**
-	 * @OA\Property(type="string", example="16/07/1997")
-	 */
+	#[OA\Property(type: 'string', example: '16/07/1997')]
 	private $date_fr;
 
 	public function __construct(\DateTime $date)

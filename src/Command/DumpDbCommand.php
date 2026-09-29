@@ -9,11 +9,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\Process;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'db:dump', description: 'Dump the dabatase', help: <<<'TXT'
+This command dumps the database
+TXT)]
 class DumpDbCommand extends Command
 {
-	// the name of the command (the part after "bin/console")
-	protected static $defaultName = 'db:dump';
-
 	private $doctrine;
 
 	public function __construct(?ManagerRegistry $doctrine = null)
@@ -22,14 +22,12 @@ class DumpDbCommand extends Command
 		$this->doctrine = $doctrine;
 	}
 
-	protected function configure()
+	protected function configure(): void
 	{
-		$this->addArgument('path', InputArgument::REQUIRED, 'Path to dump')
-			->setDescription('Dump the dabatase')
-			->setHelp('This command dumps the database');
+		$this->addArgument('path', InputArgument::REQUIRED, 'Path to dump');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
+	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
 		$conn = $this->doctrine->getConnection();
 

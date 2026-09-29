@@ -3,9 +3,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class HourMinute extends Constraint
 {
 	public $validFormatMessage = 'The time should like HH:mm: {{ string }}';

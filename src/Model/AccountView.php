@@ -2,24 +2,18 @@
 namespace App\Model;
 
 use JMS\Serializer\Annotation as Serializer;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use App\Entity\Account;
 
 
-/**
- * @Serializer\XmlRoot("account")
- * @OA\Schema(schema="Account")
- */
+#[OA\Schema(schema: 'Account')]
+#[Serializer\XmlRoot('account')]
 class AccountView
 {
-	/**
-	 * @OA\Property(type="string", example="john")
-	 */
+	#[OA\Property(type: 'string', example: 'john')]
 	private string $login;
 
-	/**
-	 * @OA\Property(type="boolean", example="true")
-	 */
+	#[OA\Property(type: 'boolean', example: 'true')]
 	private bool $has_access;
 	
 	public function __construct(Account $account)

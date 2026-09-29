@@ -3,58 +3,41 @@
 namespace App\Model;
 
 use App\Entity\ClubLocation;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 use App\Entity\Club;
 
 /**
- * @OA\Schema(schema="ClubLocation")
- * @Serializer\XmlRoot("club")
- * @Hateoas\Relation("self", href = "expr('/crm/api/club/' ~ object.getClubUuid() ~ '/locations/' ~ object.getUuid())")
- *
  * @author f.agu
  */
+#[OA\Schema(schema: 'ClubLocation')]
+#[Serializer\XmlRoot('club')]
+#[Hateoas\Relation('self', href: "expr('/crm/api/club/' ~ object.getClubUuid() ~ '/locations/' ~ object.getUuid())")]
 class ClubLocationView
 {
-    /**
-     * @OA\Property(type="string", example="abcd-xyz")
-     */
+    #[OA\Property(type: 'string', example: 'abcd-xyz')]
     private $club_uuid;
     
-    /**
-	 * @OA\Property(type="string", example="abcd-xyz")
-	 */
+    #[OA\Property(type: 'string', example: 'abcd-xyz')]
 	private $uuid;
 
-	/**
-	 * @OA\Property(type="string", example="Gymnase Abc")
-	 */
+	#[OA\Property(type: 'string', example: 'Gymnase Abc')]
 	private $name;
 
-	/**
-	 * @OA\Property(type="string", example="120 avenue des Champs-Elysées")
-	 */
+	#[OA\Property(type: 'string', example: '120 avenue des Champs-Elysées')]
 	private $address;
 
-	/**
-	 * @OA\Property(type="string", example="Paris")
-	 */
+	#[OA\Property(type: 'string', example: 'Paris')]
 	private $city;
 
-	/**
-	 * @OA\Property(type="string", example="75008")
-	 */
+	#[OA\Property(type: 'string', example: '75008')]
 	private $zipcode;
 
-	/**
-	 * @OA\Property(type="string", example="Ile de France")
-	 */
+	#[OA\Property(type: 'string', example: 'Ile de France')]
 	private $county;
 
-	/**
-	 * @OA\Property(type="string", example="France")
-	 */
+	#[OA\Property(type: 'string', example: 'France')]
 	private $country;
 
 	public function __construct(Club $club, ClubLocation $location)
