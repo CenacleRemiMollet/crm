@@ -69,27 +69,34 @@ php bin/console cache:clear
 - API doc JSON: `/crm/api/doc.json`; `swagger-generator.php` regenerates `public_html/crm/swagger-config.json`.
 - Tests: none yet (`tests/bootstrap.php` only). `php bin/phpunit`; `phpunit.xml.dist` is in the old format.
 
-## Production
+## Preprod and production
 
-Hosting: `<hébergeur>` (cPanel). The repository is cloned on the server in `<chemin du dépôt>` and deployed with `git pull`.
+Hosting: **o2switch** (cPanel), one account for both environments. Each environment is a clone of this repository, deployed with `git pull`:
+
+| Environment | Directory on the server |
+|-------------|-------------------------|
+| preprod     | `~/sites/crm.preprod`   |
+| prod        | `~/sites/crm.prod`      |
+
+Always deploy to **preprod first**, check it, then deploy the same commit to prod.
 
 ### SSH access
 
 ```bash
-ssh -p <port> <user>@<host>
-cd <chemin du dépôt>
+ssh -p 22 sc2cenacle@fraise.o2switch.net
 ```
 
 - Authenticate with an SSH key (with passphrase), never a password or a stored token.
-- On the server, run `git config core.fileMode false` once (ignore chmod changes).
+- Each clone has its own `.env.local` / `.env.local.php` (database, secret, mailer): never copy one environment's file over the other.
+- In each clone, run `git config core.fileMode false` once (ignore chmod changes).
 
 ### Deploy
 
-From your machine: commit and push to `master` on GitHub (`git@github.com:CenacleRemiMollet/crm.git`). Then on the server:
+From your machine: commit and push to `master` on GitHub (`git@github.com:CenacleRemiMollet/crm.git`). Then on the server, in `~/sites/crm.preprod` first, then in `~/sites/crm.prod`:
 
 ```bash
-ssh -p <port> <user>@<host>
-cd <chemin du dépôt>
+ssh -p 22 sc2cenacle@fraise.o2switch.net
+cd ~/sites/crm.preprod                               # then ~/sites/crm.prod
 
 php bin/console db:dump backup                       # backup the database first
 git pull origin master
