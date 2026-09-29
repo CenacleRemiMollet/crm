@@ -3,9 +3,12 @@ monolog:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
     handlers:
         file_log:
-            type: stream
+            # daily files (<env>-YYYY-MM-DD.log), 30 days kept; deprecations excluded (Symfony 5.4 on PHP 8.5 is very verbose)
+            type: rotating_file
             path: "%kernel.logs_dir%/%kernel.environment%.log"
+            max_files: 30
             level: info
+            channels: ["!deprecation"]
             
 when@dev:
     monolog:
@@ -59,8 +62,4 @@ when@prod:
             console:
                 type: console
                 process_psr_3_messages: false
-                channels: ["!event", "!doctrine"]
-            deprecation:
-                type: stream
-                channels: [deprecation]
-                path: php://stderr
+                channels: ["!event", "!doctrine", "!deprecation"]

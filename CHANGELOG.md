@@ -12,6 +12,7 @@
 - `phpoffice/phpspreadsheet` 1.23 → 5.10 (1.x does not support PHP 8.5)
 - `nelmio/api-doc-bundle` pinned to `^4.11` instead of `dev-master`
 - A user's login can only be changed by an admin
+- Logs: daily rotated files (30 days), `deprecation` channel no longer logged (prod.log had reached 779 MB)
 
 ### Fixed
 - PHP 8.4+ deprecations: implicit nullable parameters, optional parameter before required (`LocaleSubscriber`)
