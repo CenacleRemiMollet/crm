@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 use OpenApi\Annotations as OA;
 use App\Model\SearchResultsView;
 use App\Model\Pagination;
-use App\Util\Pageable;
+use App\Util\Page\Pageable;
 
 class SearchController extends AbstractController
 {

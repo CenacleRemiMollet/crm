@@ -18,6 +18,8 @@
 - Lesson update without `location_uuid` returned 404
 - User update/creation crashed on `$this->manager` (undefined) and on undefined `$account` in club subscriptions
 - XLSX export temporary file was never deleted
+- `/api/search` always returned 500 (wrong `Pageable` import in `SearchController` and `SearchDao`)
+- `db:dump` crashed with DBAL 3 (`Connection::getUsername()` removed)
 
 ### Security
 - 72 known vulnerabilities fixed through dependency upgrades (twig, phpspreadsheet, symfony/http-kernel, security-http, http-foundation, yaml, mime...)

@@ -6,7 +6,7 @@ use App\Entity\Account;
 use App\Model\SearchResultView;
 use Doctrine\ORM\Query\ResultSetMapping;
 use App\Repository\UserRepository;
-use App\Util\Pageable;
+use App\Util\Page\Pageable;
 
 class SearchDao
 {
