@@ -43,10 +43,19 @@ class DumpDbCommand extends Command
 		$output->writeln('Writing dump to '.$path);
 
 		// no shell, no password on the command line nor in the output
-		$process = new Process(
-			['mariadb-dump', '-u', $conn->getUsername(), '--result-file='.$path, $conn->getDatabase()],
-			null,
-			['MYSQL_PWD' => $conn->getPassword()]);
+		$params = $conn->getParams(); // DBAL 3: getUsername()/getPassword() no longer exist
+		$args = ['mariadb-dump', '-u', $params['user'] ?? ''];
+		if (! empty($params['host'])) {
+			$args[] = '-h';
+			$args[] = $params['host'];
+		}
+		if (! empty($params['port'])) {
+			$args[] = '-P';
+			$args[] = (string) $params['port'];
+		}
+		$args[] = '--result-file='.$path;
+		$args[] = $conn->getDatabase();
+		$process = new Process($args, null, ['MYSQL_PWD' => $params['password'] ?? '']);
 		$process->setTimeout(600);
 		$process->run();
 		if (! $process->isSuccessful()) {
