@@ -3,6 +3,18 @@
 
 {% block stylesheets2 %}
 	<link href="{{ app.request.baseUrl }}/assets/club/infos_club.css" rel="stylesheet">
+	{# colors configured in the admin (/config) override the defaults of infos_club.css; disciplines and #RRGGBB values are validated by PlanningColors #}
+	{% if planningColors is defined and planningColors is not empty %}
+	<style>
+	{% for discipline, color in planningColors %}
+		{% if discipline == 'empty' %}
+		main .seven .board .empty, .carousel-inner .carousel-item .empty { background-color: {{ color }}; }
+		{% else %}
+		main .seven .board .jour .{{ discipline }}, .carousel-inner .carousel-item .{{ discipline }} { background-color: {{ color }}; }
+		{% endif %}
+	{% endfor %}
+	</style>
+	{% endif %}
 {% endblock %}
 
 

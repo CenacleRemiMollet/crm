@@ -10,6 +10,38 @@
 {% block dashboardcontent %}
 
 	<br>
+    <div class="panel panel-default" id="planning-colors">
+        <div class="panel-heading"><strong>Couleurs du planning</strong> <small>(page Horaires &amp; tarifs des clubs)</small></div>
+        <div class="panel-body">
+            <table class="table table-condensed">
+                <thead>
+                    <tr><th>Discipline</th><th>Couleur</th><th>Par défaut</th><th></th></tr>
+                </thead>
+                <tbody>
+                {% for discipline, pc in planningColors %}
+                    <tr data-discipline="{{ discipline }}" data-default="{{ pc.default }}" data-configured="{{ pc.configured ? '1' : '0' }}">
+                        <td>{{ discipline == 'empty' ? 'Jour sans cours' : discipline }}</td>
+                        <td>
+                            <input type="color" class="pc-color" value="{{ pc.color ?? '#FFFFFF' }}">
+                            <code class="pc-hex">{{ pc.color ?? 'aucune' }}</code>
+                            {% if pc.configured %}<span class="label label-info pc-custom">personnalisée</span>{% endif %}
+                        </td>
+                        <td>
+                            {% if pc.default %}
+                                <span style="display:inline-block;width:1.5em;height:1.5em;vertical-align:middle;border:1px solid #999;background-color:{{ pc.default }}"></span>
+                                <code>{{ pc.default }}</code>
+                            {% else %}<em>aucune</em>{% endif %}
+                        </td>
+                        <td><button type="button" class="btn btn-default btn-xs pc-reset" {% if not pc.configured %}disabled{% endif %}>Couleur par défaut</button></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-primary" id="pc-save" disabled>Enregistrer</button>
+            <span id="pc-status" style="margin-left:1em"></span>
+        </div>
+    </div>
+
     <div class="table-content">
         <table class="table table-borded table-responsive table-striped " id="table-list">
             <thead class="table-dark">
@@ -68,6 +100,56 @@
         	}, 
         	//onAdd: function(row) { console.log('onAdd', row); }
         });
+        // planning colors: only changed rows are sent; "reset" stores the reset value, which falls back to the CSS default
+        (function() {
+            var prefix = '{{ planningColorPrefix|e('js') }}';
+            var resetValue = '{{ planningColorReset|e('js') }}';
+            var changes = {};
+            function markChanged(row, value) {
+                changes[row.data('discipline')] = value;
+                $('#pc-save').prop('disabled', false);
+                $('#pc-status').text('');
+            }
+            $('#planning-colors .pc-color').on('input change', function() {
+                var row = $(this).closest('tr');
+                var color = this.value.toUpperCase();
+                row.find('.pc-hex').text(color);
+                row.find('.pc-reset').prop('disabled', false);
+                markChanged(row, color);
+            });
+            $('#planning-colors .pc-reset').on('click', function() {
+                var row = $(this).closest('tr');
+                var def = row.data('default');
+                row.find('.pc-color').val(def || '#FFFFFF');
+                row.find('.pc-hex').text(def || 'aucune');
+                row.find('.pc-custom').remove();
+                $(this).prop('disabled', true);
+                markChanged(row, resetValue);
+            });
+            $('#pc-save').on('click', function() {
+                var payload = $.map(changes, function(value, discipline) { return {'key': prefix + discipline, 'value': value}; });
+                if(payload.length === 0) {
+                    return;
+                }
+                $('#pc-save').prop('disabled', true);
+                $.ajax({
+                    type: 'PATCH',
+                    url: '{{ app.request.baseUrl }}/api/config/properties',
+                    contentType: 'application/json',
+                    data: JSON.stringify(payload),
+                    cache: false,
+                    beforeSend: function(xhr) { xhr.setRequestHeader('X-ClientId', 'Web'); },
+                    success: function() {
+                        changes = {};
+                        $('#pc-status').removeClass('text-danger').addClass('text-success').text('Enregistré');
+                    },
+                    error: function(xhr) {
+                        $('#pc-save').prop('disabled', false);
+                        $('#pc-status').removeClass('text-success').addClass('text-danger').text('Erreur : ' + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.status));
+                    }
+                });
+            });
+        })();
         /*$('#add').click(function() {
             rowAddNewAndEdit('table-list', [1,2,3]);
         });*/

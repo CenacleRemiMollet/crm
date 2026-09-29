@@ -4,6 +4,7 @@
 ## [Unreleased]
 
 ### Added
+- Planning colors (club "Horaires & tarifs" page) configurable per discipline in the admin (`/config`), stored as `planning.color.<discipline>` properties; CSS defaults kept when nothing is configured, `default` value resets a color
 - Login brute-force protection: `login_throttling` (5 attempts / 15 min), adds `symfony/rate-limiter` and `symfony/lock` (`LOCK_DSN=flock`)
 
 ### Changed

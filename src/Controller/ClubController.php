@@ -18,6 +18,7 @@ use Hateoas\HateoasBuilder;
 use App\Security\Roles;
 use App\Entity\ClubLesson;
 use App\Model\ClubLessonView;
+use App\Service\PlanningColors;
 
 class ClubController extends AbstractController
 {
@@ -99,7 +100,7 @@ class ClubController extends AbstractController
 	/**
 	 * @Route("/club/{uuid}/infos", name="web_club_infos", methods={"GET"}, requirements={"uuid"="[a-z0-9_]{2,64}"})
 	 */
-	public function viewInfos($uuid, LoggerInterface $logger, SessionInterface $session)
+	public function viewInfos($uuid, LoggerInterface $logger, SessionInterface $session, PlanningColors $planningColors)
 	{
 		$response = $this->forward('App\Controller\Api\ClubController::one', ['uuid' => $uuid]);
 		if($response->getStatusCode() != 200) {
@@ -116,7 +117,8 @@ class ClubController extends AbstractController
 			'club' => $club,
 			'lessons' => $lessons,
 		    'startTimeByDays' => $this->determineStartsOffsetByQuarter($lessons),
-		    'canConfigure' => $this->canConfigure($uuid)
+		    'canConfigure' => $this->canConfigure($uuid),
+		    'planningColors' => $planningColors->getOverrides()
 		]);
 	}
 

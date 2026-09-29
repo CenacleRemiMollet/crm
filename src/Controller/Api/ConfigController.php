@@ -21,6 +21,8 @@ use App\Model\ConfigurationPropertyUpdate;
 use App\Model\ConfigurationPropertyView;
 use App\Service\ConfigurationPropertyService;
 use App\Entity\Events;
+use App\Exception\CRMException;
+use App\Service\PlanningColors;
 
 class ConfigController extends AbstractController
 {
@@ -101,6 +103,16 @@ class ConfigController extends AbstractController
 		$requestUtil = new RequestUtil($serializer, $translator);
     	//$propertiesToUpdate = $requestUtil->validate($request, ConfigurationPropertyUpdate::class);
 		$propertiesToUpdate = $requestUtil->validate($request, 'App\Model\ConfigurationPropertyUpdate[]');
+
+		// validate everything before writing anything
+		foreach($propertiesToUpdate as $propertyToUpdate) {
+			if(strpos($propertyToUpdate->getKey(), PlanningColors::PREFIX) === 0) {
+				$error = PlanningColors::validate($propertyToUpdate->getKey(), $propertyToUpdate->getValue());
+				if($error !== null) {
+					throw new CRMException(Response::HTTP_BAD_REQUEST, $error, [$propertyToUpdate->getKey() => $error]); // 400
+				}
+			}
+		}
 
 		$account = $this->getUser();
 		$doctrine = $this->container->get('doctrine');
