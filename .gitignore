@@ -60,3 +60,4 @@ yarn-error.log
 /dump_src.sql
 /recreate-full.bat
 /dump-20220701.sql
+/graphify-out/
