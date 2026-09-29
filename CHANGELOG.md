@@ -26,6 +26,7 @@
 - `ClubAccess`: write access now requires a manager/teacher role *in that club* (a teacher of club A who was a student of club B had write access to B)
 - Lesson creation/update: location must belong to the same club
 - CSV/XLSX user export: formula injection neutralized
+- `db:dump` no longer prints the database password nor goes through a shell (`Process` + `MYSQL_PWD`)
 
 Examples :
 

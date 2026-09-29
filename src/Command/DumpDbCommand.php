@@ -7,6 +7,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Process\Process;
 
 class DumpDbCommand extends Command
 {
@@ -32,23 +33,26 @@ class DumpDbCommand extends Command
 	{
 		$conn = $this->doctrine->getConnection();
 
-		$path = $input->getArgument('path');
-		if (! is_dir(dirname($path))) {
+		$dir = $input->getArgument('path');
+		if (! is_dir($dir)) {
 			$fs = new Filesystem();
-			$fs->mkdir(dirname($path));
+			$fs->mkdir($dir);
 		}
 		$now = new \DateTime();
-		$path = $path.DIRECTORY_SEPARATOR.'dump-'.$now->format('Ymd-His').'.sql';
+		$path = $dir.DIRECTORY_SEPARATOR.'dump-'.$now->format('Ymd-His').'.sql';
 		$output->writeln('Writing dump to '.$path);
 
-		$cmd = sprintf('mariadb-dump -u %s --password=%s %s > %s',
-			$conn->getUsername(),
-			$conn->getPassword(),
-			$conn->getDatabase(),
-			$path
-			);
-		$output->writeln($cmd);
-		exec($cmd, $output, $exit_status);
+		// no shell, no password on the command line nor in the output
+		$process = new Process(
+			['mariadb-dump', '-u', $conn->getUsername(), '--result-file='.$path, $conn->getDatabase()],
+			null,
+			['MYSQL_PWD' => $conn->getPassword()]);
+		$process->setTimeout(600);
+		$process->run();
+		if (! $process->isSuccessful()) {
+			$output->writeln('<error>'.$process->getErrorOutput().'</error>');
+			return Command::FAILURE;
+		}
 
 		return Command::SUCCESS;
 	}
