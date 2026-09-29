@@ -6,7 +6,7 @@ Guidance for coding agents working on this repository.
 
 CRM and public website of the *Cénacle Rémi Mollet* (Taekwonkido / Taekwondo / Hapkido clubs network).
 Public pages (clubs, lessons, locations, prices, planning), a club search, user/account management and an admin configuration screen.
-Served in production under `https://ceintureblanche.fr/crm/`.
+Served in production under `https://ceintureblanche.fr/crm/` (preprod: `https://preprod.ceintureblanche.fr/`).
 
 ## Stack
 
@@ -73,10 +73,10 @@ php bin/console cache:clear
 
 Hosting: **o2switch** (cPanel), one account for both environments. Each environment is a clone of this repository, deployed with `git pull`:
 
-| Environment | Directory on the server |
-|-------------|-------------------------|
-| preprod     | `~/sites/crm.preprod`   |
-| prod        | `~/sites/crm.prod`      |
+| Environment | URL                                  | Directory on the server |
+|-------------|--------------------------------------|-------------------------|
+| preprod     | https://preprod.ceintureblanche.fr/  | `~/sites/crm.preprod`   |
+| prod        | https://ceintureblanche.fr/crm/      | `~/sites/crm.prod`      |
 
 Always deploy to **preprod first**, check it, then deploy the same commit to prod.
 
