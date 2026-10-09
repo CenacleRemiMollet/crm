@@ -82,8 +82,10 @@ Always deploy to **preprod first**, check it, then deploy the same commit to pro
 
 ### SSH access
 
+Both preprod and prod are reached through the SSH alias **`cenaclerm`** (defined in `~/.ssh/config`); the environment is selected by the directory (`~/sites/crm.preprod` or `~/sites/crm.prod`), not by the host.
+
 ```bash
-ssh -p 22 sc2cenacle@fraise.o2switch.net
+ssh cenaclerm
 ```
 
 - Authenticate with an SSH key (with passphrase), never a password or a stored token.
@@ -95,7 +97,7 @@ ssh -p 22 sc2cenacle@fraise.o2switch.net
 From your machine: commit and push to `master` on GitHub (`git@github.com:CenacleRemiMollet/crm.git`). Then on the server, in `~/sites/crm.preprod` first, then in `~/sites/crm.prod`:
 
 ```bash
-ssh -p 22 sc2cenacle@fraise.o2switch.net
+ssh cenaclerm
 cd ~/sites/crm.preprod                               # then ~/sites/crm.prod
 
 php bin/console db:dump backup                       # backup the database first
